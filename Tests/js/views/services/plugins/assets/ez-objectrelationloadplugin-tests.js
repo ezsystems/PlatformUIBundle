@@ -4,25 +4,23 @@
  */
 YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
     var tests, registerTest,
-        Assert = Y.Assert;
+        Assert = Y.Assert, Mock = Y.Mock;
 
     tests = new Y.Test.Case({
         name: "eZ Object Relation Load Plugin event tests",
 
         setUp: function () {
+            Y.eZ.Content = function () {};
             this.relatedContent = new Y.Mock();
             this.destinationHref = "/my/content/24";
             this.fieldDefinitionIdentifier = 'super_attribut_relation';
             this.relationId = 42;
 
-            this.fields = {};
-            this.fields[this.fieldDefinitionIdentifier] = {fieldValue: {destinationContentHref: this.destinationHref}};
-            this.content = new Y.eZ.Content();
-            this.content.set('fields', this.fields);
-
-            Y.Mock.expect(this.relatedContent, {
-                method: 'set',
-                args: ['id', this.destinationHref],
+            this.content = new Mock();
+            Mock.expect(this.content, {
+                method: 'relations',
+                args: ['ATTRIBUTE', this.fieldDefinitionIdentifier],
+                returns: [{destination: this.destinationHref}],
             });
 
             this.capi = {};
@@ -34,7 +32,6 @@ YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
             this.view.addTarget(this.service);
 
             this.service.set('capi', this.capi);
-            this.service.set('content', this.content);
 
             this.plugin = new Y.eZ.Plugin.ObjectRelationLoad({
                 host: this.service,
@@ -43,6 +40,7 @@ YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
         },
 
         tearDown: function () {
+            delete Y.eZ.Content;
             this.plugin.destroy();
             this.view.destroy();
             this.service.destroy();
@@ -52,27 +50,34 @@ YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
             delete this.relatedContent;
         },
 
-        "Should load the related content on `loadFieldRelatedContent` event": function () {
-            var that = this,
-                initialLoadingError = this.view.get('loadingError');
-
-            Y.Mock.expect(this.relatedContent, {
+        _mockRelatedContent: function (loadError) {
+            Mock.expect(this.relatedContent, {
+                method: 'set',
+                args: ['id', this.destinationHref],
+            });
+            Mock.expect(this.relatedContent, {
                 method: 'load',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                run: function (options, callback) {
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
                     Assert.areSame(
-                        that.capi,
+                        this.capi,
                         options.api,
                         'the CAPI should be passed in the options'
                     );
-                    callback();
-                }
+                    callback(loadError);
+                }, this),
             });
+        },
 
-            this.view.fire(
-                'loadFieldRelatedContent',
-                {fieldDefinitionIdentifier: this.fieldDefinitionIdentifier}
-            );
+        "Should load the related content on `loadFieldRelatedContent` event": function () {
+            var initialLoadingError = this.view.get('loadingError');
+
+            this._mockRelatedContent(false);
+            this.view.fire('loadFieldRelatedContent', {
+                fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
+                content: this.content,
+            });
+            Mock.verify(this.content);
             Assert.areSame(
                 this.relatedContent,
                 this.view.get('destinationContent'),
@@ -86,27 +91,38 @@ YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
             Y.Mock.verify(this.relatedContent);
         },
 
-        "Should handle loading error while loading related content": function () {
-            var that = this,
-                initialDest = this.view.get('destinationContent');
+        "Should pick the source content from the view service `content` attribute": function () {
+            var initialLoadingError = this.view.get('loadingError');
 
-            Y.Mock.expect(this.relatedContent, {
-                method: 'load',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                run: function (options, callback) {
-                    Assert.areSame(
-                        that.capi,
-                        options.api,
-                        'the CAPI should be passed in the options'
-                    );
-                    callback(true);
-                }
+            this.service.set('content', this.content);
+            this._mockRelatedContent(false);
+
+            this.view.fire('loadFieldRelatedContent', {
+                fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
             });
-
-            this.view.fire(
-                'loadFieldRelatedContent',
-                {fieldDefinitionIdentifier: this.fieldDefinitionIdentifier}
+            Mock.verify(this.content);
+            Assert.areSame(
+                this.relatedContent,
+                this.view.get('destinationContent'),
+                "The view should get the related content"
             );
+            Assert.areSame(
+                initialLoadingError,
+                this.view.get('loadingError'),
+                "The loadingError should stay the same"
+            );
+            Mock.verify(this.relatedContent);
+        },
+
+        "Should handle loading error while loading related content": function () {
+            var initialDest = this.view.get('destinationContent');
+
+            this._mockRelatedContent(true);
+
+            this.view.fire('loadFieldRelatedContent', {
+                fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
+                content: this.content,
+            });
             Assert.areSame(
                 initialDest,
                 this.view.get('destinationContent'),
@@ -124,4 +140,4 @@ YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
     Y.Test.Runner.setName("eZ Object Relation Load Plugin tests");
     Y.Test.Runner.add(tests);
     Y.Test.Runner.add(registerTest);
-}, '', {requires: ['test', 'view', 'base', 'ez-objectrelationloadplugin', 'ez-contentmodel', 'ez-pluginregister-tests']});
+}, '', {requires: ['test', 'view', 'base', 'ez-objectrelationloadplugin', 'ez-pluginregister-tests']});
