@@ -36,6 +36,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
                 this.view = new Y.eZ.RelationListView({
                     fieldDefinition: this.fieldDefinition,
                     field: this.field,
+                    content: {},
                 });
 
                 Y.one('.app').append(this.view.get('container'));
@@ -47,17 +48,21 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
             },
 
             "Should fire the loadObjectRelations event": function () {
-                var loadContentsEvent = false,
-                    that = this;
+                var loadContentsEvent = false;
 
-                this.view.on('loadObjectRelations', function (e) {
+                this.view.on('loadObjectRelations', Y.bind(function (e) {
                     loadContentsEvent = true;
                     Y.Assert.areSame(
-                        that.fieldDefinitionIdentifier,
+                        this.fieldDefinitionIdentifier,
                         e.fieldDefinitionIdentifier,
                         "fieldDefinitionIdentifier is not the same than the one in the field"
                     );
-                });
+                    Y.Assert.areSame(
+                        this.view.get('content'),
+                        e.content,
+                        "The 'loadObjectRelations' event facade should contain the content"
+                    );
+                }, this));
                 this.view.set('active', true);
 
                 Y.Assert.isTrue(loadContentsEvent, "loadContentsEvent should be called when changing active value");
