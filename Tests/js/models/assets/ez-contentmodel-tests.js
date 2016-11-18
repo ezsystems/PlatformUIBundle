@@ -5,7 +5,7 @@
 YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
-        getFieldsOfTypeTest, createDraftTest,
+        getFieldsOfTypeTest, createDraftTest, currentVersionTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -228,36 +228,6 @@ YUI.add('ez-contentmodel-tests', function (Y) {
 
             Y.Mock.verify(this.capiMock);
             Y.Mock.verify(this.serviceMock);
-        },
-
-        "The current version should be instance of eZ.Version": function () {
-            var currentVersionStruct = loadResponse.Content.CurrentVersion;
-
-            this.model.set('currentVersion', currentVersionStruct);
-            Y.Assert.isInstanceOf(
-                Y.eZ.Version,
-                this.model.get('currentVersion'),
-                'Current version should be instance of eZ.Version'
-            );
-            Y.Assert.areEqual(
-                currentVersionStruct.Version.VersionInfo.versionNo,
-                this.model.get('currentVersion').get('versionNo'),
-                'Should instantiate current version with version no'
-            );
-            Y.Assert.areEqual(
-                currentVersionStruct.Version.VersionInfo.id,
-                this.model.get('currentVersion').get('versionId'),
-                'Should instantiate current version with version id'
-            );
-        },
-
-        "The current version should be instance of eZ.Version (not version)": function () {
-            this.model.set('currentVersion', undefined);
-            Y.Assert.isInstanceOf(
-                Y.eZ.Version,
-                this.model.get('currentVersion'),
-                'Current version should be instance of eZ.Version'
-            );
         },
 
         "Should read the fields of the current version": function () {
@@ -1275,6 +1245,50 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    currentVersionTest = new Y.Test.Case({
+        name: "eZ Content Model current version test",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+        },
+
+        "Should be instance of eZ.Version": function () {
+            Assert.isInstanceOf(
+                Y.eZ.Version, this.model.get('currentVersion'),
+                "The current version should be an instance of eZ.Version"
+            );
+        },
+
+        "Should keep the same instance": function () {
+            var version1 = this.model.get('currentVersion');
+
+            Assert.areSame(
+                version1, this.model.get('currentVersion'),
+                "The same object instance should reused"
+            );
+        },
+
+        "Should parse the attribute value": function () {
+            var currentVersionStruct = loadResponse.Content.CurrentVersion;
+
+            this.model.set('currentVersion', currentVersionStruct);
+            Assert.areEqual(
+                currentVersionStruct.Version.VersionInfo.versionNo,
+                this.model.get('currentVersion').get('versionNo'),
+                'Should instantiate current version with version no'
+            );
+            Assert.areEqual(
+                currentVersionStruct.Version.VersionInfo.id,
+                this.model.get('currentVersion').get('versionId'),
+                'Should instantiate current version with version id'
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
@@ -1287,4 +1301,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(hasTranslationTest);
     Y.Test.Runner.add(getFieldsOfTypeTest);
     Y.Test.Runner.add(createDraftTest);
+    Y.Test.Runner.add(currentVersionTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

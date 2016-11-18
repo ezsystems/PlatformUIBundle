@@ -455,13 +455,27 @@ YUI.add('ez-contentmodel', function (Y) {
              */
             currentVersion: {
                 getter: function (value) {
-                    var version = new Y.eZ.Version();
+                    var version = this._currentVersion || new Y.eZ.Version();
 
-                    if ( value ) {
+                    if ( value && this._dirtyCurrentVersion ) {
                         version.setAttrs(version.parse({document: value}));
                     }
+                    /**
+                     * Holds the current version to avoid creating a new object
+                     * again and again
+                     *
+                     * @property _currentVersion
+                     * @protected
+                     * @type {eZ.Version}
+                     */
+                    this._currentVersion = version;
+                    this._dirtyCurrentVersion = false;
                     return version;
-                }
+                },
+                setter: function (value) {
+                    this._dirtyCurrentVersion = true;
+                    return value;
+                },
             }
         }
     });
