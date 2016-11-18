@@ -182,18 +182,24 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
-         * Returns the fields which field type has the given identifier.
+         * Returns the fields which field type has the given identifier. For BC,
+         * `languageCode` can be omitted.
          *
          * @method getFieldsOfType
          * @param {eZ.ContentType} contentType
          * @param {String} fieldTypeIdentifier
+         * @param {String} languageCode
          * @return {Array}
          */
-        getFieldsOfType: function (contentType, fieldTypeIdentifier) {
+        getFieldsOfType: function (contentType, fieldTypeIdentifier, languageCode) {
             var identifiers = contentType.getFieldDefinitionIdentifiers(fieldTypeIdentifier);
 
+            if ( !languageCode ) {
+                console.log('[DEPRECATED] `Content#getFieldsOfType` call without language code is deprecated');
+                console.log('[DEPRECATED] Please specify a language code');
+            }
             return Y.Array.map(identifiers, function (identifier) {
-                return this.getField(identifier);
+                return this.getField(identifier, languageCode);
             }, this);
         },
 

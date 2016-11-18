@@ -1205,6 +1205,18 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                     "image1": {fieldValue: {}},
                     "image2": {fieldValue: null},
                 },
+                "fieldsByLanguage": {
+                    "eng-GB": {
+                        "name": {fieldValue: "Too Many Sandwiches"},
+                        "image1": {fieldValue: {}},
+                        "image2": {fieldValue: null},
+                    },
+                    "fre-FR": {
+                        "name": {fieldValue: "Trop de sandwichs :-)"},
+                        "image1": {fieldValue: {}},
+                        "image2": {fieldValue: null},
+                    },
+                }
             });
         },
 
@@ -1213,6 +1225,39 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             delete this.content;
         },
 
+        "Should find the fields of the given type in given language": function () {
+            var type = new Mock(),
+                identifiers = ['image1', 'image2'],
+                fieldType = 'ezimage',
+                language = 'eng-GB',
+                res;
+
+            Mock.expect(type, {
+                method: 'getFieldDefinitionIdentifiers',
+                args: [fieldType],
+                returns: identifiers,
+            });
+
+            res = this.content.getFieldsOfType(type, fieldType, language);
+
+            Assert.isArray(res, "The return value should be an array");
+            Assert.areEqual(
+                identifiers.length,
+                res.length,
+                "The return value should have as many fields as requested"
+            );
+            Assert.areSame(
+                res[0], this.content.getField('image1'),
+                "The image1 field should have been returned"
+            );
+            Assert.areSame(
+                res[1], this.content.getField('image2'),
+                "The image2 field should have been returned"
+            );
+        },
+
+
+        // deprecate usage
         "Should find the fields of the given type": function () {
             var type = new Mock(),
                 identifiers = ['image1', 'image2'],
