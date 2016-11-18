@@ -5,7 +5,7 @@
 YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
-        getFieldsOfTypeTest, createDraftTest, currentVersionTest,
+        getFieldsOfTypeTest, createDraftTest, currentVersionTest, fieldAttributeTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -314,22 +314,17 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
 
         "Should return the fields": function () {
-            var m = this.model,
-                fields = {
-                    'test': {'id': 42},
-                    'test2': {'id': 43}
-                };
-            m.set('fields', fields);
+            var m = this.model;
 
-            Y.Assert.areEqual(
-                fields.test.id,
-                m.getField('test').id
-            );
-            Y.Assert.areEqual(
-                fields.test2.id,
-                m.getField('test2').id
-            );
-            Y.Assert.isUndefined(
+            m.set('currentVersion', this.loadResponse.Content.CurrentVersion);
+
+            this.loadResponse.Content.CurrentVersion.Version.Fields.field.forEach(function (field) {
+                Assert.areEqual(
+                    field.id, m.getField(field.fieldDefinitionIdentifier).id,
+                    "The fields should be taken from the current version"
+                );
+            });
+            Assert.isUndefined(
                 m.getField('doesnotexist')
             );
         }
@@ -399,13 +394,15 @@ YUI.add('ez-contentmodel-tests', function (Y) {
 
         "Should return ATTRIBUTE relation list with a field identifier": function () {
             var fieldDefinitionIdentifier = 'attr2',
-                fields = {},
+                versionStruct,
                 destinationContentHref = "/my/content/42";
 
-            fields[fieldDefinitionIdentifier] = {
+            versionStruct = Y.merge(loadResponse.Content.CurrentVersion);
+            versionStruct.Version.Fields.field = [{
+                fieldDefinitionIdentifier: fieldDefinitionIdentifier,
                 fieldValue: {destinationContentHrefs: [destinationContentHref]}
-            };
-            this.model.set('fields', fields);
+            }];
+            this.model.set('currentVersion', versionStruct);
 
             this._testRelations(
                 [{destination: destinationContentHref}],
@@ -416,13 +413,16 @@ YUI.add('ez-contentmodel-tests', function (Y) {
 
         "Should return ATTRIBUTE relation with a field identifier": function () {
             var fieldDefinitionIdentifier = 'attr2',
-                fields = {},
+                versionStruct,
                 destinationContentHref = "/my/content/42";
 
-            fields[fieldDefinitionIdentifier] = {
+            versionStruct = Y.merge(loadResponse.Content.CurrentVersion);
+            versionStruct.Version.Fields.field = [{
+                fieldDefinitionIdentifier: fieldDefinitionIdentifier,
                 fieldValue: {destinationContentHref: destinationContentHref}
-            };
-            this.model.set('fields', fields);
+            }];
+            this.model.set('currentVersion', versionStruct);
+
 
             this._testRelations(
                 [{destination: destinationContentHref}],
@@ -481,11 +481,9 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         name: "eZ Content Model create tests",
 
         setUp: function () {
-            var that = this,
-                currentVersionStruct = loadResponse.Content.CurrentVersion;
+            var that = this;
 
             this.model = new Y.eZ.Content();
-            this.model.set('currentVersion', currentVersionStruct);
 
             this.typeId = 'song';
             this.alwaysAvailable = true;
@@ -634,7 +632,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 Assert.areEqual(
                     0,
                     Y.Object.keys(content.get('fields')).length,
-                    "The response should not be provided"
+                    "The response should not be parsed"
                 );
             });
         },
@@ -1289,6 +1287,37 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    fieldAttributeTest = new Y.Test.Case({
+        name: "eZ Content Model field attribute test",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+        },
+
+        "Should return the `fields` attribute of the current version": function () {
+            Assert.areSame(
+                this.model.get('currentVersion').get('fields'),
+                this.model.get('fields'),
+                "The fields attribute should reference the current version field attribute"
+            );
+        },
+
+        "Should set the `fields` attribute of the current version": function () {
+            var fields = {};
+
+            this.model.set('fields', fields);
+
+            Assert.areSame(
+                fields, this.model.get('currentVersion').get('fields'),
+                "The fields attribute should be set on the current version"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
@@ -1302,4 +1331,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(getFieldsOfTypeTest);
     Y.Test.Runner.add(createDraftTest);
     Y.Test.Runner.add(currentVersionTest);
+    Y.Test.Runner.add(fieldAttributeTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});
