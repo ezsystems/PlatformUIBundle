@@ -122,6 +122,13 @@ services:
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'interfaceLanguages'}
 
+    ezsystems.platformui.application_config.provider.translation_domains:
+        class: "%ezsystems.platformui.application_config.provider.value.class%"
+        arguments:
+            - "%ez_platformui.translation_domains%"
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'translationDomains'}
+
     ezsystems.platformui.controller.template:
         class: "%ezsystems.platformui.controller.template.class%"
         arguments: ["@ezpublish.config.resolver"]

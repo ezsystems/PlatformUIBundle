@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Yaml\Yaml;
 
-class EzPlatformUIExtension extends Extension implements PrependExtensionInterface
+class EzPlatformUIExtension extends Extension implements PrependExtensionInterface, PlatformUIExtension
 {
     public function getAlias()
     {
@@ -72,5 +72,18 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
         $config = Yaml::parse(file_get_contents($imageConfigFile));
         $container->prependExtensionConfig('ezpublish', $config);
         $container->addResource(new FileResource($imageConfigFile));
+    }
+
+    /**
+     * Returns the translation domains used by the extension.
+     * @return array An array of extensions
+     */
+    public function getTranslationDomains()
+    {
+        return [
+            'bar', 'confirm', 'contentedit', 'contenttypeselector', 'dashboardblocks', 'editorial',
+            'fieldedit', 'fieldview', 'languageselection', 'locationview', 'login', 'navigationhub',
+            'search', 'subitem', 'trash', 'tree', 'universaldiscovery',
+        ];
     }
 }
