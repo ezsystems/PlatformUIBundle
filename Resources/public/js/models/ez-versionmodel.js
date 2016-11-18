@@ -155,16 +155,57 @@ YUI.add('ez-versionmodel', function (Y) {
          * @return {Object}
          */
         _parseStruct: function (struct, responseDoc) {
-            var attrs, fields = {};
+            var attrs, fields = responseDoc.Version.Fields.field;
 
             attrs = Y.eZ.RestModel.prototype._parseStruct.call(this, struct);
 
-            Y.Array.each(responseDoc.Version.Fields.field, function (field) {
-                fields[field.fieldDefinitionIdentifier] = field;
-            });
-            attrs.fields = fields;
+            attrs.fields = this._indexFieldsByIdentifier(fields);
+            attrs.fieldsByLanguage = this._indexFieldsByLanguages(fields);
             attrs.id = responseDoc.Version._href;
             return attrs;
+        },
+
+        /**
+         * Indexes the given `fields` by identifier. This is buggy by design but
+         * kept for BC as the fields can be translated so the same identifier
+         * can appears several times in the REST response.
+         *
+         * @deprecated
+         * @method _indexFieldsByIdentifier
+         * @protected
+         * @param {Array} fields
+         * @return {Object}
+         */
+        _indexFieldsByIdentifier: function (fields) {
+            var fieldsByIdentifier = {};
+
+            fields.forEach(function (field) {
+                fieldsByIdentifier[field.fieldDefinitionIdentifier] = field;
+            });
+
+            return fieldsByIdentifier;
+        },
+
+        /**
+         * Indexes the given `fields` by language code and identifier.
+         *
+         * @method _indexFieldsByLanguages
+         * @protected
+         * @param {Array} fields
+         * @return {Object}
+         */
+        _indexFieldsByLanguages: function (fields) {
+            var fieldsByLanguage = {};
+
+            fields.forEach(function (field) {
+                var language = field.languageCode,
+                    identifier = field.fieldDefinitionIdentifier;
+
+                fieldsByLanguage[language] = fieldsByLanguage[language] || {};
+                fieldsByLanguage[language][identifier] = field;
+            });
+
+            return fieldsByLanguage;
         },
 
         /**
@@ -209,7 +250,27 @@ YUI.add('ez-versionmodel', function (Y) {
              */
             fields: {
                 value: {}
-            }
+            },
+
+            /**
+             * The fields of the version by language code and field identifier,
+             * e.g
+             *      'fre-FR': {
+             *          'title': {},
+             *          'body': {},
+             *      }, {
+             *      'eng-GB': {
+             *          'title: {},
+             *          'body': {},
+             *      }
+             *
+             * @attribute fieldsByLanguage
+             * @type {Object}
+             * @default {}
+             */
+            fieldsByLanguage: {
+                value: {},
+            },
         }
     });
 });

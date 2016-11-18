@@ -1180,7 +1180,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
 
         "Should find the translation": function () {
-            this.content.set('currentVersion', {Version: {VersionInfo: {languageCodes: 'fre-FR'}, Fields: {field: {}}}});
+            this.content.set('currentVersion', {Version: {VersionInfo: {languageCodes: 'fre-FR'}, Fields: {field: []}}});
             Assert.isTrue(
                 this.content.hasTranslation('fre-FR'),
                 "The translation should have been found"
