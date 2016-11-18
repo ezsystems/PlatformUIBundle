@@ -161,15 +161,23 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
-         * Returns the field which identifier is in parameter
+         * Returns the field which identifier is in parameter. For BC,
+         * `languageCode` can be omitted but such case, `getField` falls back to
+         * a deprecated and buggy behaviour with a content available in
+         * several languages.
          *
          * @method getField
          * @param {String} identifier the field definition identifier
+         * @param {String} languageCode the language code in which the field
          * @return {Object} or undefined if the field does not exists
          */
-        getField: function (identifier) {
+        getField: function (identifier, languageCode) {
             var version = this.get('currentVersion');
 
+            if ( !languageCode ) {
+                console.log('[DEPRECATED] `Content#getField` call without language code is deprecated');
+                console.log('[DEPRECATED] Please specify a language code');
+            }
             return version.getField.apply(version, arguments);
         },
 

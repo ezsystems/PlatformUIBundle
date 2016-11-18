@@ -1333,21 +1333,56 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         "Should call current version getField": function () {
             var version = this.model.get('currentVersion'),
                 getFieldCalled = false,
+                fieldIdentifier = 'whatever',
+                language = 'fre-FR',
                 origGetField = version.getField;
 
-            version.getField = function () {
+            version.getField = function (identifier, code) {
                 getFieldCalled = true;
+
+                Assert.areEqual(
+                    fieldIdentifier, identifier,
+                    "The identifier argument should be kept"
+                );
+                Assert.areEqual(
+                    language, code,
+                    "The language argument should be kept"
+                );
+
                 return origGetField.apply(version, arguments);
             };
 
-            this.model.getField('whatever');
+            this.model.getField(fieldIdentifier, language);
+            Assert.isTrue(
+                getFieldCalled,
+                "Current version getField method should have been called"
+            );
+        },
+
+        "Should handle missing language code": function () {
+            var version = this.model.get('currentVersion'),
+                getFieldCalled = false,
+                fieldIdentifier = 'whatever',
+                origGetField = version.getField;
+
+            version.getField = function (identifier) {
+                getFieldCalled = true;
+
+                Assert.areEqual(
+                    fieldIdentifier, identifier,
+                    "The identifier argument should be kept"
+                );
+
+                return origGetField.apply(version, arguments);
+            };
+
+            this.model.getField(fieldIdentifier);
             Assert.isTrue(
                 getFieldCalled,
                 "Current version getField method should have been called"
             );
         },
     });
-
 
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
