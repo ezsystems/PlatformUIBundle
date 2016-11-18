@@ -184,7 +184,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
             var content = this.get('contentStruct').content,
                 contentType = this.get('contentStruct').contentType;
 
-            return Y.Array.find(content.getFieldsOfType(contentType, 'ezimage'), function (field) {
+            return Y.Array.find(content.getFieldsOfType(contentType, 'ezimage', content.get('mainLanguageCode')), function (field) {
                 return !!field.fieldValue;
             });
         },

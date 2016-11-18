@@ -17,13 +17,20 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
             });
             Mock.expect(content, {
                 method: 'getFieldsOfType',
-                args: [type, 'ezimage'],
+                args: [type, 'ezimage', translations[0]],
                 returns: imageFieldTab,
             });
             Mock.expect(content, {
                 method: 'get',
-                args: ['currentVersion'],
-                returns: currentVersion,
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if ( attr === 'currentVersion' ) {
+                        return currentVersion;
+                    } else if ( attr === 'mainLanguageCode' ) {
+                        return translations[0];
+                    }
+                    Assert.fail('Unexpect content.get("' + attr + '")');
+                },
             });
             Mock.expect(currentVersion, {
                 method: 'getTranslationsList',
@@ -184,7 +191,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 struct = {content: content, contentType: type},
                 that = this;
 
-            _configureMock(type, content, currentVersion, [], []);
+            _configureMock(type, content, currentVersion, ['fre-FR'], []);
 
             this.view.set('addConfirmButton', true);
             this.view.set('contentStruct', struct);
@@ -330,7 +337,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 method: 'toJSON',
                 returns: {},
             });
-            _configureMock(type, content, currentVersion, [], []);
+            _configureMock(type, content, currentVersion, ['fre-FR'], []);
 
             this.view.set('isAlreadySelected', isAlreadySelected1);
             this.view.set('isSelectable', isselectable1);
@@ -374,7 +381,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 imageField = {fieldValue: "42"},
                 imageFieldTab = [imageField];
 
-            _configureMock(type, content, currentVersion, [], imageFieldTab);
+            _configureMock(type, content, currentVersion, ['fre-FR'], imageFieldTab);
 
             this.view.render();
             this.view.set('contentStruct', struct);
@@ -397,7 +404,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 currentVersion = new Mock(),
                 struct = {content: content, contentType: type};
 
-            _configureMock(type, content, currentVersion, [], '');
+            _configureMock(type, content, currentVersion, ['fre-FR'], '');
 
             this.view.render();
             this.view.set('contentStruct', struct);
@@ -465,7 +472,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 imageField = {fieldValue: "42"},
                 imageFieldTab = [imageField];
 
-            _configureMock(type, content, currentVersion, [], imageFieldTab);
+            _configureMock(type, content, currentVersion, ['fre-FR'], imageFieldTab);
 
             this.view.render();
             this.view.set('variationIdentifier', variationIdentifier);
