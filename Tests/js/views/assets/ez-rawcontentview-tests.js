@@ -29,7 +29,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             });
             Mock.expect(content, {
                 method: 'getField',
-                args: [Mock.Value.String],
+                args: [Mock.Value.String, this.languageCode],
                 run: Y.bind(function (id) {
                     return this.fields[id];
                 }, this),

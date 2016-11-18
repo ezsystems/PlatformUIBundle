@@ -123,7 +123,7 @@ YUI.add('ez-rawcontentview', function (Y) {
             this._destroyFieldViews();
             Y.Object.each(definitions, function (def) {
                 var View, fieldView,
-                    field = content.getField(def.identifier);
+                    field = content.getField(def.identifier, this.get('languageCode'));
 
                 if (field) {
                     View = Y.eZ.FieldView.getFieldView(def.fieldType);
