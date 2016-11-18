@@ -272,6 +272,7 @@ YUI.add('ez-versionmodel', function (Y) {
              * @attribute fields
              * @type Object
              * @default {}
+             * @deprecated
              */
             fields: {
                 value: {}

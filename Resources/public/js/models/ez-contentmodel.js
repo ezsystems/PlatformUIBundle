@@ -448,6 +448,7 @@ YUI.add('ez-contentmodel', function (Y) {
              * @attribute fields
              * @default {}
              * @type Object
+             * @deprecated
              */
             fields: {
                 getter: function () {
