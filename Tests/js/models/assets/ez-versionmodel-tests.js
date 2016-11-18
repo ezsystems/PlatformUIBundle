@@ -40,14 +40,26 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                             "id": 978,
                             "fieldDefinitionIdentifier": "name",
                             "languageCode": "eng-GB",
-                            "fieldValue": "T11"
+                            "fieldValue": "name"
                         },
                         {
                             "id": 979,
                             "fieldDefinitionIdentifier": "text",
                             "languageCode": "eng-GB",
                             "fieldValue": "Once and for all"
-                        }
+                        },
+                        {
+                            "id": 978,
+                            "fieldDefinitionIdentifier": "name",
+                            "languageCode": "fre-FR",
+                            "fieldValue": "nom"
+                        },
+                        {
+                            "id": 979,
+                            "fieldDefinitionIdentifier": "text",
+                            "languageCode": "fre-FR",
+                            "fieldValue": "Une bois fois pour toute"
+                        },
                     ]
                 },
                 "Relations": {
@@ -68,7 +80,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             this.serviceMock = new Y.Mock();
             this.serviceLoad = 'loadContent';
             this.rootProperty = "Version.VersionInfo";
-            this.parsedAttributeNumber = Y.eZ.Version.ATTRS_REST_MAP.length + 1 + 2; // links + "manually" parsed fields
+            this.parsedAttributeNumber = Y.eZ.Version.ATTRS_REST_MAP.length + 1 + 3; // links + "manually" parsed fields + fields by languages
         },
 
         setUp: function () {
@@ -122,7 +134,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             fields = res.fields;
 
             Y.Assert.areEqual(
-                this.loadResponse.Version.Fields.field.length,
+                this.loadResponse.Version.Fields.field.length / 2,
                 Y.Object.size(fields),
                 "The fields from the current version should all be imported"
             );
@@ -136,6 +148,38 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                 this.loadResponse.Version.Fields.field[1].id,
                 fields.text.id,
                 "The text field should have been imported"
+            );
+        },
+
+        "Should organized the field by language and field identifier": function () {
+            var m = this.model,
+                response = {
+                    document: this.loadResponse
+                },
+                fields, res;
+
+            res = m .parse(response);
+            fields = res.fieldsByLanguage;
+
+            Assert.areEqual(
+                2, Y.Object.size(fields),
+                "2 languages should be detected for the fields"
+            );
+            Assert.areEqual(
+                2, Y.Object.size(fields['fre-FR']),
+                "there should be 2 fields in French"
+            );
+            Assert.areEqual(
+                2, Y.Object.size(fields['eng-GB']),
+                "there should be 2 fields in French"
+            );
+            Assert.areEqual(
+                "name", fields['eng-GB'].name.fieldValue,
+                "The field should be organized by language and identifier"
+            );
+            Assert.areEqual(
+                "nom", fields['fre-FR'].name.fieldValue,
+                "The field should be organized by language and identifier"
             );
         },
 
