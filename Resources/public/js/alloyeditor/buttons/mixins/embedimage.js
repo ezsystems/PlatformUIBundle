@@ -54,7 +54,7 @@ YUI.add('ez-alloyeditor-button-mixin-embedimage', function (Y) {
         _getImageField: function(contentType, content) {
             var imageIdentifier = contentType.getFieldDefinitionIdentifiers('ezimage');
 
-            return content.get('fields')[imageIdentifier[0]];
+            return content.getField(imageIdentifier[0], content.get('mainLanguageCode'));
         },
     };
 });
