@@ -33,7 +33,7 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
     renderTest = new Y.Test.Case({
         name: "eZ Subitem Grid Item View render test",
 
-       setUp: function () {
+        setUp: function () {
             var content, contentType, languageCode = 'fre-FR';
 
             this.locationJSON = {};
@@ -102,7 +102,7 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
     uiStateTest = new Y.Test.Case({
         name: "eZ Subitem Grid Item View UI state test",
 
-       setUp: function () {
+        setUp: function () {
             var content, contentType, languageCode = 'fre-FR';
 
             content = new Mock();
@@ -146,7 +146,7 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
     loadImageVariationTest = new Y.Test.Case({
         name: "eZ Subitem Grid Item View loadImageVariation event test",
 
-       setUp: function () {
+        setUp: function () {
             var languageCode = 'fre-FR';
 
             this.content = new Mock();
@@ -250,7 +250,7 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
     errorHandlingTest = new Y.Test.Case({
         name: "eZ Subitem Grid Item View error handling test",
 
-       setUp: function () {
+        setUp: function () {
             var content, contentType, languageCode = 'fre-FR';
 
             content = new Mock();
@@ -282,7 +282,7 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
     loadedVariationTest = new Y.Test.Case({
         name: "eZ Subitem Grid Item View loaded variation test",
 
-       setUp: function () {
+        setUp: function () {
             var content, contentType, languageCode = 'fre-FR';
 
             content = getModelMock({});
