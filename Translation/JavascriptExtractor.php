@@ -9,7 +9,7 @@
 namespace EzSystems\PlatformUIBundle\Translation;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Translation\Extractor\AbstractFileExtractor;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 
@@ -18,7 +18,7 @@ use Symfony\Component\Translation\MessageCatalogue;
  *
  * Note: this script relies on a nodejs script: `/bin/Translation/translation_dumper.js`
  */
-class JavascriptExtractor extends AbstractFileExtractor implements ExtractorInterface
+class JavascriptExtractor extends PlatformUIExtractor implements ExtractorInterface
 {
     /**
      * Default domain for found messages.
@@ -35,22 +35,14 @@ class JavascriptExtractor extends AbstractFileExtractor implements ExtractorInte
     private $prefix = '';
 
     /**
-     * Path of js files.
-     *
-     * @var string
-     */
-    private $javascriptResource;
-
-    /**
      * Path of translation dumper.
      *
      * @var string
      */
     private $translationDumperPath;
 
-    public function __construct($javascriptResource, $translationDumperPath)
+    public function __construct($translationDumperPath)
     {
-        $this->javascriptResource = $javascriptResource;
         $this->translationDumperPath = $translationDumperPath;
     }
 
@@ -59,14 +51,14 @@ class JavascriptExtractor extends AbstractFileExtractor implements ExtractorInte
      */
     public function extract($resource, MessageCatalogue $catalogue)
     {
-        // Forcing usage of javascript resources. What is provided as parameter is only for twig and php files
-        $files = $this->extractFiles($this->javascriptResource);
+        $this->updateResource($resource, 'Resources/public/js');
+        $files = $this->extractFiles($resource);
 
         foreach ($files as $file) {
-            $command = 'node ' . $this->translationDumperPath . ' ' . escapeshellarg($file);
-            $json = shell_exec($command);
+            $process = new Process('node ' . $this->translationDumperPath . ' ' . escapeshellarg($file));
+            $process->run();
 
-            $result = json_decode($json);
+            $result = json_decode($process->getOutput());
 
             if ($result && $result->translationsFound) {
                 foreach ($result->translationsFound as $translation) {

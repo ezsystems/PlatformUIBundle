@@ -16,11 +16,13 @@ class JavascriptExtractorTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider resourceProvider
      */
-    public function testExtractWithFiles($resource, $translationDumperPath)
+    public function testExtractWithFiles($resource)
     {
-        $extractor = new JavascriptExtractor($resource, $translationDumperPath);
+        $extractor = new JavascriptExtractor(
+            $translationDumperPath = __DIR__ . '/../../bin/Translation/translation_dumper.js'
+        );
         $catalogue = new MessageCatalogue('en');
-        $extractor->extract('/tmp/whatever', $catalogue);
+        $extractor->extract($resource, $catalogue);
 
         $this->assertTrue($catalogue->has('test.translation.result1', 'testdomain'));
         $this->assertEquals(
@@ -36,11 +38,6 @@ class JavascriptExtractorTest extends \PHPUnit_Framework_TestCase
      */
     public function resourceProvider()
     {
-        $directory = __DIR__ . '/../fixtures/extractor/';
-        $translationDumperPath = __DIR__ . '/../../bin/Translation/translation_dumper.js';
-
-        return array(
-            array($directory . 'with_translation.js', $translationDumperPath),
-        );
+        return [[__DIR__ . '/../fixtures/extractor/Resources/views']];
     }
 }

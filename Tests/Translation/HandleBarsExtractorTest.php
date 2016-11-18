@@ -69,9 +69,9 @@ class HandleBarsExtractorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtractWithFiles($resource)
     {
-        $extractor = new HandleBarsExtractor($resource);
+        $extractor = new HandleBarsExtractor();
         $catalogue = new MessageCatalogue('en');
-        $extractor->extract('/tmp/whatever', $catalogue);
+        $extractor->extract($resource, $catalogue);
 
         $this->assertTrue($catalogue->has('test.translation.title', 'testdomain'));
         $this->assertEquals(
@@ -85,10 +85,6 @@ class HandleBarsExtractorTest extends \PHPUnit_Framework_TestCase
      */
     public function resourceProvider()
     {
-        $directory = __DIR__ . '/../fixtures/extractor/';
-
-        return array(
-            array($directory . 'with_translations.hbt'),
-        );
+        return [[__DIR__ . '/../fixtures/extractor/Resources/views']];
     }
 }

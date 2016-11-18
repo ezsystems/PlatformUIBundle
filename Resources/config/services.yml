@@ -252,14 +252,12 @@ services:
     ## Translation extractor service
     ezsystems.platformui.translation.extractor.handlebars:
         class: "%ezsystems.platformui.translation.extractor.handlebars.class%"
-        arguments: ["@=service('kernel').locateResource('@eZPlatformUIBundle/Resources/public/templates')"]
         tags:
             - { name: translation.extractor, alias: handlebars }
 
     ezsystems.platformui.translation.extractor.javascript:
         class: "%ezsystems.platformui.translation.extractor.javascript.class%"
         arguments:
-            - "@=service('kernel').locateResource('@eZPlatformUIBundle/Resources/public/js')"
             - "@=service('kernel').locateResource('@eZPlatformUIBundle/bin/Translation/translation_dumper.js')"
         tags:
             - { name: translation.extractor, alias: javascript }

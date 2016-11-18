@@ -9,14 +9,13 @@
 namespace EzSystems\PlatformUIBundle\Translation;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Translation\Extractor\AbstractFileExtractor;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 
 /**
  * HandleBarsExtractor extracts translation messages from a PlatformUI's .hbt template.
  */
-class HandleBarsExtractor extends AbstractFileExtractor implements ExtractorInterface
+class HandleBarsExtractor extends PlatformUIExtractor implements ExtractorInterface
 {
     /**
      * Default domain for found messages.
@@ -33,24 +32,12 @@ class HandleBarsExtractor extends AbstractFileExtractor implements ExtractorInte
     private $prefix = '';
 
     /**
-     * Path of hbt template files.
-     *
-     * @var string
-     */
-    private $handleBarsResource;
-
-    public function __construct($handleBarsResource)
-    {
-        $this->handleBarsResource = $handleBarsResource;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function extract($resource, MessageCatalogue $catalogue)
     {
-        // Forcing usage of handlebars resources. What is provided as parameter is only for twig and php files
-        $files = $this->extractFiles($this->handleBarsResource);
+        $this->updateResource($resource, 'Resources/public/templates');
+        $files = $this->extractFiles($resource);
 
         foreach ($files as $file) {
             $fileContent = file_get_contents($file->getPathname());
