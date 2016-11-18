@@ -168,8 +168,9 @@ YUI.add('ez-contentmodel', function (Y) {
          * @return {Object} or undefined if the field does not exists
          */
         getField: function (identifier) {
-            var fields = this.get('currentVersion').get('fields');
-            return fields[identifier];
+            var version = this.get('currentVersion');
+
+            return version.getField.apply(version, arguments);
         },
 
         /**
