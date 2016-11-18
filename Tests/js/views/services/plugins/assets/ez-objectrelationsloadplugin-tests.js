@@ -3,8 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
-    var tests, testsContentStructs, registerTest,
-        Assert = Y.Assert;
+    var tests, testsContentStructs, registerTest, noSourceContentTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
     tests = new Y.Test.Case({
         name: "eZ Object Relations Load Plugin event tests",
@@ -38,8 +38,8 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
                 host: this.service,
             });
 
-            this.service.set('content', new Y.Mock());
-            Y.Mock.expect(this.service.get('content'), {
+            this.content = new Mock();
+            Mock.expect(this.content, {
                 method: 'relations',
                 args: ['ATTRIBUTE', this.fieldDefId],
                 returns: this.contentDestinations
@@ -87,10 +87,11 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
                 callback();
             };
 
-            this.view.fire(
-                'whatever:loadObjectRelations',
-                {relationType: 'ATTRIBUTE', fieldDefinitionIdentifier: that.fieldDefId}
-            );
+            this.view.fire('whatever:loadObjectRelations', {
+                relationType: 'ATTRIBUTE',
+                content: this.content,
+                fieldDefinitionIdentifier: this.fieldDefId,
+            });
 
             Assert.isArray(this.view.get('relatedContents'), 'the view should have an array of contents');
 
@@ -123,10 +124,11 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
                 callback(true);
             };
 
-            this.view.fire(
-                'whatever:loadObjectRelations',
-                {relationType: 'ATTRIBUTE', fieldDefinitionIdentifier: that.fieldDefId}
-            );
+            this.view.fire('whatever:loadObjectRelations', {
+                relationType: 'ATTRIBUTE',
+                content: this.content,
+                fieldDefinitionIdentifier: this.fieldDefId,
+            });
 
             Assert.isArray(this.view.get('relatedContents'), 'the view should have an array of contents');
 
@@ -152,10 +154,11 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
                 callback(this.id == that.destination1);
             };
 
-            this.view.fire(
-                'whatever:loadObjectRelations',
-                {relationType: 'ATTRIBUTE', fieldDefinitionIdentifier: that.fieldDefId}
-            );
+            this.view.fire('whatever:loadObjectRelations', {
+                relationType: 'ATTRIBUTE',
+                content: this.content,
+                fieldDefinitionIdentifier: this.fieldDefId,
+            });
 
             Assert.isArray(this.view.get('relatedContents'), 'the view should have an array of contents');
 
@@ -220,8 +223,8 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
                 host: this.service,
             });
 
-            this.service.set('content', new Y.Mock());
-            Y.Mock.expect(this.service.get('content'), {
+            this.content = new Mock();
+            Mock.expect(this.content, {
                 method: 'relations',
                 args: ['ATTRIBUTE', this.fieldDefId],
                 returns: this.contentDestinations
@@ -301,6 +304,7 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
 
             this.view.fire('whatever:loadObjectRelations', {
                 relationType: 'ATTRIBUTE',
+                content: this.content,
                 fieldDefinitionIdentifier: that.fieldDefId,
                 loadLocationPath: true,
             });
@@ -361,6 +365,7 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
 
             this.view.fire('whatever:loadObjectRelations', {
                 relationType: 'ATTRIBUTE',
+                content: this.content,
                 fieldDefinitionIdentifier: that.fieldDefId,
                 loadLocation: true,
             });
@@ -400,6 +405,7 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
 
             this.view.fire('whatever:loadObjectRelations', {
                 relationType: 'ATTRIBUTE',
+                content: this.content,
                 fieldDefinitionIdentifier: that.fieldDefId,
                 loadLocationPath: true,
             });
@@ -448,6 +454,7 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
 
             this.view.fire('whatever:loadObjectRelations', {
                 relationType: 'ATTRIBUTE',
+                content: this.content,
                 fieldDefinitionIdentifier: that.fieldDefId,
                 loadLocationPath: true,
             });
@@ -505,6 +512,7 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
 
             this.view.fire('whatever:loadObjectRelations', {
                 relationType: 'ATTRIBUTE',
+                content: this.content,
                 fieldDefinitionIdentifier: that.fieldDefId,
                 loadLocationPath: true,
             });
@@ -521,12 +529,56 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
         },
     });
 
+    noSourceContentTest = new Y.Test.Case({
+        name: "eZ Object Relations Load Plugin no source content tests",
+
+        setUp: function () {
+            this.fieldDefId = 69;
+
+            this.service = new Y.Base();
+
+            this.view = new Y.View();
+            this.view.addTarget(this.service);
+
+            this.plugin = new Y.eZ.Plugin.ObjectRelationsLoad({
+                host: this.service,
+            });
+
+            this.content = new Mock();
+            Mock.expect(this.content, {
+                method: 'relations',
+                args: ['ATTRIBUTE', this.fieldDefId],
+                returns: [],
+            });
+            this.service.set('content', this.content);
+            this.plugin.set('contentModelConstructor', this.Content);
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            this.view.destroy();
+            this.plugin.destroy();
+        },
+
+        "Should pick the source content from the view service `content` attribute": function () {
+            this.view.fire('whatever:loadObjectRelations', {
+                relationType: 'ATTRIBUTE',
+                fieldDefinitionIdentifier: this.fieldDefId,
+            });
+
+            Mock.verify(this.content);
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.ObjectRelationsLoad;
-    registerTest.components = ['locationViewViewService'];
+    registerTest.components = [
+        'locationViewViewService', 'contentEditViewService', 'contentPeekViewService',
+    ];
 
     Y.Test.Runner.setName("eZ Object Relation List Load Plugin tests");
     Y.Test.Runner.add(tests);
     Y.Test.Runner.add(testsContentStructs);
+    Y.Test.Runner.add(noSourceContentTest);
     Y.Test.Runner.add(registerTest);
 }, '', {requires: ['test', 'view', 'base', 'array-extras', 'ez-objectrelationsloadplugin', 'ez-pluginregister-tests']});

@@ -166,17 +166,22 @@ YUI.add('ez-relation-editview-tests', function (Y) {
         },
 
         "Should fire the loadFieldRelatedContent event": function () {
-            var loadContentEvent = false,
-                that = this;
+            var loadContentEvent = false;
 
-            this.view.on('loadFieldRelatedContent', function (e) {
+            this.view.on('loadFieldRelatedContent', Y.bind(function (e) {
                 Y.Assert.areSame(
-                    that.fieldDefinitionIdentifier,
+                    this.fieldDefinitionIdentifier,
                     e.fieldDefinitionIdentifier,
                     "fieldDefinitionIdentifier is the same than the one in the field"
                 );
+                Y.Assert.areSame(
+                    this.content,
+                    e.content,
+                    "The content should be provided in the event facade"
+                );
+
                 loadContentEvent = true;
-            });
+            }, this));
             this.view.set('active', true);
 
             Y.Assert.isTrue(loadContentEvent, "loadContentEvent should be called when changing active value");

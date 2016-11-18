@@ -48,7 +48,8 @@ YUI.add('ez-relationlist-view', function (Y) {
             if (!this._isFieldEmpty()){
                 this.fire('loadObjectRelations', {
                     relationType: 'ATTRIBUTE',
-                    fieldDefinitionIdentifier: this.get('fieldDefinition').identifier
+                    fieldDefinitionIdentifier: this.get('fieldDefinition').identifier,
+                    content: this.get('content'),
                 });
             }
         },

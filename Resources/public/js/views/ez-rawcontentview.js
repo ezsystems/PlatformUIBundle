@@ -130,6 +130,8 @@ YUI.add('ez-rawcontentview', function (Y) {
                     fieldView = new View({
                         fieldDefinition: def,
                         field: field,
+                        content: this.get('content'),
+                        contentType: this.get('contentType'),
                         config: config,
                     });
                     fieldView.addTarget(this);
