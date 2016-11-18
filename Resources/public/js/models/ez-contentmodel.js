@@ -23,7 +23,10 @@ YUI.add('ez-contentmodel', function (Y) {
     Y.eZ.Content = Y.Base.create('contentModel', Y.eZ.RestModel, [Y.eZ.ContentInfoBase], {
         /**
          * Override of the eZ.RestModel _parseStruct method to also read the
-         * fields of the current version
+         * fields of the current version and the relations. The fields parsing
+         * is deprecated and will be removed from PlatformUI 2.0. Also, this
+         * parsing is broken in case of a Content translated in several
+         * languages.
          *
          * @protected
          * @method _parseStruct
@@ -43,12 +46,16 @@ YUI.add('ez-contentmodel', function (Y) {
                     fieldDefinitionIdentifier: relation.SourceFieldDefinitionIdentifier
                 });
             });
+            attrs.relations = relations;
 
+            // the field parsing is deprecated, buggy and not really used in
+            // Content model as the `fields` attribute is now a shortcut to the
+            // field attribute of current version.
             Y.Array.each(struct.CurrentVersion.Version.Fields.field, function (field) {
                 fields[field.fieldDefinitionIdentifier] = field;
             });
-            attrs.relations = relations;
             attrs.fields = fields;
+
             attrs.currentVersion = struct.CurrentVersion;
             return attrs;
         },
@@ -161,7 +168,7 @@ YUI.add('ez-contentmodel', function (Y) {
          * @return {Object} or undefined if the field does not exists
          */
         getField: function (identifier) {
-            var fields = this.get('fields');
+            var fields = this.get('currentVersion').get('fields');
             return fields[identifier];
         },
 
@@ -426,14 +433,20 @@ YUI.add('ez-contentmodel', function (Y) {
         ATTRS: {
             /**
              * Fields in the current version of the content indexed by field
-             * definition identifier
+             * definition identifier. This is just shortcut to the fields in the
+             * current version.
              *
              * @attribute fields
              * @default {}
              * @type Object
              */
             fields: {
-                value: {}
+                getter: function () {
+                    return this.get('currentVersion').get('fields');
+                },
+                setter: function (value) {
+                    this.get('currentVersion').set('fields', value);
+                },
             },
 
             /**
