@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ content_type_name }} [{{ 'content_type.content_count'|transchoice(content_count) }}]</h1>
+    <h1 class="ez-page-header-name ez-contenttype-icon ez-contenttype-icon-{{ content_type.identifier }}">{{ content_type_name }}</h1>
 {% endblock %}
 
 {% block content %}
@@ -34,51 +34,91 @@
             }}
         </p>
 
+        <section>
+            <h2>{{ "metadata_title"|trans}}</h2>
+            <div class="ez-contenttype-metadata">
+                <div class="ez-contenttype-metadata-name">{{ "content_type.name"|trans }}</div>
+                <div class="ez-contenttype-metafata-value">{{ content_type_name }}</div>
+            </div>
+            <div class="ez-contenttype-metadata">
+                <div class="ez-contenttype-metadata-name">{{ "content_type.identifier"|trans }}</div>
+                <div class="ez-contenttype-metafata-value">{{ content_type.identifier }}</div>
+            </div>
+
+            <!-- .... -->
+            <div>
+                <h6>{{ "content_type.description"|trans }}:</h6>
+                {{ content_type_description }}
+            </div>
+
+            <div>
+                <h6>{{ "content_type.name_schema"|trans }}:</h6>
+                {{ content_type.nameSchema }}
+            </div>
+
+            <div>
+                <h6>{{ "content_type.url_alias_schema"|trans }}:</h6>
+                {{ content_type.urlAliasSchema }}
+            </div>
+
+            <div>
+                <h6>{{ "content_type.container"|trans }}:</h6>
+                <input type="checkbox" disabled{% if content_type.isContainer %} checked{% endif %}>
+            </div>
+
+            <div>
+                <h6>{{ "content_type.default_availability"|trans }}:</h6>
+                {{ content_type.defaultAlwaysAvailable ? "content_type.always_available"|trans : "content_type.no_always_available"|trans }}
+            </div>
+
+            <div>
+                <h6>{{ "content_type.default_children_sorting"|trans }}:</h6>
+                {{ ("content_type.sort_field." ~ content_type.defaultSortField)|trans(domain="ezrepoforms_content_type") }} / {{ ("content_type.sort_order." ~ content_type.defaultSortOrder)|trans(domain="ezrepoforms_content_type") }}
+            </div>
+        </section>
+
+        <section>
+            <h2>{{ "fielddefinitions_title"|trans }}</h2>
+
+            {% for group, field_definitions in fielddefinitions_by_group %}
+                <section>
+                    <h3>{{ group|trans([], 'whateverthedomainshouldbe') }}</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>{{ "field_definition.name"|trans }}</th>
+                                <th>{{ "field_definition.identifier"|trans }}</th>
+                                <th>{{ "field_definition.type"|trans }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for field_definition in field_definitions %}
+                            <tr>
+                                <td>{{ field_definition.name(language_code) }}</td>
+                                <td>{{ field_definition.identifier }}</td>
+                                <td>{{ field_definition.fieldTypeIdentifier }}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">
+                                    <ul>
+                                        <li><span>Description</span> FIXME {#{ field_definition.description(language_code) }#}</li>
+                                        <li><span>Required</span> {% if field_definition.isRequired %}Yes{% else %}No{% endif %}</li>
+                                        <li><span>Searchable</span> {% if field_definition.isSearchable %}Yes{% else %}No{% endif %}</li>
+                                        <li><span>Translatable</span> {% if field_definition.isTranslatable %}Yes{% else %}No{% endif %}</li>
+                                    </ul>
+                                    {{ ez_render_fielddefinition_settings(field_definition) }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+            {% endfor %}
+        </section>
+
         <div class="pure-g">
-            <div class="pure-u-1-2">
-                <div>
-                    <h6>{{ "content_type.name"|trans }}</h6>
-                    {{ content_type_name }}
-                </div>
-
-                <div>
-                    <h6>{{ "content_type.identifier"|trans }}:</h6>
-                    {{ content_type.identifier }}
-                </div>
-
-                <div>
-                    <h6>{{ "content_type.description"|trans }}:</h6>
-                    {{ content_type_description }}
-                </div>
-
-                <div>
-                    <h6>{{ "content_type.name_schema"|trans }}:</h6>
-                    {{ content_type.nameSchema }}
-                </div>
-
-                <div>
-                    <h6>{{ "content_type.url_alias_schema"|trans }}:</h6>
-                    {{ content_type.urlAliasSchema }}
-                </div>
-            </div>
-
-            <div class="pure-u-1-2">
-                <div>
-                    <h6>{{ "content_type.container"|trans }}:</h6>
-                    <input type="checkbox" disabled{% if content_type.isContainer %} checked{% endif %}>
-                </div>
-
-                <div>
-                    <h6>{{ "content_type.default_availability"|trans }}:</h6>
-                    {{ content_type.defaultAlwaysAvailable ? "content_type.always_available"|trans : "content_type.no_always_available"|trans }}
-                </div>
-
-                <div>
-                    <h6>{{ "content_type.default_children_sorting"|trans }}:</h6>
-                    {{ ("content_type.sort_field." ~ content_type.defaultSortField)|trans(domain="ezrepoforms_content_type") }} / {{ ("content_type.sort_order." ~ content_type.defaultSortOrder)|trans(domain="ezrepoforms_content_type") }}
-                </div>
-            </div>
-
             <div class="pure-u-1">
             {% if can_edit %}
                 <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'content_type.edit'|trans }}</a>
