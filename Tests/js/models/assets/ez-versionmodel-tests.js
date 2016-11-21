@@ -5,6 +5,7 @@
 YUI.add('ez-versionmodel-tests', function (Y) {
     var modelTest, createTest, updateTest, removeTest, hasTranslationTest,
         isDraftTest, createdByTest, isCurrentVersionTest, getFieldTest,
+        getFieldsInTest, setFieldsInTest,
         restResponse = {
             "Version": {
                 "_media-type": "application/vnd.ez.api.Version+json",
@@ -853,6 +854,57 @@ YUI.add('ez-versionmodel-tests', function (Y) {
         },
     });
 
+    getFieldsInTest = new Y.Test.Case({
+        name: "eZ Version Model getFieldsIn test",
+
+        setUp: function () {
+            this.version = new Y.eZ.Version();
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should return the fields in a given language": function () {
+            this.version.set('fieldsByLanguage', {
+                'fre-FR': {name: {fieldValue: 'Patates'}, location: {}},
+                'eng-GB': {name: {fieldValue: 'Potatoes'}, location: {}},
+            });
+
+            Assert.areSame(
+                this.version.get('fieldsByLanguage')['fre-FR'],
+                this.version.getFieldsIn('fre-FR'),
+                "The fields in the given language should be returned"
+            );
+        },
+    });
+
+    setFieldsInTest = new Y.Test.Case({
+        name: "eZ Version Model setFieldsIn test",
+
+        setUp: function () {
+            this.version = new Y.eZ.Version();
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should set the fields in a given language": function () {
+            var fields = {name: {fieldValue: 'Patates'}, location: {}};
+
+            this.version.setFieldsIn(fields, 'fre-FR');
+
+            Assert.areSame(
+                fields,
+                this.version.getFieldsIn('fre-FR'),
+                "The fields in the given language should be set"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Version Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(createTest);
@@ -863,4 +915,6 @@ YUI.add('ez-versionmodel-tests', function (Y) {
     Y.Test.Runner.add(createdByTest);
     Y.Test.Runner.add(isCurrentVersionTest);
     Y.Test.Runner.add(getFieldTest);
+    Y.Test.Runner.add(getFieldsInTest);
+    Y.Test.Runner.add(setFieldsInTest);
 }, '', {requires: ['test', 'json', 'model-tests', 'ez-versionmodel', 'ez-restmodel']});
