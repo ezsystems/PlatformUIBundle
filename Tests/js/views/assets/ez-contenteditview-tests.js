@@ -658,7 +658,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
         "Should pass languageCode to formView when it changes and render the view": function () {
             var newLanguageCode = 'ita-IT',
-                languageCodeChanged = false,
+                updated = false,
                 viewRendered = false;
 
             this.view.render = function () {
@@ -666,24 +666,27 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             };
 
             Y.Mock.expect(this.formView, {
-                method: 'set',
-                args: [Y.Mock.Value.String, Y.Mock.Value.Any],
-                run: function (attr, value) {
-                    if (attr === 'languageCode') {
-                        languageCodeChanged = true;
-                        Assert.areEqual(
-                            value,
-                            newLanguageCode,
-                            "The languageCode attr of formView should be the same as the one in contentEditView"
-                        );
-                    }
-                }
+                method: 'setAttrs',
+                args: [Y.Mock.Value.Object],
+                run: Y.bind(function (attrs) {
+                    updated = true;
+                    Assert.areEqual(
+                        newLanguageCode,
+                        attrs.languageCode,
+                        "The languageCode attr of formView should be the same as the one in contentEditView"
+                    );
+                    Assert.areSame(
+                        this.view.get('version'),
+                        attrs.version,
+                        "The version attr should be set on the formView"
+                    );
+                }, this),
             });
 
             this.view.set('active', true);
             this.view.set('languageCode', newLanguageCode);
 
-            Assert.isTrue(languageCodeChanged, "The languageCode attr should be updated in formView");
+            Assert.isTrue(updated, "The languageCode attr should be updated in formView");
             Assert.isTrue(viewRendered, "The view should be rendered");
         },
 

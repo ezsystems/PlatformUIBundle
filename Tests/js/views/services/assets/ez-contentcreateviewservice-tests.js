@@ -12,6 +12,26 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
         setUp: function () {
             var that = this;
 
+            this.origVersion = Y.eZ.Version;
+            this.origContent = Y.eZ.Content;
+            Y.eZ.Version = Y.Base.create('versionModel', Y.Model, [], {
+                setFieldsIn: function (fields, language) {
+                    this._fields = fields;
+                },
+
+                getFieldsIn: function () {
+                    return this._fields;
+                },
+            });
+            Y.eZ.Content = Y.Base.create('contentMode', Y.Model, [], {}, {
+                ATTRS: {
+                    currentVersion: {
+                        getter: function () {
+                            return new Y.eZ.Version();
+                        },
+                    }
+                }
+            });
             this.type = new Mock();
             this.names = {'eng-GB': "Song", 'fre-FR': "Chanson"};
             this.fieldDefinitions = {
@@ -83,10 +103,18 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             });
         },
 
+        tearDown: function () {
+            delete Y.eZ.Version;
+            delete Y.eZ.Content;
+            Y.eZ.Version = this.origVersion;
+            Y.eZ.Content = this.origContent;
+            this.service.destroy();
+        },
+
         _assertLoadResult: function (service) {
             var content = service.get('content'),
                 version = service.get('version'),
-                fields = content.get('fields'),
+                fields = version.getFieldsIn(service.get('languageCode')),
                 that = this;
 
             Assert.areSame(
@@ -297,6 +325,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
         setUp: function () {
             this.app = new Mock();
             this.version = new Mock();
+            this.content = new Mock(new Y.Base());
             this.languageCode = 'pol-PL';
             this.switchedLanguageCode = 'ger-DE';
             this.switchedLanguageName = 'German';
@@ -320,6 +349,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 app: this.app,
                 capi: this.capi,
                 request: this.request,
+                content: this.content,
                 version: this.version
             });
             this.view.addTarget(this.service);
@@ -357,24 +387,6 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             Assert.isTrue(languageSelectFired, "The 'languageSelect' should have been fired");
         },
 
-        _configureVersionMock: function () {
-            Mock.expect(this.version, {
-                method: 'destroy',
-                args: [Mock.Value.Object, Mock.Value.Function],
-                run: Y.bind(function (options, callback) {
-                    Assert.areSame(
-                        this.capi, options.api,
-                        "The CAPI should be passed to the type load method"
-                    );
-                    Assert.isTrue(
-                        options.remove,
-                        "The `remove` option should be set to true"
-                    );
-                    callback(true);
-                }, this)
-            });
-        },
-
         _autoExecLanguageSelectedHandler: function () {
             this.service.on('languageSelect', Y.bind(function (e) {
                 var config = {selectedLanguageCode: this.switchedLanguageCode};
@@ -383,7 +395,17 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             }, this));
         },
 
-        "Should destroy the version and set selected languageCode and fields": function () {
+        _configureVersionMock: function () {
+            Mock.expect(this.version, {
+                method: 'setFieldsIn',
+                args: [Mock.Value.Object, this.switchedLanguageCode],
+                run: Y.bind(function (fields) {
+                    this.setFields = fields;
+                }, this),
+            });
+        },
+
+        "Should set selected languageCode and fields": function () {
             var fields = [{
                     fieldDefinitionIdentifier: 'name',
                     fieldValue: 'Husaria',
@@ -404,27 +426,14 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 this.switchedLanguageCode,
                 'The attribute languageCode should be changed to the selected one'
             );
-            Assert.areNotSame(
-                this.version, this.service.get('version'),
-                "A new version should have been created"
-            );
+
             Assert.areEqual(
-                this.service.get('content').get('fields').name.fieldDefinitionIdentifier,
-                expectedFields.name.fieldDefinitionIdentifier,
-                'The `fields` attribute of content should be updated with value passed to `changeLanguage` event'
-            );
-            Assert.areEqual(
-                this.service.get('content').get('fields').name.fieldValue,
-                expectedFields.name.fieldValue,
-                'The `fields` attribute of content should be updated with value passed to `changeLanguage` event'
-            );
-            Assert.areEqual(
-                this.service.get('version').get('fields').name.fieldDefinitionIdentifier,
+                this.setFields.name.fieldDefinitionIdentifier,
                 expectedFields.name.fieldDefinitionIdentifier,
                 'The `fields` attribute of version should be updated with value passed to `changeLanguage` event'
             );
             Assert.areEqual(
-                this.service.get('version').get('fields').name.fieldValue,
+                this.setFields.name.fieldValue,
                 expectedFields.name.fieldValue,
                 'The `fields` attribute of version should be updated with value passed to `changeLanguage` event'
             );
