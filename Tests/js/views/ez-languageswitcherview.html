@@ -11,35 +11,23 @@
 
 <script type="text/x-handlebars-template" id="languageswitcherview-ez-template">
     <div class="ez-selected-language">
-        {{#if otherTranslations}}
-            <a href="#" class="ez-dropdown-list-indicator" data-test="{{ location.id }}">
-                <span class="ez-language-flag flag-icon"></span>
-                {{ currentTranslation }}
-            </a>
-        {{else}}
-            <span class="ez-language-flag flag-icon"></span>
-            {{ currentTranslation }}
-        {{/if}}
+        <a href="#" class="ez-dropdown-list-indicator">{{ currentTranslation }}</a>
     </div>
-    {{#if otherTranslations}}
-        <ul class="ez-expandable-area">
-        {{#each otherTranslations}}
-            <li class="ez-content-translation">
-                <a href="#">
-                    <span class="ez-language-flag flag-icon"></span>
-                    {{ this }}
-                </a>
-            </li>
-        {{/each}}
-        </ul>
-    {{/if}}
+    <ul class="ez-expandable-area">
+    {{#each otherTranslations}}
+        <li>
+            <a href="#" class="ez-language-switch-link" data-language-code="{{ this }}">{{ this }}</a>
+        </li>
+    {{/each}}
+    </ul>
 </script>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-languageswitcherview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
-            loaderFilter;
+        loaderFilter;
+
     if (filter == 'coverage'){
         loaderFilter = {
             searchExp : "/Resources/public/js/",
