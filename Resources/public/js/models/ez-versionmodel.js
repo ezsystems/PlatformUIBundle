@@ -228,20 +228,30 @@ YUI.add('ez-versionmodel', function (Y) {
                 console.log('[DEPRECATED] Please specify a language code');
                 return this.get('fields')[identifier];
             }
-            fields = this._getFieldsIn(languageCode);
+            fields = this.getFieldsIn(languageCode);
             return fields ? fields[identifier] : undefined;
         },
 
         /**
          * Returns the fields in the given language.
          *
-         * @method _getFieldsIn
-         * @protected
+         * @method getFieldsIn
          * @param {String} languageCode
          * @return {Object|undefined}
          */
-        _getFieldsIn: function (languageCode) {
+        getFieldsIn: function (languageCode) {
             return this.get('fieldsByLanguage')[languageCode];
+        },
+
+        /**
+         * Sets the fields in the given language
+         *
+         * @method setFieldsIn
+         * @param {Object} fields
+         * @param {String} languageCode
+         */
+        setFieldsIn: function (fields, languageCode) {
+            this.get('fieldsByLanguage')[languageCode] = fields;
         },
 
         /**
@@ -289,6 +299,9 @@ YUI.add('ez-versionmodel', function (Y) {
              *          'title: {},
              *          'body': {},
              *      }
+             *
+             * Do not use this attribute directly, use `setFieldsIn`,
+             * `getFieldsIn` or `getField`.
              *
              * @attribute fieldsByLanguage
              * @type {Object}
