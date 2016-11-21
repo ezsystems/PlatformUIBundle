@@ -228,6 +228,12 @@ YUI.add('ez-versionmodel', function (Y) {
                 console.log('[DEPRECATED] Please specify a language code');
                 return this.get('fields')[identifier];
             }
+            if ( Y.Object.isEmpty(this.get('fieldsByLanguage')) ) {
+                console.log('[DEPRECATED] `Version#getField` call with the fields by language not set');
+                console.log('[DEPRECATED] Falling back on `field` attribute. This usage of `getFields` is deprecated');
+                console.log('[DEPRECATED] Please set the fields by language with `setFieldsIn`');
+                return this.get('fields')[identifier];
+            }
             fields = this.getFieldsIn(languageCode);
             return fields ? fields[identifier] : undefined;
         },

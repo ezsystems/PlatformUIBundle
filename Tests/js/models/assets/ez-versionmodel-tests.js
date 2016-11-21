@@ -828,7 +828,26 @@ YUI.add('ez-versionmodel-tests', function (Y) {
         },
 
         "Should handle non existing language": function () {
+            this.version.set('fieldsByLanguage', {
+                'fre-FR': {name: {fieldValue: 'Patates'}, location: {}},
+                'eng-GB': {name: {fieldValue: 'Potatoes'}, location: {}},
+            });
             Assert.isUndefined(this.version.getField('name', 'nor-NO'));
+        },
+
+        // BC usage
+        "Should fallback on the `fields` attribute is not field by language is set": function () {
+            var field = {},
+                fields = {},
+                identifier = 'title';
+
+            fields[identifier] = field;
+            this.version.set('fields', fields);
+
+            Assert.areSame(
+                field, this.version.getField(identifier, 'fre-FR'),
+                "The field from the `fields` attribute should be returned"
+            );
         },
 
         // deprecated usage
