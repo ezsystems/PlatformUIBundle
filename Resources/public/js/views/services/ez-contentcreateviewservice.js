@@ -54,7 +54,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
          */
         _initModels: function (callback) {
             var content = new Y.eZ.Content(),
-                version = new Y.eZ.Version(),
+                version = content.get('currentVersion'),
                 type = this.get('contentType'),
                 defaultFields = {};
 
@@ -75,16 +75,15 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
         },
 
         /**
-         * Sets fields on given content and version.
+         * Sets fields on the version.
          *
          * @method _setFields
          * @protected
-         * @param {Object} fields object containing fields that will be set on given content and version
+         * @param {Object} fields object containing fields
          * @since 1.1
          */
         _setFields: function (fields) {
-            this.get('content').set('fields', fields);
-            this.get('version').set('fields', fields);
+            this.get('version').setFieldsIn(fields, this.get('app').get('contentCreationDefaultLanguageCode'));
         },
 
         /**
@@ -166,15 +165,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
         _setLanguage: function (view, fields, e) {
             var version = this.get('version'),
                 selectedLanguageCode = e.selectedLanguageCode,
-                newVersion = new Y.eZ.Version(),
                 formFields = {};
-
-            version.destroy({api: this.get('capi'), remove: true}, function (error) {
-                if ( error ) {
-                    console.warn('Failed to remove the version ' + version.get('versionId'));
-                }
-            });
-            this.set('version', newVersion);
 
             Y.Object.each(fields, function (field) {
                 formFields[field.fieldDefinitionIdentifier] = {
@@ -183,11 +174,11 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
                 };
             });
 
-            this._setFields(formFields);
+            version.setFieldsIn(formFields, selectedLanguageCode);
             this.set('languageCode', selectedLanguageCode);
 
             view.setAttrs({
-                version: newVersion,
+                version: version,
                 languageCode: selectedLanguageCode,
             });
 

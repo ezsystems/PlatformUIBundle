@@ -51,7 +51,10 @@ YUI.add('ez-contenteditview', function (Y) {
                 }
             });
             this.after('languageCodeChange', function (e) {
-                this.get('formView').set('languageCode', this.get('languageCode'));
+                this.get('formView').setAttrs({
+                    'languageCode': this.get('languageCode'),
+                    'version': this.get('version'),
+                });
                 if ( this.get('active') ) {
                     this.render();
                 }
