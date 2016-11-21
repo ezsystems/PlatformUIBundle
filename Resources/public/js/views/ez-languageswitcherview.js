@@ -78,7 +78,7 @@ YUI.add('ez-languageswitcherview', function (Y) {
         _setClickOutsideEventHandler: function (e) {
             if ( e.newVal ) {
                 this._clickOutsideSubscription = this.get('container').on(
-                    'clickoutside', Y.bind(this._hideView, this)
+                    'clickoutside', Y.bind(this._hideLanguageList, this)
                 );
             } else {
                 this._clickOutsideSubscription.detach();
@@ -90,8 +90,21 @@ YUI.add('ez-languageswitcherview', function (Y) {
          *
          * @method _hideView
          * @protected
+         * @deprecated
          */
         _hideView: function () {
+            console.log('[DEPRECATED] _hideView is deprecated, use _hideLanguageList instead');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
+            this._hideLanguageList();
+        },
+
+        /**
+         * Hides the language list (if any)
+         *
+         * @method _hideLanguageList
+         * @protected
+         */
+        _hideLanguageList: function () {
             this.set('expanded', false);
         },
 
