@@ -4,6 +4,7 @@
  */
 YUI.add('ez-languageswitcherview-tests', function (Y) {
     var viewTest, viewTestWithoutOtherTranslations, eventTest, renderTest, hideTest,
+        eventSwitchModeTest,
         Mock = Y.Mock, Assert = Y.Assert,
         currentVersion = {
             'languageCodes': 'eng-GB,pol-PL,ger-DE,fre-FR'
@@ -319,10 +320,94 @@ YUI.add('ez-languageswitcherview-tests', function (Y) {
         }
     });
 
+    eventSwitchModeTest = new Y.Test.Case({
+        name: "eZ Language Switcher View 'event' switch mode test",
+
+        setUp: function () {
+            this.languageCode = 'eng-GB';
+            this.translationList = ['eng-GB', 'fre-FR'];
+            this.versionMock = new Mock();
+            this.contentMock = new Mock();
+            this.locationMock = new Mock();
+
+            Mock.expect(this.locationMock, {
+                method: 'toJSON',
+                returns: this.location
+            });
+            Mock.expect(this.contentMock, {
+                method: 'get',
+                args: ['currentVersion'],
+                returns: this.versionMock
+            });
+            Mock.expect(this.versionMock, {
+                method: 'getTranslationsList',
+                returns: this.translationList,
+            });
+            this.view = new Y.eZ.LanguageSwitcherView({
+                container: '.container',
+                switchMode: 'event',
+                location: this.locationMock,
+                content: this.contentMock,
+                languageCode: this.languageCode,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should fire the switchLanguage event": function () {
+            var container = this.view.get('container'),
+                link = container.one('.ez-language-switch-link');
+
+            container.once('tap', function (e) {
+                Assert.isTrue(
+                    !!e.prevented,
+                    "The tap event should have been prevented"
+                );
+            });
+
+            this.view.set('expanded', true);
+            this.view.after('switchLanguage', this.next(function (e) {
+                Assert.areEqual(
+                    link.getData('language-code'), e.languageCode,
+                    "The new language code should be in the event facade"
+                );
+                Assert.areEqual(
+                    this.languageCode, e.oldLanguageCode,
+                    "The old language code should be in the event facade"
+                );
+                Assert.isFalse(
+                    this.view.get('expanded'),
+                    "The language list should be hidden"
+                );
+            }, this));
+            link.simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should rerender the view": function () {
+            var container = this.view.get('container'),
+                link = container.one('.ez-language-switch-link');
+
+            link.simulateGesture('tap', this.next(function () {
+                Assert.areEqual(
+                    link.getData('language-code'),
+                    container.one('.ez-dropdown-list-indicator').get('text'),
+                    "The view should have been rerendered"
+                );
+            }, this));
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Language Switcher View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(viewTestWithoutOtherTranslations);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(hideTest);
+    Y.Test.Runner.add(eventSwitchModeTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-languageswitcherview']});
