@@ -182,6 +182,19 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
+         * Returns the fields in the given language code.
+         *
+         * @method getFieldsIn
+         * @param {String} languageCode
+         * @return {Object}
+         */
+        getFieldsIn: function (languageCode) {
+            var version = this.get('currentVersion');
+
+            return version.getFieldsIn.apply(version, arguments);
+        },
+
+        /**
          * Returns the fields which field type has the given identifier. For BC,
          * `languageCode` can be omitted.
          *

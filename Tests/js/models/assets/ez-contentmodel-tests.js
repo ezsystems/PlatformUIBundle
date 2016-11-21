@@ -6,7 +6,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
         getFieldsOfTypeTest, createDraftTest, currentVersionTest, fieldAttributeTest,
-        getFieldTest,
+        getFieldTest, getFieldsInTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -1429,6 +1429,38 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    getFieldsInTest = new Y.Test.Case({
+        name: "eZ Content Model getFieldsIn test",
+
+        setUp: function () {
+            this.content = new Y.eZ.Content();
+        },
+
+        tearDown: function () {
+            this.content.destroy();
+        },
+
+        "Should return the current version's fields": function () {
+            var version = this.content.get('currentVersion'),
+                versionGetFieldsIn = false,
+                languageCode = 'fre-FR';
+
+            version.getFieldsIn = function (code) {
+                versionGetFieldsIn = true;
+
+                Assert.areEqual(
+                    code, languageCode,
+                    "The language code should be passed"
+                );
+            };
+
+            this.content.getFieldsIn(languageCode);
+            Assert.isTrue(
+                versionGetFieldsIn, "current version getFieldsIn should have been called"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
@@ -1444,4 +1476,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(currentVersionTest);
     Y.Test.Runner.add(fieldAttributeTest);
     Y.Test.Runner.add(getFieldTest);
+    Y.Test.Runner.add(getFieldsInTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});
