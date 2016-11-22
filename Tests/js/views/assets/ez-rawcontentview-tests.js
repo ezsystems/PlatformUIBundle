@@ -4,7 +4,7 @@
  */
 YUI.add('ez-rawcontentview-tests', function (Y) {
     var viewTest, destroyTest, eventTest, fieldViewParametersTest, inconsistencyFieldsTest,
-        languageSwitcherViewTest, contentTypeChangeTest,
+        languageSwitcherViewTest, switchLanguageTest,
         Assert = Y.Assert, Mock = Y.Mock,
         _getContentTypeMock = function (fieldDefinitions, fieldGroups) {
             var mock = new Y.Test.Mock();
@@ -244,6 +244,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 content: {},
                 location: {},
                 languageCode: 'fre-FR',
+                languageSwitchMode: 'whatever',
             });
         },
 
@@ -270,6 +271,11 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 switcher.get('languageCode'),
                 'The location should have been set on languageSwitcherView'
             );
+            Assert.areEqual(
+                this.view.get('languageSwitchMode'),
+                switcher.get('switchMode'),
+                "The language switcher should have received the language switch mode"
+            );
         },
 
         "Should set the raw content view as a bubble target of the language switcher": function () {
@@ -285,26 +291,6 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 bubble,
                 "The raw content view should be a bubble target of the language switcher"
             );
-        },
-
-        _testForwardAttribute: function (attrName, value) {
-            this.view.set(attrName, value);
-
-            Assert.areSame(
-                value, this.view.get('languageSwitcherView').get(attrName)
-            );
-        },
-
-        "Should receive the new value of the content attribute": function () {
-            this._testForwardAttribute('content', {});
-        },
-
-        "Should receive the new value of the location attribute": function () {
-            this._testForwardAttribute('location', {});
-        },
-
-        "Should receive the new value of the languageCode attribute": function () {
-            this._testForwardAttribute('languageCode', 'eng-GB');
         },
     });
 
@@ -365,6 +351,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 );
             });
 
+            this.languageSwitcherView = new Y.View();
             this.view = new Y.eZ.RawContentView({
                 container: '.container',
                 location: this.location,
@@ -372,8 +359,9 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 contentType: this.contentType,
                 languageCode: this.languageCode,
                 config: this.config,
-                languageSwitcherView: new Y.View(),
+                languageSwitcherView: this.languageSwitcherView,
             });
+            this.languageSwitcherView.addTarget(this.view);
         },
 
         tearDown: function () {
@@ -590,45 +578,65 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         }
     });
 
-    contentTypeChangeTest = new Y.Test.Case({
-        name: "eZ Raw Content View contentTypeChange test",
+    switchLanguageTest = new Y.Test.Case({
+        name: "eZ Raw Content View switchLanguage event test",
 
         setUp: function () {
+            var that = this;
+
+            this.languageCode = "eng-GB";
+            this.newLanguageCode = 'fre-FR';
             this.fieldDefinitions = [{
                 fieldGroup: 'content',
                 fieldType: 'something',
                 identifier: 'id1',
-            }, {
-                fieldGroup: 'meta',
-                fieldType: 'somethingelse',
-                identifier: 'id2',
             }];
-            this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
-            this.fields = {'id1': {fieldValue: 'value1'}, 'id2': {fieldValue: 'value2'}};
-            this.fieldViewsInitialized = {};
+            this.fieldGroups = [{fieldGroupName: 'content'}];
+            this.fields = {};
+            this.fields[this.languageCode] = {'id1': {fieldValue: 'value1'}};
+            this.fields[this.newLanguageCode] = {'id1': {fieldValue: 'value1'}};
 
             this.location = {};
-            this.content = _getContentMock.call(this, {});
+            this.content = new Mock();
+            Mock.expect(this.content, {
+                method: 'getField',
+                args: [Mock.Value.String, Mock.Value.String],
+                run: Y.bind(function (id, lang) {
+                    return this.fields[lang][id];
+                }, this),
+            });
+            Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: {},
+            });
+
             this.contentType = this._getContentTypeMock();
 
+            this.fieldViewField = {};
             Y.Array.each(this.fieldDefinitions, function (def) {
                 Y.eZ.FieldView.registerFieldView(
                     def.fieldType ,
-                    Y.Base.create(def.fieldType + 'TestView', Y.eZ.FieldView, [], {
-                        initializer: Y.bind(function () {
-                            this.fieldViewsInitialized[def.identifier] = true;
-                        }, this),
+                    Y.Base.create(def.fieldType + 'TestView', Y.View, [], {
+                        initializer: function () {
+                            that.fieldView = this;
+                        },
+                        render: function () {
+                            that.fieldViewRendered = true;
+                            return this;
+                        },
                     })
                 );
-            }, this);
+            });
 
+            this.languageSwitcherView = new Y.View();
             this.view = new Y.eZ.RawContentView({
-                container: '.container',
                 location: this.location,
                 content: this.content,
+                contentType: this.contentType,
                 languageCode: this.languageCode,
-                languageSwitcherView: new Y.View(),
+                languageSwitcherView: this.languageSwitcherView,
             });
+            this.languageSwitcherView.addTarget(this.view);
         },
 
         tearDown: function () {
@@ -640,19 +648,68 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             });
         },
 
+        _getContentMock: function () {
+            return _getContentMock.call(this, {});
+        },
+
         _getContentTypeMock: function () {
             return _getContentTypeMock(this.fieldDefinitions, this.fieldGroups);
         },
 
-        "Should initialize the field views": function () {
-            this.view.set('contentType', this.contentType);
+        _switchLanguage: function () {
+            this.languageSwitcherView.fire('switchLanguage', {
+                languageCode: this.newLanguageCode,
+            });
+        },
 
-            this.fieldDefinitions.forEach(function (def) {
-                Assert.isTrue(
-                    this.fieldViewsInitialized[def.identifier],
-                    "The field views for the content type should have been initialized"
-                );
-            }, this);
+        "Should set the language code on switchLanguage event": function () {
+            this._switchLanguage();
+            Assert.areEqual(
+                this.newLanguageCode,
+                this.view.get('languageCode'),
+                "The language code attribute should have been updated"
+            );
+        },
+
+        "Should instantiate a new field view": function () {
+            var origFieldView = this.fieldView;
+
+            this._switchLanguage();
+            Assert.areNotSame(
+                origFieldView, this.fieldView,
+                "A new field view should have been created"
+            );
+            Assert.areSame(
+                this.fields[this.newLanguageCode].id1,
+                this.fieldView.get('field'),
+                "The field in the new language should be passed to the field view"
+            );
+        },
+
+        "Should rerender the view and field views": function () {
+            var stamp = 'not rendered yet';
+
+            this.view.get('container').setContent('stamp');
+            this._switchLanguage();
+
+            Assert.areNotEqual(
+                stamp, this.view.get('container').getContent('stamp'),
+                "The view should have been rendered"
+            );
+            Assert.isTrue(
+                this.fieldViewRendered,
+                "The field view should have been rendered"
+            );
+        },
+
+        "Should set the active flag on the field views": function () {
+            this.view.set('active', true);
+            this._switchLanguage();
+
+            Assert.isTrue(
+                this.fieldView.get('active'),
+                "The active flag should set on the field view"
+            );
         },
     });
 
@@ -663,5 +720,5 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
     Y.Test.Runner.add(destroyTest);
     Y.Test.Runner.add(fieldViewParametersTest);
     Y.Test.Runner.add(inconsistencyFieldsTest);
-    Y.Test.Runner.add(contentTypeChangeTest);
+    Y.Test.Runner.add(switchLanguageTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-rawcontentview']});
