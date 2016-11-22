@@ -8,19 +8,18 @@
     top: 0;
     right: 1em;
     line-height: 2.5em;
-    padding: 0 1em;
 }
 
-.ez-view-languageswitcherview .ez-expandable-area {
+.ez-view-languageswitcherview .ez-language-list {
     position: absolute;
-    top: 2.3em;
-    left: 0.5em;
-    overflow-y: auto;
+    top: 2.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
     display: none;
     line-height: 1em;
     margin: 0;
     padding: 0;
-    list-style: none;
+    width: 100%;
 }
 
 .ez-view-languageswitcherview.is-expanded .ez-expandable-area {
