@@ -23,6 +23,7 @@
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
 <script type="text/javascript" src="./assets/getfield-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-date-editview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -41,7 +42,7 @@
         filter: loaderFilter,
         modules: {
             "ez-date-editview": {
-                requires: ['ez-fieldeditview', 'datatype-date-format', 'event-valuechange', 'calendar', 'event-tap', 'datatype-date-parse', 'node', 'node-event-simulate'],
+                requires: ['ez-fieldeditview', 'datatype-date-format', 'event-valuechange', 'calendar', 'event-tap', 'datatype-date-parse', 'node', 'node-event-simulate', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-date-editview.js"
             },
             "ez-fieldeditview": {

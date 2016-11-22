@@ -16,8 +16,7 @@ YUI.add('ez-maplocation-view', function (Y) {
         LOADING_FAILED = 'is-maplocationview-loading-failed',
         MSG_SELECTOR = '.ez-maplocation-message',
         MAP_SELECTOR = '.ez-maplocation-map',
-        DATA_SELECTOR = '.ez-maplocation-data',
-        FAILED_MSG = 'Failed to load the map';
+        DATA_SELECTOR = '.ez-maplocation-data';
 
     /**
      * Map Location edit view
@@ -83,7 +82,7 @@ YUI.add('ez-maplocation-view', function (Y) {
             var container = this.get('container');
 
             container.removeClass(LOADING).addClass(LOADING_FAILED);
-            container.one(MSG_SELECTOR).setContent(FAILED_MSG);
+            container.one(MSG_SELECTOR).setContent(Y.eZ.trans('failed.to.load.the.map', {}, 'fieldview'));
         },
 
         /**

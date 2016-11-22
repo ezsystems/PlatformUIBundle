@@ -9,8 +9,8 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
         errorTests,
         getViewParametersTest,
         rootLocationDefaultValueTest,
-        loadRootLocationErrorMessage = 'Cannot load root location',
-        loadLocationModelErrorMessage = 'Cannot load root location data into model';
+        loadRootLocationErrorMessage = 'cannot.load.root.location domain=dashboardblocks',
+        loadLocationModelErrorMessage = 'cannot.load.root.location domain=dashboardblocks';
 
     successTest = new Y.Test.Case({
         name: 'eZ Dashboard Blocks View Service load success test',

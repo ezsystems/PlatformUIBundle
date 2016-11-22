@@ -65,6 +65,14 @@
         <source>navigationhub.zone.admin</source>
         <target>Admin Panel</target>
       </trans-unit>
+      <trans-unit id="f05dcd418fa23b5d4b06e390321b17d4" resname="failed.to.load.root.locations">
+        <source>failed.to.load.root.locations</source>
+        <target>Failed to load root locations</target>
+      </trans-unit>
+      <trans-unit id="4236a440a662cc8253d7536e5aa17942" resname="logout">
+        <source>logout</source>
+        <target>Logout</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

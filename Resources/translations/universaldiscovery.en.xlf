@@ -105,6 +105,10 @@
         <source>remaining.more</source>
         <target>+%remainingCount% more</target>
       </trans-unit>
+      <trans-unit id="beef876dd2fc6a2bd3ced57c4516d043" resname="browse">
+        <source>browse</source>
+        <target>Browse</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

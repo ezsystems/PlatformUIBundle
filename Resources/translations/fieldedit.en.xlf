@@ -365,6 +365,178 @@
         <source>media.file.size</source>
         <target><![CDATA[<span class="ez-media-properties-size">%size%</span>&nbsp;bytes]]></target>
       </trans-unit>
+      <trans-unit id="4a9c06a367bc5e13427b679d20d6585e" resname="this.field.is.required">
+        <source>this.field.is.required</source>
+        <target>This field is required</target>
+      </trans-unit>
+      <trans-unit id="7e31dad09775413afc11e0043c5f4a87" resname="over.maximum.allowed.size">
+        <source>over.maximum.allowed.size</source>
+        <target>The file '%name%' was refused because its size is greater than the maximum allowed size (%max%)</target>
+      </trans-unit>
+      <trans-unit id="224d9e5febe433d22de24b35b6886ed4" resname="dropped.several.files">
+        <source>dropped.several.files</source>
+        <target>You dropped several files while only one can be stored in this field. Please choose one file.</target>
+      </trans-unit>
+      <trans-unit id="b2a1f6843e8bd20b55a59b62ae510964" resname="dropped.text.selection">
+        <source>dropped.text.selection</source>
+        <target>You dropped a text selection while this field can only store a file. Please drop a file instead.</target>
+      </trans-unit>
+      <trans-unit id="0527ca1b776df33e79c239dd261a300a" resname="select.contents.to.add">
+        <source>select.contents.to.add</source>
+        <target>Select the contents you want to add in the relation</target>
+      </trans-unit>
+      <trans-unit id="a488ef1759c60efcdbac531446fc9600" resname="date.and.time.not.valid">
+        <source>date.and.time.not.valid</source>
+        <target>Date and time do not have valid inputs</target>
+      </trans-unit>
+      <trans-unit id="b93388d7f2d50ea8eedeffff116153e0" resname="date.not.valid.time.required">
+        <source>date.not.valid.time.required</source>
+        <target>Date do not have a valid input and time is required</target>
+      </trans-unit>
+      <trans-unit id="d84e8cf495b2ba25c85e266a5f1f618a" resname="date.not.valid">
+        <source>date.not.valid</source>
+        <target>This is not a correct date</target>
+      </trans-unit>
+      <trans-unit id="9a5079c19dc24ba2b3340f23eccee10b" resname="time.not.valid.date.required">
+        <source>time.not.valid.date.required</source>
+        <target>Time do not have a valid input and date is required</target>
+      </trans-unit>
+      <trans-unit id="6f4b65f1214609082d25d4f8c84f00e8" resname="time.not.valid">
+        <source>time.not.valid</source>
+        <target>Time do not have a valid input</target>
+      </trans-unit>
+      <trans-unit id="31bae7959b8a9290d6e131156f150ad7" resname="date.time.required">
+        <source>date.time.required</source>
+        <target>Date and time are required</target>
+      </trans-unit>
+      <trans-unit id="8d224639815a152bcd685363899aafbd" resname="time.required">
+        <source>time.required</source>
+        <target>Time is required</target>
+      </trans-unit>
+      <trans-unit id="295036e19bd16ba679bd30cb2a6b4c9c" resname="date.not.valid.time.missing">
+        <source>date.not.valid.time.missing</source>
+        <target>Date do not have a valid input and time is missing</target>
+      </trans-unit>
+      <trans-unit id="7c5e17a7589ad998626bb8c30cb7d7c4" resname="time.not.valid.date.missing">
+        <source>time.not.valid.date.missing</source>
+        <target>Time do not have a valid input and date is missing</target>
+      </trans-unit>
+      <trans-unit id="ff14bfe64e0422676f10bb70f9cc4cd6" resname="login.required">
+        <source>login.required</source>
+        <target>'The login is required</target>
+      </trans-unit>
+      <trans-unit id="e31829a0ce6c04c53964d26df179352c" resname="email.not.valid">
+        <source>email.not.valid</source>
+        <target>The email address should be valid</target>
+      </trans-unit>
+      <trans-unit id="dcb0c8dc515654f5fcbb6a2f50cf74a7" resname="email.required">
+        <source>email.required</source>
+        <target>The email address is required</target>
+      </trans-unit>
+      <trans-unit id="5c8c9e7d51e00cfd8c3efb70a4ceb22d" resname="email.required.if.name.filled">
+        <source>email.required.if.name.filled</source>
+        <target>The email address is required if the name is filled.</target>
+      </trans-unit>
+      <trans-unit id="2adbd32f29c77993c650c8fdc30c7261" resname="name.required.if.email.filled">
+        <source>name.required.if.email.filled</source>
+        <target>The name is required if the email is filled</target>
+      </trans-unit>
+      <trans-unit id="9dbdd928b91e09d9a1a629eebe39d0ce" resname="name.required">
+        <source>name.required</source>
+        <target>The name is required</target>
+      </trans-unit>
+      <trans-unit id="792f3a6485d9474a5ddb97825741af03" resname="invalid.input">
+        <source>invalid.input</source>
+        <target>This is not a valid input</target>
+      </trans-unit>
+      <trans-unit id="52e932fb67f4d435af53abcefbd11297" resname="time.not.valid.enter.format">
+        <source>time.not.valid.enter.format</source>
+        <target>This time is invalid, enter a correct time: HH:MM(:SS)</target>
+      </trans-unit>
+      <trans-unit id="8644b007e3a9894ebb042a499efdc2f1" resname="input.not.valid">
+        <source>input.not.valid</source>
+        <target>This is not a valid input</target>
+      </trans-unit>
+      <trans-unit id="be770fb78ad1b45fb591eb7aec1bb98d" resname="not.a.correct.isbn13.pattern">
+        <source>not.a.correct.isbn13.pattern</source>
+        <target>This is not a correct ISBN13 pattern</target>
+      </trans-unit>
+      <trans-unit id="e8bb2a3cbb6af816001483b2446ed528" resname="bad.checksum.last.digit.should.be">
+        <source>bad.checksum.last.digit.should.be</source>
+        <target>Bad checksum, last digit of ISBN 13 should be %checkDigit%</target>
+      </trans-unit>
+      <trans-unit id="876a8e60ecef8efc7bc9102507a4a481" resname="invalid.isbn10">
+        <source>invalid.isbn10</source>
+        <target>invalid ISBN 10</target>
+      </trans-unit>
+      <trans-unit id="0299a26fd0f11092ec560dc8a3a162c0" resname="invalid.isbn10.sum.not.multiple.of.11">
+        <source>invalid.isbn10.sum.not.multiple.of.11</source>
+        <target>invalid ISBN 10 (sum is not a multiple of 11")</target>
+      </trans-unit>
+      <trans-unit id="a2e215c005370123cc881c8bbdcf4460" resname="failed.retrieve.google.maps.api">
+        <source>failed.retrieve.google.maps.api</source>
+        <target>Failed to retrieve Google Maps API</target>
+      </trans-unit>
+      <trans-unit id="93b318981dcdc7440d5eedfc9e10d3e0" resname="unable.find.address">
+        <source>unable.find.address</source>
+        <target>Unable to find this address</target>
+      </trans-unit>
+      <trans-unit id="2a022fd9d6a996e01057b8b95f19a25f" resname="geocoding.error">
+        <source>geocoding.error</source>
+        <target>An error occurred during the geocoding request for this address</target>
+      </trans-unit>
+      <trans-unit id="eaca0c3c3e9bf70ca6a70068acac0199" resname="google.map.not.loaded.correctly">
+        <source>google.map.not.loaded.correctly</source>
+        <target>Google maps are not loaded correctly, try reloading the page</target>
+      </trans-unit>
+      <trans-unit id="7d3ffac34ea4b4ff17a6cbea68ec0bd7" resname="error.during.geolocation.request">
+        <source>error.during.geolocation.request</source>
+        <target>An error occurred during geolocation request of your current position</target>
+      </trans-unit>
+      <trans-unit id="10434a8e8d10d54d1d151af17d3230ac" resname="unsupported.html5.geolocation.api">
+        <source>unsupported.html5.geolocation.api</source>
+        <target>Your browser does not support HTML5 Geolocation API</target>
+      </trans-unit>
+      <trans-unit id="7b437d45e1f42602ff7ab971657a1d7f" resname="invalid.float.value">
+        <source>invalid.float.value</source>
+        <target>The value should be a valid float number</target>
+      </trans-unit>
+      <trans-unit id="6f67812274045515acb5c73dc352972d" resname="float.value.should.be.less.than">
+        <source>float.value.should.be.less.than</source>
+        <target>The value should be less than or equal to %maxFloatValue%</target>
+      </trans-unit>
+      <trans-unit id="10b1dd6fdbdf37467c2b5683335d1582" resname="float.value.should.be.more.than">
+        <source>float.value.should.be.more.than</source>
+        <target>The value should be more than or equal to %minFloatValue%</target>
+      </trans-unit>
+      <trans-unit id="dfa11846aaf06fffbd414984bcf6bfac" resname="refused.not.an.image">
+        <source>refused.not.an.image</source>
+        <target>The file '%name%' was refused because it seems to not be an image. Please choose an image file.</target>
+      </trans-unit>
+      <trans-unit id="489d557fd89975e34d4930ff7ea547bc" resname="svg.not.supported">
+        <source>svg.not.supported</source>
+        <target>SVG images are not supported. Please choose another image file.</target>
+      </trans-unit>
+      <trans-unit id="13d494fd35f9f5b14309b84466cbddf2" resname="loading...">
+        <source>loading...</source>
+        <target>Loading...</target>
+      </trans-unit>
+      <trans-unit id="a4df94a6053c1bebcc386c8a16e69e36" resname="date.required">
+        <source>date.required</source>
+        <target>Date is required</target>
+      </trans-unit>
+      <trans-unit id="c7655b2d1ded7d33ecc831622ef6297e" resname="value.should.be.valid.integer">
+        <source>value.should.be.valid.integer</source>
+        <target>The value should be a valid integer number</target>
+      </trans-unit>
+      <trans-unit id="02884526db16f2209e2f3444c73a4d6c" resname="value.should.be.less.than">
+        <source>value.should.be.less.than</source>
+        <target>The value should be less than or equal to %maxIntegerValue%</target>
+      </trans-unit>
+      <trans-unit id="f24e16e259112615d215a2c9557a071c" resname="value.should.be.more.than">
+        <source>value.should.be.more.than</source>
+        <target>The value should be more than or equal to %minIntegerValue%</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

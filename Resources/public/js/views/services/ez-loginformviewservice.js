@@ -83,9 +83,9 @@ YUI.add('ez-loginformviewservice', function (Y) {
          */
         _handleLoginError: function (view, response) {
             if ( response.status === 401 ) {
-                view.set('error', 'Invalid username or password');
+                view.set('error', Y.eZ.trans('invalid.login.passord', {}, 'login'));
             } else {
-                view.set('error', 'An unexpected error occurred');
+                view.set('error', Y.eZ.trans('unexpected.error', {}, 'login'));
             }
         },
     });

@@ -69,6 +69,78 @@
         <source>discoverybar.trash</source>
         <target>Trash</target>
       </trans-unit>
+      <trans-unit id="f8f745391e04df457674a23f3046b6b5" resname="select.location.to.copy">
+        <source>select.location.to.copy</source>
+        <target>Select the location you want to copy your content into</target>
+      </trans-unit>
+      <trans-unit id="ba3ff51949fd887be30b92cb94eb1398" resname="content.being.copied.under">
+        <source>content.being.copied.under</source>
+        <target>"%contentName%" is being copied under "%parentContentName%"</target>
+      </trans-unit>
+      <trans-unit id="f6deca857864a88a32e6deaae0788a03" resname="error.occurred.copying">
+        <source>error.occurred.copying</source>
+        <target>An error occurred while copying your content</target>
+      </trans-unit>
+      <trans-unit id="fd5ca0a04ebc37b025f25bbe3c49bade" resname="error.occurred.loading">
+        <source>error.occurred.loading</source>
+        <target>An error occurred while loading your content</target>
+      </trans-unit>
+      <trans-unit id="a2b14154c7fb0f1206e87ef7572dd7f0" resname="select.location.to.create.new.location">
+        <source>select.location.to.create.new.location</source>
+        <target>Select the location where you want to create new location</target>
+      </trans-unit>
+      <trans-unit id="0b7602cf6718622be5655c352b3d6630" resname="creating.new.location.for">
+        <source>creating.new.location.for</source>
+        <target>Creating new location for "%name%"</target>
+      </trans-unit>
+      <trans-unit id="5ddf00ad92bc226ded842b9af79224be" resname="failed.creating.new.location.for">
+        <source>failed.creating.new.location.for</source>
+        <target>Creating new location for "%name%" under "%parentName%" failed</target>
+      </trans-unit>
+      <trans-unit id="5aa9b4939e6e1fa828756495c6f02ec5" resname="location.created">
+        <source>location.created</source>
+        <target>New location for "%name%" has been successfully created</target>
+      </trans-unit>
+      <trans-unit id="98702e2d0f7b324859390ccb3def1a38" resname="locations.created">
+        <source>locations.created</source>
+        <target>%count% new locations for "%name%" have been successfully created</target>
+      </trans-unit>
+      <trans-unit id="1b4ea186d715706ff89f0a9e87c32bfa" resname="creating.new.location.for.failed">
+        <source>creating.new.location.for.failed</source>
+        <target>Creating new location(s) for "%name%" failed</target>
+      </trans-unit>
+      <trans-unit id="a93b958ee0c9703f3ebcec454ab0b14f" resname="hiding.location">
+        <source>hiding.location</source>
+        <target>Hiding Location "%id%"</target>
+      </trans-unit>
+      <trans-unit id="6d458f69cea1147d56a43b4a0ad5eef6" resname="revealing.location">
+        <source>revealing.location</source>
+        <target>Revealing Location "%id%"</target>
+      </trans-unit>
+      <trans-unit id="95331d2a5ff4769c6d2f478867a42b38" resname="error.revealing.location">
+        <source>error.revealing.location</source>
+        <target>Error while revealing location "%id%"</target>
+      </trans-unit>
+      <trans-unit id="fba1a6d113351e8c5cc235c7cd594d5d" resname="revealed.location">
+        <source>revealed.location</source>
+        <target>Location "%id%" has been revealed</target>
+      </trans-unit>
+      <trans-unit id="23a7e67a7ea227ac02f447f775a25f37" resname="error.hiding.location">
+        <source>error.hiding.location</source>
+        <target>Error while hiding location "%id%"</target>
+      </trans-unit>
+      <trans-unit id="3c9c00e2205ad0e95fde357ad177cf36" resname="hidden.location">
+        <source>hidden.location</source>
+        <target>Location "%id" has been hidden</target>
+      </trans-unit>
+      <trans-unit id="92fc7081487dc55aa9388a565ab83bfd" resname="select.a.language.for.new.translation">
+        <source>select.a.language.for.new.translation</source>
+        <target>Select a language for your new translation:</target>
+      </trans-unit>
+      <trans-unit id="88994526ece67e9dbcf786b75d4944be" resname="content.copied.under">
+        <source>content.copied.under</source>
+        <target>'%contentName%' has been successfully copied under '%parentContentName%'</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

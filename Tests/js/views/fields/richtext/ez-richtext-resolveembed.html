@@ -16,6 +16,7 @@
 </div>
 <script type="text/javascript" src="../../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-richtext-resolveembed-tests.js"></script>
+<script type="text/javascript" src="../../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -34,7 +35,7 @@
         filter: loaderFilter,
         modules: {
             "ez-richtext-resolveembed": {
-                requires: ['node'],
+                requires: ['node', 'ez-translator'],
                 fullpath: "../../../../../Resources/public/js/views/fields/richtext/ez-richtext-resolveembed.js",
             },
         }

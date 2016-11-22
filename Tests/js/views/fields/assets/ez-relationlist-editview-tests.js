@@ -298,7 +298,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                     e.config.cancelDiscoverHandler.call(this);
                     Y.Assert.areSame(
                         this.view.get('errorStatus'),
-                        'This field is required',
+                        'this.field.is.required domain=fieldedit',
                         'errorStatus should be true'
                     );
                 });

@@ -23,6 +23,7 @@
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
 <script type="text/javascript" src="./assets/getfield-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script type="text/javascript" src="./assets/ez-author-editview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
@@ -42,7 +43,7 @@
         filter: loaderFilter,
         modules: {
             "ez-author-editview": {
-                requires: ['ez-fieldeditview', 'model', 'model-list', 'event-tap', 'event-focus'],
+                requires: ['ez-fieldeditview', 'model', 'model-list', 'event-tap', 'event-focus', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-author-editview.js"
             },
             "ez-fieldeditview": {

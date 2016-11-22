@@ -20,6 +20,7 @@
 <script type="text/javascript" src="../../extensions/assets/ez-loadmorepagination-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-asynchronoussubitemview-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-subitemlistmoreview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -38,7 +39,7 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemlistmoreview": {
-                requires: ['ez-asynchronoussubitemview'],
+                requires: ['ez-asynchronoussubitemview', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemlistmoreview.js"
             },
             "ez-asynchronoussubitemview": {

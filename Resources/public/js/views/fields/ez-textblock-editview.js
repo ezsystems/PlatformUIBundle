@@ -36,7 +36,7 @@ YUI.add('ez-textblock-editview', function (Y) {
          */
         validate: function () {
             if ( this._getInputValidity().valueMissing ) {
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }

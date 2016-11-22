@@ -130,11 +130,13 @@ YUI.add('ez-searchlistview', function (Y) {
              * @type {Object}
              */
             propertyNames: {
-                value: {
-                    'name': 'Name',
-                    'lastModificationDate': 'Modified',
-                    'contentType': 'Content type',
-                    'translations': 'Translations',
+                valueFn: function () {
+                    return {
+                        'name': Y.eZ.trans('name', {}, 'search'),
+                        'lastModificationDate': Y.eZ.trans('modified', {}, 'search'),
+                        'contentType': Y.eZ.trans('content.type', {}, 'search'),
+                        'translations': Y.eZ.trans('translations', {}, 'search'),
+                    };
                 }
             },
 

@@ -37,7 +37,7 @@ YUI.add('ez-keyword-editview', function (Y) {
         validate: function () {
             var validity = this._getInputValidity();
             if ( validity.valueMissing ) {
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }

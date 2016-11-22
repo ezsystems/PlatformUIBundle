@@ -29,6 +29,50 @@
         <source>trash.empty</source>
         <target>The trash is empty</target>
       </trans-unit>
+      <trans-unit id="88864fdccc1bb59dd5c55d764feb196f" resname="confirm.permanent.delete.items">
+        <source>confirm.permanent.delete.items</source>
+        <target>Are you sure you want to permanently delete %count% items? This action cannot be reversed.</target>
+      </trans-unit>
+      <trans-unit id="b41a4fd62dd58b3e0b9710f306214a0b" resname="failed.load.parent.location.path">
+        <source>failed.load.parent.location.path</source>
+        <target>Failed to load parent location's path</target>
+      </trans-unit>
+      <trans-unit id="f4756e137c410b02487d9b03f1399ce8" resname="error.emptying.trash">
+        <source>error.emptying.trash</source>
+        <target>An error occurred while emptying the Trash</target>
+      </trans-unit>
+      <trans-unit id="10a90314c15b32e51398217dadbae900" resname="items.permanently.deleted">
+        <source>items.permanently.deleted</source>
+        <target>%count items were permanently deleted.</target>
+      </trans-unit>
+      <trans-unit id="aed95c549a270e8b6b498f77461d26ae" resname="restoring.trash.items">
+        <source>restoring.trash.items</source>
+        <target>Restoring trash item(s)</target>
+      </trans-unit>
+      <trans-unit id="634e2ea5482ea4ca35eb3cafc8b3c46a" resname="error.restoring.item">
+        <source>error.restoring.item</source>
+        <target>An error occurred while restoring trash item with id: %id%. For the moment item's whose original location has been deleted can not be restored</target>
+      </trans-unit>
+      <trans-unit id="1b9525ba6c03cac448634c0b4a6e9c41" resname="content.items.restored">
+        <source>content.items.restored</source>
+        <target>%count%  Content item(s) have been restored</target>
+      </trans-unit>
+      <trans-unit id="c018a52c4d1be6a3753382889cbc2115" resname="minimize">
+        <source>minimize</source>
+        <target>Minimize</target>
+      </trans-unit>
+      <trans-unit id="b3128df3a15efed90612ad716bb93aa7" resname="restore.selected">
+        <source>restore.selected</source>
+        <target>Restore selected</target>
+      </trans-unit>
+      <trans-unit id="4ac3f0faf1eec33abfb10869ea7314f1" resname="empty.trash">
+        <source>empty.trash</source>
+        <target>Empty the Trash</target>
+      </trans-unit>
+      <trans-unit id="2164bb0f3588f90c109dc0d907fcced5" resname="failed.load.content.type">
+        <source>failed.load.content.type</source>
+        <target>Failed to load trash item Content Type name</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

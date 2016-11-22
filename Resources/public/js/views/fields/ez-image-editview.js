@@ -15,8 +15,6 @@ YUI.add('ez-image-editview', function (Y) {
         IS_LOADING = 'is-image-loading',
         IS_BEING_UPDATED = 'is-image-being-updated',
         HAS_LOADING_ERROR = 'has-loading-error',
-        NOT_IMAGE_TPL = "The file '{name}' was refused because it seems to not be an image. Please choose an image file.",
-        SVG_IMAGE_TPL = "SVG images are not supported. Please choose another image file.",
         L = Y.Lang,
         win = Y.config.win,
         events = {
@@ -96,7 +94,7 @@ YUI.add('ez-image-editview', function (Y) {
          * @param {File} file the File object from the input file element
          */
         _setWarningNotAnImage: function (file) {
-            this._set('warning', L.sub(NOT_IMAGE_TPL, {name: file.name}));
+            this._set('warning', Y.eZ.trans('refused.not.an.image', {name: file.name}, 'fieldedit'));
         },
 
         /**
@@ -214,7 +212,7 @@ YUI.add('ez-image-editview', function (Y) {
                 this._setWarningNotAnImage(file);
             }
             if ( isSVG ) {
-                this._set('warning', SVG_IMAGE_TPL);
+                this._set('warning', Y.eZ.trans('svg.not.supported', {}, 'fieldedit'));
             }
             return (isImage && !isSVG);
         },

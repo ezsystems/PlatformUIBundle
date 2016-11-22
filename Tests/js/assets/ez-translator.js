@@ -3,7 +3,13 @@ YUI.add('ez-translator', function (Y) {
 
     Y.namespace('eZ');
 
-    Y.eZ.trans = function (str) {
+    Y.eZ.trans = function (id, params, domain) {
+        var str = id;
+
+        Y.Object.each(params, function (key, val) {
+            str += ' param-' + key + '=' + val;
+        });
+        str += ' domain=' + domain;
         return str;
     };
 

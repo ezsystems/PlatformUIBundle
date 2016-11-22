@@ -120,7 +120,11 @@ YUI.add('ez-versionsplugin', function (Y) {
 
                 if (error) {
                     this._notify(
-                        "Creating new draft for '" + content.get('name') + "' based on version " + e.versionNo + " failed.",
+                        Y.eZ.trans(
+                            'failed.creating.draft.for.based.on',
+                            {name: content.get('name'), version: e.versionNo},
+                            'locationview'
+                        ),
                         "create-draft-from-archived-" + content.get('id'),
                         'error',
                         0
@@ -177,7 +181,7 @@ YUI.add('ez-versionsplugin', function (Y) {
 
             service.fire('confirmBoxOpen', {
                 config: {
-                    title: "Are you sure you want to remove selected version(s)?",
+                    title: Y.eZ.trans('confirmed.remove.versions', {}, 'locationview'),
                     confirmHandler: Y.bind(function () {
                         this._deleteVersion(e.versions, e.afterDeleteVersionsCallback);
                     }, this),
@@ -203,7 +207,7 @@ YUI.add('ez-versionsplugin', function (Y) {
                 tasks = new Y.Parallel();
 
             this._notify(
-                "Removing versions for '" + content.get('name') + "'",
+                Y.eZ.trans('removing.versions.for', {name: content.get('name')}, 'locationview'),
                 notificationIdentifier,
                 'started',
                 5
@@ -228,8 +232,11 @@ YUI.add('ez-versionsplugin', function (Y) {
 
                 if (versionsRemoved) {
                     this._notify(
-                        countRemovedVersions + " version(s) of '" + content.get('name') +
-                         "' have been removed",
+                        Y.eZ.trans(
+                            'removed.versions.of',
+                            {count: countRemovedVersions, name: content.get('name')},
+                            'locationview'
+                        ),
                         notificationIdentifier,
                         'done',
                         5
@@ -242,7 +249,11 @@ YUI.add('ez-versionsplugin', function (Y) {
                 if (countRemovedVersionsFails > 0) {
                     this._notify(
                         "Removing of " + countRemovedVersionsFails + " version(s) of '" +
-                         content.get('name') + "' has failed",
+                        Y.eZ.trans(
+                            'failed.removing.versions.of',
+                            {count: countRemovedVersionsFails, name: content.get('name')},
+                            'locationview'
+                        ),
                         errorNotificationIdentifier,
                         'error',
                         0

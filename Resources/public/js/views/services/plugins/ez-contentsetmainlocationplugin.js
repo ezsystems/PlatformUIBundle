@@ -42,7 +42,7 @@ YUI.add('ez-contentsetmainlocationplugin', function (Y) {
 
             service.fire('confirmBoxOpen', {
                 config: {
-                    title: "Are you sure you want to set this location as main location of content?",
+                    title: Y.eZ.trans('confirm.set.main.location', {}, 'locationview'),
                     confirmHandler: Y.bind(function () {
                         this._setMainLocation(e.locationId, e.afterSetMainLocationCallback);
                     }, this),
@@ -67,7 +67,7 @@ YUI.add('ez-contentsetmainlocationplugin', function (Y) {
                 that = this;
 
             this._notify(
-                "Changing the main location of '" + content.get('name') + "'",
+                Y.eZ.trans('changing.main.location.of', {name: content.get('name')}, 'locationview'),
                 notificationIdentifier,
                 'started',
                 5
@@ -78,7 +78,7 @@ YUI.add('ez-contentsetmainlocationplugin', function (Y) {
 
                 if (error) {
                     that._notify(
-                        "Changing main location of '" + content.get('name') + "' failed",
+                        Y.eZ.trans('failed.changing.main.location.of', {name: content.get('name')}, 'locationview'),
                         notificationIdentifier,
                         'error',
                         0
@@ -87,7 +87,7 @@ YUI.add('ez-contentsetmainlocationplugin', function (Y) {
                 }
 
                 that._notify(
-                    "The main location of '" + content.get('name') + "' has been changed",
+                    Y.eZ.trans('changed.main.location.of', {name: content.get('name')}, 'locationview'),
                     notificationIdentifier,
                     'done',
                     5

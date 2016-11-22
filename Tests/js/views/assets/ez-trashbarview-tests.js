@@ -54,11 +54,11 @@ YUI.add('ez-trashbarview-tests', function (Y) {
                 );
 
                 if (buttonActionView.get('actionId') === "minimizeTrashBar") {
-                    this._testButtonAction(buttonActionView, false, "Minimize", 1000);
+                    this._testButtonAction(buttonActionView, false, "minimize domain=trash", 1000);
                 } else if (buttonActionView.get('actionId') === "restoreTrashItems") {
-                    this._testButtonAction(buttonActionView, true, "Restore Selected", 800);
+                    this._testButtonAction(buttonActionView, true, "restore.selected domain=trash", 800);
                 } else if (buttonActionView.get('actionId') === "emptyTrash") {
-                    this._testButtonAction(buttonActionView, false, "Empty the Trash", 10);
+                    this._testButtonAction(buttonActionView, false, "empty.trash domain=trash", 10);
                 } else {
                     Assert.fail("Unknown action id: " + buttonActionView.get('actionId'));
                 }

@@ -183,19 +183,19 @@ YUI.add('ez-author-editview', function (Y) {
                 errorStatus = {};
 
             if ( hasEmail && !emailValid ) {
-                errorStatus.email =  'The email address should be valid';
+                errorStatus.email = Y.eZ.trans('email.not.valid', {}, 'fieldedit');
             }
             if ( hasName && !hasEmail ) {
-                errorStatus.email = 'The email address is required if the name is filled.';
+                errorStatus.email = Y.eZ.trans('email.required.if.name.filled', {}, 'fieldedit');
             }
             if ( hasEmail && !hasName ) {
-                errorStatus.name = 'The name is required if the email is filled';
+                errorStatus.name = Y.eZ.trans('name.required.if.email.filled', {}, 'fieldedit');
             }
 
             if ( required && !hasName && !hasEmail ) {
                 errorStatus = {
-                    name: 'The name is required',
-                    email: 'The email address is required'
+                    name: Y.eZ.trans('name.required', {}, 'fieldedit'),
+                    email: Y.eZ.trans('email.required', {}, 'fieldedit'),
                 };
             } else if ( hasName && hasEmail && emailValid ) {
                 errorStatus = {email: false, name: false};

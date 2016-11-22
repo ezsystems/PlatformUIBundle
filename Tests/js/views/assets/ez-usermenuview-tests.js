@@ -123,7 +123,7 @@ YUI.add('ez-usermenuview-tests', function (Y) {
             var item = this.view.get('items')[0];
 
             Y.Assert.areSame('logOut', item.get('eventName'), 'Should pass the correct event name');
-            Y.Assert.areSame('Logout', item.get('title'), 'Should pass the correct title');
+            Y.Assert.areSame('logout domain=navigationhub', item.get('title'), 'Should pass the correct title');
             Y.Assert.areSame(this.view, item.getTargets()[0], 'Should set correct event target');
         },
     });

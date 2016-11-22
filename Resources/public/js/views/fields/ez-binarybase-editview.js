@@ -17,7 +17,6 @@ YUI.add('ez-binarybase-editview', function (Y) {
         IS_EMPTY = 'is-field-empty',
         DRAGGING = 'is-dragging-file',
         L = Y.Lang,
-        OVER_SIZE_TPL = "The file '{name}' was refused because its size is greater than the maximum allowed size ({max})",
         win = Y.config.win,
         events = {
             '.ez-binarybase-warning-hide': {
@@ -96,7 +95,7 @@ YUI.add('ez-binarybase-editview', function (Y) {
             var def = this.get('fieldDefinition');
 
             if ( def.isRequired && this._isEmpty() ) {
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }
@@ -197,7 +196,7 @@ YUI.add('ez-binarybase-editview', function (Y) {
          * @return {String}
          */
         _getOverSizeMessage: function (name) {
-            return L.sub(OVER_SIZE_TPL, {name: name, max: this._getHumanMaxSize()});
+            return Y.eZ.trans('over.maximum.allowed.size', {name: name, max: this._getHumanMaxSize()}, 'fieldedit');
         },
 
         /**
@@ -399,14 +398,14 @@ YUI.add('ez-binarybase-editview', function (Y) {
             if ( files.length > 1 ) {
                 this._set(
                     'warning',
-                    'You dropped several files while only one can be stored in this field. Please choose one file.'
+                    Y.eZ.trans('dropped.several.files', {}, 'fieldedit')
                 );
                 return;
             }
             if ( !files[0] ) {
                 this._set(
                     'warning',
-                    'You dropped a text selection while this field can only store a file. Please drop a file instead.'
+                    Y.eZ.trans('dropped.text.selection', {}, 'fieldedit')
                 );
                 return;
             }

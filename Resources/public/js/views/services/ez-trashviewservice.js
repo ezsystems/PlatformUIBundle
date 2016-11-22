@@ -40,8 +40,7 @@ YUI.add('ez-trashviewservice', function (Y) {
             e.preventDefault();
             this.fire('confirmBoxOpen', {
                 config: {
-                    title: "Are you sure you want to permanently delete " + this.get('trashItems').length
-                        + " items? This action cannot be reversed.",
+                    title: Y.eZ.trans('confirm.permanent.delete.items', {count: this.get('trashItems').length}, 'trash'),
                     confirmHandler: Y.bind(function () {
                         this._emptyTrash();
                     }, this)
@@ -108,7 +107,7 @@ YUI.add('ez-trashviewservice', function (Y) {
             contentType.set('id', trashItem.get('contentInfo').get('resources').ContentType);
             contentType.load(loadOptions, tasks.add(function (error) {
                 if (error) {
-                    service._error("Failed to load trash item Content Type name with REST API");
+                    service._error(Y.eZ.trans('failed.load.content.type', {}, 'trash'));
                 }
             }));
 
@@ -120,7 +119,7 @@ YUI.add('ez-trashviewservice', function (Y) {
                     if (!error) {
                         parentLocation.loadPath(loadOptions, tasks.add(function (error) {
                             if (error) {
-                                service._error("Failed to load parent location path with REST API");
+                                service._error(Y.eZ.trans('failed.load.parent.location.path', {}, 'trash'));
                             }
                         }));
                     }
@@ -177,7 +176,7 @@ YUI.add('ez-trashviewservice', function (Y) {
             contentService.emptyTrash(Y.bind(function (error) {
                 if (error) {
                     this._notify(
-                        'An error occurred while emptying the Trash',
+                        Y.eZ.trans('error.emptying.trash', {}, 'trash'),
                         notificationName,
                         'error',
                         0
@@ -192,7 +191,7 @@ YUI.add('ez-trashviewservice', function (Y) {
                 this.fire('refreshView');
 
                 this._notify(
-                    itemCount + ' Items were permanently deleted.',
+                    Y.eZ.trans('items.permanently.deleted', {count: itemCount}, 'trash'),
                     notificationName,
                     'done',
                     5
@@ -238,7 +237,7 @@ YUI.add('ez-trashviewservice', function (Y) {
                 restoreCount = 0;
 
             this._notify(
-                'Restoring trash item(s)',
+                Y.eZ.trans('restoring.trash.items', {}, 'trash'),
                 notificationIdentifier,
                 'started',
                 5
@@ -250,8 +249,7 @@ YUI.add('ez-trashviewservice', function (Y) {
 
                     if (error) {
                         service._notify(
-                            "An error occurred while restoring trash item with Id: " + trashItemId
-                            + ". For the moment item's whose original location has been deleted can not be restored",
+                            Y.eZ.trans('error.restoring.item', {id: trashItemId}, 'trash'),
                             notificationIdentifier + "-error-" + trashItemId,
                             'error',
                             0
@@ -276,7 +274,7 @@ YUI.add('ez-trashviewservice', function (Y) {
 
                 if (restoreCount > 0) {
                     service._notify(
-                        restoreCount + ' Content item(s) have been restored',
+                        Y.eZ.trans('content.items.restored', {count: restoreCount}, 'trash'),
                         notificationIdentifier,
                         'done',
                         5

@@ -83,7 +83,11 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                     var end = tasks.add(function (err, response) {
                             if (err) {
                                 service._notify(
-                                    'Role has not been assigned to "' + struct.contentInfo.get('name') + '": ' + err.message,
+                                    Y.eZ.trans(
+                                        'failed.assigned.role',
+                                        {name: struct.contentInfo.get('name'), message: err.message},
+                                        'role'
+                                    ),
                                     'assign-role-failed-' + struct.contentInfo.get('id'),
                                     'error',
                                     0
@@ -196,7 +200,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
             } else if (contentTypeIdentifier === 'user_group') {
                 this._assignRoleToUserGroup(role, limitation, struct.contentInfo, struct.location, callback);
             } else {
-                callback({message:'Selected content is not a user or group.'});
+                callback({message: Y.eZ.trans('selected.content.not.user.group', {}, 'role')});
             }
         },
 
@@ -282,18 +286,24 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
             var notificationIdentifier = this._getAssignRoleNotificationIdentifier(
                     'assign-role', assignActionData, contents
                 ),
-                notificationSucessText =
-                    '"'
-                    + assignActionData.roleName
-                    + '" role has been assigned to '
-                    + countAssigned
-                    + ' users/groups';
+                notificationSucessText = Y.eZ.trans('role.assigned.to.user', {
+                    name: assignActionData.roleName,
+                    count: countAssigned,
+                }, 'role');
 
             if (countAssigned>0) {
                 if (this._hasSectionLimitation(assignActionData)) {
-                    notificationSucessText += ' limited to ' + assignActionData.section.sectionName + ' section';
+                    notificationSucessText = Y.eZ.trans('role.assigned.to.user.section.limited', {
+                        name: assignActionData.roleName,
+                        count: countAssigned,
+                        sectionName: assignActionData.section.sectionName
+                    }, 'role');
                 } else if (this._hasSubtreeLimitation(assignActionData)) {
-                    notificationSucessText += ' with a subtree limitation';
+                    notificationSucessText = Y.eZ.trans('role.assigned.to.user.subtree.limited', {
+                        name: assignActionData.roleName,
+                        count: countAssigned,
+                    }, 'role');
+
                 }
                 this._notify(
                     notificationSucessText ,
@@ -303,7 +313,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                 );
             } else {
                 this._notify(
-                    'Role has not been assigned to any users/groups',
+                    Y.eZ.trans('failed.assigned.role.user', {}, 'role'),
                     notificationIdentifier,
                     'error',
                     0
@@ -325,12 +335,23 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
             var notificationIdentifier = this._getAssignRoleNotificationIdentifier(
                     'assign-role', assignActionData, contents
                 ),
-                notificationText = 'Assigning the role "' + assignActionData.roleName + '" to ' + contents.length + ' users/groups';
+                notificationText = Y.eZ.trans('assigning.role.to.users', {
+                    roleName: assignActionData.roleName,
+                    count: contents.length,
+                }, 'role');
+                
 
             if (this._hasSectionLimitation(assignActionData)) {
-                notificationText += ' limited to ' + assignActionData.section.sectionName + ' section';
+                notificationText = Y.eZ.trans('assigning.role.to.users.section.limited', {
+                    roleName: assignActionData.roleName,
+                    count: contents.length,
+                    sectionName: assignActionData.section.sectionName,
+                }, 'role');
             } else if (this._hasSubtreeLimitation(assignActionData)) {
-                notificationText += ' with a subtree limitation';
+                notificationText = Y.eZ.trans('assigning.role.to.users.subtree.limited', {
+                    roleName: assignActionData.roleName,
+                    count: contents.length,
+                }, 'role');
             }
             this._notify(
                 notificationText,
@@ -354,7 +375,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                 );
 
             this._notify(
-                'The role "' + assignActionData.roleName + '" could not be loaded',
+                Y.eZ.trans('failed.loading.role', {roleName: assignActionData.roleName}, 'role'),
                 notificationIdentifier,
                 'error',
                 0

@@ -69,7 +69,7 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
             this.ownerMock = new Mock();
             this.creatorMock = new Mock();
             this.sortFieldIdentifier = 'SECTION';
-            this.sortFieldName = 'Section';
+            this.sortFieldName = "sort.section domain=locationview";
             this.loadingError = false;
 
             Mock.expect(this.contentMock, {

@@ -69,7 +69,7 @@ YUI.add('ez-contenteditplugin', function (Y) {
                 if (!error && versions.DRAFT && versions.DRAFT.length >= 1) {
                     service.fire('confirmBoxOpen', {
                         config: {
-                            title: "Select an Open Draft",
+                            title: Y.eZ.trans('select.a.draft', {}, 'contentedit'),
                             view: new Y.eZ.DraftConflictView(Y.merge({
                                 drafts: versions.DRAFT,
                                 languageCode: languageCode,

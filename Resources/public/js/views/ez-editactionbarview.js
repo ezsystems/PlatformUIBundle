@@ -72,13 +72,13 @@ YUI.add('ez-editactionbarview', function (Y) {
                             new Y.eZ.ButtonActionView({
                                 actionId: "publish",
                                 disabled: false,
-                                label: "Publish",
+                                label: Y.eZ.trans('publish', {}, 'contentedit'),
                                 priority: 200
                             }),
                             new Y.eZ.ButtonActionView({
                                 actionId: "discard",
                                 disabled: false,
-                                label: "Discard changes",
+                                label: Y.eZ.trans('discard.changes', {}, 'contentedit'),
                                 priority: 180
                             }),
                         ];
@@ -91,14 +91,14 @@ YUI.add('ez-editactionbarview', function (Y) {
                             new Y.eZ.ButtonActionView({
                                 actionId: "save",
                                 disabled: false,
-                                label: "Save",
+                                label: Y.eZ.trans('save', {}, 'contentedit'),
                                 priority: 190
                             })
                         );
                         list.push(
                             new Y.eZ.PreviewActionView({
                                 actionId: "preview",
-                                label: "Preview",
+                                label: Y.eZ.trans('preview', {}, 'contentedit'),
                                 priority: 170,
                                 buttons: [
                                     {option: "desktop"},

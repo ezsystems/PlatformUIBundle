@@ -9,6 +9,10 @@
         <source>tree.loading</source>
         <target>Loading</target>
       </trans-unit>
+      <trans-unit id="622a9659c211fa3ab06e3953663d11e2" resname="tree.empty">
+        <source>tree.empty</source>
+        <target>The Content Tree is empty</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

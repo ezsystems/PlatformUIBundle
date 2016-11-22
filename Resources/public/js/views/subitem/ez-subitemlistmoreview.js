@@ -22,7 +22,7 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
     Y.eZ.SubitemListMoreView = Y.Base.create('subitemListMoreView', Y.eZ.AsynchronousSubitemView, [], {
         initializer: function () {
             this._set('identifier', 'listmore');
-            this._set('name', 'List view');
+            this._set('name', Y.eZ.trans('list.view', {}, 'subitem'));
 
             this._ItemView = this.get('itemViewConstructor');
             this._itemViewBaseConfig = {
@@ -129,12 +129,14 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
              * @type {Object}
              */
             propertyNames: {
-                value: {
-                    'name': 'Name',
-                    'lastModificationDate': 'Modified',
-                    'contentType': 'Content type',
-                    'priority': 'Priority',
-                    'translations': 'Translations',
+                valueFn: function () {
+                    return {
+                        'name': Y.eZ.trans('name', {}, 'subitem'),
+                        'lastModificationDate': Y.eZ.trans('modified', {}, 'subitem'),
+                        'contentType': Y.eZ.trans('content.type', {}, 'subitem'),
+                        'priority': Y.eZ.trans('priority', {}, 'subitem'),
+                        'translations': Y.eZ.trans('translations', {}, 'subitem'),
+                    };
                 }
             },
 

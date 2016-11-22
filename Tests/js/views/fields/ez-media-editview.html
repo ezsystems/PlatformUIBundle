@@ -41,6 +41,7 @@
 <script type="text/javascript" src="./assets/getfield-tests.js"></script>
 <script type="text/javascript" src="./assets/binarybase-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-media-editview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
@@ -60,7 +61,7 @@
         filter: loaderFilter,
         modules: {
             "ez-media-editview": {
-                requires: ['ez-binarybase-editview', 'event-tap', 'event-valuechange', 'node-event-html5'],
+                requires: ['ez-binarybase-editview', 'event-tap', 'event-valuechange', 'node-event-html5', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-media-editview.js"
             },
             "ez-binarybase-editview": {

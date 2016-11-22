@@ -18,6 +18,7 @@
 <script type="text/javascript" src="../../extensions/assets/ez-loadmorepagination-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-asynchronoussubitemview-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-subitemgridview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -36,11 +37,11 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemgridview": {
-                requires: ['ez-asynchronoussubitemview'],
+                requires: ['ez-asynchronoussubitemview', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemgridview.js"
             },
             "ez-asynchronoussubitemview": {
-                requires: ['ez-subitembaseview', 'ez-asynchronousview', 'ez-loadmorepagination'],
+                requires: ['ez-subitembaseview', 'ez-asynchronousview', 'ez-loadmorepagination', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/subitem/ez-asynchronoussubitemview.js"
             },
             "ez-subitembaseview": {

@@ -171,7 +171,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
 
             tasks.done(function () {
                 if ( loadError ) {
-                    service._error("Failed to load root locations");
+                    service._error(Y.eZ.trans('failed.to.load.root.locations', {}, 'navigationhub'));
                     return;
                 }
 

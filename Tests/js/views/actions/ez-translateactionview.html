@@ -27,6 +27,7 @@
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/genericbuttonactionview-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-translateactionview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -44,7 +45,7 @@
         filter: loaderFilter,
         modules: {
             "ez-buttonactionview": {
-                requires: ['ez-templatebasedview', 'event-tap'],
+                requires: ['ez-templatebasedview', 'event-tap', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/actions/ez-buttonactionview.js"
             },
             "ez-templatebasedview": {

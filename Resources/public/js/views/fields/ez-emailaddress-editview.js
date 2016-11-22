@@ -42,9 +42,9 @@ YUI.add('ez-emailaddress-editview', function (Y) {
             var validity = this._getInputValidity();
 
             if ( validity.typeMismatch || !this._isValidEmail() ) {
-                this.set('errorStatus', 'The value should be a valid email address');
+                this.set('errorStatus', Y.eZ.trans('email.not.valid', {}, 'fieldedit'));
             } else if ( validity.valueMissing ) {
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }

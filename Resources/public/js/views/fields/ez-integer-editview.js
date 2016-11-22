@@ -11,8 +11,7 @@ YUI.add('ez-integer-editview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var L = Y.Lang,
-        FIELDTYPE_IDENTIFIER = 'ezinteger',
+    var FIELDTYPE_IDENTIFIER = 'ezinteger',
         INTEGER_PATTERN = "-?\\d*"; // WARNING: each backslash is doubled, because it is escaped on output otherwise;
 
     /**
@@ -42,23 +41,23 @@ YUI.add('ez-integer-editview', function (Y) {
                 inputValue = this.get('container').one('.ez-integer-input-ui input').get('value');
 
             if ( validity.valueMissing ) {
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
                 // Integer pattern validation
             } else if ( validity.patternMismatch ) {
                 this.set(
                     'errorStatus',
-                    'The value should be a valid integer number'
+                    Y.eZ.trans('value.should.be.valid.integer', {}, 'fieldedit')
                 );
                 // Range validation
             } else if ( config.maxIntegerValue && inputValue > config.maxIntegerValue ) {
                 this.set(
                     'errorStatus',
-                    L.sub('The value should be less than or equal to {maxIntegerValue}', config)
+                    Y.eZ.trans('value.should.be.less.than', config, 'fieldedit')
                 );
             } else if ( config.minIntegerValue && inputValue < config.minIntegerValue ) {
                 this.set(
                     'errorStatus',
-                    L.sub('The value should be more than or equal to {minIntegerValue}', config)
+                    Y.eZ.trans('value.should.be.more.than', config, 'fieldedit')
                 );
 
             } else {

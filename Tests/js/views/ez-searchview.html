@@ -20,6 +20,7 @@
 </script>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../assets/ez-translator.js"></script>
 <script type="text/javascript" src="./assets/ez-searchview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
@@ -41,7 +42,8 @@
                 requires: [
                     'ez-templatebasedview',
                     'ez-searchlistview',
-                    'node-style'
+                    'node-style',
+                    'ez-translator',
                 ],
                 fullpath: "../../../Resources/public/js/views/ez-searchview.js"
             },
