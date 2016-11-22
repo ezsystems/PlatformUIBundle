@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentpeekview-tests', function (Y) {
-    var renderTest, closeContentPeekTest, forwardAttributeToRawContentView,
+    var renderTest, closeContentPeekTest, resetTest, rawContentViewTest,
         Assert = Y.Assert, Mock = Y.Mock,
         _getModelMock = function (toJSON) {
             var mock = new Mock();
@@ -19,21 +19,18 @@ YUI.add('ez-contentpeekview-tests', function (Y) {
         name: "eZ Content Peek View render test",
 
         setUp: function () {
-            var RawContentView;
-
-            RawContentView = Y.Base.create('rawContentView', Y.View, [], {
+            Y.eZ.RawContentView = Y.Base.create('rawContentView', Y.View, [], {
                 render: function () {
                     renderTest.rawContentViewRendered = true;
                     return this;
                 },
             });
-            this.rawContentView = new RawContentView();
+            this.rawContentView = new Y.eZ.RawContentView();
             this.contentJSON = {};
             this.contentTypeJSON = {};
             this.view = new Y.eZ.ContentPeekView({
                 content: _getModelMock(this.contentJSON),
                 contentType: _getModelMock(this.contentTypeJSON),
-                rawContentView: this.rawContentView,
             });
         },
 
@@ -42,6 +39,7 @@ YUI.add('ez-contentpeekview-tests', function (Y) {
             this.rawContentView.destroy();
             delete this.view;
             delete this.rawContentView;
+            delete Y.eZ.RawContentView;
         },
 
         "Should use a template": function () {
@@ -86,7 +84,7 @@ YUI.add('ez-contentpeekview-tests', function (Y) {
             );
             Assert.isTrue(
                 this.view.get('container').one('.ez-rawcontentview-container').contains(
-                    this.rawContentView.get('container')
+                    this.view.get('rawContentView').get('container')
                 ),
                 "The raw content view container should have been added"
             );
@@ -97,13 +95,13 @@ YUI.add('ez-contentpeekview-tests', function (Y) {
         name: "eZ Content Peek View close content peek test",
 
         setUp: function () {
+            Y.eZ.RawContentView = Y.View;
             this.contentJSON = {};
             this.contentTypeJSON = {};
             this.view = new Y.eZ.ContentPeekView({
                 container: '.container',
                 content: _getModelMock(this.contentJSON),
                 contentType: _getModelMock(this.contentTypeJSON),
-                rawContentView: new Y.View(),
             });
             this.view.render();
         },
@@ -111,6 +109,7 @@ YUI.add('ez-contentpeekview-tests', function (Y) {
         tearDown: function () {
             this.view.destroy();
             delete this.view;
+            delete Y.eZ.RawContentView;
         },
 
         "Should fire the `contentPeekClose` event": function () {
@@ -129,48 +128,117 @@ YUI.add('ez-contentpeekview-tests', function (Y) {
         },
     });
 
-    forwardAttributeToRawContentView = new Y.Test.Case({
-        name: "eZ Content Peek View forward attribute test",
+    resetTest = new Y.Test.Case({
+        name: "eZ Content Peek View reset test",
 
         setUp: function () {
+            var RawContentView = Y.Base.create('rawContentView', Y.View, [], {
+                    destructor: Y.bind(function () {
+                        this.destroyed = true;
+                    }, this),
+                });
+            this.rawContentView = new RawContentView();
             this.view = new Y.eZ.ContentPeekView({
-                rawContentView: new Y.View(),
+                content: {},
+                location: {},
+                contentType: {},
+                languageCode: 'fre-FR',
             });
+            this.view._set('rawContentView', new RawContentView());
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.destroyed;
+            delete this.view;
+        },
+
+        "Should destroy the raw content view": function () {
+            this.view.reset();
+
+            Assert.isTrue(
+                this.destroyed,
+                "The raw content view should have been destroyed"
+            );
+            Assert.isNull(
+                this.view.get('rawContentView'),
+                "The rawContentView attribute should have been set to null"
+            );
+        },
+
+        "Should be called on getting inactive": function () {
+            this.view.set('active', true);
+            this.view.set('active', false);
+
+            Assert.isTrue(
+                this.destroyed,
+                "The raw content view should have been destroyed"
+            );
+            Assert.isNull(
+                this.view.get('rawContentView'),
+                "The rawContentView attribute should have been set to null"
+            );
+        },
+    });
+
+    rawContentViewTest = new Y.Test.Case({
+        name: "eZ Content Peek View rawContentView parameter test",
+
+        setUp: function () {
+            Y.eZ.RawContentView = Y.View;
+            this.view = new Y.eZ.ContentPeekView({
+                content: _getModelMock(),
+                location: {},
+                contentType: _getModelMock(),
+                languageCode: 'fre-FR',
+                config: {},
+            });
+            this.view.render();
         },
 
         tearDown: function () {
             this.view.destroy();
             delete this.view;
+            delete Y.eZ.RawContentView;
         },
 
-        _testForwardAttribute: function (attrName, value) {
-            this.view.set(attrName, value);
+        "Should receive the parameters": function () {
+            var assertAttribute = Y.bind(function (attr) {
+                    Assert.areSame(
+                        this.view.get(attr),
+                        this.view.get('rawContentView').get(attr),
+                        "The rawContentView attribute " + attr + " should have been set"
+                    );
+                }, this);
 
-            Assert.areSame(
-                value, this.view.get('rawContentView').get(attrName),
-                "The attribute " + attrName + " should be set on the raw content view"
+            assertAttribute('content');
+            assertAttribute('contentType');
+            assertAttribute('config');
+            assertAttribute('languageCode');
+            Assert.areEqual(
+                'event', this.view.get('rawContentView').get('languageSwitchMode'),
+                "The languageSwitchMode attribute should be set to event"
             );
         },
 
-        "Should forward the content attribute value": function () {
-            this._testForwardAttribute('content', {});
-        },
+        "Should set the peek view as a bubble target": function () {
+            var bubble = false;
 
-        "Should forward the contentType attribute value": function () {
-            this._testForwardAttribute('contentType', {});
-        },
+            this.view.on('*:whatever', function () {
+                bubble = true;
+            });
+            this.view.get('rawContentView').fire('whatever');
 
-        "Should forward the location attribute value": function () {
-            this._testForwardAttribute('location', {});
-        },
-
-        "Should forward the languageCode attribute value": function () {
-            this._testForwardAttribute('languageCode', 'fre-FR');
+            Assert.isTrue(
+                bubble,
+                "The event should have bubbled to the peek view"
+            );
         },
     });
 
     Y.Test.Runner.setName("eZ Content Peek View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(closeContentPeekTest);
-    Y.Test.Runner.add(forwardAttributeToRawContentView);
+    Y.Test.Runner.add(resetTest);
+    Y.Test.Runner.add(rawContentViewTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-contentpeekview']});

@@ -46,28 +46,29 @@ YUI.add('ez-rawcontentview', function (Y) {
             if ( this.get('contentType') ) {
                 this._setFieldViews();
             }
-            this.after('contentTypeChange', this._setFieldViews);
-            this.after('activeChange', function (e) {
-                Y.Array.each(this._fieldViews, function (v) {
-                    v.set('active', e.newVal);
-                });
+            this.after('activeChange', this._forwardActive);
+
+            this.after('*:switchLanguage', function (e) {
+                this.set('languageCode', e.languageCode);
             });
-            this.on(
-                ['contentChange', 'locationChange', 'languageCodeChange'],
-                this._forwardToLanguageSwitcherView
-            );
+
+            this.after('languageCodeChange', function () {
+                this._setFieldViews();
+                this.render();
+                this._forwardActive();
+            });
         },
 
         /**
-         * Attribute change event handler. It makes sure the attribute new value
-         * is set on the language switcher view.
+         * Forwards the active flag to the field views.
          *
-         * @method _forwardToLanguageSwitcherView
+         * @method _forwardActive
          * @protected
-         * @param {EventFacade} e
          */
-        _forwardToLanguageSwitcherView: function (e) {
-            this.get('languageSwitcherView').set(e.attrName, e.newVal);
+        _forwardActive: function () {
+            this._fieldViews.forEach(function (v) {
+                v.set('active', this.get('active'));
+            }, this);
         },
 
         /**
@@ -233,6 +234,20 @@ YUI.add('ez-rawcontentview', function (Y) {
             languageCode: {},
 
             /**
+             * Configure the language switcher view to fire an event when
+             * switching language ('event' value) or to let the browser follow
+             * the link to switch language ('navigate' value).
+             *
+             * @attribute languageSwitchMode
+             * @type {String}
+             * @default undefined
+             * @writeOnce
+             */
+            languageSwitchMode: {
+                writeOnce: 'initOnly',
+            },
+
+            /**
              * The language switcher view instance
              *
              * @attribute languageSwitcherView
@@ -244,6 +259,7 @@ YUI.add('ez-rawcontentview', function (Y) {
                         content: this.get('content'),
                         location: this.get('location'),
                         languageCode: this.get('languageCode'),
+                        switchMode: this.get('languageSwitchMode'),
                         bubbleTargets: this
                     });
                 }

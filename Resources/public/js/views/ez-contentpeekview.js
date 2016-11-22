@@ -27,22 +27,27 @@ YUI.add('ez-contentpeekview', function (Y) {
         },
 
         initializer: function () {
-            this.on(
-                ['contentChange', 'locationChange', 'contentTypeChange', 'languageCodeChange'],
-                this._forwardToRawContentView
-            );
+            this.after('activeChange', function (e) {
+                if ( !this.get('active') ) {
+                    this.reset();
+                }
+            });
         },
 
         /**
-         * Attribute change event handler. It sets the same value on the raw
-         * content view.
+         * Resets the view attributes. Overriden to destroy and set null in the
+         * `rawContentView` attribute.
          *
-         * @method _forwardToRawContentView
-         * @protected
-         * @param {EventFacade} e
+         * @method reset
+         * @param {String} name
          */
-        _forwardToRawContentView: function (e) {
-            this.get('rawContentView').set(e.attrName, e.newVal);
+        reset: function (name) {
+            if ( name === 'rawContentView' ) {
+                this.get('rawContentView').destroy();
+                this._set('rawContentView', null);
+                return;
+            }
+            this.constructor.superclass.reset.apply(this, arguments);
         },
 
         /**
@@ -69,11 +74,31 @@ YUI.add('ez-contentpeekview', function (Y) {
                 content: this.get('content').toJSON(),
                 contentType: this.get('contentType').toJSON(),
             }));
+            this._set('rawContentView', this._buildRawContentView());
             container.one('.ez-rawcontentview-container').append(
                 this.get('rawContentView').render().get('container')
             );
             return this;
-        }
+        },
+
+        /**
+         * Creates a new RawContentView instance.
+         *
+         * @method _buildRawContentView
+         * @protected
+         * @return {eZ.RawContentView}
+         */
+        _buildRawContentView: function () {
+            return new Y.eZ.RawContentView({
+                content: this.get('content'),
+                location: this.get('location'),
+                contentType: this.get('contentType'),
+                languageCode: this.get('languageCode'),
+                languageSwitchMode: 'event',
+                config: this.get('config'),
+                bubbleTargets: this,
+            });
+        },
     }, {
         ATTRS: {
             /**
@@ -104,7 +129,7 @@ YUI.add('ez-contentpeekview', function (Y) {
             contentType: {},
 
             /**
-             * The language code in which the Contenti item is displayed
+             * The language code in which the Content item is displayed
              *
              * @attribute languageCode
              * @type {String}
@@ -117,18 +142,11 @@ YUI.add('ez-contentpeekview', function (Y) {
              *
              * @attribute rawContentView
              * @type {eZ.RawContentView}
+             * @readOnly
              */
             rawContentView: {
-                valueFn: function () {
-                    return new Y.eZ.RawContentView({
-                        content: this.get('content'),
-                        location: this.get('location'),
-                        contentType: this.get('contentType'),
-                        languageCode: this.get('languageCode'),
-                        config: this.get('config'),
-                        bubbleTargets: this,
-                    });
-                },
+                readOnly: true,
+                value: null,
             },
         }
     });
