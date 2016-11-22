@@ -7,7 +7,7 @@
     <body>
       <trans-unit id="2cf44ed7209581f302b0731290d10273" resname="navigationhub.more">
         <source>navigationhub.more</source>
-        <target>More</target>
+        <target>Plus</target>
       </trans-unit>
       <trans-unit id="3b69f5fe5fb8db0b6e32a532eaa9edbf" resname="navigationhub.logo.ez">
         <source>navigationhub.logo.ez</source>
@@ -15,19 +15,19 @@
       </trans-unit>
       <trans-unit id="cf75252d4dca5b01c2cc1cee859b6fea" resname="navigationhub.content.structure">
         <source>navigationhub.content.structure</source>
-        <target>Content structure</target>
+        <target>Contenu</target>
       </trans-unit>
       <trans-unit id="9f1cb63100d990f4d4ca2231077d6919" resname="navigationhub.media.library">
         <source>navigationhub.media.library</source>
-        <target>Media library</target>
+        <target>Médiathèque</target>
       </trans-unit>
       <trans-unit id="7a478740156846ce618ab61925bb0e81" resname="navigationhub.dashboard.title">
         <source>navigationhub.dashboard.title</source>
-        <target>Admin dashboard</target>
+        <target>Tableau de bord d'administration</target>
       </trans-unit>
       <trans-unit id="ce0c3e3f82c123c3ea8eb86b20f8e3d1" resname="navigationhub.system.information">
         <source>navigationhub.system.information</source>
-        <target>System information</target>
+        <target>Information système</target>
       </trans-unit>
       <trans-unit id="c9d2b746d4b4a9f45005e2108203dbec" resname="navigationhub.section.list">
         <source>navigationhub.section.list</source>
@@ -35,15 +35,15 @@
       </trans-unit>
       <trans-unit id="9b74eaf9f875741ce6241544b569e2a2" resname="navigationhub.content_type.dashboard_title">
         <source>navigationhub.content_type.dashboard_title</source>
-        <target>Content types</target>
+        <target>Types de contenu</target>
       </trans-unit>
       <trans-unit id="fc4264106649e904174e503f46392f10" resname="navigationhub.language.list">
         <source>navigationhub.language.list</source>
-        <target>Languages</target>
+        <target>Langues</target>
       </trans-unit>
       <trans-unit id="31d7f17d8a1785b049fe0a11cdb02a56" resname="navigationhub.user.list">
         <source>navigationhub.user.list</source>
-        <target>Users</target>
+        <target>Utilisateurs</target>
       </trans-unit>
       <trans-unit id="2d1035553d80ea65899f8dfa074bdb53" resname="navigationhub.role.list">
         <source>navigationhub.role.list</source>
@@ -51,7 +51,7 @@
       </trans-unit>
       <trans-unit id="ccd878f075c9c1b8c4d8822d7feee5a0" resname="navigationhub.zone.platform">
         <source>navigationhub.zone.platform</source>
-        <target>Content</target>
+        <target>Contenu</target>
       </trans-unit>
       <trans-unit id="08148e132bac55def3204f0814b8acd0" resname="navigationhub.zone.studio">
         <source>navigationhub.zone.studio</source>
@@ -63,7 +63,7 @@
       </trans-unit>
       <trans-unit id="cd2aa1dd5cb6a8cb294ba3754b191124" resname="navigationhub.zone.admin">
         <source>navigationhub.zone.admin</source>
-        <target>Admin Panel</target>
+        <target>Panneau d'administration</target>
       </trans-unit>
     </body>
   </file>

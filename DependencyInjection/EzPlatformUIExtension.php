@@ -81,7 +81,7 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
     public function getTranslationDomains()
     {
         return [
-            'bar', 'confirm', 'contentedit', 'contenttypeselector', 'dashboardblocks', 'editorial',
+            'bar', 'confirm', 'contentedit', 'contenttypeselector', 'dashboardblocks',
             'fieldedit', 'fieldview', 'languageselection', 'locationview', 'login', 'navigationhub',
             'search', 'subitem', 'trash', 'tree', 'universaldiscovery', 'onlineeditor',
         ];

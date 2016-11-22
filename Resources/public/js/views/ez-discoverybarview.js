@@ -45,25 +45,25 @@ YUI.add('ez-discoverybarview', function (Y) {
                         new Y.eZ.ButtonActionView({
                             actionId: "minimizeDiscoveryBar",
                             disabled: false,
-                            label: Y.eZ.trans('discoverybar.minimize', {}, 'editorial'),
+                            label: Y.eZ.trans('discoverybar.minimize', {}, 'bar'),
                             priority: 1000
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "viewSearch",
                             disabled: false,
-                            label: Y.eZ.trans('discoverybar.search', {}, 'editorial'),
+                            label: Y.eZ.trans('discoverybar.search', {}, 'bar'),
                             priority: 900
                         }),
                         new Y.eZ.TreeActionView({
                             actionId: "tree",
                             disabled: false,
-                            label: Y.eZ.trans('discoverybar.contenttree', {}, 'editorial'),
+                            label: Y.eZ.trans('discoverybar.contenttree', {}, 'bar'),
                             priority: 800
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "viewTrash",
                             disabled: false,
-                            label: Y.eZ.trans('discoverybar.trash', {}, 'editorial'),
+                            label: Y.eZ.trans('discoverybar.trash', {}, 'bar'),
                             priority: 600
                         }),
                     ];
