@@ -548,7 +548,7 @@ system:
                     path: "%ez_platformui.public_dir%/templates/universaldiscovery.hbt"
                 ez-universaldiscoveryconfirmedlistview:
                     requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'universaldiscoveryconfirmedlistview-ez-template']
-                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryconfirmedlistview.js"
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryconfirmedlistview.js"
                 universaldiscoveryconfirmedlistview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/universaldiscovery/confirmedlist.hbt"
@@ -577,7 +577,7 @@ system:
                     path: "%ez_platformui.public_dir%/templates/universaldiscovery/search.hbt"
                 ez-universaldiscoveryselectedview:
                     requires: ['event-tap', 'ez-templatebasedview', 'universaldiscoveryselectedview-ez-template', 'ez-asynchronousview', 'array-extras']
-                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryselectedview.js"
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryselectedview.js"
                 universaldiscoveryselectedview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/universaldiscovery/selected.hbt"
