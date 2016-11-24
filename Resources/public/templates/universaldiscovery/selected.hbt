@@ -13,6 +13,15 @@
                 <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{ translate 'universaldiscovery.retry' 'universaldiscovery' }}</button>
             </p>
             <h3 class="ez-ud-selected-name">{{ contentInfo.name }}</h3>
+
+            {{#if addConfirmButton}}
+            <p>
+                <button class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>
+                    {{ translate 'universaldiscovery.choose.this.content' 'universaldiscovery' }}
+                </button>
+            </p>
+            {{/if}}
+
             <dl class="ez-ud-selected-infos">
                 <dt class="ez-ud-selected-infos-title" >{{ translate 'universaldiscovery.last.modified' 'universaldiscovery' }}</dt>
                 <dd class="ez-ud-selected-info">{{ contentInfo.lastModificationDate }}</dd>
@@ -21,13 +30,6 @@
                 <dt class="ez-ud-selected-infos-title">{{ translate 'universaldiscovery.creation.date' 'universaldiscovery' }}</dt>
                 <dd class="ez-ud-selected-info">{{ contentInfo.publishedDate }}</dd>
             </dl>
-            {{#if addConfirmButton}}
-            <p>
-                <button class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>
-                    {{ translate 'universaldiscovery.choose.this.content' 'universaldiscovery' }}
-                </button>
-            </p>
-            {{/if}}
             <div class="ez-ud-selected-animation"></div>
         </div>
     </div>
