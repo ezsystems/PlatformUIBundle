@@ -957,7 +957,19 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     type: Y.View,
                     service: Y.eZ.ViewService,
                     container: '.sideview2'
-                }
+                },
+                sideView3: {
+                    hideClass: 'is-sideview3-hidden',
+                    type: Y.Base.create('sideView3', Y.View, [], {
+                        render: function () {
+                            sideViewsTest.sideView3Rendered = true;
+                            return this;
+                        },
+                    }),
+                    service: Y.eZ.ViewService,
+                    container: '.sideview3',
+                    forceRendering: true,
+                },
             };
         },
 
@@ -1203,6 +1215,28 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Y.Assert.isUndefined(
                 this.app.sideViews.sideView1.serviceInstance,
                 "The instance of the sideView service should have been deleted"
+            );
+        },
+
+        "Should rerender a side view with forceRendering flag": function () {
+            var req = {
+                    route: {
+                        sideViews: {
+                            sideView3: true,
+                        }
+                    }
+                };
+
+            this.app.handleSideViews(req, {}, function () {});
+            Assert.isTrue(
+                this.sideView3Rendered,
+                "The side view should have been rendered"
+            );
+            this.sideView3Rendered = false;
+            this.app.handleSideViews(req, {}, function () {});
+            Assert.isTrue(
+                this.sideView3Rendered,
+                "The side view should have been rerendered"
             );
         },
     });
@@ -1758,7 +1792,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
 
         "Should deletes views handling middleware if routingEnabled attribute is false": function () {
             this.app.set('routingEnabled', false);
-            
+
             Y.Object.each(this.app.get('routes'), function(route) {
                 Y.Assert.areSame(
                     0,

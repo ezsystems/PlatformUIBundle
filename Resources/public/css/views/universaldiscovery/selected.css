@@ -72,6 +72,22 @@
     display: none;
 }
 
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual {
+    cursor: pointer;
+    position: relative;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual:after {
+    content: "";
+    display: block;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+}
+
 .ez-view-universaldiscoveryselectedview.is-state-image-error .ez-asynchronousview-error {
     display: block;
 }

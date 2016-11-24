@@ -23,7 +23,10 @@ YUI.add('ez-contentmodel', function (Y) {
     Y.eZ.Content = Y.Base.create('contentModel', Y.eZ.RestModel, [Y.eZ.ContentInfoBase], {
         /**
          * Override of the eZ.RestModel _parseStruct method to also read the
-         * fields of the current version
+         * fields of the current version and the relations. The fields parsing
+         * is deprecated and will be removed from PlatformUI 2.0. Also, this
+         * parsing is broken in case of a Content translated in several
+         * languages.
          *
          * @protected
          * @method _parseStruct
@@ -43,12 +46,16 @@ YUI.add('ez-contentmodel', function (Y) {
                     fieldDefinitionIdentifier: relation.SourceFieldDefinitionIdentifier
                 });
             });
+            attrs.relations = relations;
 
+            // the field parsing is deprecated, buggy and not really used in
+            // Content model as the `fields` attribute is now a shortcut to the
+            // field attribute of current version.
             Y.Array.each(struct.CurrentVersion.Version.Fields.field, function (field) {
                 fields[field.fieldDefinitionIdentifier] = field;
             });
-            attrs.relations = relations;
             attrs.fields = fields;
+
             attrs.currentVersion = struct.CurrentVersion;
             return attrs;
         },
@@ -154,30 +161,58 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
-         * Returns the field which identifier is in parameter
+         * Returns the field which identifier is in parameter. For BC,
+         * `languageCode` can be omitted but such case, `getField` falls back to
+         * a deprecated and buggy behaviour with a content available in
+         * several languages.
          *
          * @method getField
          * @param {String} identifier the field definition identifier
+         * @param {String} languageCode the language code in which the field
          * @return {Object} or undefined if the field does not exists
          */
-        getField: function (identifier) {
-            var fields = this.get('fields');
-            return fields[identifier];
+        getField: function (identifier, languageCode) {
+            var version = this.get('currentVersion');
+
+            if ( !languageCode ) {
+                console.log('[DEPRECATED] `Content#getField` call without language code is deprecated');
+                console.log('[DEPRECATED] Please specify a language code');
+            }
+            return version.getField.apply(version, arguments);
         },
 
         /**
-         * Returns the fields which field type has the given identifier.
+         * Returns the fields in the given language code.
+         *
+         * @method getFieldsIn
+         * @param {String} languageCode
+         * @return {Object}
+         */
+        getFieldsIn: function (languageCode) {
+            var version = this.get('currentVersion');
+
+            return version.getFieldsIn.apply(version, arguments);
+        },
+
+        /**
+         * Returns the fields which field type has the given identifier. For BC,
+         * `languageCode` can be omitted.
          *
          * @method getFieldsOfType
          * @param {eZ.ContentType} contentType
          * @param {String} fieldTypeIdentifier
+         * @param {String} languageCode
          * @return {Array}
          */
-        getFieldsOfType: function (contentType, fieldTypeIdentifier) {
+        getFieldsOfType: function (contentType, fieldTypeIdentifier, languageCode) {
             var identifiers = contentType.getFieldDefinitionIdentifiers(fieldTypeIdentifier);
 
+            if ( !languageCode ) {
+                console.log('[DEPRECATED] `Content#getFieldsOfType` call without language code is deprecated');
+                console.log('[DEPRECATED] Please specify a language code');
+            }
             return Y.Array.map(identifiers, function (identifier) {
-                return this.getField(identifier);
+                return this.getField(identifier, languageCode);
             }, this);
         },
 
@@ -426,14 +461,21 @@ YUI.add('ez-contentmodel', function (Y) {
         ATTRS: {
             /**
              * Fields in the current version of the content indexed by field
-             * definition identifier
+             * definition identifier. This is just shortcut to the fields in the
+             * current version.
              *
              * @attribute fields
              * @default {}
              * @type Object
+             * @deprecated
              */
             fields: {
-                value: {}
+                getter: function () {
+                    return this.get('currentVersion').get('fields');
+                },
+                setter: function (value) {
+                    this.get('currentVersion').set('fields', value);
+                },
             },
 
             /**
@@ -455,13 +497,27 @@ YUI.add('ez-contentmodel', function (Y) {
              */
             currentVersion: {
                 getter: function (value) {
-                    var version = new Y.eZ.Version();
+                    var version = this._currentVersion || new Y.eZ.Version();
 
-                    if ( value ) {
+                    if ( value && this._dirtyCurrentVersion ) {
                         version.setAttrs(version.parse({document: value}));
                     }
+                    /**
+                     * Holds the current version to avoid creating a new object
+                     * again and again
+                     *
+                     * @property _currentVersion
+                     * @protected
+                     * @type {eZ.Version}
+                     */
+                    this._currentVersion = version;
+                    this._dirtyCurrentVersion = false;
                     return version;
-                }
+                },
+                setter: function (value) {
+                    this._dirtyCurrentVersion = true;
+                    return value;
+                },
             }
         }
     });

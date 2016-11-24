@@ -16,10 +16,15 @@
     vertical-align: bottom;
 }
 
-.ez-view-languageswitcherview .ez-expandable-area {
+
+.ez-view-languageswitcherview .ez-language-list {
+    list-style: none;
     border: 1px solid #ccc;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
     background: #fff;
+}
+
+.ez-view-languageswitcherview .ez-expandable-area {
     display: block;
             transform: scaleY(0);
     -webkit-transform: scaleY(0);
@@ -30,8 +35,8 @@
 }
 
 .ez-view-languageswitcherview.is-expanded .ez-expandable-area {
-            transform: scaleY(1);
     -webkit-transform: scaleY(1);
+            transform: scaleY(1);
 }
 
 .ez-view-languageswitcherview .ez-content-translation .ez-language-switch-link {

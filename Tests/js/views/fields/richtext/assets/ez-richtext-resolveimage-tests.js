@@ -16,6 +16,8 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
                 container: Y.one('.container'),
                 field: {id: 42},
             });
+            this.mainLanguageCode = 'fre-FR';
+            this.fieldDefinitionIdentifier = 'image';
             this.fields = {};
             this.fields["41"] = {'image': {}};
             this.fields["42"] = {'image': {}};
@@ -99,7 +101,11 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
 
         _getContentMock: function (contentId) {
             var content = new Mock(),
-                attrs = {contentId: contentId, name: "name-" + contentId, fields: this.fields[contentId]};
+                attrs = {
+                    contentId: contentId,
+                    name: "name-" + contentId,
+                    mainLanguageCode: this.mainLanguageCode,
+                };
 
             Mock.expect(content, {
                 method: 'get',
@@ -111,6 +117,11 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
                     Assert.fail("Unexpected call to get('" + attr + "')");
                 },
             });
+            Mock.expect(content, {
+                method: 'getField',
+                args: [this.fieldDefinitionIdentifier, this.mainLanguageCode],
+                returns: this.fields[contentId][this.fieldDefinitionIdentifier],
+            });
             return content;
         },
 
@@ -120,7 +131,7 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
             Mock.expect(type, {
                 method: 'getFieldDefinitionIdentifiers',
                 args: ['ezimage'],
-                returns: ['image'],
+                returns: [this.fieldDefinitionIdentifier],
             });
             return type;
         },
@@ -260,8 +271,7 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
         name: "eZ RichText resolve image process using the selection test",
 
         setUp: function () {
-            var container = Y.one('.container-useselection'),
-                fields = {};
+            var container = Y.one('.container-useselection');
 
             this.containerContent = container.getContent();
             this.processor = new Y.eZ.RichTextResolveImage();
@@ -270,6 +280,7 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
                 field: {id: 42},
             });
 
+            this.mainLanguageCode = 'fre-FR';
             this.imageFieldIdentifier = 'image';
             this.contentType = new Mock();
             Mock.expect(this.contentType, {
@@ -277,13 +288,19 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
                 args: ['ezimage'],
                 returns: [this.imageFieldIdentifier],
             });
-            this.content = new Y.Base();
+            this.content = new Mock(new Y.Base());
             this.contentInfo = new Y.Base();
-            fields[this.imageFieldIdentifier] = {};
+            this.fields = {};
+            this.fields[this.imageFieldIdentifier] = {};
             this.content.set('contentId', 41);
             this.contentInfo.set('contentId', this.content.get('contentId'));
             this.content.set('name', 'name-' + this.content.get('contentId'));
-            this.content.set('fields', fields);
+            this.content.set('mainLanguageCode', this.mainLanguageCode);
+            Mock.expect(this.content, {
+                method: 'getField',
+                args: [this.imageFieldIdentifier, this.mainLanguageCode],
+                returns: this.fields[this.imageFieldIdentifier],
+            });
         },
 
         tearDown: function () {
@@ -325,7 +342,7 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
                 loadImageVariationFired = true;
 
                 Assert.areSame(
-                    this.content.get('fields')[this.imageFieldIdentifier],
+                    this.fields[this.imageFieldIdentifier],
                     e.field,
                     "The image field should be provided"
                 );

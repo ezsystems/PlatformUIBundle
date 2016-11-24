@@ -8,10 +8,10 @@
     {{/if}}
 </div>
 {{#if otherTranslations}}
-    <ul class="ez-expandable-area">
+    <ul class="ez-expandable-area ez-language-list">
     {{#each otherTranslations}}
         <li class="ez-content-translation">
-            <a class="ez-language-switch-link" href="{{ path "viewLocation" id=../location.id languageCode=this }}">
+            <a class="ez-language-switch-link" data-language-code="{{ this }}" href="{{ path "viewLocation" id=../location.id languageCode=this }}" title="{{ language_name this }}">
                 {{ language_name this }}
             </a>
         </li>

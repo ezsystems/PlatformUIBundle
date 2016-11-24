@@ -5,7 +5,8 @@
 YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
-        getFieldsOfTypeTest, createDraftTest,
+        getFieldsOfTypeTest, createDraftTest, currentVersionTest, fieldAttributeTest,
+        getFieldTest, getFieldsInTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -230,36 +231,6 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             Y.Mock.verify(this.serviceMock);
         },
 
-        "The current version should be instance of eZ.Version": function () {
-            var currentVersionStruct = loadResponse.Content.CurrentVersion;
-
-            this.model.set('currentVersion', currentVersionStruct);
-            Y.Assert.isInstanceOf(
-                Y.eZ.Version,
-                this.model.get('currentVersion'),
-                'Current version should be instance of eZ.Version'
-            );
-            Y.Assert.areEqual(
-                currentVersionStruct.Version.VersionInfo.versionNo,
-                this.model.get('currentVersion').get('versionNo'),
-                'Should instantiate current version with version no'
-            );
-            Y.Assert.areEqual(
-                currentVersionStruct.Version.VersionInfo.id,
-                this.model.get('currentVersion').get('versionId'),
-                'Should instantiate current version with version id'
-            );
-        },
-
-        "The current version should be instance of eZ.Version (not version)": function () {
-            this.model.set('currentVersion', undefined);
-            Y.Assert.isInstanceOf(
-                Y.eZ.Version,
-                this.model.get('currentVersion'),
-                'Current version should be instance of eZ.Version'
-            );
-        },
-
         "Should read the fields of the current version": function () {
             var m = this.model,
                 response = {
@@ -344,22 +315,17 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
 
         "Should return the fields": function () {
-            var m = this.model,
-                fields = {
-                    'test': {'id': 42},
-                    'test2': {'id': 43}
-                };
-            m.set('fields', fields);
+            var m = this.model;
 
-            Y.Assert.areEqual(
-                fields.test.id,
-                m.getField('test').id
-            );
-            Y.Assert.areEqual(
-                fields.test2.id,
-                m.getField('test2').id
-            );
-            Y.Assert.isUndefined(
+            m.set('currentVersion', this.loadResponse.Content.CurrentVersion);
+
+            this.loadResponse.Content.CurrentVersion.Version.Fields.field.forEach(function (field) {
+                Assert.areEqual(
+                    field.id, m.getField(field.fieldDefinitionIdentifier).id,
+                    "The fields should be taken from the current version"
+                );
+            });
+            Assert.isUndefined(
                 m.getField('doesnotexist')
             );
         }
@@ -429,13 +395,15 @@ YUI.add('ez-contentmodel-tests', function (Y) {
 
         "Should return ATTRIBUTE relation list with a field identifier": function () {
             var fieldDefinitionIdentifier = 'attr2',
-                fields = {},
+                versionStruct,
                 destinationContentHref = "/my/content/42";
 
-            fields[fieldDefinitionIdentifier] = {
+            versionStruct = Y.merge(loadResponse.Content.CurrentVersion);
+            versionStruct.Version.Fields.field = [{
+                fieldDefinitionIdentifier: fieldDefinitionIdentifier,
                 fieldValue: {destinationContentHrefs: [destinationContentHref]}
-            };
-            this.model.set('fields', fields);
+            }];
+            this.model.set('currentVersion', versionStruct);
 
             this._testRelations(
                 [{destination: destinationContentHref}],
@@ -446,13 +414,16 @@ YUI.add('ez-contentmodel-tests', function (Y) {
 
         "Should return ATTRIBUTE relation with a field identifier": function () {
             var fieldDefinitionIdentifier = 'attr2',
-                fields = {},
+                versionStruct,
                 destinationContentHref = "/my/content/42";
 
-            fields[fieldDefinitionIdentifier] = {
+            versionStruct = Y.merge(loadResponse.Content.CurrentVersion);
+            versionStruct.Version.Fields.field = [{
+                fieldDefinitionIdentifier: fieldDefinitionIdentifier,
                 fieldValue: {destinationContentHref: destinationContentHref}
-            };
-            this.model.set('fields', fields);
+            }];
+            this.model.set('currentVersion', versionStruct);
+
 
             this._testRelations(
                 [{destination: destinationContentHref}],
@@ -511,11 +482,9 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         name: "eZ Content Model create tests",
 
         setUp: function () {
-            var that = this,
-                currentVersionStruct = loadResponse.Content.CurrentVersion;
+            var that = this;
 
             this.model = new Y.eZ.Content();
-            this.model.set('currentVersion', currentVersionStruct);
 
             this.typeId = 'song';
             this.alwaysAvailable = true;
@@ -664,7 +633,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 Assert.areEqual(
                     0,
                     Y.Object.keys(content.get('fields')).length,
-                    "The response should not be provided"
+                    "The response should not be parsed"
                 );
             });
         },
@@ -1211,7 +1180,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
 
         "Should find the translation": function () {
-            this.content.set('currentVersion', {Version: {VersionInfo: {languageCodes: 'fre-FR'}, Fields: {field: {}}}});
+            this.content.set('currentVersion', {Version: {VersionInfo: {languageCodes: 'fre-FR'}, Fields: {field: []}}});
             Assert.isTrue(
                 this.content.hasTranslation('fre-FR'),
                 "The translation should have been found"
@@ -1236,6 +1205,18 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                     "image1": {fieldValue: {}},
                     "image2": {fieldValue: null},
                 },
+                "fieldsByLanguage": {
+                    "eng-GB": {
+                        "name": {fieldValue: "Too Many Sandwiches"},
+                        "image1": {fieldValue: {}},
+                        "image2": {fieldValue: null},
+                    },
+                    "fre-FR": {
+                        "name": {fieldValue: "Trop de sandwichs :-)"},
+                        "image1": {fieldValue: {}},
+                        "image2": {fieldValue: null},
+                    },
+                }
             });
         },
 
@@ -1244,6 +1225,39 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             delete this.content;
         },
 
+        "Should find the fields of the given type in given language": function () {
+            var type = new Mock(),
+                identifiers = ['image1', 'image2'],
+                fieldType = 'ezimage',
+                language = 'eng-GB',
+                res;
+
+            Mock.expect(type, {
+                method: 'getFieldDefinitionIdentifiers',
+                args: [fieldType],
+                returns: identifiers,
+            });
+
+            res = this.content.getFieldsOfType(type, fieldType, language);
+
+            Assert.isArray(res, "The return value should be an array");
+            Assert.areEqual(
+                identifiers.length,
+                res.length,
+                "The return value should have as many fields as requested"
+            );
+            Assert.areSame(
+                res[0], this.content.getField('image1'),
+                "The image1 field should have been returned"
+            );
+            Assert.areSame(
+                res[1], this.content.getField('image2'),
+                "The image2 field should have been returned"
+            );
+        },
+
+
+        // deprecate usage
         "Should find the fields of the given type": function () {
             var type = new Mock(),
                 identifiers = ['image1', 'image2'],
@@ -1275,6 +1289,178 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    currentVersionTest = new Y.Test.Case({
+        name: "eZ Content Model current version test",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+        },
+
+        "Should be instance of eZ.Version": function () {
+            Assert.isInstanceOf(
+                Y.eZ.Version, this.model.get('currentVersion'),
+                "The current version should be an instance of eZ.Version"
+            );
+        },
+
+        "Should keep the same instance": function () {
+            var version1 = this.model.get('currentVersion');
+
+            Assert.areSame(
+                version1, this.model.get('currentVersion'),
+                "The same object instance should reused"
+            );
+        },
+
+        "Should parse the attribute value": function () {
+            var currentVersionStruct = loadResponse.Content.CurrentVersion;
+
+            this.model.set('currentVersion', currentVersionStruct);
+            Assert.areEqual(
+                currentVersionStruct.Version.VersionInfo.versionNo,
+                this.model.get('currentVersion').get('versionNo'),
+                'Should instantiate current version with version no'
+            );
+            Assert.areEqual(
+                currentVersionStruct.Version.VersionInfo.id,
+                this.model.get('currentVersion').get('versionId'),
+                'Should instantiate current version with version id'
+            );
+        },
+    });
+
+    fieldAttributeTest = new Y.Test.Case({
+        name: "eZ Content Model field attribute test",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+        },
+
+        "Should return the `fields` attribute of the current version": function () {
+            Assert.areSame(
+                this.model.get('currentVersion').get('fields'),
+                this.model.get('fields'),
+                "The fields attribute should reference the current version field attribute"
+            );
+        },
+
+        "Should set the `fields` attribute of the current version": function () {
+            var fields = {};
+
+            this.model.set('fields', fields);
+
+            Assert.areSame(
+                fields, this.model.get('currentVersion').get('fields'),
+                "The fields attribute should be set on the current version"
+            );
+        },
+    });
+
+    getFieldTest = new Y.Test.Case({
+        name: "eZ Content Model getField test",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+        },
+
+        "Should call current version getField": function () {
+            var version = this.model.get('currentVersion'),
+                getFieldCalled = false,
+                fieldIdentifier = 'whatever',
+                language = 'fre-FR',
+                origGetField = version.getField;
+
+            version.getField = function (identifier, code) {
+                getFieldCalled = true;
+
+                Assert.areEqual(
+                    fieldIdentifier, identifier,
+                    "The identifier argument should be kept"
+                );
+                Assert.areEqual(
+                    language, code,
+                    "The language argument should be kept"
+                );
+
+                return origGetField.apply(version, arguments);
+            };
+
+            this.model.getField(fieldIdentifier, language);
+            Assert.isTrue(
+                getFieldCalled,
+                "Current version getField method should have been called"
+            );
+        },
+
+        "Should handle missing language code": function () {
+            var version = this.model.get('currentVersion'),
+                getFieldCalled = false,
+                fieldIdentifier = 'whatever',
+                origGetField = version.getField;
+
+            version.getField = function (identifier) {
+                getFieldCalled = true;
+
+                Assert.areEqual(
+                    fieldIdentifier, identifier,
+                    "The identifier argument should be kept"
+                );
+
+                return origGetField.apply(version, arguments);
+            };
+
+            this.model.getField(fieldIdentifier);
+            Assert.isTrue(
+                getFieldCalled,
+                "Current version getField method should have been called"
+            );
+        },
+    });
+
+    getFieldsInTest = new Y.Test.Case({
+        name: "eZ Content Model getFieldsIn test",
+
+        setUp: function () {
+            this.content = new Y.eZ.Content();
+        },
+
+        tearDown: function () {
+            this.content.destroy();
+        },
+
+        "Should return the current version's fields": function () {
+            var version = this.content.get('currentVersion'),
+                versionGetFieldsIn = false,
+                languageCode = 'fre-FR';
+
+            version.getFieldsIn = function (code) {
+                versionGetFieldsIn = true;
+
+                Assert.areEqual(
+                    code, languageCode,
+                    "The language code should be passed"
+                );
+            };
+
+            this.content.getFieldsIn(languageCode);
+            Assert.isTrue(
+                versionGetFieldsIn, "current version getFieldsIn should have been called"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
@@ -1287,4 +1473,8 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(hasTranslationTest);
     Y.Test.Runner.add(getFieldsOfTypeTest);
     Y.Test.Runner.add(createDraftTest);
+    Y.Test.Runner.add(currentVersionTest);
+    Y.Test.Runner.add(fieldAttributeTest);
+    Y.Test.Runner.add(getFieldTest);
+    Y.Test.Runner.add(getFieldsInTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

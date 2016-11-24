@@ -109,19 +109,16 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 run: Y.bind(function (attr) {
                     if ( attr === 'mainLanguageCode' ) {
                         return this.languageCode;
-                    } else if ( attr === 'fields' ) {
-                        return this.fields;
                     }
                     Y.fail('Unexpected call to content.get("' + attr + '")');
                 }, this),
             });
-
             Mock.expect(this.version, {
                 method: 'reset'
             });
             Mock.expect(this.version, {
-                method: 'set',
-                args: ['fields', Mock.Value.Object],
+                method: 'setFieldsIn',
+                args: [Mock.Value.Object, Mock.Value.String],
             });
 
             this.mocks = ['content', 'mainLocation', 'contentType', 'owner'];
@@ -131,6 +128,16 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 'contentType': this.resources.ContentType,
                 'owner': this.resources.Owner,
             };
+        },
+
+        _mockContentGetFieldsIn: function (languageCode) {
+            Mock.expect(this.content, {
+                method: 'getFieldsIn',
+                args: [languageCode],
+                run: Y.bind(function (languageCode) {
+                    return this.fields;
+                }, this),
+            });
         },
 
         tearDown: function () {
@@ -277,6 +284,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 args: [this.requestBaseLanguage.params.baseLanguageCode],
                 returns: true,
             });
+            this._mockContentGetFieldsIn(this.baseLanguageCode);
 
             this._configureMocksLoading('none', {'content': contentLoadingAssert});
             this.service = service = this._getService(this.requestBaseLanguage);
@@ -297,6 +305,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 returns: true,
             });
 
+            this._mockContentGetFieldsIn(this.baseLanguageCode);
             this._configureMocksLoading('none');
             this.owner = null;
             this.service = service = this._getService(this.requestBaseLanguage);
@@ -343,6 +352,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                     );
                 };
 
+            this._mockContentGetFieldsIn(this.languageCode);
             this._configureMocksLoading('none', {'content': contentLoadingAssert});
             this.service = service = this._getService();
             service.once('error', function (e) {
@@ -435,6 +445,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 contentInfoAttrs = {},
                 callbackCalled = false;
 
+            this._mockContentGetFieldsIn(this.languageCode);
             this._configureMocksLoading('content');
             Mock.expect(this.contentInfo, {
                 method: 'getAttrs',
@@ -468,25 +479,15 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             };
 
 
+            this.fields = {};
             Mock.expect(this.version, {
-                method: 'set',
-                args: ['fields', Mock.Value.Object],
-                run: function (attr, f) {
+                method: 'setFieldsIn',
+                args: [Mock.Value.Object, this.languageCode],
+                run: function (f, languageCode) {
                     fields = f;
                 },
             });
-            Mock.expect(this.content, {
-                method: 'get',
-                args: [Mock.Value.String],
-                run: Y.bind(function (attr) {
-                    if ( attr === 'mainLanguageCode' ) {
-                        return this.languageCode;
-                    } else if ( attr === 'fields' ) {
-                        return {};
-                    }
-                    Y.fail('Unexpected call to content.get("' + attr + '")');
-                }, this),
-            });
+
             Mock.expect(this.contentType, {
                 method: 'get',
                 args: ['fieldDefinitions'],
@@ -519,12 +520,13 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             var fields;
 
             Mock.expect(this.version, {
-                method: 'set',
-                args: ['fields', Mock.Value.Object],
-                run: function (attr, f) {
+                method: 'setFieldsIn',
+                args: [Mock.Value.Object, this.newLanguageCode],
+                run: function (f) {
                     fields = f;
                 },
             });
+            this._mockContentGetFieldsIn(this.baseLanguageCode);
 
             this["Should load the content, the location, the content type and the owner"]();
 
@@ -589,6 +591,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 returns: true,
             });
             this.service = service = this._getService(this.requestBaseLanguage);
+            this._mockContentGetFieldsIn(this.baseLanguageCode);
             this._configureMocksLoading('owner');
 
             service.once('error', function (e) {

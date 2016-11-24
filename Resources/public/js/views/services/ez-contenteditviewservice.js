@@ -152,7 +152,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @private
          */
         _setVersionFields: function () {
-            this.get('version').set('fields', this._getFieldsForEdit());
+            this.get('version').setFieldsIn(this._getFieldsForEdit(), this.get('languageCode'));
         },
 
         /**
@@ -165,14 +165,14 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @return {Object}
          */
         _getFieldsForEdit: function () {
-            var languageCode = this.get('languageCode'),
-                content = this.get('content'),
+            var languageCode = this.get('baseLanguageCode') || this.get('languageCode'),
+                languageFields = this.get('content').getFieldsIn(languageCode),
                 fields;
 
-            if ( Y.Object.isEmpty(content.get('fields')) ) {
+            if ( Y.Object.isEmpty(languageFields) ) {
                 fields = this._getDefaultFields(languageCode);
             } else {
-                fields = Y.clone(content.get('fields'));
+                fields = Y.clone(languageFields);
             }
 
             return fields;

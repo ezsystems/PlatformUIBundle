@@ -34,12 +34,41 @@ YUI.add('ez-rawcontentview', function (Y) {
         },
 
         initializer: function () {
-            this._setFieldViews();
-            this.after('activeChange', function (e) {
-                Y.Array.each(this._fieldViews, function (v) {
-                    v.set('active', e.newVal);
-                });
+            /**
+             * The field views instances for the current content
+             *
+             * @property _fieldViews
+             * @protected
+             * @default []
+             * @type Array of {eZ.FieldView}
+             */
+            this._fieldViews = [];
+            if ( this.get('contentType') ) {
+                this._setFieldViews();
+            }
+            this.after('activeChange', this._forwardActive);
+
+            this.after('*:switchLanguage', function (e) {
+                this.set('languageCode', e.languageCode);
             });
+
+            this.after('languageCodeChange', function () {
+                this._setFieldViews();
+                this.render();
+                this._forwardActive();
+            });
+        },
+
+        /**
+         * Forwards the active flag to the field views.
+         *
+         * @method _forwardActive
+         * @protected
+         */
+        _forwardActive: function () {
+            this._fieldViews.forEach(function (v) {
+                v.set('active', this.get('active'));
+            }, this);
         },
 
         /**
@@ -90,38 +119,28 @@ YUI.add('ez-rawcontentview', function (Y) {
         _setFieldViews: function () {
             var definitions = this.get('contentType').get('fieldDefinitions'),
                 content = this.get('content'),
-                views = [],
                 config = this.get('config');
 
+            this._destroyFieldViews();
             Y.Object.each(definitions, function (def) {
                 var View, fieldView,
-                    field = content.getField(def.identifier);
+                    field = content.getField(def.identifier, this.get('languageCode'));
 
                 if (field) {
                     View = Y.eZ.FieldView.getFieldView(def.fieldType);
                     fieldView = new View({
                         fieldDefinition: def,
                         field: field,
+                        content: this.get('content'),
+                        contentType: this.get('contentType'),
                         config: config,
                     });
                     fieldView.addTarget(this);
-                    views.push(
-                        fieldView
-                    );
+                    this._fieldViews.push(fieldView);
                 } else {
                     console.warn('Content doesn\'t contain field "' + def.identifier + '"');
                 }
             }, this);
-
-            /**
-             * The field views instances for the current content
-             *
-             * @property _fieldViews
-             * @protected
-             * @default []
-             * @type Array of {eZ.FieldView}
-             */
-            this._fieldViews = views;
         },
 
         /**
@@ -164,55 +183,68 @@ YUI.add('ez-rawcontentview', function (Y) {
             });
         },
 
-        destructor: function () {
+        /**
+         * Destroys the field views
+         *
+         * @method _destroyFieldViews
+         * @private
+         */
+        _destroyFieldViews: function () {
             Y.Array.each(this._fieldViews, function (view) {
-                view.destroy();
+                view.destroy({remove: true});
             });
+            this._fieldViews = [];
+        },
+
+        destructor: function () {
+            this._destroyFieldViews();
         },
     }, {
         ATTRS: {
             /**
-             * The location being rendered
+             * The location of the Content item being rendered
              *
              * @attribute location
              * @type Y.eZ.Location
-             * @writeOnce
              */
-            location: {
-                writeOnce: "initOnly",
-            },
+            location: {},
 
             /**
-             * The content associated the current location
+             * The rendered Content item
              *
              * @attribute content
              * @type Y.eZ.Content
-             * @writeOnce
              */
-            content: {
-                writeOnce: "initOnly",
-            },
+            content: {},
 
             /**
-             * The content type of the content at the current location
+             * The Content Type of the Content item
              *
              * @attribute contentType
              * @type Y.eZ.ContentType
-             * @writeOnce
              */
-            contentType: {
-                writeOnce: "initOnly",
-            },
+            contentType: {},
 
             /**
              * Language code of language currently active for the current location
              *
              * @attribute languageCode
              * @type String
+             */
+            languageCode: {},
+
+            /**
+             * Configure the language switcher view to fire an event when
+             * switching language ('event' value) or to let the browser follow
+             * the link to switch language ('navigate' value).
+             *
+             * @attribute languageSwitchMode
+             * @type {String}
+             * @default undefined
              * @writeOnce
              */
-            languageCode: {
-                writeOnce: "initOnly"
+            languageSwitchMode: {
+                writeOnce: 'initOnly',
             },
 
             /**
@@ -227,6 +259,7 @@ YUI.add('ez-rawcontentview', function (Y) {
                         content: this.get('content'),
                         location: this.get('location'),
                         languageCode: this.get('languageCode'),
+                        switchMode: this.get('languageSwitchMode'),
                         bubbleTargets: this
                     });
                 }

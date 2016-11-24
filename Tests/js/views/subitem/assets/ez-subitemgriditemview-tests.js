@@ -14,13 +14,27 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
                 returns: json,
             });
             return mock;
+        },
+        mockNoImageContent = function (content, contentType, languageCode) {
+            Mock.expect(content, {
+                method: 'getFieldsOfType',
+                args: [contentType, 'ezimage', languageCode],
+                returns: [],
+            });
+        },
+        mockContentMainLanguage = function (content, languageCode) {
+            Mock.expect(content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: languageCode,
+            });
         };
 
     renderTest = new Y.Test.Case({
         name: "eZ Subitem Grid Item View render test",
 
-       setUp: function () {
-            var content, contentType;
+        setUp: function () {
+            var content, contentType, languageCode = 'fre-FR';
 
             this.locationJSON = {};
             this.contentJSON = {};
@@ -28,11 +42,8 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
 
             content = getModelMock(this.contentJSON);
             contentType = getModelMock(this.contentTypeJSON);
-            Mock.expect(content, {
-                method: 'getFieldsOfType',
-                args: [contentType, 'ezimage'],
-                returns: [],
-            });
+            mockContentMainLanguage(content, languageCode);
+            mockNoImageContent(content, contentType, languageCode);
 
             this.view = new Y.eZ.SubitemGridItemView({
                 location: getModelMock(this.locationJSON),
@@ -91,16 +102,13 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
     uiStateTest = new Y.Test.Case({
         name: "eZ Subitem Grid Item View UI state test",
 
-       setUp: function () {
-            var content, contentType;
+        setUp: function () {
+            var content, contentType, languageCode = 'fre-FR';
 
             content = new Mock();
             contentType = {};
-            Mock.expect(content, {
-                method: 'getFieldsOfType',
-                args: [contentType, 'ezimage'],
-                returns: [],
-            });
+            mockContentMainLanguage(content, languageCode);
+            mockNoImageContent(content, contentType, languageCode);
 
             this.view = new Y.eZ.SubitemGridItemView({
                 location: {},
@@ -138,14 +146,17 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
     loadImageVariationTest = new Y.Test.Case({
         name: "eZ Subitem Grid Item View loadImageVariation event test",
 
-       setUp: function () {
+        setUp: function () {
+            var languageCode = 'fre-FR';
+
             this.content = new Mock();
             this.contentType = {};
             this.imageFields = [];
 
+            mockContentMainLanguage(this.content, languageCode);
             Mock.expect(this.content, {
                 method: 'getFieldsOfType',
-                args: [this.contentType, 'ezimage'],
+                args: [this.contentType, 'ezimage', languageCode],
                 run: Y.bind(function () {
                     return this.imageFields;
                 }, this),
@@ -239,16 +250,13 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
     errorHandlingTest = new Y.Test.Case({
         name: "eZ Subitem Grid Item View error handling test",
 
-       setUp: function () {
-            var content, contentType;
+        setUp: function () {
+            var content, contentType, languageCode = 'fre-FR';
 
             content = new Mock();
             contentType = {};
-            Mock.expect(content, {
-                method: 'getFieldsOfType',
-                args: [contentType, 'ezimage'],
-                returns: [],
-            });
+            mockContentMainLanguage(content, languageCode);
+            mockNoImageContent(content, contentType, languageCode);
 
             this.view = new Y.eZ.SubitemGridItemView({
                 location: {},
@@ -274,14 +282,15 @@ YUI.add('ez-subitemgriditemview-tests', function (Y) {
     loadedVariationTest = new Y.Test.Case({
         name: "eZ Subitem Grid Item View loaded variation test",
 
-       setUp: function () {
-            var content, contentType;
+        setUp: function () {
+            var content, contentType, languageCode = 'fre-FR';
 
             content = getModelMock({});
             contentType = getModelMock({});
+            mockContentMainLanguage(content, languageCode);
             Mock.expect(content, {
                 method: 'getFieldsOfType',
-                args: [contentType, 'ezimage'],
+                args: [contentType, 'ezimage', languageCode],
                 returns: [{fieldValue: {}}],
             });
 

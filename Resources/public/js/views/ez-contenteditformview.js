@@ -71,7 +71,7 @@ YUI.add('ez-contenteditformview', function (Y) {
 
             Y.Object.each(fieldDefinitions, function (def) {
                 var EditView, view,
-                    field = version.getField(def.identifier);
+                    field = version.getField(def.identifier, languageCode);
 
                 if (field) {
                     try {
@@ -121,11 +121,11 @@ YUI.add('ez-contenteditformview', function (Y) {
         _updateFieldEditViews: function (version) {
             Y.Array.each(this._fieldEditViews, function (fieldEditView) {
                 var fieldIdentifier = fieldEditView.get('field').fieldDefinitionIdentifier,
-                    field = version.getField(fieldIdentifier);
+                    field = version.getField(fieldIdentifier, this.get('languageCode'));
 
                 fieldEditView.set('version', version);
                 fieldEditView.set('field', field);
-            });
+            }, this);
         },
 
         /**

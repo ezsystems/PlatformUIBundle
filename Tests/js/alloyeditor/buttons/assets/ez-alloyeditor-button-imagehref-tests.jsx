@@ -146,11 +146,16 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
 
         },
 
-        _configureContent: function (content, fields) {
+        _configureContent: function (content, fields, fieldIdentifier, mainLanguageCode) {
             Mock.expect(content, {
                 method: 'get',
-                args: ['fields'],
-                returns: fields,
+                args: ['mainLanguageCode'],
+                returns: mainLanguageCode,
+            });
+            Mock.expect(content, {
+                method: 'getField',
+                args: [fieldIdentifier, mainLanguageCode],
+                returns: fields[fieldIdentifier],
             });
         },
 
@@ -192,13 +197,14 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
             var isSelectable = this._getIsSelectableFunction(),
                 fieldIdentifier = 'image',
                 fields = {},
+                mainLanguageCode = 'fre-FR',
                 contentType = new Mock(),
                 content = new Mock();
 
             fields[fieldIdentifier] = {fieldValue: null};
 
             this._configureContentType(contentType, true, fieldIdentifier);
-            this._configureContent(content, fields);
+            this._configureContent(content, fields, fieldIdentifier, mainLanguageCode);
 
             Assert.isFalse(
                 isSelectable({contentType: contentType, content: content}),
@@ -210,13 +216,14 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
             var isSelectable = this._getIsSelectableFunction(),
                 fieldIdentifier = 'image',
                 fields = {},
+                mainLanguageCode = 'fre-FR',
                 contentType = new Mock(),
                 content = new Mock();
 
             fields[fieldIdentifier] = {fieldValue: {id: 42}};
 
             this._configureContentType(contentType, true, fieldIdentifier);
-            this._configureContent(content, fields);
+            this._configureContent(content, fields, fieldIdentifier, mainLanguageCode);
             Assert.isTrue(
                 isSelectable({contentType: contentType, content: content}),
                 "The content should be selectable"

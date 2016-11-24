@@ -4,6 +4,7 @@
  */
 YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
     var renderTest, domEventTest, startAnimationTest, confirmButtonStateTest, imageTest,
+        openContentPeekTest,
         Assert = Y.Assert, Mock = Y.Mock,
         _configureMock = function (type, content, currentVersion, translations, imageFieldTab) {
             Mock.expect(type, {
@@ -16,20 +17,27 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
             });
             Mock.expect(content, {
                 method: 'getFieldsOfType',
-                args: [type, 'ezimage'],
+                args: [type, 'ezimage', translations[0]],
                 returns: imageFieldTab,
             });
             Mock.expect(content, {
                 method: 'get',
-                args: ['currentVersion'],
-                returns: currentVersion,
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if ( attr === 'currentVersion' ) {
+                        return currentVersion;
+                    } else if ( attr === 'mainLanguageCode' ) {
+                        return translations[0];
+                    }
+                    Assert.fail('Unexpect content.get("' + attr + '")');
+                },
             });
             Mock.expect(currentVersion, {
                 method: 'getTranslationsList',
                 returns: translations,
             });
         };
-    
+
     renderTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Selected render tests',
 
@@ -40,7 +48,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
         "Should use the template": function () {
             var templateCalled = false,
                 origTpl = this.view.template;
-            
+
             this.view.template = function () {
                 templateCalled = true;
                 return origTpl.apply(this, arguments);
@@ -55,7 +63,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 translations = ['LYO-69', 'FRA-fr'],
                 location, contentInfo, type, content, currentVersion,
                 tplLocation = {}, tplContentInfo = {}, tplType = {}, tplContent = {};
-                
+
             location = new Mock();
             content = new Mock();
             contentInfo = new Mock();
@@ -125,7 +133,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
 
         "Should pass false as the contentInfo, location and type if no content struct is set": function () {
             var origTpl = this.view.template;
-            
+
             this.view.template = function (variables) {
                 Assert.isFalse(variables.content, "The content variable should be false");
                 Assert.isFalse(variables.contentInfo, "The content variable should be false");
@@ -183,7 +191,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 struct = {content: content, contentType: type},
                 that = this;
 
-            _configureMock(type, content, currentVersion, [], []);
+            _configureMock(type, content, currentVersion, ['fre-FR'], []);
 
             this.view.set('addConfirmButton', true);
             this.view.set('contentStruct', struct);
@@ -329,7 +337,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 method: 'toJSON',
                 returns: {},
             });
-            _configureMock(type, content, currentVersion, [], []);
+            _configureMock(type, content, currentVersion, ['fre-FR'], []);
 
             this.view.set('isAlreadySelected', isAlreadySelected1);
             this.view.set('isSelectable', isselectable1);
@@ -373,7 +381,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 imageField = {fieldValue: "42"},
                 imageFieldTab = [imageField];
 
-            _configureMock(type, content, currentVersion, [], imageFieldTab);
+            _configureMock(type, content, currentVersion, ['fre-FR'], imageFieldTab);
 
             this.view.render();
             this.view.set('contentStruct', struct);
@@ -396,7 +404,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 currentVersion = new Mock(),
                 struct = {content: content, contentType: type};
 
-            _configureMock(type, content, currentVersion, [], '');
+            _configureMock(type, content, currentVersion, ['fre-FR'], '');
 
             this.view.render();
             this.view.set('contentStruct', struct);
@@ -464,7 +472,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 imageField = {fieldValue: "42"},
                 imageFieldTab = [imageField];
 
-            _configureMock(type, content, currentVersion, [], imageFieldTab);
+            _configureMock(type, content, currentVersion, ['fre-FR'], imageFieldTab);
 
             this.view.render();
             this.view.set('variationIdentifier', variationIdentifier);
@@ -489,7 +497,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
 
         "Should add loaded image state class on the container when image is loaded": function () {
             var container = this.view.get('container');
-            
+
             this.view._set('imageState', "image-loading");
             Assert.isTrue(container.hasClass('is-state-image-loading'), 'Container should have "is-state-image-loading" class');
 
@@ -510,10 +518,56 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
         },
     });
 
+    openContentPeekTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Selected open content peek tests',
+
+        setUp: function () {
+            var contentType = new Mock(),
+                content = new Mock(),
+                location = new Mock(),
+                currentVersion = new Mock();
+
+            this.view = new Y.eZ.UniversalDiscoverySelectedView({
+                container: '.container',
+            });
+
+            _configureMock(contentType, content, currentVersion, ['fre-FR'], []);
+            Mock.expect(location, {
+                method: 'toJSON',
+                returns: {},
+            });
+            this.view.set('contentStruct', {
+                contentType: contentType,
+                content: content,
+                location: location,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should fire the content peek": function () {
+            var container = this.view.get('container'),
+                visual = container.one('.ez-ud-selected-visual');
+
+            container.once('tap', function (e) {
+                Assert.isTrue(
+                    !!e.prevented,
+                    "The tap event should have been prevented"
+                );
+            });
+            this.view.on('contentPeekOpen', this.next(function () {}));
+            visual.simulateGesture('tap');
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Selected View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(startAnimationTest);
     Y.Test.Runner.add(confirmButtonStateTest);
     Y.Test.Runner.add(imageTest);
+    Y.Test.Runner.add(openContentPeekTest);
 }, '', {requires: ['test', 'node-style', 'node-event-simulate', 'ez-universaldiscoveryselectedview']});

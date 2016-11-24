@@ -105,7 +105,7 @@ YUI.add('ez-subitemgriditemview', function (Y) {
             var content = this.get('content'),
                 contentType = this.get('contentType');
 
-            return Y.Array.find(content.getFieldsOfType(contentType, 'ezimage'), function (field) {
+            return Y.Array.find(content.getFieldsOfType(contentType, 'ezimage', content.get('mainLanguageCode')), function (field) {
                 return !!field.fieldValue;
             });
         },

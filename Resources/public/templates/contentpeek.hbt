@@ -1,0 +1,7 @@
+<header class="ez-contentpeek-header ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
+    <a href="#" class="ez-contentpeek-close" data-icon="&#xe62a;"></a>
+    <h1 class="ez-contentpeek-name">{{ content.name }}</h1>
+    <p class="ez-contentpeek-contenttype">{{ translate_property contentType.names }}</p>
+</header>
+
+<div class="ez-rawcontentview-container"></div>

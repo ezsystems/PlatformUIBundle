@@ -46,9 +46,8 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
                 stack = new Y.Parallel(),
                 loadedRelation = {},
                 loadingError = false,
-                contentDestinations = this.get('host').get('content').relations(
-                    e.relationType, e.fieldDefinitionIdentifier
-                ),
+                sourceContent = e.content,
+                contentDestinations,
                 end = stack.add(function (error, struct) {
                     if (error) {
                         e.target.set("loadingError", true);
@@ -57,6 +56,16 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
                         relatedContentListArray.push(struct);
                     }
                 });
+
+            if ( !sourceContent ) {
+                console.log('[DEPRECATED] loadObjectRelations event without a source content is deprecated');
+                console.log('[DEPRECATED] Please provide a source Content item in the event facade under the `content` identifier');
+                console.log('[DEPRECATED] This feature will be removed from PlatformUI 2.0');
+                sourceContent = this.get('host').get('content');
+            }
+            contentDestinations = sourceContent.relations(
+                e.relationType, e.fieldDefinitionIdentifier
+            );
 
             Y.Array.each(contentDestinations, function (value) {
                 if (!loadedRelation[value.destination]) {
@@ -209,6 +218,8 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.ObjectRelationsLoad, ['locationViewViewService', 'contentEditViewService']
+        Y.eZ.Plugin.ObjectRelationsLoad, [
+            'locationViewViewService', 'contentEditViewService', 'contentPeekViewService',
+        ]
     );
 });

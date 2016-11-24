@@ -31,7 +31,10 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
         events: {
             '.ez-ud-selected-confirm': {
                 'tap': '_confirmSelected',
-            }
+            },
+            '.ez-ud-selected-visual': {
+                'tap': '_openContentPeekView',
+            },
         },
 
         initializer: function () {
@@ -53,7 +56,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
             this._errorHandlingMethod = function () {
                 this._set('imageState', STATE_IMAGE_ERROR);
             };
-            
+
             this.after('contentStructChange', function (e) {
                 this._setConfirmButtonState(e.newVal);
                 if ( this.get('contentStruct') && this.get('contentStruct').content ) {
@@ -68,6 +71,35 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
                 if ( this.get('confirmButtonEnabled') ) {
                     this._uiResetAnimation();
                 }
+            });
+        },
+
+        /**
+         * Opens the ContentPeekView by firing the `contentPeekOpen` event.
+         *
+         * @method _openContentPeekView
+         * @protected
+         * @param {EventFacade} e tap event facade
+         */
+        _openContentPeekView: function (e) {
+            var struct = this.get('contentStruct');
+
+            e.preventDefault();
+            /**
+             * Fired to open the content peek view.
+             *
+             * @event contentPeekOpen
+             * @param {Object} config
+             * @param {eZ.Content} config.content
+             * @param {eZ.Location} config.location
+             * @param {eZ.ContentType} config.contentType
+             */
+            this.fire('contentPeekOpen', {
+                config: {
+                    content: struct.content,
+                    location: struct.location,
+                    contentType: struct.contentType,
+                },
             });
         },
 
@@ -152,7 +184,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
             var content = this.get('contentStruct').content,
                 contentType = this.get('contentStruct').contentType;
 
-            return Y.Array.find(content.getFieldsOfType(contentType, 'ezimage'), function (field) {
+            return Y.Array.find(content.getFieldsOfType(contentType, 'ezimage', content.get('mainLanguageCode')), function (field) {
                 return !!field.fieldValue;
             });
         },
@@ -347,7 +379,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
             imageField : {
                 value: null
             },
-            
+
             /**
              * The variation identifier to use to display the image
              *

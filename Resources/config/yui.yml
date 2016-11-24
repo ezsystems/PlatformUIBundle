@@ -194,6 +194,8 @@ system:
                         - 'ez-discoverybarview'
                         - 'ez-universaldiscoveryviewservice'
                         - 'ez-universaldiscoveryview'
+                        - 'ez-contentpeekviewservice'
+                        - 'ez-contentpeekview'
                         - 'ez-confirmboxviewservice'
                         - 'ez-confirmboxview'
                         - 'ez-languageselectionboxviewservice'
@@ -206,6 +208,7 @@ system:
                         - 'ez-registerlanguagehelpersplugin'
                         - 'ez-domstateplugin'
                         - 'ez-universaldiscoveryplugin'
+                        - 'ez-contentpeekplugin'
                         - 'ez-confirmboxplugin'
                         - 'ez-languageselectionboxplugin'
                         - 'ez-notificationhubplugin'
@@ -298,6 +301,9 @@ system:
                 ez-universaldiscoveryviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-imagevariationloadplugin', 'ez-universaldiscoverycontenttreeplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js"
+                ez-contentpeekviewservice:
+                    requires: ['ez-viewservice', 'ez-sideviewservice']
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-contentpeekviewservice.js"
                 ez-confirmboxviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-confirmboxviewservice.js"
@@ -575,6 +581,12 @@ system:
                 universaldiscoveryselectedview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/universaldiscovery/selected.hbt"
+                ez-contentpeekview:
+                    requires: ['ez-templatebasedview', 'ez-rawcontentview', 'contentpeekview-ez-template']
+                    path: "%ez_platformui.public_dir%/js/views/ez-contentpeekview.js"
+                contentpeekview-ez-template:
+                    type: 'template'
+                    path: "%ez_platformui.public_dir%/templates/contentpeek.hbt"
                 ez-confirmboxview:
                     requires: ['ez-templatebasedview', 'confirmboxview-ez-template']
                     path: "%ez_platformui.public_dir%/js/views/ez-confirmboxview.js"
@@ -1235,6 +1247,9 @@ system:
                 ez-notificationhubplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-notificationhubplugin.js"
+                ez-contentpeekplugin:
+                    requires: ['plugin', 'base', 'ez-pluginregistry']
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-contentpeekplugin.js"
                 ez-confirmboxplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-confirmboxplugin.js"

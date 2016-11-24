@@ -4,7 +4,8 @@
  */
 YUI.add('ez-versionmodel-tests', function (Y) {
     var modelTest, createTest, updateTest, removeTest, hasTranslationTest,
-        isDraftTest, createdByTest, isCurrentVersionTest,
+        isDraftTest, createdByTest, isCurrentVersionTest, getFieldTest,
+        getFieldsInTest, setFieldsInTest,
         restResponse = {
             "Version": {
                 "_media-type": "application/vnd.ez.api.Version+json",
@@ -40,14 +41,26 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                             "id": 978,
                             "fieldDefinitionIdentifier": "name",
                             "languageCode": "eng-GB",
-                            "fieldValue": "T11"
+                            "fieldValue": "name"
                         },
                         {
                             "id": 979,
                             "fieldDefinitionIdentifier": "text",
                             "languageCode": "eng-GB",
                             "fieldValue": "Once and for all"
-                        }
+                        },
+                        {
+                            "id": 978,
+                            "fieldDefinitionIdentifier": "name",
+                            "languageCode": "fre-FR",
+                            "fieldValue": "nom"
+                        },
+                        {
+                            "id": 979,
+                            "fieldDefinitionIdentifier": "text",
+                            "languageCode": "fre-FR",
+                            "fieldValue": "Une bois fois pour toute"
+                        },
                     ]
                 },
                 "Relations": {
@@ -68,7 +81,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             this.serviceMock = new Y.Mock();
             this.serviceLoad = 'loadContent';
             this.rootProperty = "Version.VersionInfo";
-            this.parsedAttributeNumber = Y.eZ.Version.ATTRS_REST_MAP.length + 1 + 2; // links + "manually" parsed fields
+            this.parsedAttributeNumber = Y.eZ.Version.ATTRS_REST_MAP.length + 1 + 3; // links + "manually" parsed fields + fields by languages
         },
 
         setUp: function () {
@@ -122,7 +135,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             fields = res.fields;
 
             Y.Assert.areEqual(
-                this.loadResponse.Version.Fields.field.length,
+                this.loadResponse.Version.Fields.field.length / 2,
                 Y.Object.size(fields),
                 "The fields from the current version should all be imported"
             );
@@ -139,24 +152,35 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             );
         },
 
-        "Should return the fields": function () {
+        "Should organized the field by language and field identifier": function () {
             var m = this.model,
-                fields = {
-                    'test': {'id': 42},
-                    'test2': {'id': 43}
-                };
-            m.set('fields', fields);
+                response = {
+                    document: this.loadResponse
+                },
+                fields, res;
 
-            Y.Assert.areEqual(
-                fields.test.id,
-                m.getField('test').id
+            res = m .parse(response);
+            fields = res.fieldsByLanguage;
+
+            Assert.areEqual(
+                2, Y.Object.size(fields),
+                "2 languages should be detected for the fields"
             );
-            Y.Assert.areEqual(
-                fields.test2.id,
-                m.getField('test2').id
+            Assert.areEqual(
+                2, Y.Object.size(fields['fre-FR']),
+                "there should be 2 fields in French"
             );
-            Y.Assert.isUndefined(
-                m.getField('doesnotexist')
+            Assert.areEqual(
+                2, Y.Object.size(fields['eng-GB']),
+                "there should be 2 fields in French"
+            );
+            Assert.areEqual(
+                "name", fields['eng-GB'].name.fieldValue,
+                "The field should be organized by language and identifier"
+            );
+            Assert.areEqual(
+                "nom", fields['fre-FR'].name.fieldValue,
+                "The field should be organized by language and identifier"
             );
         },
 
@@ -777,6 +801,129 @@ YUI.add('ez-versionmodel-tests', function (Y) {
         },
     });
 
+    getFieldTest = new Y.Test.Case({
+        name: "eZ Version Model getField test",
+
+        setUp: function () {
+            this.version = new Y.eZ.Version();
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should return the field in a given language": function () {
+            var patates = {fieldValue: 'Patates'};
+
+            this.version.set('fieldsByLanguage', {
+                'fre-FR': {name: patates, location: {}},
+                'eng-GB': {name: {fieldValue: 'Potatoes'}, location: {}},
+            });
+
+            Assert.areSame(
+                patates, this.version.getField('name', 'fre-FR'),
+                "The field in the given language should have been returned"
+            );
+        },
+
+        "Should handle non existing language": function () {
+            this.version.set('fieldsByLanguage', {
+                'fre-FR': {name: {fieldValue: 'Patates'}, location: {}},
+                'eng-GB': {name: {fieldValue: 'Potatoes'}, location: {}},
+            });
+            Assert.isUndefined(this.version.getField('name', 'nor-NO'));
+        },
+
+        // BC usage
+        "Should fallback on the `fields` attribute is not field by language is set": function () {
+            var field = {},
+                fields = {},
+                identifier = 'title';
+
+            fields[identifier] = field;
+            this.version.set('fields', fields);
+
+            Assert.areSame(
+                field, this.version.getField(identifier, 'fre-FR'),
+                "The field from the `fields` attribute should be returned"
+            );
+        },
+
+        // deprecated usage
+        "Should return the fields": function () {
+            var version = this.version,
+                fields = {
+                    'test': {'id': 42},
+                    'test2': {'id': 43}
+                };
+
+            version.set('fields', fields);
+            Assert.areEqual(
+                fields.test.id,
+                version.getField('test').id
+            );
+            Assert.areEqual(
+                fields.test2.id,
+                version.getField('test2').id
+            );
+            Assert.isUndefined(
+                version.getField('doesnotexist')
+            );
+        },
+    });
+
+    getFieldsInTest = new Y.Test.Case({
+        name: "eZ Version Model getFieldsIn test",
+
+        setUp: function () {
+            this.version = new Y.eZ.Version();
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should return the fields in a given language": function () {
+            this.version.set('fieldsByLanguage', {
+                'fre-FR': {name: {fieldValue: 'Patates'}, location: {}},
+                'eng-GB': {name: {fieldValue: 'Potatoes'}, location: {}},
+            });
+
+            Assert.areSame(
+                this.version.get('fieldsByLanguage')['fre-FR'],
+                this.version.getFieldsIn('fre-FR'),
+                "The fields in the given language should be returned"
+            );
+        },
+    });
+
+    setFieldsInTest = new Y.Test.Case({
+        name: "eZ Version Model setFieldsIn test",
+
+        setUp: function () {
+            this.version = new Y.eZ.Version();
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should set the fields in a given language": function () {
+            var fields = {name: {fieldValue: 'Patates'}, location: {}};
+
+            this.version.setFieldsIn(fields, 'fre-FR');
+
+            Assert.areSame(
+                fields,
+                this.version.getFieldsIn('fre-FR'),
+                "The fields in the given language should be set"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Version Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(createTest);
@@ -786,4 +933,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
     Y.Test.Runner.add(isDraftTest);
     Y.Test.Runner.add(createdByTest);
     Y.Test.Runner.add(isCurrentVersionTest);
+    Y.Test.Runner.add(getFieldTest);
+    Y.Test.Runner.add(getFieldsInTest);
+    Y.Test.Runner.add(setFieldsInTest);
 }, '', {requires: ['test', 'json', 'model-tests', 'ez-versionmodel', 'ez-restmodel']});

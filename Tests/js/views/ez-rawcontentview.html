@@ -41,7 +41,7 @@
         filter: loaderFilter,
         modules: {
             "ez-rawcontentview": {
-                requires: ['ez-templatebasedview', 'ez-fieldview', 'ez-languageswitcherview', 'ez-accordion-element', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-fieldview', 'ez-accordion-element', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-rawcontentview.js"
             },
             "ez-templatebasedview": {
@@ -64,14 +64,6 @@
                 requires: ['transition'],
                 fullpath: "../../../Resources/public/js/extensions/ez-accordion-element.js"
             },
-            "ez-languageswitcherview": {
-                requires: ['ez-templatebasedview', 'ez-expandable', 'event-tap'],
-                fullpath: "../../../Resources/public/js/views/ez-languageswitcherview.js"
-            },
-            "ez-expandable": {
-                requires: ['view'],
-                fullpath: "../../../Resources/public/js/extensions/ez-expandable.js"
-            }
         }
     }).use('ez-rawcontentview-tests', function (Y) {
         Y.Test.Runner.run();

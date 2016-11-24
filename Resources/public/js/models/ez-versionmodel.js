@@ -155,27 +155,109 @@ YUI.add('ez-versionmodel', function (Y) {
          * @return {Object}
          */
         _parseStruct: function (struct, responseDoc) {
-            var attrs, fields = {};
+            var attrs, fields = responseDoc.Version.Fields.field;
 
             attrs = Y.eZ.RestModel.prototype._parseStruct.call(this, struct);
 
-            Y.Array.each(responseDoc.Version.Fields.field, function (field) {
-                fields[field.fieldDefinitionIdentifier] = field;
-            });
-            attrs.fields = fields;
+            attrs.fields = this._indexFieldsByIdentifier(fields);
+            attrs.fieldsByLanguage = this._indexFieldsByLanguages(fields);
             attrs.id = responseDoc.Version._href;
             return attrs;
         },
 
         /**
-         * Returns the field which identifier is in parameter
+         * Indexes the given `fields` by identifier. This is buggy by design but
+         * kept for BC as the fields can be translated so the same identifier
+         * can appears several times in the REST response.
+         *
+         * @deprecated
+         * @method _indexFieldsByIdentifier
+         * @protected
+         * @param {Array} fields
+         * @return {Object}
+         */
+        _indexFieldsByIdentifier: function (fields) {
+            var fieldsByIdentifier = {};
+
+            fields.forEach(function (field) {
+                fieldsByIdentifier[field.fieldDefinitionIdentifier] = field;
+            });
+
+            return fieldsByIdentifier;
+        },
+
+        /**
+         * Indexes the given `fields` by language code and identifier.
+         *
+         * @method _indexFieldsByLanguages
+         * @protected
+         * @param {Array} fields
+         * @return {Object}
+         */
+        _indexFieldsByLanguages: function (fields) {
+            var fieldsByLanguage = {};
+
+            fields.forEach(function (field) {
+                var language = field.languageCode,
+                    identifier = field.fieldDefinitionIdentifier;
+
+                fieldsByLanguage[language] = fieldsByLanguage[language] || {};
+                fieldsByLanguage[language][identifier] = field;
+            });
+
+            return fieldsByLanguage;
+        },
+
+        /**
+         * Returns the field which identifier is in parameter in the given
+         * language. For BC, `languageCode` can be omitted but such case,
+         * `getField` falls back to a deprecated and buggy behaviour with a
+         * version available in several languages.
          *
          * @method getField
          * @param {String} identifier the field definition identifier
+         * @param {String} languageCode the language code in which the field
+         * should be returned
          * @return {Object} or undefined if the field does not exists
          */
-        getField: function (identifier) {
-            return this.get('fields')[identifier];
+        getField: function (identifier, languageCode) {
+            var fields;
+
+            if ( !languageCode ) {
+                console.log('[DEPRECATED] `Version#getField` call without language code is deprecated');
+                console.log('[DEPRECATED] Please specify a language code');
+                return this.get('fields')[identifier];
+            }
+            if ( Y.Object.isEmpty(this.get('fieldsByLanguage')) ) {
+                console.log('[DEPRECATED] `Version#getField` call with the fields by language not set');
+                console.log('[DEPRECATED] Falling back on `field` attribute. This usage of `getFields` is deprecated');
+                console.log('[DEPRECATED] Please set the fields by language with `setFieldsIn`');
+                return this.get('fields')[identifier];
+            }
+            fields = this.getFieldsIn(languageCode);
+            return fields ? fields[identifier] : undefined;
+        },
+
+        /**
+         * Returns the fields in the given language.
+         *
+         * @method getFieldsIn
+         * @param {String} languageCode
+         * @return {Object|undefined}
+         */
+        getFieldsIn: function (languageCode) {
+            return this.get('fieldsByLanguage')[languageCode];
+        },
+
+        /**
+         * Sets the fields in the given language
+         *
+         * @method setFieldsIn
+         * @param {Object} fields
+         * @param {String} languageCode
+         */
+        setFieldsIn: function (fields, languageCode) {
+            this.get('fieldsByLanguage')[languageCode] = fields;
         },
 
         /**
@@ -206,10 +288,34 @@ YUI.add('ez-versionmodel', function (Y) {
              * @attribute fields
              * @type Object
              * @default {}
+             * @deprecated
              */
             fields: {
                 value: {}
-            }
+            },
+
+            /**
+             * The fields of the version by language code and field identifier,
+             * e.g
+             *      'fre-FR': {
+             *          'title': {},
+             *          'body': {},
+             *      }, {
+             *      'eng-GB': {
+             *          'title: {},
+             *          'body': {},
+             *      }
+             *
+             * Do not use this attribute directly, use `setFieldsIn`,
+             * `getFieldsIn` or `getField`.
+             *
+             * @attribute fieldsByLanguage
+             * @type {Object}
+             * @default {}
+             */
+            fieldsByLanguage: {
+                value: {},
+            },
         }
     });
 });

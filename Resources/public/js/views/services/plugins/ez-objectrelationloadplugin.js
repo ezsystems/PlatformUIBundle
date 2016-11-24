@@ -36,9 +36,18 @@ YUI.add('ez-objectrelationloadplugin', function (Y) {
         _loadFieldRelatedContent: function (e) {
             var loadOptions = {api: this.get('host').get('capi')},
                 relatedContent = this.get('relatedContent'),
-                contentDestination = this.get('host').get('content').relations(
-                    'ATTRIBUTE', e.fieldDefinitionIdentifier
-                ).shift();
+                sourceContent = e.content,
+                contentDestination;
+
+            if ( !sourceContent ) {
+                console.log('[DEPRECATED] loadFieldRelatedContent event without a source content is deprecated');
+                console.log('[DEPRECATED] Please provide a source Content item in the event facade under the `content` identifier');
+                console.log('[DEPRECATED] This feature will be removed from PlatformUI 2.0');
+                sourceContent = this.get('host').get('content');
+            }
+            contentDestination = sourceContent.relations(
+                'ATTRIBUTE', e.fieldDefinitionIdentifier
+            ).shift();
 
             relatedContent.set('id', contentDestination.destination);
             relatedContent.load(loadOptions, function (error) {
@@ -73,6 +82,8 @@ YUI.add('ez-objectrelationloadplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.ObjectRelationLoad, ['locationViewViewService', 'contentEditViewService']
+        Y.eZ.Plugin.ObjectRelationLoad, [
+            'locationViewViewService', 'contentEditViewService', 'contentPeekViewService',
+        ]
     );
 });

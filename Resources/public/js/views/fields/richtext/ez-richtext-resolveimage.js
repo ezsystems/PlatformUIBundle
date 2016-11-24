@@ -46,7 +46,10 @@ YUI.add('ez-richtext-resolveimage', function (Y) {
             return;
         }
 
-        imageField = content.get('fields')[contentType.getFieldDefinitionIdentifiers('ezimage')[0]];
+        imageField = content.getField(
+            contentType.getFieldDefinitionIdentifiers('ezimage')[0],
+            content.get('mainLanguageCode')
+        );
         embedNodes.forEach(function (node) {
             this._renderLoadingEmbed(node);
             this._loadVariation(view, content, imageField, node);
@@ -73,7 +76,10 @@ YUI.add('ez-richtext-resolveimage', function (Y) {
                 contentType = struct.contentType,
                 imageField;
 
-            imageField = content.get('fields')[contentType.getFieldDefinitionIdentifiers('ezimage')[0]];
+            imageField = content.getField(
+                contentType.getFieldDefinitionIdentifiers('ezimage')[0],
+                content.get('mainLanguageCode')
+            );
             mapNode[content.get('contentId')].forEach(Y.bind(this._loadVariation, this, view, content, imageField));
         }, this);
     };
