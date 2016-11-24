@@ -31,6 +31,7 @@ parameters:
     ezsystems.platformui.loader.combo_loader.class: EzSystems\PlatformUIBundle\Loader\ComboLoader
     ezsystems.platformui.translation.extractor.handlebars.class: EzSystems\PlatformUIBundle\Translation\HandleBarsExtractor
     ezsystems.platformui.translation.extractor.javascript.class: EzSystems\PlatformUIBundle\Translation\JavascriptExtractor
+    ezsystems.platformui.event_subscriber.pjax_browser_language.class: EzSystems\PlatformUIBundle\EventListener\PjaxBrowserLanguageSubscriber
 
     # override of the REST content controller
     ezpublish_rest.controller.content.class: EzSystems\PlatformUIBundle\Controller\Rest\ContentController
@@ -268,3 +269,8 @@ services:
             - "@=service('kernel').locateResource('@eZPlatformUIBundle/bin/Translation/translation_dumper.js')"
         tags:
             - { name: translation.extractor, alias: javascript }
+
+    ezsystems.platformui.event_subscriber.pjax_browser_language:
+        class: "%ezsystems.platformui.event_subscriber.pjax_browser_language.class%"
+        tags:
+            - { name: kernel.event_subscriber }
