@@ -422,24 +422,26 @@ YUI.add('ez-richtext-editview', function (Y) {
              * @type {Object}
              */
             toolbarsConfig: {
-                value: {
-                    styles: {
-                        selections: [
-                            ToolbarConfig.Link,
-                            ToolbarConfig.Text,
-                            ToolbarConfig.Table,
-                            ToolbarConfig.Heading,
-                            ToolbarConfig.Paragraph,
-                            ToolbarConfig.Image,
-                            ToolbarConfig.Embed,
-                        ],
-                        tabIndex: 1
-                    },
-                    ezadd: {
-                        buttons: ['ezheading', 'ezparagraph', 'ezlist', 'ezimage', 'ezembed'],
-                        tabIndex: 2,
-                    },
-                }
+                valueFn: function () {
+                    return {
+                        styles: {
+                            selections: [
+                                ToolbarConfig.Link,
+                                ToolbarConfig.Text,
+                                ToolbarConfig.Table,
+                                new ToolbarConfig.HeadingConfig(),
+                                ToolbarConfig.Paragraph,
+                                ToolbarConfig.Image,
+                                ToolbarConfig.Embed,
+                            ],
+                            tabIndex: 1
+                        },
+                        ezadd: {
+                            buttons: ['ezheading', 'ezparagraph', 'ezlist', 'ezimage', 'ezembed'],
+                            tabIndex: 2,
+                        },
+                    };
+                },
             },
 
             /**
