@@ -4,6 +4,6 @@ YUI.add('fake-toolbarconfig', function (Y) {
     Y.eZ.AlloyEditorToolbarConfig.Text = {};
     Y.eZ.AlloyEditorToolbarConfig.Table = {};
     Y.eZ.AlloyEditorToolbarConfig.HeadingConfig = function () {};
-    Y.eZ.AlloyEditorToolbarConfig.Paragraph = {};
+    Y.eZ.AlloyEditorToolbarConfig.ParagraphConfig = function () {};
 });
 

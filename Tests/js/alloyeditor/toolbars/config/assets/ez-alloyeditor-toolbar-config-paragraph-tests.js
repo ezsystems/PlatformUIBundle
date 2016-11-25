@@ -4,13 +4,12 @@
  */
 YUI.add('ez-alloyeditor-toolbar-config-paragraph-tests', function (Y) {
     var defineTest, testTest,
-        Paragraph = Y.eZ.AlloyEditorToolbarConfig.Paragraph,
         BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase,
         Assert = Y.Assert, Mock = Y.Mock;
 
     defineTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ToolbarConfigDefineTest, {
         name: 'eZ AlloyEditor paragraph config toolbar define test',
-        toolbarConfig: Paragraph,
+        toolbarConfig: new Y.eZ.AlloyEditorToolbarConfig.ParagraphConfig(),
         toolbarConfigName: "paragraph",
         methods: {
             getArrowBoxClasses: BlockBase.getArrowBoxClasses,
@@ -62,6 +61,8 @@ YUI.add('ez-alloyeditor-toolbar-config-paragraph-tests', function (Y) {
                     return this.insideParagraph;
                 }, this)
             });
+
+            this.paragraph = new Y.eZ.AlloyEditorToolbarConfig.ParagraphConfig();
         },
 
         tearDown: function () {
@@ -73,7 +74,7 @@ YUI.add('ez-alloyeditor-toolbar-config-paragraph-tests', function (Y) {
         "Non empty selection": function () {
             this.emptySelection = false;
             Assert.isFalse(
-                Paragraph.test({editor: this.editor}),
+                this.paragraph.test({editor: this.editor}),
                 "The toolbar should be hidden"
             );
         },
@@ -82,7 +83,7 @@ YUI.add('ez-alloyeditor-toolbar-config-paragraph-tests', function (Y) {
             this.emptySelection = true;
             this.insideParagraph = false;
             Assert.isFalse(
-                Paragraph.test({editor: this.editor}),
+                this.paragraph.test({editor: this.editor}),
                 "The toolbar should be hidden"
             );
         },
@@ -91,7 +92,7 @@ YUI.add('ez-alloyeditor-toolbar-config-paragraph-tests', function (Y) {
             this.emptySelection = true;
             this.insideParagraph = true;
             Assert.isTrue(
-                Paragraph.test({editor: this.editor}),
+                this.paragraph.test({editor: this.editor}),
                 "The toolbar should be visible"
             );
         },
