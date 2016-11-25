@@ -40,8 +40,18 @@ YUI.add('ez-alloyeditor-button-blocktextalignright', function (Y) {
             return {
                 textAlign: 'right',
                 classIcon: 'right',
-                label: Y.eZ.trans('right', {}, 'onlineeditor'),
+                label: 'Right',
             };
+        },
+
+        /**
+         * Returns the translated label for the button
+         *
+         * @method _getLabel
+         * @return {String}
+         */
+        _getLabel: function () {
+            return Y.eZ.trans('right', {}, 'onlineeditor');
         },
     });
 

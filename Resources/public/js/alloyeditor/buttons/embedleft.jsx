@@ -37,8 +37,18 @@ YUI.add('ez-alloyeditor-button-embedleft', function (Y) {
             return {
                 alignment: 'left',
                 classIcon: 'embedleft',
-                label: Y.eZ.trans('left', {}, 'onlineeditor'),
+                label: 'Left',
             };
+        },
+
+        /**
+         * Returns the translated label for the button
+         *
+         * @method _getLabel
+         * @return {String}
+         */
+        _getLabel: function () {
+            return Y.eZ.trans('left', {}, 'onlineeditor');
         },
     });
 

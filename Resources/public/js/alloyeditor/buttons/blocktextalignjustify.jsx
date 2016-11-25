@@ -35,8 +35,18 @@ YUI.add('ez-alloyeditor-button-blocktextalignjustify', function (Y) {
             return {
                 textAlign: 'justify',
                 classIcon: 'justified',
-                label: Y.eZ.trans('justify', {}, 'onlineeditor'),
+                label: 'Justify',
             };
+        },
+
+        /**
+         * Returns the translated label for the button
+         *
+         * @method _getLabel
+         * @return {String}
+         */
+        _getLabel: function () {
+            return Y.eZ.trans('justify', {}, 'onlineeditor');
         },
     });
 

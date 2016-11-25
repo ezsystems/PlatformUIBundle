@@ -24,11 +24,10 @@ YUI.add('ez-alloyeditor-button-embedhref-tests', function (Y) {
         },
 
         "Should render a button": function () {
-            var button,
-                label = 'Choose another one';
+            var button;
 
             button = ReactDOM.render(
-                <Y.eZ.AlloyEditorButton.ButtonEmbedHref editor={this.editor} label={label} />,
+                <Y.eZ.AlloyEditorButton.ButtonEmbedHref editor={this.editor} />,
                 this.container
             );
 
@@ -41,7 +40,7 @@ YUI.add('ez-alloyeditor-button-embedhref-tests', function (Y) {
                 "The component should generate a button"
             );
             Assert.areEqual(
-                label, ReactDOM.findDOMNode(button).title,
+                "select.another.content.item domain=onlineeditor", ReactDOM.findDOMNode(button).title,
                 "The label should be set as the title on the button"
             );
         },

@@ -34,9 +34,20 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
             return {
                 command: 'ezembed',
                 modifiesSelection: true,
-                udwTitle: Y.eZ.trans('select.a.content.to.embed', {}, 'onlineeditor'),
+                udwTitle: 'Select a content to embed',
                 udwContentDiscoveredMethod: '_addEmbed',
             };
+        },
+
+        /**
+         * Returns the UDW title to pick a Content to embed.
+         *
+         * @method _getUDWTitle
+         * @protected
+         * @return {String}
+         */
+        _getUDWTitle: function () {
+            return Y.eZ.trans('select.a.content.to.embed', {}, 'onlineeditor');
         },
 
         /**

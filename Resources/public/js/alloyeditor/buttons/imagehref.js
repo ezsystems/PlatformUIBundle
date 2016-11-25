@@ -43,13 +43,25 @@ YUI.add('ez-alloyeditor-button-imagehref', function (Y) {
 
         getDefaultProps: function () {
             return {
-                udwTitle: Y.eZ.trans('select.an.image.to.embed', {}, 'onlineeditor'),
+                udwTitle: 'Select an image to embed',
                 udwContentDiscoveredMethod: "_updateEmbed",
                 udwIsSelectableMethod: '_isImage',
                 udwLoadContent: true,
-                label: Y.eZ.trans('select.another.image', {}, 'onlineeditor'),
+                label: 'Select another image',
             };
         },
+
+        /**
+         * Returns the UDW title to pick a Content to embed.
+         *
+         * @method _getUDWTitle
+         * @protected
+         * @return {String}
+         */
+        _getUDWTitle: function () {
+            return Y.eZ.trans('select.an.image.to.embed', {}, 'onlineeditor');
+        },
+
 
         /**
          * Updates the image element with the selected content in UDW.
@@ -69,7 +81,7 @@ YUI.add('ez-alloyeditor-button-imagehref', function (Y) {
         render: function () {
             return (
                 React.createElement("button", {className: "ae-button", onClick: this._chooseContent, 
-                    tabIndex: this.props.tabIndex, title: this.props.label}, 
+                    tabIndex: this.props.tabIndex, title: Y.eZ.trans('select.another.image', {}, 'onlineeditor')}, 
                     React.createElement("span", {className: "ez-font-icon ae-icon-image ez-ae-icon-image"})
                 )
             );
