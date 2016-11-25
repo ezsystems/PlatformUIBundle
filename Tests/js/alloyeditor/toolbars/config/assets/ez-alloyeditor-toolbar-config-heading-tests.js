@@ -4,13 +4,12 @@
  */
 YUI.add('ez-alloyeditor-toolbar-config-heading-tests', function (Y) {
     var defineTest, testTest,
-        Heading = Y.eZ.AlloyEditorToolbarConfig.Heading,
         BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase,
         Assert = Y.Assert, Mock = Y.Mock;
 
     defineTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ToolbarConfigDefineTest, {
         name: 'eZ AlloyEditor heading config toolbar define test',
-        toolbarConfig: Heading,
+        toolbarConfig: new Y.eZ.AlloyEditorToolbarConfig.HeadingConfig(),
         toolbarConfigName: "heading",
         methods: {
             getArrowBoxClasses: BlockBase.getArrowBoxClasses,
@@ -67,6 +66,8 @@ YUI.add('ez-alloyeditor-toolbar-config-heading-tests', function (Y) {
                     return this.insideHeading;
                 }, this)
             });
+
+            this.heading = new Y.eZ.AlloyEditorToolbarConfig.HeadingConfig();
         },
 
         tearDown: function () {
@@ -79,7 +80,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading-tests', function (Y) {
         "Non empty selection": function () {
             this.emptySelection = false;
             Assert.isFalse(
-                Heading.test({editor: this.editor}),
+                this.heading.test({editor: this.editor}),
                 "The toolbar should be hidden"
             );
         },
@@ -88,7 +89,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading-tests', function (Y) {
             this.emptySelection = true;
             this.insideHeading = false;
             Assert.isFalse(
-                Heading.test({editor: this.editor}),
+                this.heading.test({editor: this.editor}),
                 "The toolbar should be hidden"
             );
         },
@@ -97,7 +98,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading-tests', function (Y) {
             this.emptySelection = true;
             this.insideHeading = true;
             Assert.isTrue(
-                Heading.test({editor: this.editor}),
+                this.heading.test({editor: this.editor}),
                 "The toolbar should be visible"
             );
         },

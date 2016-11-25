@@ -5,7 +5,7 @@
 /* global CKEDITOR */
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
-        editorTest, rerenderEditorTest, focusModeTest, editorFocusHandlingTest, appendToolbarConfigTest,
+        editorTest, rerenderEditorTest, focusModeTest, editorFocusHandlingTest, toolbarsConfigTest,
         eventForwardTest, defaultEditorProcessorsTest, defaultProcessorsTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, RESULT_EMPTY_XHTML,
         VALID_XHTML_WITH_EMBED, VALID_XHTML_BR, RESULT_BR_XHTML, VALID_XHTML_COMPLEX,
@@ -1124,11 +1124,14 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
     });
 
-    appendToolbarConfigTest = new Y.Test.Case({
-        name: "eZ RichText View ezaddcontent toolbar config test",
+    toolbarsConfigTest = new Y.Test.Case({
+        name: "eZ RichText View toolbars config test",
 
         setUp: function () {
-            this.view = new Y.eZ.RichTextEditView({editorContentProcessors: [], processors: []});
+            this.view = new Y.eZ.RichTextEditView({
+                editorContentProcessors: [],
+                processors: [],
+            });
         },
 
         tearDown: function () {
@@ -1144,19 +1147,34 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             );
         },
 
-        "Should configure the ezheading button": function () {
+        _testSelectionStyles: function (name) {
+            var selections = this.view.get('toolbarsConfig').styles.selections;
+
+            Assert.isObject(
+                Y.Array.filter(selections, function (selection) {
+                    return selection instanceof Y.eZ.AlloyEditorToolbarConfig[name];
+                }),
+                "The " + name + " should have been instantiated"
+            );
+        },
+
+        "Should configure heading selections in styles toolbar": function () {
+            this._testSelectionStyles('HeadingConfig');
+        },
+
+        "Should configure the ezheading button in ezadd toolbar": function () {
             this._testButton('ezheading');
         },
 
-        "Should configure the ezembed button": function () {
+        "Should configure the ezembed button in ezadd toolbar": function () {
             this._testButton('ezembed');
         },
 
-        "Should configure the ezparagraph button": function () {
+        "Should configure the ezparagraph button in ezadd toolbar": function () {
             this._testButton('ezparagraph');
         },
 
-        "Should configure the ezimage button": function () {
+        "Should configure the ezimage button in ezadd toolbar": function () {
             this._testButton('ezimage');
         },
     });
@@ -1252,7 +1270,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(editorTest);
     Y.Test.Runner.add(rerenderEditorTest);
     Y.Test.Runner.add(focusModeTest);
-    Y.Test.Runner.add(appendToolbarConfigTest);
+    Y.Test.Runner.add(toolbarsConfigTest);
     Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(editorFocusHandlingTest);
     Y.Test.Runner.add(eventForwardTest);
