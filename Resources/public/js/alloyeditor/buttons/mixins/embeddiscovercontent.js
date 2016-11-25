@@ -32,9 +32,11 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
             editor: React.PropTypes.object.isRequired,
 
             /**
-             * The title of the UDW
+             * The title of the UDW. This property is deprecated, please
+             * implement a _getUDWTitle method instead.
              *
              * @property {String} udwTitle
+             * @deprecated
              */
             udwTitle: React.PropTypes.string,
 
@@ -63,6 +65,7 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
              * The label of the button
              *
              * @property {String} label
+             * @deprecated
              */
             label: React.PropTypes.string,
         },
@@ -74,11 +77,21 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
          * @protected
          */
         _chooseContent: function () {
-            var selectable = this.props.udwIsSelectableMethod;
+            var selectable = this.props.udwIsSelectableMethod,
+                title;
+
+            if ( !this._getUDWTitle ) {
+                console.log('[DEPRECATED] using deprecated `udwTitle` property');
+                console.log('[DEPRECATED] when using ButtonEmbedDiscoverContent please implement _getUDWTitle instead');
+                title = this.props.udwTitle;
+            } else {
+                title = this._getUDWTitle();
+            }
+
 
             this.props.editor.get('nativeEditor').fire('contentDiscover', {
                 config: {
-                    title: this.props.udwTitle,
+                    title: title,
                     multiple: false,
                     contentDiscoveredHandler: this[this.props.udwContentDiscoveredMethod],
                     isSelectable: selectable ? this[selectable] : undefined,

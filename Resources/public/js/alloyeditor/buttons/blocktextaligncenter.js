@@ -40,9 +40,19 @@ YUI.add('ez-alloyeditor-button-blocktextaligncenter', function (Y) {
             return {
                 textAlign: 'center',
                 classIcon: 'center',
-                label: Y.eZ.trans('center', {}, 'onlineeditor'),
+                label: 'Center',
             };
         },
+
+        /**
+         * Returns the translated label for the button
+         *
+         * @method _getLabel
+         * @return {String}
+         */
+        _getLabel: function () {
+            return Y.eZ.trans('center', {}, 'onlineeditor');
+        }
     });
 
     AlloyEditor.Buttons[ButtonBlockTextAlignCenter.key] = ButtonBlockTextAlignCenter;

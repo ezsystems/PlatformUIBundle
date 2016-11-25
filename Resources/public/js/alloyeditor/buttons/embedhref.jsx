@@ -36,10 +36,21 @@ YUI.add('ez-alloyeditor-button-embedhref', function (Y) {
 
         getDefaultProps: function () {
             return {
-                udwTitle: Y.eZ.trans('select.a.content.to.embed', {}, 'onlineeditor'),
+                udwTitle: 'Select a content to embed',
                 udwContentDiscoveredMethod: "_updateEmbed",
-                label: Y.eZ.trans('select.another.content.item', {}, 'onlineeditor'),
+                label: 'Select antoher content item',
             };
+        },
+
+        /**
+         * Returns the UDW title to pick a Content to embed.
+         *
+         * @method _getUDWTitle
+         * @protected
+         * @return {String}
+         */
+        _getUDWTitle: function () {
+            return Y.eZ.trans('select.a.content.to.embed', {}, 'onlineeditor');
         },
 
         /**
@@ -60,7 +71,7 @@ YUI.add('ez-alloyeditor-button-embedhref', function (Y) {
         render: function () {
             return (
                 <button className="ae-button" onClick={this._chooseContent}
-                    tabIndex={this.props.tabIndex} title={this.props.label}>
+                    tabIndex={this.props.tabIndex} title={Y.eZ.trans('select.another.content.item', {}, 'onlineeditor')}>
                     <span className="ez-font-icon ae-icon-udw ez-ae-icon-udw"></span>
                 </button>
             );

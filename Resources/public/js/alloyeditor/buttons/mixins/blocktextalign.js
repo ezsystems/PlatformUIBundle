@@ -35,9 +35,12 @@ YUI.add('ez-alloyeditor-button-mixin-blocktextalign', function (Y) {
             editor: React.PropTypes.object.isRequired,
 
             /**
-             * The label that should be used for accessibility purposes.
+             * The label that should be used for accessibility purposes. This
+             * property is deprecated, component using this mixin should
+             * implement a _getLabel method instead.
              *
              * @property {String} label
+             * @deprecated
              */
             label: React.PropTypes.string,
 
@@ -105,11 +108,20 @@ YUI.add('ez-alloyeditor-button-mixin-blocktextalign', function (Y) {
          */
         render: function() {
             var cssClass = 'ae-button ' + this.getStateClasses(),
-                iconCss = 'ae-icon-align-' + this.props.classIcon;
+                iconCss = 'ae-icon-align-' + this.props.classIcon,
+                label;
+
+            if ( this._getLabel ) {
+                label = this._getLabel();
+            } else {
+                console.log('[DEPRECATED] Using deprecated `label` property');
+                console.log('[DEPRECATED] Please implement a `_getLabel` method instead');
+                label = this.props.label;
+            }
 
             return (
                 React.createElement("button", {className: cssClass, onClick: this.applyStyle, 
-                    tabIndex: this.props.tabIndex, title: this.props.label}, 
+                    tabIndex: this.props.tabIndex, title: label}, 
                     React.createElement("span", {className: iconCss})
                 )
             );

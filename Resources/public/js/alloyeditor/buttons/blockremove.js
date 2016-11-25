@@ -43,6 +43,7 @@ YUI.add('ez-alloyeditor-button-blockremove', function (Y) {
              * The label of the button
              *
              * @property {String} label
+             * @deprecated
              */
             label: React.PropTypes.string,
         },
@@ -51,14 +52,14 @@ YUI.add('ez-alloyeditor-button-blockremove', function (Y) {
             return {
                 command: 'eZRemoveBlock',
                 modifiesSelection: true,
-                label: Y.eZ.trans('remove.this.block', {}, 'onlineeditor'),
+                label: "Remove this block",
             };
         },
 
         render: function () {
             return (
                 React.createElement("button", {className: "ae-button", onClick: this.execCommand, 
-                    tabIndex: this.props.tabIndex, title: this.props.label}, 
+                    tabIndex: this.props.tabIndex, title: Y.eZ.trans('remove.this.block', {}, 'onlineeditor')}, 
                     React.createElement("span", {className: "ez-font-icon ae-icon-remove ez-ae-icon-remove"})
                 )
             );

@@ -42,8 +42,18 @@ YUI.add('ez-alloyeditor-button-embedcenter', function (Y) {
             return {
                 alignment: 'center',
                 classIcon: 'embedcenter',
-                label: Y.eZ.trans('center', {}, 'onlineeditor'),
+                label: 'Center',
             };
+        },
+
+        /**
+         * Returns the translated label for the button
+         *
+         * @method _getLabel
+         * @return {String}
+         */
+        _getLabel: function () {
+            return Y.eZ.trans('center', {}, 'onlineeditor');
         },
     });
 
