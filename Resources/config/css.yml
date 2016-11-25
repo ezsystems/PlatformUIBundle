@@ -70,6 +70,7 @@ system:
                 - 'bundles/ezplatformui/css/views/studiopluspresentation.css'
                 - 'bundles/ezplatformui/css/views/userprofile.css'
                 - 'bundles/ezplatformui/css/views/usermenu.css'
+                - 'bundles/ezplatformui/css/views/serverside.css'
                 - 'bundles/ezplatformui/css/views/draftconflict.css'
                 - 'bundles/ezplatformui/css/views/fields/edit/checkbox.css'
                 - 'bundles/ezplatformui/css/views/fields/edit/country.css'
