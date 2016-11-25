@@ -11,7 +11,22 @@ YUI.add('ez-alloyeditor-toolbar-config-paragraph', function (Y) {
      */
     Y.namespace('eZ.AlloyEditorToolbarConfig');
 
-    var BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase;
+    var BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase,
+        styles = {
+            name: 'styles',
+            cfg: {
+                showRemoveStylesItem: false,
+                styles: [
+                    {name: Y.eZ.trans('heading.1', {}, 'onlineeditor'), style: {element: 'h1'}},
+                    {name: Y.eZ.trans('heading.2', {}, 'onlineeditor'), style: {element: 'h2'}},
+                    {name: Y.eZ.trans('heading.3', {}, 'onlineeditor'), style: {element: 'h3'}},
+                    {name: Y.eZ.trans('heading.4', {}, 'onlineeditor'), style: {element: 'h4'}},
+                    {name: Y.eZ.trans('heading.5', {}, 'onlineeditor'), style: {element: 'h5'}},
+                    {name: Y.eZ.trans('heading.6', {}, 'onlineeditor'), style: {element: 'h6'}},
+                    {name: Y.eZ.trans('paragraph', {}, 'onlineeditor'), style: {element: 'p'}},
+                ]
+            }
+        };
 
     /**
      * `styles` toolbar configuration for paragraph. The `paragraph` toolbar is
@@ -25,6 +40,7 @@ YUI.add('ez-alloyeditor-toolbar-config-paragraph', function (Y) {
     Y.eZ.AlloyEditorToolbarConfig.Paragraph = {
         name: 'paragraph',
         buttons: [
+            styles,
             'ezblocktextalignleft',
             'ezblocktextaligncenter',
             'ezblocktextalignright',
