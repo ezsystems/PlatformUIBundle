@@ -35,7 +35,7 @@ system:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/heading.js"
                 ez-alloyeditor-toolbar-config-paragraph:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/paragraph.js"
                 ez-alloyeditor-toolbar-config-embed:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']

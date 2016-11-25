@@ -15,6 +15,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
         styles = {
             name: 'styles',
             cfg: {
+                showRemoveStylesItem: false,
                 styles: [
                     {name: Y.eZ.trans('heading.1', {}, 'onlineeditor'), style: {element: 'h1'}},
                     {name: Y.eZ.trans('heading.2', {}, 'onlineeditor'), style: {element: 'h2'}},
@@ -22,6 +23,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
                     {name: Y.eZ.trans('heading.4', {}, 'onlineeditor'), style: {element: 'h4'}},
                     {name: Y.eZ.trans('heading.5', {}, 'onlineeditor'), style: {element: 'h5'}},
                     {name: Y.eZ.trans('heading.6', {}, 'onlineeditor'), style: {element: 'h6'}},
+                    {name: Y.eZ.trans('paragraph', {}, 'onlineeditor'), style: {element: 'p'}},
                 ]
             }
         };
