@@ -6,14 +6,22 @@
 namespace EzSystems\PlatformUIBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-/**
- * On PJAX requests, sets the request's locale from the browser's accept-language header.
- */
-class PjaxBrowserLanguageSubscriber implements EventSubscriberInterface
+final class RequestLocaleSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var RequestMatcherInterface
+     */
+    private $requestMatcher;
+
+    public function __construct(RequestMatcherInterface $requestMatcher)
+    {
+        $this->requestMatcher = $requestMatcher;
+    }
+
     public static function getSubscribedEvents()
     {
         return [
@@ -24,11 +32,15 @@ class PjaxBrowserLanguageSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * On pjax requests, sets the request's locale from the browser's accept-language header.
+     * @param GetResponseEvent $event
+     */
     public function setPjaxRequestLocale(GetResponseEvent $event)
     {
         $request = $event->getRequest();
 
-        if (!$event->isMasterRequest() || !$request->headers->has('x-pjax')) {
+        if (!$event->isMasterRequest() || !$this->requestMatcher->matches($request)) {
             return;
         }
 

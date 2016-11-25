@@ -5,34 +5,30 @@
  */
 namespace EzSystems\PlatformUIBundle\Tests\EventListener;
 
-use EzSystems\PlatformUIBundle\EventListener\PjaxBrowserLanguageSubscriber;
+use EzSystems\PlatformUIBundle\EventListener\RequestLocaleSubscriber;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-class PjaxBrowserLanguageSubscriberTest extends PHPUnit_Framework_TestCase
+final class RequestLocaleSubscriberTest extends PHPUnit_Framework_TestCase
 {
-    public function testSetPjaxRequestLocaleNotPjax()
+    private $subscriber;
+
+    public function setUp()
     {
-        $request = new Request();
-
-        $subscriber = new PjaxBrowserLanguageSubscriber();
-        $subscriber->setPjaxRequestLocale($this->createEvent($request));
-
-        $this->assertEquals('en', $request->getLocale());
-        $this->assertFalse($request->attributes->has('_locale'));
+        $this->subscriber = new RequestLocaleSubscriber(
+            $this->getRequestMatcherMock()
+        );
     }
 
     public function testSetPjaxRequestLocaleSubRequest()
     {
         $request = new Request();
         $request->headers->set('Accept-language', 'fr-fr; q=0.8, en; q=0.6');
-        $request->headers->set('X-PJAX', 'true');
         $event = $this->createEvent($request, HttpKernelInterface::SUB_REQUEST);
 
-        $subscriber = new PjaxBrowserLanguageSubscriber();
-        $subscriber->setPjaxRequestLocale($event);
+        $this->subscriber->setPjaxRequestLocale($event);
 
         $this->assertEquals('en', $request->getLocale());
         $this->assertFalse($request->attributes->has('_locale'));
@@ -42,11 +38,11 @@ class PjaxBrowserLanguageSubscriberTest extends PHPUnit_Framework_TestCase
     {
         $request = new Request();
         $request->headers->set('Accept-language', 'fr-fr; q=0.8, en; q=0.6');
-        $request->headers->set('X-PJAX', 'true');
         $event = $this->createEvent($request);
 
-        $subscriber = new PjaxBrowserLanguageSubscriber();
-        $subscriber->setPjaxRequestLocale($event);
+        $this->getRequestMatcherMock()->method('matches')->willReturn(true);
+
+        $this->subscriber->setPjaxRequestLocale($event);
 
         $this->assertEquals('fr_FR', $request->getLocale());
         $this->assertEquals('fr_FR', $request->attributes->get('_locale'));
@@ -64,5 +60,16 @@ class PjaxBrowserLanguageSubscriberTest extends PHPUnit_Framework_TestCase
             $request,
             $requestType
         );
+    }
+
+    private function getRequestMatcherMock()
+    {
+        static $mock;
+
+        if (!isset($mock)) {
+            $mock = $this->getMock('Symfony\Component\HttpFoundation\RequestMatcherInterface');
+        }
+
+        return $mock;
     }
 }
