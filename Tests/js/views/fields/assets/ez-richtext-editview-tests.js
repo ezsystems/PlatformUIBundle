@@ -1162,6 +1162,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this._testSelectionStyles('HeadingConfig');
         },
 
+        "Should configure paragraph selections in styles toolbar": function () {
+            this._testSelectionStyles('ParagraphConfig');
+        },
+
         "Should configure the ezheading button in ezadd toolbar": function () {
             this._testButton('ezheading');
         },
