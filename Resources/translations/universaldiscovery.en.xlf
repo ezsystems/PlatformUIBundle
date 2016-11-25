@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="c02819e18b6762a34ca8b09dc01a151f" resname="universaldiscovery.select.from.left">
         <source>universaldiscovery.select.from.left</source>
-        <target>Select a content from the left</target>
+        <target>Select a content item from the left</target>
       </trans-unit>
       <trans-unit id="3a8fff3c8c46a8167820055942806e89" resname="universaldiscovery.confirmed.items">
         <source>universaldiscovery.confirmed.items</source>
