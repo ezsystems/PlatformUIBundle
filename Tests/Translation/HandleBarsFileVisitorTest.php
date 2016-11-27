@@ -8,30 +8,30 @@
  */
 namespace EzSystems\PlatformUIBundle\Tests\Translation;
 
-use EzSystems\PlatformUIBundle\Translation\HandleBarsExtractor;
-use Symfony\Component\Translation\MessageCatalogue;
+use EzSystems\PlatformUIBundle\Translation\HandleBarsFileVisitor;
+use JMS\TranslationBundle\Model\Message;
+use JMS\TranslationBundle\Model\MessageCatalogue;
+use SplFileInfo;
 
-class HandleBarsExtractorTest extends \PHPUnit_Framework_TestCase
+class HandleBarsFileVisitorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getExtractData
      */
-    public function testExtract($template, $messages)
+    public function testExtract($templateContent, array $expectedMessages)
     {
-        $extractor = new HandleBarsExtractor('');
-        $extractor->setPrefix('prefix');
+        $visitor = new HandleBarsFileVisitor();
         $catalogue = new MessageCatalogue('en');
 
-        $m = new \ReflectionMethod($extractor, 'extractTemplate');
+        $m = new \ReflectionMethod($visitor, 'extractTemplate');
         $m->setAccessible(true);
-        $m->invoke($extractor, $template, $catalogue);
+        $messages = $m->invoke($visitor, $templateContent, $catalogue);
 
-        foreach ($messages as $key => $domain) {
+        foreach ($expectedMessages as $key => $domain) {
             $this->assertTrue(
-                $catalogue->has($key, $domain),
+                in_array(new Message($key, $domain), $messages),
                 "The key '$key' should be defined in the domain '$domain'"
             );
-            $this->assertEquals('prefix' . $key, $catalogue->get($key, $domain));
         }
     }
 
@@ -69,11 +69,11 @@ class HandleBarsExtractorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtractWithFiles($resource)
     {
-        $extractor = new HandleBarsExtractor();
+        $visitor = new HandleBarsFileVisitor();
         $catalogue = new MessageCatalogue('en');
-        $extractor->extract($resource, $catalogue);
+        $visitor->visitFile($resource, $catalogue);
 
-        $this->assertTrue($catalogue->has('test.translation.title', 'testdomain'));
+        $this->assertTrue($catalogue->has(new Message('test.translation.title', 'testdomain')));
         $this->assertEquals(
             'test.translation.title',
             $catalogue->get('test.translation.title', 'testdomain')
@@ -85,6 +85,6 @@ class HandleBarsExtractorTest extends \PHPUnit_Framework_TestCase
      */
     public function resourceProvider()
     {
-        return [[__DIR__ . '/../fixtures/extractor/Resources/views']];
+        return [[new SplFileInfo(__DIR__ . '/../fixtures/extractor/Resources/public/templates/with_translations.hbt')]];
     }
 }

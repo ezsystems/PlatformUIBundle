@@ -258,25 +258,24 @@ services:
         class: "%ezsystems.platformui.loader.combo_loader.class%"
         arguments: ["@ezpublish.config.resolver", "@templating", "$yui.build_dir;ez_platformui$", "%webroot_dir%"]
 
-    ## Translation extractor service
-    ezsystems.platformui.translation.extractor.handlebars:
-        class: "%ezsystems.platformui.translation.extractor.handlebars.class%"
-        tags:
-            - { name: translation.extractor, alias: handlebars }
-
-    ezsystems.platformui.translation.extractor.javascript:
-        class: "%ezsystems.platformui.translation.extractor.javascript.class%"
-        arguments:
-            - "@=service('kernel').locateResource('@eZPlatformUIBundle/bin/Translation/translation_dumper.js')"
-        tags:
-            - { name: translation.extractor, alias: javascript }
-
-    ezsystems.platformui.pjax.request_matcher:
-        class: "%ezsystems.platformui.pjax.request_matcher.class%"
-
     ezsystems.platformui.event_subscriber.pjax_browser_language:
         class: "%ezsystems.platformui.event_subscriber.request_locale.class%"
         arguments:
             - "@ezsystems.platformui.pjax.request_matcher"
         tags:
             - { name: kernel.event_subscriber }
+    ezsystems.platformui.translation.file_visitor.handlebars:
+        class: EzSystems\PlatformUIBundle\Translation\HandleBarsFileVisitor
+        tags:
+            - { name: jms_translation.file_visitor, alias: ez_handlebars }
+
+    ezsystems.platformui.translation.file_visitor.javascript:
+        class: EzSystems\PlatformUIBundle\Translation\JavascriptFileVisitor
+        arguments:
+            - "@=service('kernel').locateResource('@eZPlatformUIBundle/bin/Translation/translation_dumper.js')"
+        tags:
+            - { name: jms_translation.file_visitor, alias: ez_javascript }
+
+    ezsystems.platformui.pjax.request_matcher:
+        class: "%ezsystems.platformui.pjax.request_matcher.class%"
+
