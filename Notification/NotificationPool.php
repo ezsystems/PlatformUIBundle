@@ -66,6 +66,7 @@ class NotificationPool implements NotificationPoolInterface, EventSubscriberInte
     private function translateMessage(TranslatableNotificationMessage $message)
     {
         if ($message->number !== null) {
+            /** @Ignore */
             return $this->translator->transChoice(
                 $message->message,
                 (int)$message->number,
@@ -74,6 +75,7 @@ class NotificationPool implements NotificationPoolInterface, EventSubscriberInte
             );
         }
 
+        /** @Ignore */
         return $this->translator->trans($message->message, $message->translationParams, $message->domain);
     }
 
