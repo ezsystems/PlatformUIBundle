@@ -279,3 +279,8 @@ services:
     ezsystems.platformui.pjax.request_matcher:
         class: "%ezsystems.platformui.pjax.request_matcher.class%"
 
+    ezsystems.platformui.translation.file_visitor.php_notification:
+        parent: jms_translation.extractor.file.default_php_extractor
+        class: EzSystems\PlatformUIBundle\Translation\PhpNotificationFileVisitor
+        tags:
+            - { name: jms_translation.file_visitor, alias: ez_php_notification }

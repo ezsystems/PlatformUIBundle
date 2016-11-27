@@ -52,6 +52,7 @@ trait NotificationPoolAware
      */
     protected function notifyError($message, array $params = [], $domain = null)
     {
+        /** @Ignore */
         $this->notify($message, $params, $domain, Notification::STATE_ERROR);
     }
 
