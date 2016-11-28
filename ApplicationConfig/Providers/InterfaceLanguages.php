@@ -24,13 +24,17 @@ class InterfaceLanguages implements Provider
     public function getConfig()
     {
         $request = $this->requestStack->getMasterRequest();
-        $browserLanguages = $request->getLanguages();
+        $browserLanguage = $request->getPreferredLanguage();
         $defaultLocale = $request->getDefaultLocale();
 
-        if (!in_array($defaultLocale, $browserLanguages)) {
-            $browserLanguages[] = $defaultLocale;
+        $languages = [$browserLanguage];
+        if (strpos($browserLanguage, '_') !== false) {
+            $languages[] = explode('_', $browserLanguage)[0];
+        }
+        if (!in_array($defaultLocale, $languages)) {
+            $languages[] = $defaultLocale;
         }
 
-        return $browserLanguages;
+        return $languages;
     }
 }
