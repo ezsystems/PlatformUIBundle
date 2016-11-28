@@ -1,105 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="8206b5b7056ca3751f2c471cd397dbad" resname="language.list">
-        <source>language.list</source>
-        <target>Languages</target>
-      </trans-unit>
-      <trans-unit id="9829eacbb868c1fae84fe32e44ac6075" resname="language.name">
-        <source>language.name</source>
-        <target>Language name</target>
-      </trans-unit>
-      <trans-unit id="91a5f1b7a3ada0e798677fae3063ddc9" resname="language.code">
-        <source>language.code</source>
-        <target>Language code</target>
-      </trans-unit>
-      <trans-unit id="5978910e7570dc542371d8c56fb41445" resname="language.id">
-        <source>language.id</source>
-        <target>Language ID</target>
-      </trans-unit>
-      <trans-unit id="f1823c1f526b7f9cc61bc1d0295791c9" resname="language.enabled">
-        <source>language.enabled</source>
-        <target>Enabled</target>
-      </trans-unit>
-      <trans-unit id="17c50521c772de260a1832d8a6072d72" resname="language.disabled">
-        <source>language.disabled</source>
-        <target>Disabled</target>
-      </trans-unit>
-      <trans-unit id="289473f9faf86eb4043ade5fc6d22015" resname="language.edit">
-        <source>language.edit</source>
-        <target>Edit</target>
-      </trans-unit>
-      <trans-unit id="650abaa6ac50eaa43844b713fc208db5" resname="language.new">
-        <source>language.new</source>
-        <target>Create a new language</target>
-      </trans-unit>
-      <trans-unit id="ff146c9b28fc9283aa56b87eaf6e01ec" resname="language.remove.selected">
-        <source>language.remove.selected</source>
-        <target>Remove the selection</target>
-      </trans-unit>
-      <trans-unit id="0adc7e2363d921f0d042cd4515c8426e" resname="language.view.title">
-        <source>language.view.title</source>
-        <target>Language: %languageName%</target>
-      </trans-unit>
-      <trans-unit id="ea9bf3ed60c543cd0a5334e8907cf086" resname="language.create.title">
-        <source>language.create.title</source>
-        <target>Creating a new language</target>
-      </trans-unit>
-      <trans-unit id="b26f974c5dc804e268d419eb52e3b6a3" resname="language.edit.title">
-        <source>language.edit.title</source>
-        <target>Editing the language "%languageName%"</target>
-      </trans-unit>
-      <trans-unit id="f8ff765dace028d56840bb16f16b2851" resname="language.name.label">
-        <source>language.name.label</source>
-        <target>Language name:</target>
-      </trans-unit>
-      <trans-unit id="0e2887c8b3237d1640655e49e24fa505" resname="language.code.label">
-        <source>language.code.label</source>
-        <target>Language code:</target>
-      </trans-unit>
-      <trans-unit id="9f0a40822bf1ea33e9a9306dc6692977" resname="language.enabled.label">
-        <source>language.enabled.label</source>
-        <target>Language enabled:</target>
-      </trans-unit>
-      <trans-unit id="1ca53a776853c1d0d6f6bc4cd52a3fc1" resname="language.id.label">
-        <source>language.id.label</source>
-        <target>Language ID:</target>
-      </trans-unit>
-      <trans-unit id="55a3198cbbc654ca93fa3289585c3d04" resname="language.label.edit">
-        <source>language.label.edit</source>
-        <target>Language edit</target>
-      </trans-unit>
-      <trans-unit id="a0c628c0593a15e0a1f396ce83019d76" resname="language.error.code_already_exist">
-        <source>language.error.code_already_exist</source>
-        <target>A language with this code already exists, please enter a different one</target>
-      </trans-unit>
-      <trans-unit id="14de0dd2e9ae1d7dc33074cc722b091f" resname="language.create.submit">
-        <source>language.create.submit</source>
-        <target>Save</target>
-      </trans-unit>
-      <trans-unit id="ab2a172e79366d7fa1486b49234ac16c" resname="language.cancel">
-        <source>language.cancel</source>
+      <trans-unit id="a8cb5d2bb95aba25c1f2f82dc92eee8614e3e867" resname="language.cancel">
+        <source>Cancel</source>
         <target>Cancel</target>
+        <note>key: language.cancel</note>
+        <jms:reference-file line="58">/../../../../.././Resources/views/Language/edit.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="58587a8315254fb9b88a1287040c4dc0" resname="language.deleted">
-        <source>language.deleted</source>
+      <trans-unit id="afee1c14dce2b30b230a0de49867c19712c3685f" resname="language.code">
+        <source>Language code</source>
+        <target>Language code</target>
+        <note>key: language.code</note>
+        <jms:reference-file line="29">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="670884ed109bd22b18847ccb016a0faf72470640" resname="language.code.label">
+        <source>Language code:</source>
+        <target>Language code:</target>
+        <note>key: language.code.label</note>
+        <jms:reference-file line="31">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4737a66d0fa85eced32b31431dfcfa3633167f6f" resname="language.create.title">
+        <source>Creating a new language</source>
+        <target>Creating a new language</target>
+        <note>key: language.create.title</note>
+        <jms:reference-file line="5">/../../../../.././Resources/views/Language/edit.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6edb100c9b7079f15b4d9b105583c97e5164d689" resname="language.deleted">
+        <source>The Language "%languageName%" was correctly deleted.</source>
         <target>The Language "%languageName%" was correctly deleted.</target>
+        <note>key: language.deleted</note>
+        <jms:reference-file line="100">/../../../../.././Controller/LanguageController.php</jms:reference-file>
       </trans-unit>
-      <trans-unit id="7fa04b2e5f016e6b776c2d983b7ceb77" resname="language.notification.created">
-        <source>language.notification.created</source>
+      <trans-unit id="0c028c20c9b353fbd7b71bfef8b4ae3dcbd0d7e4" resname="language.disabled">
+        <source>Disabled</source>
+        <target>Disabled</target>
+        <note>key: language.disabled</note>
+        <jms:reference-file line="41">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="40">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="67f5b766ec64104c9936dc826adf45bdf55f38f9" resname="language.edit">
+        <source>Edit</source>
+        <target>Edit</target>
+        <note>key: language.edit</note>
+        <jms:reference-file line="44">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="46">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="49">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+        <jms:reference-file line="53">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f0bb8e1a1b26634c005357a45b948b0b28ae6d03" resname="language.edit.title">
+        <source>Editing the language "%languageName%"</source>
+        <target>Editing the language "%languageName%"</target>
+        <note>key: language.edit.title</note>
+        <jms:reference-file line="5">/../../../../.././Resources/views/Language/edit.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="065fdff561c25266ec49bbdaf8c5d0bdd6e9dd7f" resname="language.enabled">
+        <source>Enabled</source>
+        <target>Enabled</target>
+        <note>key: language.enabled</note>
+        <jms:reference-file line="31">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="41">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="40">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="11f29ad3c27254c1fea1d685b1961546d4949553" resname="language.enabled.label">
+        <source>Language enabled:</source>
+        <target>Language enabled:</target>
+        <note>key: language.enabled.label</note>
+        <jms:reference-file line="39">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="acf6ff41e3b9acb2cbbcd4a8e908cf52c08b86af" resname="language.id">
+        <source>Language ID</source>
+        <target>Language ID</target>
+        <note>key: language.id</note>
+        <jms:reference-file line="30">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="60c35c78d83e0e32173bc6eda1bd696d223b49bd" resname="language.id.label">
+        <source>Language ID:</source>
+        <target>Language ID:</target>
+        <note>key: language.id.label</note>
+        <jms:reference-file line="35">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ec0418b84a04e7ba4b75a65cbd8a395144e8d8e8" resname="language.list">
+        <source>Languages</source>
+        <target>Languages</target>
+        <note>key: language.list</note>
+        <jms:reference-file line="13">/../../../../.././Resources/views/Dashboard/dashboard.html.twig</jms:reference-file>
+        <jms:reference-file line="14">/../../../../.././Resources/views/Language/edit.html.twig</jms:reference-file>
+        <jms:reference-file line="12">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="18">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="80">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="8">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c0ccfb7e7bc6d434ca93e998637fe775ba4a2de0" resname="language.name">
+        <source>Language name</source>
+        <target>Language name</target>
+        <note>key: language.name</note>
+        <jms:reference-file line="28">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e033c3bb99a4c1b19b1aaa80c637751afe1f474d" resname="language.name.label">
+        <source>Language name:</source>
+        <target>Language name:</target>
+        <note>key: language.name.label</note>
+        <jms:reference-file line="27">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8e4642a0c879921e8bf31752abc577c4bf8d098b" resname="language.new">
+        <source>Create a new language</source>
+        <target>Create a new language</target>
+        <note>key: language.new</note>
+        <jms:reference-file line="70">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="72">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7381072fc89347233cac4530d637e9fe98dedf38" resname="language.notification.created">
+        <source>The language "%languageName%" was correctly created.</source>
         <target>The language "%languageName%" was correctly created.</target>
+        <note>key: language.notification.created</note>
+        <jms:reference-file line="46">/../../../../.././Form/Processor/LanguageFormProcessor.php</jms:reference-file>
       </trans-unit>
-      <trans-unit id="e0228f289a04543ae0901780ea182512" resname="language.notification.updated">
-        <source>language.notification.updated</source>
+      <trans-unit id="8af969d1a41cea0770e73d1a51c27ca9fce5f7cb" resname="language.notification.updated">
+        <source>The language "%languageName%" was correctly saved.</source>
         <target>The language "%languageName%" was correctly saved.</target>
+        <note>key: language.notification.updated</note>
+        <jms:reference-file line="48">/../../../../.././Form/Processor/LanguageFormProcessor.php</jms:reference-file>
       </trans-unit>
-      <trans-unit id="3357b5b93ba450880c8163a2e66d1136" resname="language.notification.draft_removed">
-        <source>language.notification.draft_removed</source>
-        <target>The language draft was removed.</target>
+      <trans-unit id="8df2798a2851c0d43893e3862f8a2e6e4290b141" resname="language.view.title">
+        <source>Language: %languageName%</source>
+        <target>Language: %languageName%</target>
+        <note>key: language.view.title</note>
+        <jms:reference-file line="17">/../../../../.././Resources/views/Language/edit.html.twig</jms:reference-file>
+        <jms:reference-file line="16">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+        <jms:reference-file line="73">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+        <jms:reference-file line="9">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
       </trans-unit>
     </body>
   </file>

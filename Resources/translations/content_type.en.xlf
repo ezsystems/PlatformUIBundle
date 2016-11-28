@@ -1,149 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="4f1cfd17c4ea63fdcfb4a10fda0755ff" resname="content_type.dashboard_title">
-        <source>content_type.dashboard_title</source>
-        <target>Content types</target>
-      </trans-unit>
-      <trans-unit id="80d8a14d1f4ec432a49b7acf8af8f3d2" resname="content_type.group.list">
-        <source>content_type.group.list</source>
-        <target>Content type groups</target>
-      </trans-unit>
-      <trans-unit id="3dc2dbac68487a7d3f87f767fc4bbd2e" resname="content_type.group.name">
-        <source>content_type.group.name</source>
-        <target>Name</target>
-      </trans-unit>
-      <trans-unit id="7415e532c85215d11540f3783967446d" resname="content_type.group.id">
-        <source>content_type.group.id</source>
-        <target>ID</target>
-      </trans-unit>
-      <trans-unit id="a5e8ac6ece0bfd015d0fff25748474cb" resname="content_type.group.edit">
-        <source>content_type.group.edit</source>
-        <target>Edit</target>
-      </trans-unit>
-      <trans-unit id="533cbf0160637dac331c0f2779f6582f" resname="content_type.group.new">
-        <source>content_type.group.new</source>
-        <target>Create a Content type group</target>
-      </trans-unit>
-      <trans-unit id="7b24488c5d8ce01a3dd1a49ca7381d0b" resname="content_type.group">
-        <source>content_type.group</source>
-        <target>Content type group</target>
-      </trans-unit>
-      <trans-unit id="0c6565a851269ed5e86b5338855e23ed" resname="content_type.group.create.title">
-        <source>content_type.group.create.title</source>
-        <target>Creating a new Content type group</target>
-      </trans-unit>
-      <trans-unit id="a6298eb22986a1804622696c91bc28ad" resname="content_type.group.edit.title">
-        <source>content_type.group.edit.title</source>
-        <target>Editing Content type group "%identifier%"</target>
-      </trans-unit>
-      <trans-unit id="9ebab0d28e04a0fe2cbbd5833b995318" resname="content_type.group.cancel">
-        <source>content_type.group.cancel</source>
-        <target>Cancel</target>
-      </trans-unit>
-      <trans-unit id="3e2de2bdb94119c0f07348fe100a158f" resname="content_type.group.notification.created">
-        <source>content_type.group.notification.created</source>
-        <target>Content type group "%identifier%" was correctly created.</target>
-      </trans-unit>
-      <trans-unit id="4b6ba9c7b64e69a199c45aa6ae00c07e" resname="content_type.group.notification.updated">
-        <source>content_type.group.notification.updated</source>
-        <target>Content type group "%identifier%" was correctly updated.</target>
-      </trans-unit>
-      <trans-unit id="4a9243666e4b2db74e3a25ddae694f4b" resname="content_type.group.deleted">
-        <source>content_type.group.deleted</source>
-        <target>Content type group "%identifier%" was correctly deleted.</target>
-      </trans-unit>
-      <trans-unit id="727de183fa8f686e10a786244da41d58" resname="content_type.group.cannot_delete.has_content_types">
-        <source>content_type.group.cannot_delete.has_content_types</source>
-        <target>Cannot delete Content type group "%identifier%" as it still contains Content types.</target>
-      </trans-unit>
-      <trans-unit id="f04e48d37e0034d0db7c2fe532d0a98f" resname="content_type.name">
-        <source>content_type.name</source>
-        <target>Name</target>
-      </trans-unit>
-      <trans-unit id="3654d0b83af5b21165d08ed00c583b24" resname="content_type.id">
-        <source>content_type.id</source>
-        <target>ID</target>
-      </trans-unit>
-      <trans-unit id="b7c7cef3a977522a9eec90f49adfc04e" resname="content_type.identifier">
-        <source>content_type.identifier</source>
-        <target>Identifier</target>
-      </trans-unit>
-      <trans-unit id="c3f683a33cfccf890c919f6432af7877" resname="content_type.edit">
-        <source>content_type.edit</source>
-        <target>Edit</target>
-      </trans-unit>
-      <trans-unit id="972127730f863287531a351da529a802" resname="content_type.edit_title">
-        <source>content_type.edit_title</source>
-        <target>Editing</target>
-      </trans-unit>
-      <trans-unit id="bd31df6edfdfe616bf43312ee6ed4814" resname="content_type.content_count">
-        <source>content_type.content_count</source>
-        <target>{0} %count% content items|{1} %count% content item|]1,Inf[ %count% content items</target>
-      </trans-unit>
-      <trans-unit id="978d4d6fcaabe95baf297bcddced946c" resname="content_type.modified_date">
-        <source>content_type.modified_date</source>
-        <target>Modification date</target>
-      </trans-unit>
-      <trans-unit id="39f42e02559368a6b6ea2bb9f6de6724" resname="content_type.last_modified">
-        <source>content_type.last_modified</source>
-        <target>Last modified: %date% by %modifier%</target>
-      </trans-unit>
-      <trans-unit id="7c0ab0f708330c0d934c7e53a0cff93e" resname="content_type.description">
-        <source>content_type.description</source>
-        <target>Description</target>
-      </trans-unit>
-      <trans-unit id="e1d223825a9bf3ad0d1f810b7426bf3d" resname="content_type.name_schema">
-        <source>content_type.name_schema</source>
-        <target>Content name schema</target>
-      </trans-unit>
-      <trans-unit id="ad868db1b7d6a228c3b83176a33fd8fc" resname="content_type.url_alias_schema">
-        <source>content_type.url_alias_schema</source>
-        <target>URLAlias schema</target>
-      </trans-unit>
-      <trans-unit id="b6a3aa854f989a0573db082c812c2d52" resname="content_type.container">
-        <source>content_type.container</source>
-        <target>Can contain sub-items</target>
-      </trans-unit>
-      <trans-unit id="975a8aa4deca92ef9cd5ffc42efd2467" resname="content_type.default_availability">
-        <source>content_type.default_availability</source>
-        <target>Default availability in primary language, if translation is absent</target>
-      </trans-unit>
-      <trans-unit id="6361724b046699bacda179f0e7397de0" resname="content_type.always_available">
-        <source>content_type.always_available</source>
+      <trans-unit id="d6c5835e7dba84e22f3f6cfd985dbff2ba5f7494" resname="content_type.always_available">
+        <source>Available</source>
         <target>Available</target>
+        <note>key: content_type.always_available</note>
+        <jms:reference-file line="73">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="5e276b6da192df3e9c622c398fc03d6b" resname="content_type.no_always_available">
-        <source>content_type.no_always_available</source>
-        <target>Not available</target>
+      <trans-unit id="a9206d413d4ca7266dace54fde2e1f8d85a4d557" resname="content_type.container">
+        <source>Can contain sub-items</source>
+        <target>Can contain sub-items</target>
+        <note>key: content_type.container</note>
+        <jms:reference-file line="67">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="9297b47a2cead7403adaab0f0ee6fdb2" resname="content_type.default_children_sorting">
-        <source>content_type.default_children_sorting</source>
+      <trans-unit id="02ce26dfb7e4e23eed8129215c77ce84d3544a2d" resname="content_type.content_count">
+        <source>{0} %count% content items|{1} %count% content item|]1,Inf[ %count% content items</source>
+        <target>{0} %count% content items|{1} %count% content item|]1,Inf[ %count% content items</target>
+        <note>key: content_type.content_count</note>
+        <jms:reference-file line="22">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d93b35cbbda2fccd239d83cd8e4fbba2cbb02166" resname="content_type.dashboard_title">
+        <source>Content types</source>
+        <target>Content types</target>
+        <note>key: content_type.dashboard_title</note>
+        <jms:reference-file line="14">/../../../../.././Resources/views/ContentType/edit_content_type_group.html.twig</jms:reference-file>
+        <jms:reference-file line="8">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+        <jms:reference-file line="15">/../../../../.././Resources/views/ContentType/update_content_type.html.twig</jms:reference-file>
+        <jms:reference-file line="14">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+        <jms:reference-file line="10">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
+        <jms:reference-file line="15">/../../../../.././Resources/views/Dashboard/dashboard.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="693f9ade0c2bb6a7c19b6f9b818d96aa23f1e013" resname="content_type.default_availability">
+        <source>Default availability in primary language, if translation is absent</source>
+        <target>Default availability in primary language, if translation is absent</target>
+        <note>key: content_type.default_availability</note>
+        <jms:reference-file line="72">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5ebf6515da27060877064931a5ac1d5a8540e28d" resname="content_type.default_children_sorting">
+        <source>Default children sorting</source>
         <target>Default children sorting</target>
+        <note>key: content_type.default_children_sorting</note>
+        <jms:reference-file line="77">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="dc20866b714ed1642b9bce242bf460fd" resname="content_type.notification.draft_updated">
-        <source>content_type.notification.draft_updated</source>
-        <target>The Content type draft was successfully updated.</target>
+      <trans-unit id="f2a3cc77cdadcff8883b0022e006e24918307687" resname="content_type.description">
+        <source>Description</source>
+        <target>Description</target>
+        <note>key: content_type.description</note>
+        <jms:reference-file line="50">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="9706f09166fa56162a4558261b87a9e2" resname="content_type.notification.draft_removed">
-        <source>content_type.notification.draft_removed</source>
-        <target>The Content type draft was successfully removed.</target>
+      <trans-unit id="252d43535d548e208668c24e8924f737a1a191c8" resname="content_type.edit">
+        <source>Edit</source>
+        <target>Edit</target>
+        <note>key: content_type.edit</note>
+        <jms:reference-file line="84">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+        <jms:reference-file line="86">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+        <jms:reference-file line="44">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
+        <jms:reference-file line="46">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="ced84ba84fbde36bb688787c0562b1da" resname="content_type.notification.published">
-        <source>content_type.notification.published</source>
-        <target>The Content type draft was successfully updated and published. Related Content has also been updated.</target>
+      <trans-unit id="139bc06fcecd7ab2e8e59233d52cae047b22af5b" resname="content_type.group">
+        <source>Content type group</source>
+        <target>Content type group</target>
+        <note>key: content_type.group</note>
+        <jms:reference-file line="17">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="175ebfc2809c7532f761bf322810e3ca" resname="content_type.notification.deleted">
-        <source>content_type.notification.deleted</source>
-        <target>The Content type "%contentTypeName%" was successfully deleted.</target>
+      <trans-unit id="fd931f1ea0d601fe877606ec9e42ff7c37d44d4e" resname="content_type.group.cancel">
+        <source>Cancel</source>
+        <target>Cancel</target>
+        <note>key: content_type.group.cancel</note>
+        <jms:reference-file line="42">/../../../../.././Resources/views/ContentType/edit_content_type_group.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="3833bc9869da7269d0b832230d25c1a6" resname="content_type.is_in_use">
-        <source>content_type.is_in_use</source>
+      <trans-unit id="73205aee63e2b76d2104c295ee19449cf248f045" resname="content_type.group.cannot_delete.has_content_types">
+        <source>Cannot delete Content type group "%identifier%" as it still contains Content types.</source>
+        <target>Cannot delete Content type group "%identifier%" as it still contains Content types.</target>
+        <note>key: content_type.group.cannot_delete.has_content_types</note>
+        <jms:reference-file line="190">/../../../../.././Controller/ContentTypeController.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d9af30fb88ca7bed537ebf13fe3aef6c1679ff40" resname="content_type.group.create.title">
+        <source>Creating a new Content type group</source>
+        <target>Creating a new Content type group</target>
+        <note>key: content_type.group.create.title</note>
+        <jms:reference-file line="5">/../../../../.././Resources/views/ContentType/edit_content_type_group.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8023ffcb49893af87bad5805790b91dee17b3acc" resname="content_type.group.deleted">
+        <source>Content type group "%identifier%" was correctly deleted.</source>
+        <target>Content type group "%identifier%" was correctly deleted.</target>
+        <note>key: content_type.group.deleted</note>
+        <jms:reference-file line="188">/../../../../.././Controller/ContentTypeController.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ad7e97ad4cf67edf7aadf9010b17c34dc57aa0a6" resname="content_type.group.edit">
+        <source>Edit</source>
+        <target>Edit</target>
+        <note>key: content_type.group.edit</note>
+        <jms:reference-file line="39">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+        <jms:reference-file line="41">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="32ba0cf1376c3c7bb98ae775d06504203b972781" resname="content_type.group.edit.title">
+        <source>Editing Content type group "%identifier%"</source>
+        <target>Editing Content type group "%identifier%"</target>
+        <note>key: content_type.group.edit.title</note>
+        <jms:reference-file line="5">/../../../../.././Resources/views/ContentType/edit_content_type_group.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3aa78eef31f8d83f3229f888579149da40bb4126" resname="content_type.group.id">
+        <source>ID</source>
+        <target>ID</target>
+        <note>key: content_type.group.id</note>
+        <jms:reference-file line="26">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d09d4d7f65b1acd604c44c85d08f82fb55fcb880" resname="content_type.group.list">
+        <source>Content type groups</source>
+        <target>Content type groups</target>
+        <note>key: content_type.group.list</note>
+        <jms:reference-file line="15">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+        <jms:reference-file line="75">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+        <jms:reference-file line="9">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+        <jms:reference-file line="84">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e898d2cafb9cf32633ae1324fac8a0f233688885" resname="content_type.group.name">
+        <source>Name</source>
+        <target>Name</target>
+        <note>key: content_type.group.name</note>
+        <jms:reference-file line="25">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="29cb17e453cf97bda9072c5e8a52f72a484d7e32" resname="content_type.group.new">
+        <source>Create a Content type group</source>
+        <target>Create a Content type group</target>
+        <note>key: content_type.group.new</note>
+        <jms:reference-file line="65">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+        <jms:reference-file line="67">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="334f261e09d7b3da4b26022a121ef596bff8a422" resname="content_type.group.notification.created">
+        <source>Content type group "%identifier%" was correctly created.</source>
+        <target>Content type group "%identifier%" was correctly created.</target>
+        <note>key: content_type.group.notification.created</note>
+        <jms:reference-file line="46">/../../../../.././Form/Processor/ContentTypeGroupFormProcessor.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="09685a253a508713c275a4ecde1adbb4b7f1781e" resname="content_type.group.notification.updated">
+        <source>Content type group "%identifier%" was correctly updated.</source>
+        <target>Content type group "%identifier%" was correctly updated.</target>
+        <note>key: content_type.group.notification.updated</note>
+        <jms:reference-file line="48">/../../../../.././Form/Processor/ContentTypeGroupFormProcessor.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ac9f629a5395fbcbc31455777dafda7ef125b39e" resname="content_type.id">
+        <source>ID</source>
+        <target>ID</target>
+        <note>key: content_type.id</note>
+        <jms:reference-file line="27">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="238db0c5dee8ec13199b073f7cc78728f53ffa36" resname="content_type.identifier">
+        <source>Identifier</source>
+        <target>Identifier</target>
+        <note>key: content_type.identifier</note>
+        <jms:reference-file line="45">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+        <jms:reference-file line="29">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8d1c4e01ea895221eda65f6d840b29c4cfe932f2" resname="content_type.is_in_use">
+        <source>The content type cannot be deleted because it has content items, or because you don't have permission.</source>
         <target>The content type cannot be deleted because it has content items, or because you don't have permission.</target>
+        <note>key: content_type.is_in_use</note>
+        <jms:reference-file line="96">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+        <jms:reference-file line="59">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="de2ea38b0604e5c021452e0eef43c2cc9494a2b7" resname="content_type.last_modified">
+        <source>Last modified: %date% by %modifier%</source>
+        <target>Last modified: %date% by %modifier%</target>
+        <note>key: content_type.last_modified</note>
+        <jms:reference-file line="33">/../../../../.././Resources/views/ContentType/update_content_type.html.twig</jms:reference-file>
+        <jms:reference-file line="30">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="da320072e416ddaba6f9ea57810d26fd1b6bfe80" resname="content_type.modified_date">
+        <source>Modification date</source>
+        <target>Modification date</target>
+        <note>key: content_type.modified_date</note>
+        <jms:reference-file line="30">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7fddd251857df821bd536dd680e1edbc921790a2" resname="content_type.name">
+        <source>Name</source>
+        <target>Name</target>
+        <note>key: content_type.name</note>
+        <jms:reference-file line="40">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+        <jms:reference-file line="28">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9e9628fc59643f3167ebe81dfed3e40eecd281c9" resname="content_type.name_schema">
+        <source>Content name schema</source>
+        <target>Content name schema</target>
+        <note>key: content_type.name_schema</note>
+        <jms:reference-file line="55">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e4d33d6bd6ef02c35025d939b193a17f6ba6d2ea" resname="content_type.no_always_available">
+        <source>Not available</source>
+        <target>Not available</target>
+        <note>key: content_type.no_always_available</note>
+        <jms:reference-file line="73">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b771fde80a8c0b6981ab81a9408b4a800f92e38d" resname="content_type.notification.deleted">
+        <source>The Content type "%contentTypeName%" was successfully deleted.</source>
+        <target>The Content type "%contentTypeName%" was successfully deleted.</target>
+        <note>key: content_type.notification.deleted</note>
+        <jms:reference-file line="340">/../../../../.././Controller/ContentTypeController.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="974093fc35f4b06c80d9cf523f125cbc61beaa78" resname="content_type.notification.draft_removed">
+        <source>The Content type draft was successfully removed.</source>
+        <target>The Content type draft was successfully removed.</target>
+        <note>key: content_type.notification.draft_removed</note>
+        <jms:reference-file line="96">/../../../../.././Form/Processor/ContentTypeFormProcessor.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="35f407c7c55275cd9046b6f9e9e77913b9b08e28" resname="content_type.notification.draft_updated">
+        <source>The Content type draft was successfully updated.</source>
+        <target>The Content type draft was successfully updated.</target>
+        <note>key: content_type.notification.draft_updated</note>
+        <jms:reference-file line="60">/../../../../.././Form/Processor/ContentTypeFormProcessor.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ceffda5dc773e1742f8fc336402cdc506774d2c0" resname="content_type.notification.published">
+        <source>The Content type draft was successfully updated and published. Related Content has also been updated.</source>
+        <target>The Content type draft was successfully updated and published. Related Content has also been updated.</target>
+        <note>key: content_type.notification.published</note>
+        <jms:reference-file line="72">/../../../../.././Form/Processor/ContentTypeFormProcessor.php</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6ab7362c77b22ff8bc0d14eeaae8514b0a683473" resname="content_type.url_alias_schema">
+        <source>URLAlias schema</source>
+        <target>URLAlias schema</target>
+        <note>key: content_type.url_alias_schema</note>
+        <jms:reference-file line="60">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
       </trans-unit>
     </body>
   </file>
