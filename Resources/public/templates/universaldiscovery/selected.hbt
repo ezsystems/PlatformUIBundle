@@ -12,7 +12,7 @@
                 {{ translate 'universaldiscovery.error.loading.image' 'universaldiscovery' }}
                 <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{ translate 'universaldiscovery.retry' 'universaldiscovery' }}</button>
             </p>
-            <h3 class="ez-ud-selected-name">{{ contentInfo.name }}</h3>
+            <h3 class="ez-ud-selected-name" title="{{contentInfo.name}}">{{ contentInfo.name }}</h3>
 
             {{#if addConfirmButton}}
             <p>

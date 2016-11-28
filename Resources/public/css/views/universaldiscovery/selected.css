@@ -104,3 +104,9 @@
     height: 200px;
     overflow: auto;
 }
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
