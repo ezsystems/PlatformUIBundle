@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenttypeeditserversideview-tests', function (Y) {
-    var relationPickRootTest,
+    var relationPickRootTest, selectionFieldDefinitionTest,
+        containerTemplateTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     relationPickRootTest = new Y.Test.Case({
@@ -108,6 +109,183 @@ YUI.add('ez-contenttypeeditserversideview-tests', function (Y) {
         }
     });
 
+    containerTemplateTest = new Y.Test.Case({
+        name: "eZ Content Type Edit Server Side container tests",
+
+        setUp: function () {
+            this.view = new Y.eZ.ContentTypeEditServerSideView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should have the server side view class": function () {
+            Assert.isTrue(
+                this.view.get('container').hasClass('ez-view-serversideview'),
+                "The container should have the server side view class"
+            );
+        },
+
+        "Should have the content type edit server side view class": function () {
+            Assert.isTrue(
+                this.view.get('container').hasClass('ez-view-contenttypeeditserversideview'),
+                "The container should have the content type edit server side view class"
+            );
+        },
+    });
+
+    selectionFieldDefinitionTest = new Y.Test.Case({
+        name: "eZ Content Type Edit Server Side selection field definition handling tests",
+
+        init: function () {
+            this.content = Y.one('.container-selection').getHTML();
+        },
+
+        setUp: function () {
+            this.view = new Y.eZ.ContentTypeEditServerSideView({
+                container: '.container-selection',
+            });
+            this.view.render();
+            this.view.set('active', true);
+            this.view.set('html', this.content);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            Y.one('.container-selection').setHTML(this.content);
+        },
+
+        _countValues: function () {
+            return this.view.get('container').all('.ezselection-settings-option-value').size();
+        },
+
+        _assertNewInput: function (optionsCount) {
+            var newInput = this.view.get('container').all('.ezselection-settings-option-value input[type=text]').item(optionsCount);
+
+            Assert.areEqual(
+                optionsCount + 1,
+                this._countValues(),
+                "A new option should have been added"
+            );
+            Assert.areEqual(
+                'Prototype', newInput.get('value'),
+                "The new option should be based on the prototype"
+            );
+            Assert.areEqual(
+                'name' + (optionsCount + 1), newInput.get('name'),
+                "The `__number__` placeholder  should have been replaced"
+            );
+        },
+
+        "Should add a new input when tapping the add button": function () {
+            var container = this.view.get('container'),
+                optionsCount = this._countValues();
+
+            container.one('.ezselection-settings-option-add').simulateGesture('tap', this.next(function() {
+                this._assertNewInput(optionsCount);
+            }, this));
+            this.wait();
+        },
+
+        "Should add a new input when using space": function () {
+            var container = this.view.get('container'),
+                optionsCount = this._countValues();
+
+            container.one('.ezselection-settings-option-add').simulate('keydown', {keyCode: 32});
+            this._assertNewInput(optionsCount);
+        },
+
+        "Should add a new input when using enter": function () {
+            var container = this.view.get('container'),
+                optionsCount = this._countValues();
+
+            container.one('.ezselection-settings-option-add').simulate('keydown', {keyCode: 13});
+            this._assertNewInput(optionsCount);
+        },
+
+        "Should ignore other key input on the add button": function () {
+            var container = this.view.get('container'),
+                optionsCount = this._countValues();
+
+            container.one('.ezselection-settings-option-add').simulate('keydown', {keyCode: 65});
+            Assert.areEqual(
+                optionsCount, this._countValues(),
+                "The number of option should remain the same"
+            );
+        },
+
+        _assertRemoved: function (optionsCount, removeCount) {
+            var button = this.view.get('container').one('.ezselection-settings-option-remove');
+            Assert.areEqual(
+                optionsCount - removeCount,
+                this._countValues(),
+                "The checked value should have been removed"
+            );
+            Assert.isTrue(
+                button.get('disabled'),
+                "The button should be disabled"
+            );
+        },
+
+        _checkOptionToRemove: function () {
+            var toRemove = this.view.get('container').all('.value-to-remove'),
+                removeCount = toRemove.size();
+
+            toRemove.each(function (input) {
+                input.set('checked', true);
+            });
+
+            return removeCount;
+        },
+
+        "Should remove the selected options when tapping the remove button": function () {
+            var removeCount = this._checkOptionToRemove(),
+                optionsCount = this._countValues(),
+                container = this.view.get('container');
+
+            container.one('.ezselection-settings-option-remove').simulateGesture('tap', this.next(function () {
+                this._assertRemoved(optionsCount, removeCount);
+            }, this));
+            this.wait();
+        },
+
+        "Should remove the selected options when using space": function () {
+            var removeCount = this._checkOptionToRemove(),
+                optionsCount = this._countValues(),
+                container = this.view.get('container');
+
+            container.one('.ezselection-settings-option-remove').simulate('keydown', {keyCode: 32});
+            this._assertRemoved(optionsCount, removeCount);
+        },
+
+        "Should remove the selected options when using enter": function () {
+            var removeCount = this._checkOptionToRemove(),
+                optionsCount = this._countValues(),
+                container = this.view.get('container');
+
+            container.one('.ezselection-settings-option-remove').simulate('keydown', {keyCode: 13});
+            this._assertRemoved(optionsCount, removeCount);
+        },
+
+        "Should ignore other key input on the remove button": function () {
+            var optionsCount = this._countValues(),
+                container = this.view.get('container');
+
+            this._checkOptionToRemove();
+
+            container.one('.ezselection-settings-option-remove').simulate('keydown', {keyCode: 65});
+            Assert.areEqual(
+                optionsCount, this._countValues(),
+                "The number of option should remain the same"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Type Edit Server Side View tests");
     Y.Test.Runner.add(relationPickRootTest);
+    Y.Test.Runner.add(containerTemplateTest);
+    Y.Test.Runner.add(selectionFieldDefinitionTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-contenttypeeditserversideview']});
