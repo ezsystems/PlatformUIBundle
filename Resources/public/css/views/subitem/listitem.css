@@ -8,10 +8,19 @@
     padding: 1.2em 0.5em;
 }
 
+
+.ez-view-subitemlistitemview .ez-subitemlistitem-priority {
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+}
+
 .ez-view-subitemlistitemview .ez-subitem-priority-form {
     position: relative;
     width: 100%;
     height: 100%;
+    box-sizing: border-box;
+    padding: 1.2em 0.5em;
 }
 
 .ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input {
@@ -22,37 +31,28 @@
 }
 
 .ez-view-subitemlistitemview .ez-subitem-priority-buttons,
-.ez-view-subitemlistitemview .ez-subitem-priority-icons {
+.ez-view-subitemlistitemview .ez-subitem-priority-edit {
     display: none;
     position: absolute;
-    top: -0.6em;
-    left: calc(100% + 0.5em);
+    top: 0;
+    left: 100%;
+    height: 100%;
     z-index: 1;
 }
 
-.ez-view-subitemlistitemview .ez-subitem-selected-priority-cell .ez-subitem-priority-buttons,
-.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-icons {
-    display: flex;
-}
-
 .ez-view-subitemlistitemview .ez-subitem-selected-priority-cell .ez-subitem-priority-buttons {
-    z-index: 2;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-icons {
+    display: flex;
     z-index: 2;
 }
 
 .ez-view-subitemlistitemview .ez-subitem-priority-button {
     padding: 0;
+    text-align: center;
+    width: 2.2em;
+    height: 100%;
 }
 
-.ez-view-subitemlistitemview .ez-subitem-priority-icons:after,
 .ez-view-subitemlistitemview .ez-subitem-priority-button:before {
-    display: block;
-    width: 2.2em;
-    height: 2.2em;
-    line-height: 2.2em;
+    display: inline;
     margin: 0;
-    text-align: center;
 }

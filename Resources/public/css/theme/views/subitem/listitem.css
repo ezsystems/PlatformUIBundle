@@ -26,11 +26,9 @@
 
 .ez-view-subitemlistitemview .ez-subitem-error-priority-cell {
     background: #FEECEA;
-    border-bottom: 1px solid #BF3E33;
 }
 
 .ez-view-subitemlistitemview .ez-subitem-selected-priority-cell {
-    border-bottom: 1px solid #888;
     background: #fff;
 }
 
@@ -48,33 +46,20 @@
 }
 
 .ez-view-subitemlistitemview .ez-subitem-priority-buttons,
-.ez-view-subitemlistitemview .ez-subitem-priority-icons {
+.ez-view-subitemlistitemview .ez-subitem-priority-edit {
     display: flex;
     transition: all ease 0.3s;
     opacity: 0;
 }
 
+.ez-view-subitemlistitemview .ez-subitem-priority-edit {
+    display: inline-block;
+    border: 1px solid transparent;
+}
+
 .ez-view-subitemlistitemview .ez-subitem-selected-priority-cell .ez-subitem-priority-buttons,
-.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-icons {
+.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-edit {
     opacity: 1;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-priority-icons:after {
-    font-weight: bold;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-icons:after {
-    content: "\e606";
-    background: #E6E6E6;
-    color: #737373;
-    border: 1px solid #888;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-error-priority-cell .ez-subitem-priority-icons:after {
-    content: "!";
-    background: #BF3E33;
-    color: #fff;
-    border: 1px solid #BF3E33;
 }
 
 .ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input,
@@ -94,23 +79,34 @@
 
 .ez-view-subitemlistitemview .ez-subitem-priority-cancel:before {
     content: "\E600";
-    color: #E46474;
+    color: #E85365;
 }
 
 .ez-view-subitemlistitemview .ez-subitem-priority-button {
-    border: 1px solid #888;
     background: #E6E6E6;
+    border: 1px solid #fff;
+    border-right: 0;
 }
 
-.ez-view-subitemlistitemview .ez-subitem-priority-button:hover {
+.ez-view-subitemlistitemview .ez-subitem-priority-buttons .ez-subitem-priority-button:hover {
     background: #F5F4F2;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-priority-cancel {
-    border-left: 0;
 }
 
 .ez-view-subitemlistitemview .ez-subitem-priority-validate:before {
     content: "\Ea10";
-    color: #008A6F;
+    color: #018C71;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-edit:after {
+    content: "\e606";
+    background: #E6E6E6;
+    color: #737373;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-error-priority-cell .ez-subitem-priority-edit,
+.ez-view-subitemlistitemview .ez-subitem-error-priority-cell .ez-subitem-priority-edit:after {
+    content: "!";
+    background: #BF3E33;
+    color: #fff;
+    font-weight: bold;
 }
