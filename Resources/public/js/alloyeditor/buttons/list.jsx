@@ -55,7 +55,7 @@ YUI.add('ez-alloyeditor-button-list', function (Y) {
             return (
                 <button className={css} onClick={this._addList} tabIndex={this.props.tabIndex}>
                     <span className="ez-ae-icon ae-icon-bulleted-list"></span>
-                    <p className="ez-ae-label">List</p>
+                    <p className="ez-ae-label">{Y.eZ.trans('list', {}, 'onlineeditor')}</p>
                 </button>
             );
         },

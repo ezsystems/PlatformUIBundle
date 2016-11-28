@@ -35,7 +35,9 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             if ( !type.get('fieldDefinitions') ) {
                 type.load({api: this.get('capi')}, function (err) {
                     if ( err ) {
-                        return service._error("Could not load the content type with id '" + type.get('id') + "'");
+                        return service._error(
+                            Y.eZ.trans('failed.loading.content.type', {id: type.get('id')}, 'contentedit')
+                        );
                     }
                     service._initModels(next);
                 });
@@ -127,7 +129,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             contentTypeName = contentTypeNames[app.get('contentCreationDefaultLanguageCode')]
                 || contentTypeNames[Object.keys(contentTypeNames)[0]];
 
-            return 'New "' + contentTypeName + '"';
+            return Y.eZ.trans('name.new.content.of.type', {contentTypeName: contentTypeName}, 'contentedit');
         },
 
         /**
@@ -142,7 +144,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             e.preventDefault();
             this.fire('languageSelect', {
                 config: {
-                    title: "Change language to:",
+                    title: Y.eZ.trans('change.language.to', {}, 'contentedit'),
                     languageSelectedHandler: Y.bind(this._setLanguage, this, e.target, e.fields),
                     cancelLanguageSelectionHandler: null,
                     canBaseTranslation: false,
@@ -184,7 +186,11 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
 
             this.fire('notify', {
                 notification: {
-                    text: 'Language has been changed to ' + this.get('app').getLanguageName(selectedLanguageCode),
+                    text: Y.eZ.trans(
+                        'language.changed.to',
+                        {name: this.get('app').getLanguageName(selectedLanguageCode)},
+                        'contentedit'
+                    ),
                     identifier: 'create-content-change-language-to-' + selectedLanguageCode,
                     state: 'done',
                     timeout: 5,

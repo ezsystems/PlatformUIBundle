@@ -167,7 +167,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
 
         validate: function () {
             if ( this.get('fieldDefinition').isRequired && this._isFieldEmpty() ){
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }
@@ -186,7 +186,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
             e.preventDefault();
             this.fire('contentDiscover', {
                 config: {
-                    title: "Select the contents you want to add in the relation",
+                    title: Y.eZ.trans('select.contents.to.add', {}, 'fieldedit'),
                     multiple: true,
                     contentDiscoveredHandler: Y.bind(this._selectRelation, this),
                     cancelDiscoverHandler: Y.bind(this.validate, this),

@@ -187,9 +187,9 @@ YUI.add('ez-date-editview', function (Y) {
             var validity = this._getInputValidity();
 
             if ( validity.valueMissing ) {
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else if ( validity.badInput ) {
-                this.set('errorStatus', 'This is not a valid input');
+                this.set('errorStatus', Y.eZ.trans('input.not.valid', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }
@@ -205,9 +205,9 @@ YUI.add('ez-date-editview', function (Y) {
             var validity = this._getInputValidity();
 
             if ( validity.valueMissing ) {
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else if ( !validity.valueMissing && !this._isDateEmpty() && this._isDateValid() ) {
-                this.set('errorStatus', 'This is not a correct date');
+                this.set('errorStatus', Y.eZ.trans('date.not.valid', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }

@@ -45,10 +45,10 @@ YUI.add('ez-visibilityswitcherplugin', function (Y) {
                 hideOptions = {api: this.get('host').get('capi')},
                 that = this,
                 notificationIdentifier = 'location-switch-visibility-' + locationId,
-                notificationStartedMessage = "Hiding: " + locationId;
+                notificationStartedMessage = Y.eZ.trans('hiding.location', {id: locationId}, 'bar');
 
             if (hidden) {
-                notificationStartedMessage = "Revealing: " + locationId;
+                notificationStartedMessage = Y.eZ.trans('revealing.location', {id: locationId}, 'bar');
             }
 
             that._notify(
@@ -62,14 +62,14 @@ YUI.add('ez-visibilityswitcherplugin', function (Y) {
                 location.unhide(hideOptions, function (error) {
                     if (error) {
                         that._notify(
-                            "Error while revealing location " + locationId,
+                            Y.eZ.trans('error.revealing.location', {id: locationId}, 'bar'),
                             notificationIdentifier,
                             'error',
                             0
                         );
                     } else {
                         that._notify(
-                            "Location " + locationId + " has been revealed",
+                            Y.eZ.trans('revealed.location', {id: locationId}, 'bar'),
                             notificationIdentifier,
                             'done',
                             5
@@ -81,14 +81,14 @@ YUI.add('ez-visibilityswitcherplugin', function (Y) {
                 location.hide(hideOptions, function (error) {
                     if (error) {
                         that._notify(
-                            "Error while hiding location " + locationId,
+                            Y.eZ.trans('error.hiding.location', {id: locationId}, 'bar'),
                             notificationIdentifier,
                             'error',
                             0
                         );
                     } else {
                         that._notify(
-                            "Location " + locationId + " has been hidden",
+                            Y.eZ.trans('hidden.location', {id: locationId}, 'bar'),
                             notificationIdentifier,
                             'done',
                             5

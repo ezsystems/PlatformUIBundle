@@ -52,9 +52,9 @@ YUI.add('ez-time-editview', function (Y) {
             var validity = this._getInputValidity();
 
             if ( validity.valueMissing ) {
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else if ( validity.badInput ) {
-                this.set('errorStatus', 'This is not a valid input');
+                this.set('errorStatus', Y.eZ.trans('invalid.input', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }
@@ -70,9 +70,9 @@ YUI.add('ez-time-editview', function (Y) {
             var validity = this._getInputValidity();
 
             if ( validity.valueMissing ) {
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else if ( validity.patternMismatch ) {
-                this.set('errorStatus', 'This time is invalid, enter a correct time: HH:MM(:SS)');
+                this.set('errorStatus', Y.eZ.trans('time.not.valid.enter.format', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }

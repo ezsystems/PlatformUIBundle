@@ -35,19 +35,19 @@ YUI.add('ez-trashbarview', function (Y) {
                         new Y.eZ.ButtonActionView({
                             actionId: "minimizeTrashBar",
                             disabled: false,
-                            label: "Minimize",
+                            label: Y.eZ.trans('minimize', {}, 'trash'),
                             priority: 1000
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "restoreTrashItems",
                             disabled: true,
-                            label: "Restore Selected",
+                            label: Y.eZ.trans('restore.selected', {}, 'trash'),
                             priority: 800
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "emptyTrash",
                             disabled: false,
-                            label: "Empty the Trash",
+                            label: Y.eZ.trans('empty.trash', {}, 'trash'),
                             priority: 10
                         }),
                     ];

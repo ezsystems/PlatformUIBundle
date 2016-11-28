@@ -22,6 +22,7 @@
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
 <script type="text/javascript" src="./assets/getfield-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-textline-editview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -40,7 +41,7 @@
         filter: loaderFilter,
         modules: {
             "ez-textline-editview": {
-                requires: ['ez-fieldeditview'],
+                requires: ['ez-fieldeditview', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-textline-editview.js"
             },
             "ez-fieldeditview": {

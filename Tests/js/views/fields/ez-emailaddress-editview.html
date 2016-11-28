@@ -20,6 +20,7 @@
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
 <script type="text/javascript" src="./assets/getfield-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-emailaddress-editview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
@@ -39,7 +40,7 @@
         filter: loaderFilter,
         modules: {
             "ez-emailaddress-editview": {
-                requires: ['ez-fieldeditview'],
+                requires: ['ez-fieldeditview', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-emailaddress-editview.js"
             },
             "ez-fieldeditview": {

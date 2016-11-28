@@ -97,8 +97,10 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                         // available and the user manipulated with URI to pass
                         // any language code.
                         service._error(
-                            "Could not load the content with id '" + request.params.id
-                            + "' and languageCode '" + baseLanguageCode + "'"
+                            Y.eZ.trans('failed.loading.content.id.language', {
+                                contentId: request.params.id,
+                                languageCode: baseLanguageCode,
+                            }, 'contentedit')
                         );
                         return;
                     }
@@ -127,19 +129,19 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 contentId = this.get('contentInfo').get('id');
 
             if ( !version.isDraft() ) {
-                this._error("The version '" + versionId + "' is not a draft.");
+                this._error(Y.eZ.trans('version.not.a.draft', {versionId: versionId}, 'contentedit'));
                 return false;
             }
             if ( version.get('resources').Content !== contentId ) {
-                this._error("The version '" + versionId + "' is not a version of the content '" + contentId  + "'");
+                this._error(Y.eZ.trans('version.not.a.draft.of.content', {versionId: versionId, contentId: contentId}, 'contentedit'));
                 return false;
             }
             if ( !version.hasTranslation(this.get('languageCode')) ) {
-                this._error("The version '" + versionId + "' does not exist in '" + this.get('languageCode') + "'");
+                this._error(Y.eZ.trans('version.not.exist.in', {versionId: versionId, languageCode: this.get('languageCode')}, 'contentedit'));
                 return false;
             }
             if ( !version.createdBy(this.get('app').get('user')) ) {
-                this._error("The version '" + versionId + "' does not belong to you");
+                this._error(Y.eZ.trans('version.not.belong.to.you', {versionId: versionId}, 'contentedit'));
                 return false;
             }
             return true;
@@ -216,7 +218,10 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 'content',
                 id,
                 {languageCode: languageCode},
-                "Could not load the content with id '" + id + "' and languageCode '" + languageCode + "'",
+                Y.eZ.trans(
+                    'failed.loading.content.in',
+                    {contentId: id, languageCode: languageCode}, 'contentedit'
+                ),
                 callback
             );
          },
@@ -235,7 +240,10 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 'version',
                 id,
                 {languageCode: languageCode},
-                "Could not load the version with id '" + id + "' and languageCode '" + languageCode + "'",
+                Y.eZ.trans(
+                    'failed.loading.version.in',
+                    {versionId: id, languageCode: languageCode}, 'contentedit'
+                ),
                 callback
             );
         },
@@ -249,7 +257,14 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @param {Function} callback
          */
         _loadContentInfo: function (id, callback) {
-            this._loadModel('contentInfo', id, {}, "Could not find the content id '" + id + "'", callback);
+            this._loadModel(
+                'contentInfo', id, {},
+                Y.eZ.trans(
+                    'failed.finding.content',
+                    {id: id}, 'contentedit'
+                ),
+                callback
+            );
         },
 
 
@@ -262,7 +277,14 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @param {Function} callback
          */
         _loadContentType: function (id, callback) {
-            this._loadModel('contentType', id, {}, "Could not load the content type with id '" + id + "'", callback);
+            this._loadModel(
+                'contentType', id, {},
+                Y.eZ.trans(
+                    'failed.loading.content.type',
+                    {id: id}, 'contentedit'
+                ),
+                callback
+            );
         },
 
         /**
@@ -274,7 +296,14 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @param {Function} callback
          */
         _loadLocation: function (id, callback) {
-            this._loadModel('location', id, {}, "Could not load the location with id '" + id + "'", callback);
+            this._loadModel(
+                'location', id, {},
+                Y.eZ.trans(
+                    'failed.loading.location',
+                    {id: id}, 'contentedit'
+                ),
+                callback
+            );
         },
 
         /**
@@ -486,7 +515,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
             e.preventDefault();
             this.fire('languageSelect', {
                 config: {
-                    title: "Change language to:",
+                    title: Y.eZ.trans('change.language.to', {}, 'contentedit'),
                     languageSelectedHandler: Y.bind(this._changeContentLanguage, this),
                     cancelLanguageSelectionHandler: null,
                     canBaseTranslation: false,

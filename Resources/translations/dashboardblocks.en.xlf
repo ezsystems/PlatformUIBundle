@@ -57,6 +57,10 @@
         <source>dashboard.my.drafts</source>
         <target>My Drafts</target>
       </trans-unit>
+      <trans-unit id="00f0d5e9977dcd134b468f0855679e2b" resname="cannot.load.root.location">
+        <source>cannot.load.root.location</source>
+        <target>Cannot load root location</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

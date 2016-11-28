@@ -111,6 +111,14 @@
         <source>section.notification.draft_removed</source>
         <target>The section draft was removed.</target>
       </trans-unit>
+      <trans-unit id="0c6dfbff3ff21d5b31b96e4593ba9cc7" resname="assigning.section">
+        <source>assigning.section</source>
+        <target>Assigning the section "%sectionName%" to %count% contents</target>
+      </trans-unit>
+      <trans-unit id="0bae812b55cc894591744d2dd479cd11" resname="assigned.section">
+        <source>assigned.section</source>
+        <target>Section "%sectionName%" assigned to %count% contents</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

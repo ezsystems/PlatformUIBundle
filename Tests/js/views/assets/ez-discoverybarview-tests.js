@@ -84,13 +84,13 @@ YUI.add('ez-discoverybarview-tests', function (Y) {
                 );
 
                 if (buttonActionView.get('actionId') === "minimizeDiscoveryBar") {
-                    this._testButtonAction(buttonActionView, false,  Y.eZ.trans("discoverybar.minimize"), 1000);
+                    this._testButtonAction(buttonActionView, false,  "discoverybar.minimize domain=bar", 1000);
                 } else if (buttonActionView.get('actionId') === "viewSearch") {
-                    this._testButtonAction(buttonActionView, false, Y.eZ.trans("discoverybar.search"), 900);
+                    this._testButtonAction(buttonActionView, false, "discoverybar.search domain=bar", 900);
                 } else if (buttonActionView.get('actionId') === "tree") {
-                    this._testButtonAction(buttonActionView, false, Y.eZ.trans("discoverybar.contenttree"), 800);
+                    this._testButtonAction(buttonActionView, false, "discoverybar.contenttree domain=bar", 800);
                 } else if (buttonActionView.get('actionId') === "viewTrash") {
-                    this._testButtonAction(buttonActionView, false, Y.eZ.trans("discoverybar.trash"), 600);
+                    this._testButtonAction(buttonActionView, false, "discoverybar.trash domain=bar", 600);
                 } else {
                     Assert.fail("Unknown action id: " + buttonActionView.get('actionId'));
                 }

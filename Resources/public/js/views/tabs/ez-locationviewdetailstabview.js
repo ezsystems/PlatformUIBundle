@@ -11,17 +11,7 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var SORTFIELD_NAME_DICTIONARY = {
-            'PUBLISHED': 'Publication date',
-            'PATH': 'Location path',
-            'CLASS_IDENTIFIER': 'Content type identifier',
-            'MODIFIED': 'Modification date',
-            'SECTION': 'Section',
-            'DEPTH': 'Location depth',
-            'CLASS_NAME': 'Content type name',
-            'PRIORITY': 'Priority',
-            'NAME': 'Content name',
-        },
+    var SORTFIELD_NAME_DICTIONARY = {},
         events = {
             '.ez-subitems-ordering-sort-type': {
                 'change': '_setSortType',
@@ -41,6 +31,18 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
      */
     Y.eZ.LocationViewDetailsTabView = Y.Base.create('locationViewDetailsTabView', Y.eZ.LocationViewTabView, [Y.eZ.AsynchronousView], {
         initializer: function () {
+            SORTFIELD_NAME_DICTIONARY = {
+                'PUBLISHED': Y.eZ.trans('sort.published', {}, 'locationview'),
+                'PATH': Y.eZ.trans('sort.path', {}, 'locationview'),
+                'CLASS_IDENTIFIER': Y.eZ.trans('sort.content.type.identifier', {}, 'locationview'),
+                'MODIFIED': Y.eZ.trans('sort.modified', {}, 'locationview'),
+                'SECTION': Y.eZ.trans('sort.section', {}, 'locationview'),
+                'DEPTH': Y.eZ.trans('sort.depth', {}, 'locationview'),
+                'CLASS_NAME': Y.eZ.trans('sort.content.type.name', {}, 'locationview'),
+                'PRIORITY': Y.eZ.trans('sort.priority', {}, 'locationview'),
+                'NAME': Y.eZ.trans('sort.name', {}, 'locationview'),
+            };
+
             this._fireMethod = this._fireLoadUser;
 
             this.after(['creatorChange', 'ownerChange'], function (e) {

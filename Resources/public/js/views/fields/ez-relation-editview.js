@@ -119,7 +119,7 @@ YUI.add('ez-relation-editview', function (Y) {
 
         validate: function () {
             if ( this.get('fieldDefinition').isRequired && this._isFieldEmpty() ){
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }

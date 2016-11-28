@@ -211,7 +211,9 @@ YUI.add('ez-savedraftplugin', function (Y) {
              * @type {String}
              */
             startedNotificationText: {
-                value: 'Saving the draft',
+                valueFn: function () {
+                    return Y.eZ.trans('saving.draft', {}, 'contentedit');
+                },
             },
 
             /**
@@ -222,7 +224,9 @@ YUI.add('ez-savedraftplugin', function (Y) {
              * @type {String}
              */
             doneNotificationText: {
-                value: 'The draft was stored successfully',
+                valueFn: function () {
+                    return Y.eZ.trans('draft.saved', {}, 'contentedit');
+                },
             },
 
             /**
@@ -233,7 +237,9 @@ YUI.add('ez-savedraftplugin', function (Y) {
              * @type {String}
              */
             errorNotificationText: {
-                value: 'An error occurred while saving the draft',
+                valueFn: function () {
+                    return Y.eZ.trans('error.saving.draft', {}, 'contentedit');
+                },
             },
         },
     });

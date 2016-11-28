@@ -37,7 +37,7 @@ YUI.add('ez-alloyeditor-button-embedleft', function (Y) {
             return {
                 alignment: 'left',
                 classIcon: 'embedleft',
-                label: 'Left',
+                label: Y.eZ.trans('left', {}, 'onlineeditor'),
             };
         },
     });

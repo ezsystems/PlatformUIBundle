@@ -35,31 +35,31 @@ YUI.add('ez-actionbarview', function (Y) {
                         new Y.eZ.ButtonActionView({
                             actionId: "minimizeActionBar",
                             disabled: false,
-                            label:  Y.eZ.trans('actionbar.minimizeActionBar', {}, 'editorial'),
+                            label:  Y.eZ.trans('actionbar.minimizeActionBar', {}, 'bar'),
                             priority: 1000
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "edit",
                             disabled: false,
-                            label: Y.eZ.trans('actionbar.edit', {}, 'editorial'),
+                            label: Y.eZ.trans('actionbar.edit', {}, 'bar'),
                             priority: 200,
                             content: this.get('content')
                         }),
                         new Y.eZ.MoveContentActionView({
                             actionId: "move",
-                            label: Y.eZ.trans('actionbar.move', {}, 'editorial'),
+                            label: Y.eZ.trans('actionbar.move', {}, 'bar'),
                             priority: 190,
                             location: this.get('location')
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "copy",
                             disabled: false,
-                            label: Y.eZ.trans('actionbar.copy', {}, 'editorial'),
+                            label: Y.eZ.trans('actionbar.copy', {}, 'bar'),
                             priority: 180
                         }),
                         new Y.eZ.CreateContentActionView({
                             actionId: 'createContent',
-                            label: Y.eZ.trans('actionbar.createContent', {}, 'editorial'),
+                            label: Y.eZ.trans('actionbar.createContent', {}, 'bar'),
                             priority: 210,
                             contentType: this.get('contentType'),
                             config: this.get('config'),
@@ -67,7 +67,7 @@ YUI.add('ez-actionbarview', function (Y) {
                         new Y.eZ.TranslateActionView({
                             actionId: "translate",
                             disabled: false,
-                            label: Y.eZ.trans('actionbar.translate',{}, 'editorial'),
+                            label: Y.eZ.trans('actionbar.translate',{}, 'bar'),
                             priority: 170,
                             location: this.get('location'),
                             content: this.get('content')
@@ -79,7 +79,7 @@ YUI.add('ez-actionbarview', function (Y) {
                             new Y.eZ.ButtonActionView({
                                 actionId: 'sendToTrash',
                                 disabled: this.get('location').isRootLocation(),
-                                label: Y.eZ.trans('actionbar.sendToTrash', {}, 'editorial'),
+                                label: Y.eZ.trans('actionbar.sendToTrash', {}, 'bar'),
                                 priority: 10
                             })
                         );
@@ -89,7 +89,7 @@ YUI.add('ez-actionbarview', function (Y) {
                             new Y.eZ.ButtonActionView({
                                 actionId: 'deleteContent',
                                 disabled: false,
-                                label: Y.eZ.trans('actionbar.delete', {}, 'editorial'),
+                                label: Y.eZ.trans('actionbar.delete', {}, 'bar'),
                                 priority: 10
                             })
                         );

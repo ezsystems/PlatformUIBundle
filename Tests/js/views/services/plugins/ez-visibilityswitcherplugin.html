@@ -9,6 +9,7 @@
 <script type="text/javascript" src="../../../assets/pluginregister-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-visibilityswitcherplugin-tests.js"></script>
 <script type="text/javascript" src="../assets/fake-models.js"></script>
+<script type="text/javascript" src="../../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -26,7 +27,7 @@
         filter: loaderFilter,
         modules: {
             "ez-visibilityswitcherplugin": {
-                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'fake-models'],
+                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'fake-models', 'ez-translator'],
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-visibilityswitcherplugin.js"
             },
             "ez-viewservicebaseplugin": {

@@ -45,7 +45,7 @@ YUI.add('ez-locationswapplugin', function (Y) {
 
             service.fire('contentDiscover', {
                 config: {
-                    title: "Select the location you want to swap with the given one",
+                    title: Y.eZ.trans('select.location.to.swap', {}, 'locationview'),
                     contentDiscoveredHandler: Y.bind(this._swapLocations, this, e.location),
                     multiple: false,
                     isSelectable: function(contentStruct) {
@@ -83,7 +83,11 @@ YUI.add('ez-locationswapplugin', function (Y) {
                 that = this;
 
             this._notify(
-                "Swaping location for '" + location.get('contentInfo').get('name') + "'",
+                Y.eZ.trans(
+                    'swapping.location.for',
+                    {name: location.get('contentInfo').get('name')},
+                    'locationview'
+                ),
                 notificationIdentifier,
                 'started',
                 5
@@ -92,7 +96,7 @@ YUI.add('ez-locationswapplugin', function (Y) {
             location.swap({api: capi}, destinationLocation, function (error) {
                 if (error) {
                     that._notify(
-                        "Swapping location for '" + location.get('contentInfo').get('name') + "' failed",
+                        Y.eZ.trans('failed.swapping.location.for', {name: location.get('contentInfo').get('name')}, 'locationview'),
                         notificationIdentifier,
                         'error',
                         0
@@ -101,8 +105,12 @@ YUI.add('ez-locationswapplugin', function (Y) {
                 else {
                     var contentInfo = location.get('contentInfo');
                     that._notify(
-                        "Location for '" + contentInfo.get('name') + "' " +
-                        "has been swapped with '" + destinationLocation.get('contentInfo').get('name') + "'",
+                        Y.eZ.trans(
+                            'swapped.location.for.with', {
+                                name: location.get('contentInfo').get('name'),
+                                destinationName: destinationLocation.get('contentInfo').get('name')
+                            }, 'locationview'
+                        ),
                         notificationIdentifier,
                         'done',
                         5

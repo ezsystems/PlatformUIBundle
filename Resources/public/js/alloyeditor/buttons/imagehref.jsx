@@ -38,11 +38,11 @@ YUI.add('ez-alloyeditor-button-imagehref', function (Y) {
 
         getDefaultProps: function () {
             return {
-                udwTitle: "Select an image to embed",
+                udwTitle: Y.eZ.trans('select.an.image.to.embed', {}, 'onlineeditor'),
                 udwContentDiscoveredMethod: "_updateEmbed",
                 udwIsSelectableMethod: '_isImage',
                 udwLoadContent: true,
-                label: "Select another image",
+                label: Y.eZ.trans('select.another.image', {}, 'onlineeditor'),
             };
         },
 

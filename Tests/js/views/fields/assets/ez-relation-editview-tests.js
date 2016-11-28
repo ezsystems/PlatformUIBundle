@@ -328,8 +328,8 @@ YUI.add('ez-relation-editview-tests', function (Y) {
                 that.resume(function () {
                     e.config.cancelDiscoverHandler.call(this);
                     Y.Assert.areSame(this.view.get('errorStatus'),
-                        'This field is required',
-                        'errorStatus should be true'
+                        'this.field.is.required domain=fieldedit',
+                        'errorStatus should be truthy'
                     );
                 });
             });

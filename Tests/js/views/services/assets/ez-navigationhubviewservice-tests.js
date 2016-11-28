@@ -353,10 +353,10 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             );
 
             this._assertLocationNavigationItem(
-                value[0], Y.eZ.trans("navigationhub.content.structure") , "content-structure", "/allez/om", "fre-FR-root"
+                value[0], "navigationhub.content.structure domain=navigationhub", "content-structure", "/allez/om", "fre-FR-root"
             );
             this._assertLocationNavigationItem(
-                value[1], Y.eZ.trans("navigationhub.media.library"), "media-library", "/allez/om/media", "fre-FR-media"
+                value[1], "navigationhub.media.library domain=navigationhub", "media-library", "/allez/om/media", "fre-FR-media"
             );
         },
 

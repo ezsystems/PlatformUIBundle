@@ -41,7 +41,7 @@ YUI.add('ez-locationremoveplugin', function (Y) {
 
             service.fire('confirmBoxOpen', {
                 config: {
-                    title: "Are you sure you want to remove selected locations?",
+                    title: Y.eZ.trans('confirm.remove.location', {}, 'locationview'),
                     confirmHandler: Y.bind(function () {
                         this._removeLocations(e.locations, e.afterRemoveLocationsCallback);
                     }, this),
@@ -71,7 +71,7 @@ YUI.add('ez-locationremoveplugin', function (Y) {
                 redirectToMainLocation = false;
 
             this._notify(
-                "Removing locations for '" + content.get('name') + "'",
+                Y.eZ.trans('removing.locations.for', {name: content.get('name')}, 'locationview'),
                 notificationIdentifier,
                 'started',
                 5
@@ -108,7 +108,11 @@ YUI.add('ez-locationremoveplugin', function (Y) {
 
                 if (countRemovedLocations > 0) {
                     that._notify(
-                        countRemovedLocations + " location(s) of '" + content.get('name') + "' have been removed",
+                        Y.eZ.trans(
+                            'removed.locations.of',
+                            {count: countRemovedLocations, name: content.get('name')},
+                            'locationview'
+                        ),
                         successNotificationIdentifier,
                         'done',
                         5
@@ -117,7 +121,11 @@ YUI.add('ez-locationremoveplugin', function (Y) {
 
                 if (countRemoveLocationsFails > 0) {
                     that._notify(
-                        "Removing of " + countRemoveLocationsFails + " location(s) of '" + content.get('name') + "' has failed",
+                        Y.eZ.trans(
+                            'failed.removing.locations.of',
+                            {count: countRemoveLocationsFails, name: content.get('name')},
+                            'locationview'
+                        ),
                         errorNotificationIdentifier,
                         'error',
                         0

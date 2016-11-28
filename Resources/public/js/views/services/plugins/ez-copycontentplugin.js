@@ -38,7 +38,7 @@ YUI.add('ez-copycontentplugin', function (Y) {
 
             service.fire('contentDiscover', {
                 config: {
-                    title: "Select the location you want to copy your content into",
+                    title: Y.eZ.trans('select.location.to.copy', {}, 'bar'),
                     contentDiscoveredHandler: Y.bind(this._copyContent, this),
                     isSelectable: function (contentStruct) {
                         return contentStruct.contentType.get('isContainer');
@@ -65,7 +65,7 @@ YUI.add('ez-copycontentplugin', function (Y) {
                 notificationIdentifier =  'copy-notification-' + parentLocationId + '-' + locationId;
 
             this._notify(
-                "'" + contentName + "' is being copied under '" + parentContentName + "'",
+                Y.eZ.trans('content.being.copied.under', {contentName: contentName, parentContentName: parentContentName}, 'bar'),
                 notificationIdentifier,
                 'started',
                 5
@@ -73,12 +73,15 @@ YUI.add('ez-copycontentplugin', function (Y) {
             app.set('loading', true);
             service.get('content').copy({api: service.get('capi')}, parentLocationId, function (error, response) {
                 if (error) {
-                    that._notify('An error occurred while copying your content', notificationIdentifier, 'error', 0);
+                    that._notify(
+                        Y.eZ.trans('error.occurred.copying', {}, 'bar'),
+                        notificationIdentifier, 'error', 0
+                    );
                     app.set('loading', false);
                     return;
                 }
                 that._notify(
-                    "'" + contentName + "' has been successfully copied under '" + parentContentName + "'",
+                    Y.eZ.trans('content.copied.under', {contentName: contentName, parentContentName: parentContentName}, 'bar'),
                     notificationIdentifier,
                     'done',
                     5
@@ -103,7 +106,10 @@ YUI.add('ez-copycontentplugin', function (Y) {
             this.get('copiedContent').load({api: service.get('capi')}, function (error) {
                 if (error) {
                     app.set('loading', false);
-                    that._notify('An error occurred while loading your content', 'loading-content-error', 'error', 0);
+                    that._notify(
+                        Y.eZ.trans('error.occurred.loading', {}, 'bar'),
+                        'loading-content-error', 'error', 0
+                    );
                     return;
                 }
                 /**

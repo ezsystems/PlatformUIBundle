@@ -49,6 +49,34 @@
         <source>show.more.results</source>
         <target><![CDATA[Show <span class="ez-loadmorepagination-more-count">%limit%</span> more results]]></target>
       </trans-unit>
+      <trans-unit id="7787b9b9dc6daf9179963f8b1ea560bb" resname="list.view">
+        <source>list.view</source>
+        <target>List view</target>
+      </trans-unit>
+      <trans-unit id="b068931cc450442b63f5b3d276ea4297" resname="name">
+        <source>name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="9ae73c65f418e6f79ceb4f0e4a4b98d5" resname="modified">
+        <source>modified</source>
+        <target>Modified</target>
+      </trans-unit>
+      <trans-unit id="f6ad414f8441807856aba8e12f3de4f5" resname="content.type">
+        <source>content.type</source>
+        <target>Content type</target>
+      </trans-unit>
+      <trans-unit id="b988295c268025b49dfb3df26171ddc3" resname="priority">
+        <source>priority</source>
+        <target>Priority</target>
+      </trans-unit>
+      <trans-unit id="2ed18fafe4199c7cfc187fdb2a5b1a66" resname="translations">
+        <source>translations</source>
+        <target>Translations</target>
+      </trans-unit>
+      <trans-unit id="18b3d420b7ba1e4dad05d049b887e387" resname="grid.view">
+        <source>grid.view</source>
+        <target>Grid view</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -213,6 +213,46 @@
         <source>role.choose_section</source>
         <target>Choose a section:</target>
       </trans-unit>
+      <trans-unit id="a5f9c8d29cdc801f4e0a9a5dbdc88f14" resname="failed.assigned.role">
+        <source>failed.assigned.role</source>
+        <target>Role has not been assigned to "%name%": %message%</target>
+      </trans-unit>
+      <trans-unit id="9e17df25477e0f54b4601768cd7b9108" resname="selected.content.not.user.group">
+        <source>selected.content.not.user.group</source>
+        <target>Selected content is not a user or group.</target>
+      </trans-unit>
+      <trans-unit id="1d0cea45fb98ee19531a70f580554d57" resname="role.assigned.to.user">
+        <source>role.assigned.to.user</source>
+        <target>"%name%" role has been assigned to %count% users/groups</target>
+      </trans-unit>
+      <trans-unit id="00d942e79ccd742d722a72c7160d6a7e" resname="role.assigned.to.user.section.limited">
+        <source>role.assigned.to.user.section.limited</source>
+        <target>"%name%" role has been assigned to %count% users/groups limited to "%sectionName%" section</target>
+      </trans-unit>
+      <trans-unit id="0d242dab3140bc656f560ec73620e8ea" resname="role.assigned.to.user.subtree.limited">
+        <source>role.assigned.to.user.subtree.limited</source>
+        <target>"%name%" role has been assigned to %count% users/groups with a subtree limitation</target>
+      </trans-unit>
+      <trans-unit id="dd57f23dcef6166ba9d4add2c4d194bb" resname="failed.assigned.role.user">
+        <source>failed.assigned.role.user</source>
+        <target>Role has not been assigned to any users/groups</target>
+      </trans-unit>
+      <trans-unit id="537ce73dfeac836907a325e4f99630f4" resname="assigning.role.to.users">
+        <source>assigning.role.to.users</source>
+        <target>Assigning the role "%roleName%" to %count% users/groups</target>
+      </trans-unit>
+      <trans-unit id="f5fb5927c875791176206a19f787bec8" resname="assigning.role.to.users.section.limited">
+        <source>assigning.role.to.users.section.limited</source>
+        <target>Assigning the role "%roleName%" to %count% users/groups limited to "%sectionName%" section</target>
+      </trans-unit>
+      <trans-unit id="978a7f6c3fe2ef23eabb0a02cb746b20" resname="assigning.role.to.users.subtree.limited">
+        <source>assigning.role.to.users.subtree.limited</source>
+        <target>Assigning the role "%roleName%" to %count% users/groups with a subtree limitation</target>
+      </trans-unit>
+      <trans-unit id="a0dc2fcf2adbc02e65a9889bfcc011f1" resname="failed.loading.role">
+        <source>failed.loading.role</source>
+        <target>The role "%roleName%" could not be loaded</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

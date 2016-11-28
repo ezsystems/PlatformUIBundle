@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="10ae9fc7d453b0dd525d0edf2ede7961" resname="list">
+        <source>list</source>
+        <target>List</target>
+      </trans-unit>
+      <trans-unit id="7c4f29407893c334a6cb7a87bf045c0d" resname="right">
+        <source>right</source>
+        <target>Right</target>
+      </trans-unit>
+      <trans-unit id="bf8dc8cfa01c7b8ffce44311c92fd57d" resname="remove.this.block">
+        <source>remove.this.block</source>
+        <target>Remove this block</target>
+      </trans-unit>
+      <trans-unit id="608d608b70bf53f78abf89d2993c50c4" resname="select.a.content.to.embed">
+        <source>select.a.content.to.embed</source>
+        <target>Select a content to embed</target>
+      </trans-unit>
+      <trans-unit id="269605d45c104f12cbcdc8fb71434acc" resname="embed">
+        <source>embed</source>
+        <target>Embed</target>
+      </trans-unit>
+      <trans-unit id="adb115059e28d960fa8badfac5516667" resname="center">
+        <source>center</source>
+        <target>Center</target>
+      </trans-unit>
+      <trans-unit id="811882fecd5c7618d7099ebbd39ea254" resname="left">
+        <source>left</source>
+        <target>Left</target>
+      </trans-unit>
+      <trans-unit id="9e7ace81eb5d8c8e66d15edcaf439d42" resname="justify">
+        <source>justify</source>
+        <target>Justify</target>
+      </trans-unit>
+      <trans-unit id="b3324755e6f6a0ee590613c7762b5f01" resname="select.an.image.to.embed">
+        <source>select.an.image.to.embed</source>
+        <target>Select an image to embed</target>
+      </trans-unit>
+      <trans-unit id="72dff01a402ab39ab22bc051f6783ad5" resname="select.another.image">
+        <source>select.another.image</source>
+        <target>Select another image</target>
+      </trans-unit>
+      <trans-unit id="91b8f3ac9b43cc5d3e428bcefbffa2bb" resname="select.another.content.item">
+        <source>select.another.content.item</source>
+        <target>Select another content item</target>
+      </trans-unit>
+      <trans-unit id="f74f539fcf46601998e5b17104c7f4c1" resname="heading">
+        <source>heading</source>
+        <target>Heading</target>
+      </trans-unit>
+      <trans-unit id="78805a221a988e79ef3f42d7c5bfd418" resname="image">
+        <source>image</source>
+        <target>Image</target>
+      </trans-unit>
+      <trans-unit id="32a97fa20c7928bbe37dea5aec0ebdbd" resname="paragraph">
+        <source>paragraph</source>
+        <target>Paragraph</target>
+      </trans-unit>
+      <trans-unit id="ec181675fae02cb2b38c15edfbd2bdf6" resname="heading.1">
+        <source>heading.1</source>
+        <target>Heading 1</target>
+      </trans-unit>
+      <trans-unit id="90a16adde92a131e7126f341f2f40e60" resname="heading.2">
+        <source>heading.2</source>
+        <target>Heading 2</target>
+      </trans-unit>
+      <trans-unit id="a06305e126ad3076b5746a4d084b971c" resname="heading.3">
+        <source>heading.3</source>
+        <target>Heading 3</target>
+      </trans-unit>
+      <trans-unit id="aa5cf9bd47f25ca87be0d2e158c8bbc6" resname="heading.4">
+        <source>heading.4</source>
+        <target>Heading 4</target>
+      </trans-unit>
+      <trans-unit id="a0259c247aad6047e7c41ed557ba6f74" resname="heading.5">
+        <source>heading.5</source>
+        <target>Heading 5</target>
+      </trans-unit>
+      <trans-unit id="bfc7b76984a367fda4d112c70b8d008e" resname="heading.6">
+        <source>heading.6</source>
+        <target>Heading 6</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -27,6 +27,7 @@
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
 <script type="text/javascript" src="./assets/getfield-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-relationlist-editview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw', loaderFilter;
 
@@ -44,7 +45,7 @@
         filter: loaderFilter,
         modules: {
             "ez-relationlist-editview": {
-                requires: ['ez-fieldeditview', 'ez-asynchronousview', 'transition'],
+                requires: ['ez-fieldeditview', 'ez-asynchronousview', 'transition', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-relationlist-editview.js"
             },
             "ez-asynchronousview": {

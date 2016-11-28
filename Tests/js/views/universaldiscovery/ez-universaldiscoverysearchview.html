@@ -55,6 +55,7 @@
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-universaldiscoverysearchview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
             loaderFilter;
@@ -72,7 +73,7 @@
         filter: loaderFilter,
         modules: {
             "ez-universaldiscoverysearchview": {
-                requires: ['ez-universaldiscoverymethodbaseview', 'ez-asynchronousview'],
+                requires: ['ez-universaldiscoverymethodbaseview', 'ez-asynchronousview', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoverysearchview.js"
             },
             "ez-asynchronousview": {

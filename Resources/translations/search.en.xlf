@@ -29,6 +29,22 @@
         <source>viewing.out.of.items</source>
         <target><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%searchResultCount%</strong> items]]></target>
       </trans-unit>
+      <trans-unit id="b068931cc450442b63f5b3d276ea4297" resname="name">
+        <source>name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="9ae73c65f418e6f79ceb4f0e4a4b98d5" resname="modified">
+        <source>modified</source>
+        <target>Modified</target>
+      </trans-unit>
+      <trans-unit id="f6ad414f8441807856aba8e12f3de4f5" resname="content.type">
+        <source>content.type</source>
+        <target>Content type</target>
+      </trans-unit>
+      <trans-unit id="2ed18fafe4199c7cfc187fdb2a5b1a66" resname="translations">
+        <source>translations</source>
+        <target>Translations</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -46,7 +46,7 @@ YUI.add('ez-textline-editview', function (Y) {
                     L.sub('The value should have at least {minLength} characters', config)
                 );
             } else if ( validity.valueMissing ) {
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }

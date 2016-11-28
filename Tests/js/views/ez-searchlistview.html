@@ -34,6 +34,7 @@
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../extensions/assets/ez-loadmorepagination-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-searchlistview-tests.js"></script>
+<script type="text/javascript" src="../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
             loaderFilter;
@@ -51,7 +52,7 @@
         filter: loaderFilter,
         modules: {
             "ez-searchlistview": {
-                requires: ['ez-templatebasedview', 'ez-subitemlistitemview', 'ez-loadmorepagination'],
+                requires: ['ez-templatebasedview', 'ez-subitemlistitemview', 'ez-loadmorepagination', 'ez-translator'],
                 fullpath: "../../../Resources/public/js/views/ez-searchlistview.js"
             },
             "ez-loadmorepagination": {

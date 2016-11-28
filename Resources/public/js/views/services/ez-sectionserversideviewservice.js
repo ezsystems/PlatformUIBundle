@@ -95,7 +95,11 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
             this.fire('notify', {
                 notification: {
                     identifier: notificationIdentifier,
-                    text: 'Assigning the section "' + sectionName + '" to ' + selection.length + ' contents',
+                    text: Y.eZ.trans(
+                        'assigning.section',
+                        {sectionName: sectionName, count: selection.length},
+                        'section'
+                    ),
                     state: 'started',
                     timeout: 0
                 },
@@ -119,7 +123,11 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
             this.fire('notify', {
                 notification: {
                     identifier: notificationIdentifier,
-                    text: 'Section "' + sectionName + '" assigned to ' + selection.length + ' contents',
+                    text: Y.eZ.trans(
+                        'assigned.section',
+                        {sectionName: sectionName, count: selection.length},
+                        'section'
+                    ),
                     state: 'done',
                     timeout: 5
                 },

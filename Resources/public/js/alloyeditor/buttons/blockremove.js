@@ -51,7 +51,7 @@ YUI.add('ez-alloyeditor-button-blockremove', function (Y) {
             return {
                 command: 'eZRemoveBlock',
                 modifiesSelection: true,
-                label: 'Remove this block',
+                label: Y.eZ.trans('remove.this.block', {}, 'onlineeditor'),
             };
         },
 

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="efd1900ac313302929fcb09d0b7bc056" resname="translateaction.existing.translations">
+        <source>translateaction.existing.translations</source>
+        <target>Traductions existantes</target>
+      </trans-unit>
+      <trans-unit id="64b399b8999c5cbbab686d6d85a108f0" resname="translateaction.edit">
+        <source>translateaction.edit</source>
+        <target>Modifier</target>
+      </trans-unit>
+      <trans-unit id="2d4a7aceb8415c095005c42adda536b5" resname="translateaction.new.translation">
+        <source>translateaction.new.translation</source>
+        <target>+ Nouvelle traduction</target>
+      </trans-unit>
+      <trans-unit id="2b15cd805c8b2f8c3eacbcf77d1efef3" resname="createcontentaction.loading">
+        <source>createcontentaction.loading</source>
+        <target>Chargement</target>
+      </trans-unit>
+      <trans-unit id="fd1a4523a8f13243cb11bf6d301b3079" resname="actionbar.minimizeActionBar">
+        <source>actionbar.minimizeActionBar</source>
+        <target>Minimiser</target>
+      </trans-unit>
+      <trans-unit id="2bcbc7fd4008db165d433f044394b173" resname="actionbar.edit">
+        <source>actionbar.edit</source>
+        <target>Modifier</target>
+      </trans-unit>
+      <trans-unit id="dcd4bcdb2bd45c594ac6f1c821974090" resname="actionbar.move">
+        <source>actionbar.move</source>
+        <target>Déplacer</target>
+      </trans-unit>
+      <trans-unit id="713f4ab4479ef918715bebfbaea246b0" resname="actionbar.copy">
+        <source>actionbar.copy</source>
+        <target>Copier</target>
+      </trans-unit>
+      <trans-unit id="ab22c133ad6e1ab3b5d8736dd4500b86" resname="actionbar.createContent">
+        <source>actionbar.createContent</source>
+        <target>Créer</target>
+      </trans-unit>
+      <trans-unit id="87ad6af6d4959002120e417861b5ab3c" resname="actionbar.translate">
+        <source>actionbar.translate</source>
+        <target>Traductions</target>
+      </trans-unit>
+      <trans-unit id="8d485c9f2ecc542b96a0456626a7b4bc" resname="actionbar.sendToTrash">
+        <source>actionbar.sendToTrash</source>
+        <target>Envoyer à la corbeille</target>
+      </trans-unit>
+      <trans-unit id="84042e63502f5c9bb479a8709777a8f7" resname="actionbar.delete">
+        <source>actionbar.delete</source>
+        <target>Supprimer</target>
+      </trans-unit>
+      <trans-unit id="a40e244892ca600dc6bd49ad5a3ba69d" resname="discoverybar.minimize">
+        <source>discoverybar.minimize</source>
+        <target>Minimiser</target>
+      </trans-unit>
+      <trans-unit id="be79a56ce2348bba97dff939be9f18c9" resname="discoverybar.search">
+        <source>discoverybar.search</source>
+        <target>Rechercher</target>
+      </trans-unit>
+      <trans-unit id="6807d92ae8f1d5fbc5c876a8cd718e94" resname="discoverybar.contenttree">
+        <source>discoverybar.contenttree</source>
+        <target>Arbre de contenu</target>
+      </trans-unit>
+      <trans-unit id="a30d5f88f1b72f2917a0c9ee359470a5" resname="discoverybar.trash">
+        <source>discoverybar.trash</source>
+        <target>Corbeille</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -161,7 +161,9 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
              * @default 'Browse'
              */
             title: {
-                value: 'Browse',
+                valueFn: function () {
+                    return Y.eZ.trans('browse', {}, 'universaldiscovery');
+                },
                 readOnly: true,
             },
 

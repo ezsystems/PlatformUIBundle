@@ -32,7 +32,7 @@ system:
                     requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/block-base.js"
                 ez-alloyeditor-toolbar-config-heading:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/heading.js"
                 ez-alloyeditor-toolbar-config-paragraph:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
@@ -62,13 +62,13 @@ system:
                     requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/paste.js"
                 ez-alloyeditor-button-heading:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js"
                 ez-alloyeditor-button-paragraph:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js"
                 ez-alloyeditor-button-list:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/list.js"
                 ez-alloyeditor-button-image:
                     requires:
@@ -76,9 +76,10 @@ system:
                         - 'ez-alloyeditor-button-mixin-embeddiscovercontent'
                         - 'ez-alloyeditor-button-mixin-embedimage'
                         - 'ez-alloyeditor-button-mixin-widgetbutton'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/image.js"
                 ez-alloyeditor-button-embed:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js"
                 ez-alloyeditor-button-imagevariation:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embedimage']
@@ -87,16 +88,19 @@ system:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-embedalign'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedcenter.js"
                 ez-alloyeditor-button-embedright:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-embedalign'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedright.js"
                 ez-alloyeditor-button-embedleft:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-embedalign'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedleft.js"
                 ez-alloyeditor-button-mixin-embedalign:
                     requires:
@@ -104,25 +108,25 @@ system:
                         - 'ez-alloyeditor-button-mixin-widgetbutton'
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embedalign.js"
                 ez-alloyeditor-button-blocktextalignleft:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignleft.js"
                 ez-alloyeditor-button-blocktextaligncenter:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextaligncenter.js"
                 ez-alloyeditor-button-blocktextalignright:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignright.js"
                 ez-alloyeditor-button-blocktextalignjustify:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignjustify.js"
                 ez-alloyeditor-button-blockremove:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blockremove.js"
                 ez-alloyeditor-button-embedhref:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedhref.js"
                 ez-alloyeditor-button-imagehref:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage', 'ez-alloyeditor-button-mixin-widgetbutton']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage', 'ez-alloyeditor-button-mixin-widgetbutton', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/imagehref.js"
                 ez-alloyeditor-button-mixin-blocktextalign:
                     requires: ['ez-alloyeditor']
@@ -154,7 +158,7 @@ system:
                     requires: ['node']
                     path: "%ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-embedcontainer.js"
                 ez-richtext-resolveembed:
-                    requires: ['node']
+                    requires: ['node', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveembed.js"
                 ez-richtext-resolveimage:
                     requires: ['ez-richtext-resolveembed', 'node']
@@ -222,7 +226,7 @@ system:
                     requires: ['base', 'parallel']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-viewservice.js"
                 ez-loginformviewservice:
-                    requires: ['ez-viewservice']
+                    requires: ['ez-viewservice', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-loginformviewservice.js"
                 ez-dashboardblocksviewservice:
                     requires:
@@ -246,10 +250,11 @@ system:
                         - 'ez-publishdraftplugin'
                         - 'ez-discarddraftplugin'
                         - 'ez-loginavailableplugin'
+                        - 'ez-translator'
                         - 'array-extras'
                     path: "%ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js"
                 ez-contentcreateviewservice:
-                    requires: ['ez-contenteditviewservice']
+                    requires: ['ez-contenteditviewservice', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-contentcreateviewservice.js"
                 ez-trashviewservice:
                     requires:
@@ -261,6 +266,7 @@ system:
                         - 'ez-contenttypemodel'
                         - 'ez-loginavailableplugin'
                         - 'array-extras'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/services/ez-trashviewservice.js"
                 ez-locationviewviewservice:
                     requires:
@@ -284,6 +290,7 @@ system:
                         - 'ez-locationswapplugin'
                         - 'ez-draftconflictview'
                         - 'ez-draftconflict'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js"
                 ez-navigationhubviewservice:
                     requires:
@@ -317,10 +324,10 @@ system:
                     requires: ['io-base', 'io-form', 'ez-viewservice']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js"
                 ez-sectionserversideviewservice:
-                    requires: ['ez-serversideviewservice', 'parallel']
+                    requires: ['ez-serversideviewservice', 'parallel', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-sectionserversideviewservice.js"
                 ez-roleserversideviewservice:
-                    requires: ['ez-serversideviewservice', 'parallel']
+                    requires: ['ez-serversideviewservice', 'parallel', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-roleserversideviewservice.js"
                 ez-view:
                     requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
@@ -424,6 +431,7 @@ system:
                         - 'ez-subitembaseview'
                         - 'ez-asynchronousview'
                         - 'ez-loadmorepagination'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/subitem/ez-asynchronoussubitemview.js"
                 ez-subitemlistview:
                     requires:
@@ -443,6 +451,7 @@ system:
                         - 'ez-asynchronoussubitemview'
                         - 'ez-subitemlistitemview'
                         - 'subitemlistmoreview-ez-template'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/subitem/ez-subitemlistmoreview.js"
                 subitemlistmoreview-ez-template:
                     type: 'template'
@@ -496,7 +505,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/tabs/view.hbt"
                 ez-locationviewdetailstabview:
-                    requires: ['ez-locationviewtabview', 'locationviewdetailstabview-ez-template']
+                    requires: ['ez-locationviewtabview', 'locationviewdetailstabview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/tabs/ez-locationviewdetailstabview.js"
                 locationviewdetailstabview-ez-template:
                     type: 'template'
@@ -652,6 +661,7 @@ system:
                         - 'event-tap'
                         - 'ez-view'
                         - 'ez-usermenuitemfireeventview'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/ez-usermenuview.js"
                 ez-usermenuitemview:
                     requires:
@@ -686,6 +696,7 @@ system:
                     requires:
                         - 'ez-barview'
                         - 'ez-buttonactionview'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/ez-trashbarview.js"
                 ez-rawcontentview:
                     requires:
@@ -792,13 +803,13 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/view/field.hbt"
                 ez-date-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'dateeditview-ez-template', 'datatype-date-format', 'event-tap', 'calendar', 'datatype-date', 'datatype-date-parse', 'node']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'dateeditview-ez-template', 'datatype-date-format', 'event-tap', 'calendar', 'datatype-date', 'datatype-date-parse', 'node', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-date-editview.js"
                 dateeditview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/date.hbt"
                 ez-dateandtime-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'dateandtimeeditview-ez-template', 'datatype-date-format']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'dateandtimeeditview-ez-template', 'datatype-date-format', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-dateandtime-editview.js"
                 dateandtimeeditview-ez-template:
                     type: 'template'
@@ -810,13 +821,13 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/view/dateandtime.hbt"
                 ez-isbn-editview:
-                    requires: ['ez-fieldeditview', 'isbneditview-ez-template']
+                    requires: ['ez-fieldeditview', 'isbneditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-isbn-editview.js"
                 isbneditview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/isbn.hbt"
                 ez-time-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'timeeditview-ez-template', 'datatype-date-format', 'datatype-date']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'timeeditview-ez-template', 'datatype-date-format', 'datatype-date', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-time-editview.js"
                 timeeditview-ez-template:
                     type: 'template'
@@ -843,19 +854,19 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/checkbox.hbt"
                 ez-textline-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'textlineeditview-ez-template']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'textlineeditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-textline-editview.js"
                 textlineeditview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/textline.hbt"
                 ez-textblock-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'textblockeditview-ez-template']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'textblockeditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-textblock-editview.js"
                 textblockeditview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/textblock.hbt"
                 ez-xmltext-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'xmltexteditview-ez-template']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'xmltexteditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-xmltext-editview.js"
                 xmltexteditview-ez-template:
                     type: 'template'
@@ -907,7 +918,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/richtext.hbt"
                 ez-image-editview:
-                    requires: ['ez-binarybase-editview', 'imageeditview-ez-template', 'ez-asynchronousview', 'event-tap']
+                    requires: ['ez-binarybase-editview', 'imageeditview-ez-template', 'ez-asynchronousview', 'event-tap', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-image-editview.js"
                 imageeditview-ez-template:
                     type: 'template'
@@ -925,16 +936,16 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/media.hbt"
                 ez-binarybase-editview:
-                    requires: ['ez-fieldeditview', 'event-tap']
+                    requires: ['ez-fieldeditview', 'event-tap', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-binarybase-editview.js"
                 ez-emailaddress-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'emailaddresseditview-ez-template']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'emailaddresseditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-emailaddress-editview.js"
                 emailaddresseditview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/emailaddress.hbt"
                 ez-user-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'usereditview-ez-template']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'usereditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-user-editview.js"
                 usereditview-ez-template:
                     type: 'template'
@@ -994,7 +1005,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/view/media.hbt"
                 ez-url-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'urleditview-ez-template']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'urleditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-url-editview.js"
                 urleditview-ez-template:
                     type: 'template'
@@ -1012,7 +1023,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/view/keyword.hbt"
                 ez-keyword-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'keywordeditview-ez-template']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'keywordeditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-keyword-editview.js"
                 keywordeditview-ez-template:
                     type: 'template'
@@ -1024,7 +1035,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/view/author.hbt"
                 ez-author-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'event-tap', 'model', 'model-list', 'authoreditview-ez-template', 'authorinputview-ez-template']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'event-tap', 'model', 'model-list', 'authoreditview-ez-template', 'authorinputview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-author-editview.js"
                 authoreditview-ez-template:
                     type: 'template'
@@ -1033,7 +1044,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/authorinput.hbt"
                 ez-float-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'floateditview-ez-template']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'floateditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-float-editview.js"
                 ez-float-view:
                     requires: ['ez-fieldview']
@@ -1045,31 +1056,31 @@ system:
                     requires: ['ez-fieldview']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-integer-view.js"
                 ez-integer-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'integereditview-ez-template']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'integereditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-integer-editview.js"
                 integereditview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/integer.hbt"
                 ez-maplocation-view:
-                    requires: ['ez-fieldview', 'ez-googlemapapiloader', 'maplocationview-ez-template']
+                    requires: ['ez-fieldview', 'ez-googlemapapiloader', 'maplocationview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-maplocation-view.js"
                 maplocationview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/view/maplocation.hbt"
                 ez-maplocation-editview:
-                    requires: ['ez-fieldeditview', 'ez-googlemapapiloader', 'maplocationeditview-ez-template']
+                    requires: ['ez-fieldeditview', 'ez-googlemapapiloader', 'maplocationeditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-maplocation-editview.js"
                 maplocationeditview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/maplocation.hbt"
                 ez-relation-editview:
-                    requires: ['ez-fieldeditview', 'relationeditview-ez-template', 'ez-asynchronousview']
+                    requires: ['ez-fieldeditview', 'relationeditview-ez-template', 'ez-asynchronousview', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-relation-editview.js"
                 relationeditview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/relation.hbt"
                 ez-relationlist-editview:
-                    requires: ['ez-fieldeditview', 'relationlisteditview-ez-template', 'ez-asynchronousview', 'array-extras', 'transition']
+                    requires: ['ez-fieldeditview', 'relationlisteditview-ez-template', 'ez-asynchronousview', 'array-extras', 'transition', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-relationlist-editview.js"
                 relationlisteditview-ez-template:
                     type: 'template'
@@ -1138,7 +1149,7 @@ system:
                     requires: ['base']
                     path: "%ez_platformui.public_dir%/js/models/structs/ez-fielderrordetails.js"
                 ez-editactionbarview:
-                    requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview']
+                    requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/ez-editactionbarview.js"
                 ez-buttonactionview:
                     requires: ['ez-templatebasedview', 'buttonactionview-ez-template']
@@ -1163,6 +1174,7 @@ system:
                         - 'ez-buttonactionview'
                         - 'ez-expandable'
                         - 'translateactionview-ez-template'
+                        - 'ez-translator'
                         - 'event-outside'
                     path: "%ez_platformui.public_dir%/js/views/actions/ez-translateactionview.js"
                 translateactionview-ez-template:
@@ -1283,19 +1295,19 @@ system:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js"
                 ez-contenteditplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contenteditplugin.js"
                 ez-userdraftsplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentinfomodel', 'ez-contenttypemodel', 'promise']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-userdraftsplugin.js"
                 ez-visibilityswitcherplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-visibilityswitcherplugin.js"
                 ez-locationsloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-locationsloadplugin.js"
                 ez-versionsplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-versionsplugin.js"
                 ez-locationcreateplugin:
                     requires:
@@ -1303,9 +1315,10 @@ system:
                         - 'ez-pluginregistry'
                         - 'ez-contentmodel'
                         - 'parallel'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-locationcreateplugin.js"
                 ez-contentsetmainlocationplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contentsetmainlocationplugin.js"
                 ez-locationremoveplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'parallel']
@@ -1335,7 +1348,7 @@ system:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js"
                 ez-copycontentplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-copycontentplugin.js"
                 ez-discarddraftplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
@@ -1344,10 +1357,10 @@ system:
                     requires: ['base', 'ez-fielderrordetails']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/extensions/ez-draftserversidevalidation.js"
                 ez-savedraftplugin:
-                    requires: ['ez-pluginregistry', 'ez-draftserversidevalidation', 'ez-viewservicebaseplugin']
+                    requires: ['ez-pluginregistry', 'ez-draftserversidevalidation', 'ez-viewservicebaseplugin', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-savedraftplugin.js"
                 ez-publishdraftplugin:
-                    requires: ['ez-pluginregistry', 'ez-draftserversidevalidation', 'ez-viewservicebaseplugin']
+                    requires: ['ez-pluginregistry', 'ez-draftserversidevalidation', 'ez-viewservicebaseplugin', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-publishdraftplugin.js"
                 ez-sideviewservice:
                     requires: ['base']
@@ -1404,12 +1417,13 @@ system:
                     requires:
                         - 'ez-viewservicebaseplugin'
                         - 'ez-pluginregistry'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-locationswapplugin.js"
                 ez-searchview:
                     requires: ['ez-templatebasedview', 'ez-searchlistview', 'searchview-ez-template', 'node-style']
                     path: "%ez_platformui.public_dir%/js/views/ez-searchview.js"
                 ez-searchlistview:
-                    requires: ['ez-templatebasedview', 'searchlistview-ez-template', 'ez-subitemlistitemview', 'ez-loadmorepagination']
+                    requires: ['ez-templatebasedview', 'searchlistview-ez-template', 'ez-subitemlistitemview', 'ez-loadmorepagination', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/ez-searchlistview.js"
                 searchview-ez-template:
                     type: 'template'

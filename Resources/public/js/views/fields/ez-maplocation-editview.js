@@ -75,7 +75,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
 
                     mapLoader.on('mapAPIFailed', function () {
                         var container = that.get('container');
-                        container.one(ERRORS_SEL).setHTML('Failed to retrieve Google Maps API');
+                        container.one(ERRORS_SEL).setHTML(Y.eZ.trans('failed.retrieve.google.maps.api', {}, 'fieldedit'));
                         container.all(COORDINATES_SEL).removeClass(IS_LOADING_CLASS);
                     });
                 }
@@ -212,15 +212,15 @@ YUI.add('ez-maplocation-editview', function (Y) {
                         } else {
                             addressInput.get('parentNode').addClass(IS_ERROR_CLASS);
                             if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
-                                errorsOutput.setHTML('Unable to find this address');
+                                errorsOutput.setHTML(Y.eZ.trans('unable.find.address', {}, 'fieldedit'));
                             } else {
-                                errorsOutput.setHTML('An error occurred during the geocoding request for this address');
+                                errorsOutput.setHTML(Y.eZ.trans('geocoding.error', {}, 'fieldedit'));
                             }
                         }
                     }
                 );
             } else {
-                errorsOutput.setHTML('Google maps are not loaded correctly, try reloading the page');
+                errorsOutput.setHTML(Y.eZ.trans('google.map.not.loaded.correctly', {}, 'fieldedit'));
             }
         },
 
@@ -271,10 +271,10 @@ YUI.add('ez-maplocation-editview', function (Y) {
                     // Request failure
                     function () {
                         button.removeClass(IS_LOADING_CLASS);
-                        errorsOutput.setHTML('An error occurred during geolocation request of your current position');
+                        errorsOutput.setHTML(Y.eZ.trans('error.during.geolocation.request', {}, 'fieldedit'));
                     });
             } else {
-                errorsOutput.setHTML('Your browser does not support HTML5 Geolocation API');
+                errorsOutput.setHTML(Y.eZ.trans('unsupported.html5.geolocation.api', {}, 'fieldedit'));
             }
         },
 

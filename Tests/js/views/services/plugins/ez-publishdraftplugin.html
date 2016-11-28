@@ -9,6 +9,7 @@
 <script type="text/javascript" src="../../../extensions/assets/ez-draftserversidevalidation-tests.js"></script>
 <script type="text/javascript" src="../../../assets/pluginregister-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-publishdraftplugin-tests.js"></script>
+<script type="text/javascript" src="../../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -26,7 +27,7 @@
         filter: loaderFilter,
         modules: {
             "ez-publishdraftplugin": {
-                requires: ['ez-viewservicebaseplugin', 'ez-draftserversidevalidation', 'ez-pluginregistry'],
+                requires: ['ez-viewservicebaseplugin', 'ez-draftserversidevalidation', 'ez-pluginregistry', 'ez-translator'],
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-publishdraftplugin.js"
             },
             "ez-draftserversidevalidation": {

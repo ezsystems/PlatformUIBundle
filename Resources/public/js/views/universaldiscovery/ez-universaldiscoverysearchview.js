@@ -439,7 +439,9 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
              * @default 'Search'
              */
             title: {
-                value: 'Search',
+                valueFn: function () {
+                    return Y.eZ.trans('universaldiscovery.search', {}, 'universaldiscovery');
+                },
                 readOnly: true,
             },
 

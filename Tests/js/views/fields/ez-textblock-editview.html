@@ -18,6 +18,7 @@
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
 <script type="text/javascript" src="./assets/getfield-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-textblock-editview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -36,7 +37,7 @@
         filter: loaderFilter,
         modules: {
             "ez-textblock-editview": {
-                requires: ['ez-fieldeditview'],
+                requires: ['ez-fieldeditview', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-textblock-editview.js"
             },
             "ez-fieldeditview": {

@@ -149,7 +149,7 @@ YUI.add('ez-usermenuview', function (Y) {
                     return [
                         new Y.eZ.UserMenuItemFireEventView({
                             bubbleTargets: this,
-                            title: "Logout",
+                            title: Y.eZ.trans('logout', {}, 'navigationhub'),
                             eventName: 'logOut',
                         }),
                     ];

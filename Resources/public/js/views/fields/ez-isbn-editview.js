@@ -38,7 +38,7 @@ YUI.add('ez-isbn-editview', function (Y) {
         validate: function () {
             this.set('errorStatus', false);
             if ( this.get('fieldDefinition').isRequired && this._isFieldEmpty() ){
-                this.set('errorStatus', 'This field is required');
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else if ( !this._isFieldEmpty() ) {
                 if ( this.get('fieldDefinition').fieldSettings.isISBN13 ) {
                     this._checkISBN13();
@@ -103,12 +103,12 @@ YUI.add('ez-isbn-editview', function (Y) {
                     weight13 = (weight13 + 2) % 4;
                 });
             } else {
-                this.set('errorStatus', "This is not a correct ISBN13 pattern");
+                this.set('errorStatus', Y.eZ.trans('not.a.correct.isbn13.pattern', {}, 'fieldedit'));
             }
             if (this.isValid()) {
                 if ((checksum13 % 10) !== 0) {
                     checkDigit = (10 - ((checksum13 - ((weight13 + 2) % 4) * rawInputString[12]) %10)) %10;
-                    this.set('errorStatus', "Bad checksum, last digit of ISBN 13 should be " + checkDigit );
+                    this.set('errorStatus', Y.eZ.trans('bad.checksum.last.digit.should.be', {checkDigit: checkDigit}, 'fieldedit'));
                 }
             }
         },
@@ -132,10 +132,10 @@ YUI.add('ez-isbn-editview', function (Y) {
                     }
                 });
             } else {
-                this.set('errorStatus', 'invalid ISBN 10');
+                this.set('errorStatus', Y.eZ.trans('invalid.isbn10', {}, 'fieldedit'));
             }
             if (this.get('errorStatus') === false && sumResult % 11 !== 0) {
-                this.set('errorStatus', "invalid ISBN 10 (sum is not a multiple of 11");
+                this.set('errorStatus', Y.eZ.trans('invalid.isbn10.sum.not.multiple.of.11', {}, 'fieldedit'));
             }
         },
 

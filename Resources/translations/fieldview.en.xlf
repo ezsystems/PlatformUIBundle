@@ -133,6 +133,10 @@
         <source>media.size</source>
         <target>%size% bytes</target>
       </trans-unit>
+      <trans-unit id="c80f973a458a59bdbfad15427a39346e" resname="failed.to.load.the.map">
+        <source>failed.to.load.the.map</source>
+        <target>Failed to load the map</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

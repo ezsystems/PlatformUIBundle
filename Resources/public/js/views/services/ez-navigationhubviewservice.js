@@ -171,7 +171,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
 
             tasks.done(function () {
                 if ( loadError ) {
-                    service._error("Failed to load root locations");
+                    service._error(Y.eZ.trans('failed.to.load.root.locations', {}, 'navigationhub'));
                     return;
                 }
 
@@ -450,13 +450,13 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
 
                     val = [
                         this._getSubtreeItem(
-                            Y.eZ.trans("navigationhub.content.structure", {}, 'editorial'),
+                            Y.eZ.trans("navigationhub.content.structure", {}, 'navigationhub'),
                             "content-structure",
                             this.get('rootLocation').get('id'),
                             this.get('rootLocation').get('contentInfo').get('mainLanguageCode')
                         ),
                         this._getSubtreeItem(
-                            Y.eZ.trans("navigationhub.media.library",{}, 'editorial'),
+                            Y.eZ.trans("navigationhub.media.library",{}, 'navigationhub'),
                             "media-library",
                             this.get('rootMediaLocation').get('id'),
                             this.get('rootMediaLocation').get('contentInfo').get('mainLanguageCode')
@@ -554,34 +554,34 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
 
                     val = [
                         this._getParameterItem(
-                            Y.eZ.trans('navigationhub.dashboard.title', {}, 'editorial'), "admin-dashboard",
+                            Y.eZ.trans('navigationhub.dashboard.title', {}, 'navigationhub'), "admin-dashboard",
                             "adminGenericRoute", {uri: "pjax/dashboard"}, "uri"
                         ),
                         this._getParameterItem(
-                            Y.eZ.trans('navigationhub.system.information', {}, 'editorial'), "admin-systeminfo",
+                            Y.eZ.trans('navigationhub.system.information', {}, 'navigationhub'), "admin-systeminfo",
                             "adminGenericRoute", {uri: "pjax/systeminfo"}, "uri"
                         ),
                         this._getNavigationItem(
-                            Y.eZ.trans('navigationhub.section.list', {}, 'editorial'), "admin-sections",
+                            Y.eZ.trans('navigationhub.section.list', {}, 'navigationhub'), "admin-sections",
                             "adminSection", {uri: "pjax/section/list"}
                         ),
                         this._getNavigationItem(
-                            Y.eZ.trans('navigationhub.content_type.dashboard_title', {}, 'editorial'), "admin-contenttypes",
+                            Y.eZ.trans('navigationhub.content_type.dashboard_title', {}, 'navigationhub'), "admin-contenttypes",
                             "adminContentType", {uri: "pjax/contenttype"}
                         ),
                         this._getNavigationItem(
-                            Y.eZ.trans('navigationhub.language.list', {}, 'editorial'), "admin-languages",
+                            Y.eZ.trans('navigationhub.language.list', {}, 'navigationhub'), "admin-languages",
                             "adminLanguage", {uri: "pjax/language/list"}
                         ),
                         //TODO in EZP-24860. For now link to users node is defined in a static way.
                         this._getSubtreeItem(
-                            Y.eZ.trans('navigationhub.user.list', {}, 'editorial'),
+                            Y.eZ.trans('navigationhub.user.list', {}, 'navigationhub'),
                             "admin-users",
                             "/api/ezp/v2/content/locations/1/5",
                             "eng-GB"
                         ),
                         this._getNavigationItem(
-                             Y.eZ.trans('navigationhub.role.list', {}, 'editorial'), "admin-roles",
+                             Y.eZ.trans('navigationhub.role.list', {}, 'navigationhub'), "admin-roles",
                             "adminRole", {uri: "pjax/role"}
                         ),
                     ];
