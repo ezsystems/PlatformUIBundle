@@ -31,3 +31,12 @@
     -webkit-animation: spin 0.7s infinite linear;
             animation: spin 0.7s infinite linear;
 }
+
+
+[data-ezelement="ezembed"].is-embed-not-loaded .ez-embed-content:before {
+    content: "\E61b";
+}
+
+[data-ezelement="ezembed"].is-embed-not-loaded .ez-embed-content {
+    font-style: italic;
+}
