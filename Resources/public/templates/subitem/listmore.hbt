@@ -12,7 +12,7 @@
 
     <div class="ez-subitemlist-pagination">
         <p>
-            {{ translate 'viewing.out.of.items' 'subitem' displayCount=displayCount subitemCount=subitemCount }}
+            {{ translate 'viewing.out.of.items' 'subitem' displayCount=displayCount subitemCount=location.childCount }}
         </p>
         <p>
             <button class="pure-button ez-button ez-loadmorepagination-more ez-font-icon" disabled>
