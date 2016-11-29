@@ -12,6 +12,7 @@
 
 .ez-view-languageswitcherview .ez-language-list {
     position: absolute;
+    right: 0;
     top: 2.5em;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -19,7 +20,7 @@
     line-height: 1em;
     margin: 0;
     padding: 0;
-    width: 100%;
+    min-width: 100%;
 }
 
 .ez-view-languageswitcherview.is-expanded .ez-expandable-area {
