@@ -31,6 +31,19 @@ YUI.add('ez-editorcontentprocessoremptyembed-tests', function (Y) {
             );
         },
 
+        "Should remove the embed state class": function () {
+            var data, result;
+
+            data  = "<div data-href='42' data-ezelement='ezembed' class='something is-embed-not-loaded is-embed-whatever'>not empty</div>";
+            result = this.processor.process(data);
+
+            Assert.areEqual(
+                '<div data-href="42" data-ezelement="ezembed" class="something"></div>',
+                result,
+                "The embed should be empty"
+            );
+        },
+
         "Should keep the embed config": function () {
             var data = "<div data-ezelement='ezembed'><span data-ezelement='ezconfig'></span>not empty</div>",
                 result = this.processor.process(data);
