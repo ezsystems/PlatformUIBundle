@@ -37,25 +37,29 @@ YUI.add('ez-searchviewservice', function (Y) {
          * @param {Function} callback
          */
         _load: function (callback) {
-            this.set('searchString', this.get('request').params.searchString);
-            this.set(
-                'limit',
-                this.get('request').params.limit ?  Number(this.get('request').params.limit) : this.get('loadMoreAddingNumber')
-            );
-            this.search.findLocations({
-                viewName: 'search-' + this.get('searchString'),
-                loadContent: true,
-                loadContentType: true,
-                criteria: {
-                    "FullTextCriterion": this.get('searchString'),
-                },
-                limit: this.get('limit'),
-                offset: 0
-            }, Y.bind(function (error, results, resultCount) {
-                this.set('searchResultList', results);
-                this.set('searchResultCount', resultCount);
+            if (this.get('request').params.searchString) {
+                this.set('searchString', this.get('request').params.searchString);
+                this.set(
+                    'limit',
+                    this.get('request').params.limit ?  Number(this.get('request').params.limit) : this.get('loadMoreAddingNumber')
+                );
+                this.search.findLocations({
+                    viewName: 'search-' + this.get('searchString'),
+                    loadContent: true,
+                    loadContentType: true,
+                    criteria: {
+                        "FullTextCriterion": this.get('searchString'),
+                    },
+                    limit: this.get('limit'),
+                    offset: 0
+                }, Y.bind(function (error, results, resultCount) {
+                    this.set('searchResultList', results);
+                    this.set('searchResultCount', resultCount);
+                    callback();
+                }, this));
+            } else {
                 callback();
-            }, this));
+            }
         },
 
         /**
