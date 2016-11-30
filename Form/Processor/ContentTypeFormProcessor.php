@@ -53,7 +53,7 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
 
     public function processDefaultAction(FormActionEvent $event)
     {
-        if ($event->getClickedButton() === 'removeDraft') {
+        if (in_array($event->getClickedButton(), ['removeDraft', 'publishContentType'])) {
             return;
         }
 
