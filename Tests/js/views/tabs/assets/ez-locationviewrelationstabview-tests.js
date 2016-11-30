@@ -251,7 +251,10 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
     fireLoadObjectRelationsEventTest = new Y.Test.Case({
         name: "eZ LocationViewRelationsTabView fire load object relations event test",
         setUp: function () {
-            this.view = new Y.eZ.LocationViewRelationsTabView({});
+            this.content = {};
+            this.view = new Y.eZ.LocationViewRelationsTabView({
+                content: this.content,
+            });
         },
 
         tearDown: function () {
@@ -269,6 +272,21 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
             this.view.set('active', true);
 
             Assert.isTrue(relationsCalled, "loadObjectRelations should have been called");
+        },
+
+        "Should fire the loadObjectRelations with parameters": function () {
+            this.view.once('loadObjectRelations', Y.bind(function (e) {
+                Assert.isTrue(
+                    e.loadLocationPath,
+                    "The `loadLocationPath` parameter should be set to true"
+                );
+                Assert.areSame(
+                    this.content, e.content,
+                    "The content item should be provided in the event facade"
+                );
+            }, this));
+
+            this.view.set('active', true);
         },
     });
 

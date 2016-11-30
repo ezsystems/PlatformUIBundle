@@ -128,12 +128,16 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
          */
         _fireLoadObjectRelations: function () {
             /**
-             * Fired when object relations are going to be loaded
+             * Fired to load the object relations
              *
              * @event loadObjectRelations
-             * @param {Bool} loadLocationPath flag indicating whether the locations' paths should be loaded
+             * @param {Boolean} loadLocationPath flag indicating whether the locations' paths should be loaded
+             * @param {eZ.Content} content
              */
-            this.fire('loadObjectRelations', {loadLocationPath: true});
+            this.fire('loadObjectRelations', {
+                loadLocationPath: true,
+                content: this.get('content'),
+            });
         },
     }, {
         ATTRS: {
