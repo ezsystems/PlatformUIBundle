@@ -1,7 +1,7 @@
 <form class="ez-form-content">
     {{#each fieldGroups}}
         <fieldset class="ez-fieldgroup ez-fieldgroup-{{ fieldGroupName }}">
-            <legend class="fieldgroup-name ez-font-icon">{{fieldGroupName}}</legend>
+            <legend class="fieldgroup-name ez-font-icon">{{ translate fieldGroupName 'ezplatform_fields_groups' }}</legend>
             <div class="fieldgroup-fields"></div>
         </fieldset>
     {{/each}}
