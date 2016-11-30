@@ -20,13 +20,13 @@ YUI.add('ez-editorcontentprocessoremptyembed-tests', function (Y) {
         "Should empty the embeds": function () {
             var data, result;
 
-			data  = "<div data-href='42' data-ezelement='ezembed'>not empty</div>";
-			data += "<div data-href='43' data-ezelement='ezembed'><p>Saez - J'Veux M'En Aller</p></div>";
-			result = this.processor.process(data);
+            data  = "<div data-href='42' data-ezelement='ezembed'>not empty</div>";
+            data += "<div data-href='43' data-ezelement='ezembed'><p>Saez - J'Veux M'En Aller</p></div>";
+            result = this.processor.process(data);
 
             Assert.areEqual(
-				'<div data-href="42" data-ezelement="ezembed"></div><div data-href="43" data-ezelement="ezembed"></div>',
-				result,
+                '<div data-href="42" data-ezelement="ezembed"></div><div data-href="43" data-ezelement="ezembed"></div>',
+                result,
                 "The embed should be empty"
             );
         },
@@ -35,11 +35,11 @@ YUI.add('ez-editorcontentprocessoremptyembed-tests', function (Y) {
             var data = "<div data-ezelement='ezembed'><span data-ezelement='ezconfig'></span>not empty</div>",
                 result = this.processor.process(data);
 
-			Assert.areEqual(
-				'<div data-ezelement="ezembed"><span data-ezelement="ezconfig"></span></div>',
-				result,
-				"The embed config should have been kept"
-			);
+            Assert.areEqual(
+                '<div data-ezelement="ezembed"><span data-ezelement="ezconfig"></span></div>',
+                result,
+                "The embed config should have been kept"
+            );
         },
     });
 
