@@ -94,7 +94,17 @@
     width: 100%;
 }
 
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-infos {
+    overflow: auto;
+}
+
 .ez-view-universaldiscoveryselectedview .ez-ud-pane-content {
     height: 200px;
     overflow: auto;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
