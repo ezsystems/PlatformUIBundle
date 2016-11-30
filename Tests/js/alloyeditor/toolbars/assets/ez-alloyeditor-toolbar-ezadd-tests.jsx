@@ -100,6 +100,29 @@ YUI.add('ez-alloyeditor-toolbar-ezadd-tests', function (Y) {
             return domNode.innerHTML;
         },
 
+        "Should not render a toolbar when there's a text selection": function () {
+            var toolbar,
+                config = {},
+                selectionData = {region: {}, text: "Led Zeppelin"},
+                event = this._getEvent(false);
+
+            toolbar = ReactDOM.render(
+                <Y.eZ.AlloyEditor.Toolbars.ezadd
+                    editor={this.editor}
+                    config={config}
+                    editorEvent={event}
+                    selectionData={selectionData}
+                    requestExclusive={function () {}}
+                    renderExclusive={false} />,
+                this.containerEzAdd
+            );
+
+            Assert.isNull(
+                ReactDOM.findDOMNode(toolbar),
+                "The toolbar should not be rendered"
+            );
+        },
+
         "Should behave like the add toolbar on editable element": function () {
             var toolbar,
                 addToolbar,
