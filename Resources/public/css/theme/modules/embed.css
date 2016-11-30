@@ -3,7 +3,9 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-[data-ezelement="ezembed"] {
+[data-ezelement="ezembed"],
+.ez-embed-type-image.is-embed-not-loaded[data-ezelement="ezembed"],
+.ez-embed-type-image.is-embed-image-empty-image[data-ezelement="ezembed"] {
     background: #eee;
     border: 1px solid #aaa;
     font-size: 1.1em;
@@ -15,6 +17,7 @@
 }
 
 [data-ezelement="ezembed"] .ez-embed-content:before {
+    font-style: normal;
     font-family: 'ez-platformui-icomoon';
     speak: none;
     font-weight: normal;
@@ -31,7 +34,6 @@
     -webkit-animation: spin 0.7s infinite linear;
             animation: spin 0.7s infinite linear;
 }
-
 
 [data-ezelement="ezembed"].is-embed-not-loaded .ez-embed-content:before {
     content: "\E61b";
