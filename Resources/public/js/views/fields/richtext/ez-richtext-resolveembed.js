@@ -177,15 +177,32 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
         results.forEach(function (struct) {
             var content = struct.content;
 
-            localMapNode[content.get('contentId')].forEach(function (embedNode) {
-                this._unsetLoading(embedNode);
-                this._getEmbedContent(embedNode).setContent(content.get('name'));
-            }, this);
+            localMapNode[content.get('contentId')].forEach(Y.bind(this._renderEmbedContentNode, this, content));
             delete localMapNode[content.get('contentId')];
         }, this);
         this._renderNotLoadedEmbed(localMapNode);
     };
 
+    /**
+     * Renders the content into the embedNode as an embed.
+     *
+     * @method _renderEmbedContentNode
+     * @protected
+     * @param {eZ.Content} content
+     * @param {Node} embedNode
+     */
+    ResolveEmbed.prototype._renderEmbedContentNode = function (content, embedNode) {
+        this._unsetLoading(embedNode);
+        this._getEmbedContent(embedNode).setContent(content.get('name'));
+    };
+
+    /**
+     * Renders the embed node referenced in mapNode as not loaded.
+     *
+     * @method _renderNotLoadedEmbed
+     * @protected
+     * @param {Object} mapNode
+     */
     ResolveEmbed.prototype._renderNotLoadedEmbed = function (mapNode) {
         Object.keys(mapNode).forEach(function (missingContentId) {
             mapNode[missingContentId].forEach(function (embedNode) {
@@ -284,7 +301,7 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      */
     ResolveEmbed.prototype._setNotLoaded = function (embedNode) {
         embedNode.addClass('is-embed-not-loaded');
-        this._getEmbedContent(embedNode).setContent(Y.eZ.trans('embed.not.loaded', {}, 'fieldedit'));
+        this._getEmbedContent(embedNode).setContent(this._notLoadedMessage);
     };
 
     /**
