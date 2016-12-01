@@ -178,6 +178,10 @@ YUI.add('ez-contenttypeeditserversideview-tests', function (Y) {
                 'name' + (optionsCount + 1), newInput.get('name'),
                 "The `__number__` placeholder  should have been replaced"
             );
+            Assert.areEqual(
+                'id' + (optionsCount + 1), newInput.get('id'),
+                "The `__number__` placeholder  should have been replaced"
+            );
         },
 
         "Should add a new input when tapping the add button": function () {
@@ -281,6 +285,25 @@ YUI.add('ez-contenttypeeditserversideview-tests', function (Y) {
                 optionsCount, this._countValues(),
                 "The number of option should remain the same"
             );
+        },
+
+        "Should keep options indexed without gap": function () {
+            var container = this.view.get('container');
+
+            this._checkOptionToRemove();
+            container.one('.ezselection-settings-option-remove').simulateGesture('tap', this.next(function () {
+                container.all('.ezselection-settings-option-value input[type=text]').each(function (input, i) {
+                    Assert.areEqual(
+                        input.get('id'), 'id' + (i+1),
+                        "The input should have been reindexed (id)"
+                    );
+                    Assert.areEqual(
+                        input.get('name'), 'name' + (i+1),
+                        "The input should have been reindexed (id)"
+                    );
+                });
+            }, this));
+            this.wait();
         },
     });
 
