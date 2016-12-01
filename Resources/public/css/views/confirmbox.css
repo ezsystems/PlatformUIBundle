@@ -26,6 +26,9 @@
     display: inline-block;
     margin: auto;
     padding: 1.5em 2em;
+    max-height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
 }
 
 .ez-view-confirmboxview .ez-confirmbox-title {
