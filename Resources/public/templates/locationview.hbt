@@ -4,9 +4,9 @@
             <nav class="ez-location-breadcrumbs">
                 <ul class="ez-breadcrumbs-list">
                 {{#each path}}
-                    <li class="ez-breadcrumbs-item"><a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">{{ contentInfo.name }}</a></li>
+                    <li class="ez-breadcrumbs-item"><a title="{{contentInfo.name}}" href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">{{ contentInfo.name }}</a></li>
                 {{/each}}
-                    <li class="ez-breadcrumbs-item">{{ content.name }}</li>
+                    <li title="{{content.name}}" class="ez-breadcrumbs-item">{{ content.name }}</li>
                 </ul>
             </nav>
             <div class="ez-page-header-name ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
