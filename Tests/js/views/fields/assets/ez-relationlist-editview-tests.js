@@ -10,7 +10,8 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
         getEmptyFieldTest,
         tapTest,
         loadObjectRelationsTest,
-        initializerTest;
+        initializerTest,
+        Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ Relation list View test",
@@ -234,7 +235,8 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
 
         _getFieldDefinition: function (required) {
             return {
-                isRequired: required
+                isRequired: required,
+                fieldSettings: {},
             };
         },
 
@@ -404,11 +406,34 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                         e.config.isSelectable({contentType: notAllowedContentType}),
                         "isSelectable should return FALSE if selected content's content type is not on allowed content types list"
                     );
+                    Assert.isUndefined(
+                        e.config.startingLocationId,
+                        "The starting Location id parameter should not be set"
+                    );
                 });
             });
 
             this.view.get('container').one('.ez-relation-discover').simulateGesture('tap');
             this.wait();
+        },
+
+        "Should run the UniversalDiscoveryWidget starting at selectionDefaultLocation": function () {
+            var locationId = 'whatever/location/id';
+
+            this.fieldDefinition.fieldSettings.selectionContentTypes = [];
+            this.fieldDefinition.fieldSettings.selectionDefaultLocationHref = locationId;
+
+            this.view.on('contentDiscover', this.next(function (e) {
+                Assert.areEqual(
+                    locationId,
+                    e.config.startingLocationId,
+                    "The starting Location id parameter should be set"
+                );
+            }, this));
+
+            this.view.get('container').one('.ez-relation-discover').simulateGesture('tap');
+            this.wait();
+
         },
     });
 
@@ -471,7 +496,8 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             this.fieldDefinition = {
                 fieldType: "ezobjectrelationlist",
                 identifier: this.fieldDefinitionIdentifier,
-                isRequired: false
+                isRequired: false,
+                fieldSettings: {},
             };
             this.field = {fieldValue: {destinationContentIds: [45, 42]}};
 

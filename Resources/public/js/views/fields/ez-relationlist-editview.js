@@ -189,6 +189,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
                     multiple: true,
                     contentDiscoveredHandler: Y.bind(this._selectRelation, this),
                     cancelDiscoverHandler: Y.bind(this.validate, this),
+                    startingLocationId: this.get('fieldDefinition').fieldSettings.selectionDefaultLocationHref,
                     isSelectable: function (contentStruct) {
                         var selectionContentTypes = that.get('fieldDefinition').fieldSettings.selectionContentTypes,
                             contentTypeIdentifier = contentStruct.contentType.get('identifier');

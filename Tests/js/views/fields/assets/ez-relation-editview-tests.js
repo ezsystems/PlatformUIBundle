@@ -3,14 +3,16 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-relation-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest, getEmptyFieldTest;
+    var viewTest, registerTest, getFieldTest, getEmptyFieldTest,
+        Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ Relation View test",
 
         _getFieldDefinition: function (required) {
             return {
-                isRequired: required
+                isRequired: required,
+                fieldSettings: {},
             };
         },
 
@@ -30,7 +32,8 @@ YUI.add('ez-relation-editview-tests', function (Y) {
             this.fieldDefinition = {
                 fieldType: "ezobjectrelation",
                 identifier: this.fieldDefinitionIdentifier,
-                isRequired: false
+                isRequired: false,
+                fieldSettings: {},
             };
             this.field = {fieldValue: {destinationContentId: 45}};
 
@@ -215,6 +218,21 @@ YUI.add('ez-relation-editview-tests', function (Y) {
             this.wait();
         },
 
+        "Should run the UniversalDiscoveryWidget starting at selectionRoot": function () {
+            var locationId = 'whatever/location/id';
+
+            this.fieldDefinition.fieldSettings.selectionRootHref = locationId;
+            this.view.on('contentDiscover', this.next(function (e) {
+                Assert.areEqual(
+                    locationId, e.config.startingLocationId,
+                    "The startLocationId parameter should be set"
+                );
+            }, this));
+
+            this.view.get('container').one('.ez-relation-discover').simulateGesture('tap');
+            this.wait();
+
+        },
 
         "Should prevent default behaviour of the tap event for select button": function () {
             var that = this;
