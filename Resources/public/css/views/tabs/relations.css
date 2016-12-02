@@ -30,6 +30,10 @@
     display: inline;
 }
 
+.ez-view-locationviewrelationstabview .ez-breadcrumbs-list .ez-breadcrumbs-item {
+    max-width: 10em
+}
+
 .ez-view-locationviewrelationstabview .ez-relations-box-list-no-content {
     font-style: italic;
 }
