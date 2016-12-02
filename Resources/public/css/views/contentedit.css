@@ -33,6 +33,9 @@
 
 .ez-view-contenteditview .ez-page-header-name {
     margin: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .ez-view-contenteditview .ez-technical-infos {
