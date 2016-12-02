@@ -34,10 +34,19 @@
     width: 100%;
 }
 
+.ez-view-trashview .ez-trash-item-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 20em;
+    display: inline-block;
+}
+
 .ez-trashview-content .ez-trashview-table .ez-breadcrumbs-item:after {
     padding: 0 0.3em 0 0.5em;
 }
 
 .ez-trashview-content .ez-trashview-table .ez-breadcrumbs-list {
     margin: 0;
+    max-width: 10em;
 }
