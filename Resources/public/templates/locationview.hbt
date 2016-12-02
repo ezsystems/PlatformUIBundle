@@ -10,7 +10,7 @@
                 </ul>
             </nav>
             <div class="ez-page-header-name ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
-                <h1 class="ez-page-header-content-name">{{ content.name }}</h1>
+                <h1 class="ez-page-header-content-name" title="{{ content.name }}">{{ content.name }}</h1>
                 <span class="ez-page-header-contenttype">{{ translate_property contentType.names }}</span>
             </div>
         </header>
