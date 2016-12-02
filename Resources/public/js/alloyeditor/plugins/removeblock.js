@@ -22,10 +22,31 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
          * @param {CKEDITOR.dom.element} element
          */
         _moveCaretToElement: function (editor, element) {
-            var range = editor.createRange();
+            var range = editor.createRange(),
+                caretElement = this._findCaretElement(element);
 
-            range.moveToPosition(element, CKEDITOR.POSITION_AFTER_START);
+            range.moveToPosition(caretElement, CKEDITOR.POSITION_AFTER_START);
             editor.getSelection().selectRanges([range]);
+            this._fireEditorInteraction(editor, caretElement);
+        },
+
+        /**
+         * Finds the "caret element" for the given element. For some elements,
+         * like ul or table, moving the caret inside them actually means finding
+         * the first element that can be filled by the user.
+         *
+         * @method _findCaretElement
+         * @protected
+         * @param {CKEDITOR.dom.element} element
+         * @return {CKEDITOR.dom.element}
+         */
+        _findCaretElement: function (element) {
+            var child = element.getChild(0);
+
+            if ( child.type !== CKEDITOR.NODE_TEXT ) {
+                return this._findCaretElement(child);
+            }
+            return element;
         },
 
         /**
@@ -68,7 +89,6 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
                 widget.focus();
             } else {
                 this._moveCaretToElement(editor, newFocus);
-                this._fireEditorInteraction(editor, newFocus);
             }
        },
 

@@ -171,6 +171,35 @@ YUI.add('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
             );
         },
 
+        "Should give the focus to a child of the next sibling element": function () {
+            var editor = this.editor.get('nativeEditor'),
+                editorInteractionFired = false;
+
+            editor.once('editorInteraction', function (evt) {
+                var natEvt = evt.data.nativeEvent,
+                    deeper = Y.one('#deeper').getDOMNode();
+
+                editorInteractionFired = true;
+                Assert.areSame(
+                    deeper, natEvt.target,
+                    "The target should be the newly focused element"
+                );
+                Assert.areEqual(
+                    deeper, editor.getSelection().getStartElement().$,
+                    "The deeper next sibling element should have been selected"
+                );
+            });
+            this._removeElement(
+                '<p id="remove-me">Remove me</p><ul><li id="deeper">Deeper</li></ul>',
+                '#remove-me'
+            );
+            Assert.isTrue(
+                editorInteractionFired,
+                "The `editorInteraction` event should have been fired"
+            );
+        },
+
+
         "Should give the focus to the next sibling element (widget)": function () {
             var editor = this.editor.get('nativeEditor'),
                 editorInteractionFired = false;
