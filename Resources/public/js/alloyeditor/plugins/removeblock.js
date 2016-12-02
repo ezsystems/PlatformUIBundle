@@ -62,8 +62,14 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
          * @method _changeFocus
          */
         _changeFocus: function (editor, newFocus) {
-            this._moveCaretToElement(editor, newFocus);
-            this._fireEditorInteraction(editor, newFocus);
+            var widget = editor.widgets.getByElement(newFocus);
+
+            if ( widget ) {
+                widget.focus();
+            } else {
+                this._moveCaretToElement(editor, newFocus);
+                this._fireEditorInteraction(editor, newFocus);
+            }
        },
 
         exec: function (editor, data) {
@@ -76,7 +82,7 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
                 toRemove = editor.widgets.focused.wrapper;
             }
             newFocus = toRemove.getNext();
-            if ( !newFocus || newFocus.hasAttribute('data-cke-temp') ) {
+            if ( !newFocus || newFocus.type === CKEDITOR.NODE_TEXT || newFocus.hasAttribute('data-cke-temp') ) {
                 // the data-cke-temp element is added by the Widget plugin for
                 // internal purposes but it exposes no API to handle it, so we
                 // are forced to manually check if newFocus is this element
@@ -101,6 +107,8 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
      * @constructor
      */
     CKEDITOR.plugins.add('ezremoveblock', {
+        requires: 'widget',
+
         init: function (editor) {
             editor.addCommand('eZRemoveBlock', removeBlockCommand);
         },
