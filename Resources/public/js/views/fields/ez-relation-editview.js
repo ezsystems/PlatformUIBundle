@@ -138,6 +138,7 @@ YUI.add('ez-relation-editview', function (Y) {
                 config: {
                     contentDiscoveredHandler: Y.bind(this._selectRelation, this),
                     cancelDiscoverHandler: Y.bind(this.validate, this),
+                    startingLocationId: this.get('fieldDefinition').fieldSettings.selectionRootHref,
                 },
             });
         },
