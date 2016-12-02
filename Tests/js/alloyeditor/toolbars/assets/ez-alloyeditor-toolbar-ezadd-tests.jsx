@@ -30,7 +30,7 @@ YUI.add('ez-alloyeditor-toolbar-ezadd-tests', function (Y) {
             this.containerContent = this.container.getHTML();
             this.editor = AlloyEditor.editable(
                 this.container.getDOMNode(), {
-					toolbars: {ezadd: {}},
+                    toolbars: {ezadd: {}},
                     eZ: {
                         editableRegion: '.editable',
                     },
@@ -57,32 +57,32 @@ YUI.add('ez-alloyeditor-toolbar-ezadd-tests', function (Y) {
             delete AlloyEditor.Strings;
         },
 
-		_getEvent: function (editable) {
-			return {
-				data: {
-					nativeEvent: {
-						target: {
-							isContentEditable: editable,
-						}
-					}
-				}
-			};
-		},
+        _getEvent: function (editable) {
+            return {
+                data: {
+                    nativeEvent: {
+                        target: {
+                            isContentEditable: editable,
+                        }
+                    }
+                }
+            };
+        },
 
         "Should render a toolbar for non editable element": function () {
             var toolbar,
                 config = {},
-				selectionData = {region: {}},
+                selectionData = {region: {}},
                 event = this._getEvent(false);
 
             toolbar = ReactDOM.render(
                 <Y.eZ.AlloyEditor.Toolbars.ezadd
-					editor={this.editor}
-					config={config}
-					editorEvent={event}
-					selectionData={selectionData}
-					requestExclusive={function () {}}
-					renderExclusive={false} />,
+                    editor={this.editor}
+                    config={config}
+                    editorEvent={event}
+                    selectionData={selectionData}
+                    requestExclusive={function () {}}
+                    renderExclusive={false} />,
                 this.containerEzAdd
             );
 
@@ -92,39 +92,62 @@ YUI.add('ez-alloyeditor-toolbar-ezadd-tests', function (Y) {
             );
         },
 
-		_getHTMLCode: function (domNode) {
-			domNode.removeAttribute('data-reactid');
-			Array.prototype.forEach.call(domNode.querySelectorAll('[data-reactid]'), function (n) {
-				n.removeAttribute('data-reactid');
-			});
-			return domNode.innerHTML;
-		},
+        _getHTMLCode: function (domNode) {
+            domNode.removeAttribute('data-reactid');
+            Array.prototype.forEach.call(domNode.querySelectorAll('[data-reactid]'), function (n) {
+                n.removeAttribute('data-reactid');
+            });
+            return domNode.innerHTML;
+        },
+
+        "Should not render a toolbar when there's a text selection": function () {
+            var toolbar,
+                config = {},
+                selectionData = {region: {}, text: "Led Zeppelin"},
+                event = this._getEvent(false);
+
+            toolbar = ReactDOM.render(
+                <Y.eZ.AlloyEditor.Toolbars.ezadd
+                    editor={this.editor}
+                    config={config}
+                    editorEvent={event}
+                    selectionData={selectionData}
+                    requestExclusive={function () {}}
+                    renderExclusive={false} />,
+                this.containerEzAdd
+            );
+
+            Assert.isNull(
+                ReactDOM.findDOMNode(toolbar),
+                "The toolbar should not be rendered"
+            );
+        },
 
         "Should behave like the add toolbar on editable element": function () {
             var toolbar,
                 addToolbar,
                 config = {},
-				selectionData = {region: {}},
+                selectionData = {region: {}},
                 event = this._getEvent(true);
 
             toolbar = ReactDOM.render(
                 <Y.eZ.AlloyEditor.Toolbars.ezadd
-					editor={this.editor}
-					config={config}
-					editorEvent={event}
-					selectionData={selectionData}
-					requestExclusive={function () {}}
-					renderExclusive={false} />,
+                    editor={this.editor}
+                    config={config}
+                    editorEvent={event}
+                    selectionData={selectionData}
+                    requestExclusive={function () {}}
+                    renderExclusive={false} />,
                 this.containerEzAdd
             );
             addToolbar = ReactDOM.render(
                 <Y.eZ.AlloyEditor.Toolbars.add
-					editor={this.editor}
-					config={config}
-					editorEvent={event}
-					selectionData={selectionData}
-					requestExclusive={function () {}}
-					renderExclusive={false} />,
+                    editor={this.editor}
+                    config={config}
+                    editorEvent={event}
+                    selectionData={selectionData}
+                    requestExclusive={function () {}}
+                    renderExclusive={false} />,
                 this.containerAdd
             );
             Assert.isInstanceOf(
