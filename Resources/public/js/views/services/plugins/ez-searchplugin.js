@@ -143,14 +143,23 @@ YUI.add('ez-searchplugin', function (Y) {
                 contentService = this._getContentService();
 
             contentService.createView(query, Y.bind(function (error, result) {
-                var parsedResult,
-                    endContentTypeLoad;
+                var parsedResult;
 
                 if ( error ) {
                     return callback(error);
                 }
                 parsedResult = this._parseSearchResult(result, 'content', '_createContent');
-                if ( search.loadContentType ) {
+                if (parsedResult.length && (search.loadLocation || search.loadContentType)) {
+                    this._loadContentResources(
+                        search.viewName,
+                        search.loadContentType,
+                        search.loadLocation,
+                        parsedResult,
+                        function (error, structs) {
+                            callback(error, structs, result.document.View.Result.count);
+                        }
+                    );
+                    /*
                     endContentTypeLoad = function (error, response) {
                         callback(error, parsedResult, result.document.View.Result.count);
                     };
@@ -158,6 +167,7 @@ YUI.add('ez-searchplugin', function (Y) {
                     this._loadContentTypeForStruct(parsedResult, function (struct) {
                         return struct.content.get('resources').ContentType;
                     }, endContentTypeLoad);
+                    */
                 } else {
                     callback(error, parsedResult, result.document.View.Result.count);
                 }
@@ -204,7 +214,7 @@ YUI.add('ez-searchplugin', function (Y) {
                 }
                 parsedResult = this._parseSearchResult(result, 'location', '_createLocation');
                 if (parsedResult.length && (search.loadContentType || search.loadContent)) {
-                    this._loadResources(
+                    this._loadLocationResources(
                         search.viewName,
                         search.loadContentType,
                         search.loadContent,
@@ -323,7 +333,6 @@ YUI.add('ez-searchplugin', function (Y) {
             return content;
         },
 
-
         /**
          * Loads resources for the given array of location structs. Depending on given
          * `loadContentType` and `loadContent` bool parameters it loads Content and ContentType
@@ -331,12 +340,31 @@ YUI.add('ez-searchplugin', function (Y) {
          *
          * @method _loadResources
          * @protected
+         * @deprecated
          * @param {Bool|undefined} loadContentType
          * @param {Bool|undefined} loadContent
          * @param {Array} locationStructArr
          * @param {Function} callback
          */
         _loadResources: function (viewName, loadContentType, loadContent, locationStructArr, callback) {
+            console.log('[DEPRECATED] _loadResources is deprecated, it will be removed from PlatformUI 2.0');
+            console.log('[DEPRECATED] Use _loadLocationResources instead');
+            this._loadLocationResources(viewName, loadContentType, loadContentType, locationStructArr, callback);
+        },
+
+        /**
+         * Loads resources for the given array of location structs. Depending on
+         * given `loadContentType` and `loadContent` bool parameters it loads
+         * Content and ContentType and includes them into the location structs.
+         *
+         * @method _loadLocationResources
+         * @protected
+         * @param {Bool|undefined} loadContentType
+         * @param {Bool|undefined} loadContent
+         * @param {Array} locationStructArr
+         * @param {Function} callback
+         */
+        _loadLocationResources: function (viewName, loadContentType, loadContent, locationStructArr, callback) {
             var tasks = new Y.Parallel(),
                 loadResourcesError = false;
 
@@ -366,6 +394,51 @@ YUI.add('ez-searchplugin', function (Y) {
 
             tasks.done(function () {
                 callback(loadResourcesError, locationStructArr);
+            });
+        },
+
+        /**
+         * Loads resources for the given array of content structs. Depending on
+         * given `loadContentType` and `loadLocation` bool parameters it loads
+         * ContentType and Location and includes them into the content structs.
+         *
+         * @method _loadContentResources
+         * @protected
+         * @param {Bool|undefined} loadContentType
+         * @param {Bool|undefined} loadLocation
+         * @param {Array} contentStructArr
+         * @param {Function} callback
+         */
+        _loadContentResources: function (viewName, loadContentType, loadLocation, contentStructArr, callback) {
+            var tasks = new Y.Parallel(),
+                loadResourcesError = false;
+
+            if (loadContentType) {
+                var endContentTypeLoad = tasks.add(function (error, response) {
+                        if (error) {
+                            loadResourcesError = true;
+                            return;
+                        }
+                    });
+
+                this._loadContentTypeForStruct(contentStructArr, function (struct) {
+                    return struct.content.get('resources').ContentType;
+                }, endContentTypeLoad);
+            }
+
+            if (loadLocation) {
+                var endContentLoad = tasks.add(function (error, response) {
+                        if (error) {
+                            loadResourcesError = true;
+                            return;
+                        }
+                    });
+
+                this._loadLocationForContent(viewName, contentStructArr, endContentLoad);
+            }
+
+            tasks.done(function () {
+                callback(loadResourcesError, contentStructArr);
             });
         },
 
@@ -472,6 +545,54 @@ YUI.add('ez-searchplugin', function (Y) {
                     });
                 }, this);
                 callback(err, locationStructArr);
+            }, this));
+        },
+
+        /**
+         * Loads Location for each content struct in given array and puts it in the new `location`
+         * field for the content struct.
+         *
+         * @method _loadLocationForContent
+         * @protected
+         * @param {Array|Null} contentStructArr
+         * @param {Function} callback
+         */
+        _loadLocationForContent: function (viewName, contentStructArr, callback) {
+            var contentService = this._getContentService(),
+                locationsIds,
+                query;
+
+            locationsIds = Y.Array.reduce(contentStructArr, '', function (previousId, struct, index) {
+                // TODO this is bad but no other way it seems
+                var locationId = struct.content.get('resources').MainLocation.split('/').pop();
+
+                previousId = previousId ? previousId + ',' : previousId;
+                return previousId + locationId;
+            });
+
+            query = this._createNewCreateViewStruct('locations-loading-' + viewName, 'LocationQuery', {
+                filter: {
+                    "LocationIdCriterion": locationsIds,
+                }
+            });
+
+            contentService.createView(query, Y.bind(function (err, response) {
+                if (err) {
+                    callback(err, contentStructArr);
+                    return;
+                }
+                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit, i) {
+                    var location = this._createLocation(hit);
+
+                    Y.Array.some(contentStructArr, function (struct) {
+                        if ( struct.content.get('resources').MainLocation === location.get('id') ) {
+                            struct.location = location;
+                            return true;
+                        }
+                        return false;
+                    });
+                }, this);
+                callback(err, contentStructArr);
             }, this));
         },
     }, {
