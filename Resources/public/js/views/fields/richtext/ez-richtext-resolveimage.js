@@ -20,7 +20,7 @@ YUI.add('ez-richtext-resolveimage', function (Y) {
      * @constructor
      */
     var ResolveImage = function () {
-            this._notLoadedMessage = "Image could not be loaded";
+            this._notLoadedMessage = Y.eZ.trans('image.content.not.loaded', {}, 'fieldedit');
         };
 
     Y.extend(ResolveImage, Y.eZ.RichTextResolveEmbed);
