@@ -107,7 +107,39 @@ YUI.add('ez-searchplugin', function (Y) {
          * @param {Number} e.callback.count the total number of search result
          */
         _doContentSearch: function (e) {
-            var query = this._createNewCreateViewStruct(e.viewName, 'ContentQuery', e.search),
+            var search = Y.merge(e.search);
+
+            search.viewName = e.viewName;
+            search.loadContentType = e.loadContentType;
+            delete search.callback;
+            this.findContent(search, e.callback);
+        },
+
+        /**
+         * Executes a Content search based on the provided `search` object.
+         *
+         * @method findContent
+         * @param {Object} search
+         * @param {String} search.viewName the name of the REST view to use
+         * @param {Object} search.criteria (deprecated) the search criteria used as Criteria in ContentQuery
+         * @param {Object} search.query  the search query used as Query in ContentQuery
+         * @param {Object} search.filter the search filter used as Filter in ContentQuery
+         * @param {Object} [search.sortClauses] the sort clauses
+         * @param {Number} [search.offset]
+         * @param {Number} [search.limit]
+         * @param {Boolean} [search.loadContentType] flag indicating whether the
+         * Content Type of each result has to be loaded in addition
+         * @param {Function} callback
+         * @param {Error|null} callback.error
+         * @param {Response|Array} callback.result the Response object in case
+         * of error or an array of Content struct. A Content struct is object
+         * containing the Content item and the Content
+         * Type depending on the `loadContentType` flag.
+         * @param {Number} callback.resultCount the total result number of the
+         * search
+         */
+        findContent: function (search, callback) {
+            var query = this._createNewCreateViewStruct(search.viewName, 'ContentQuery', search),
                 contentService = this._getContentService();
 
             contentService.createView(query, Y.bind(function (error, result) {
@@ -115,19 +147,19 @@ YUI.add('ez-searchplugin', function (Y) {
                     endContentTypeLoad;
 
                 if ( error ) {
-                    return e.callback(error);
+                    return callback(error);
                 }
                 parsedResult = this._parseSearchResult(result, 'content', '_createContent');
-                if ( e.loadContentType ) {
+                if ( search.loadContentType ) {
                     endContentTypeLoad = function (error, response) {
-                        e.callback(error, parsedResult, result.document.View.Result.count);
+                        callback(error, parsedResult, result.document.View.Result.count);
                     };
 
                     this._loadContentTypeForStruct(parsedResult, function (struct) {
                         return struct.content.get('resources').ContentType;
                     }, endContentTypeLoad);
                 } else {
-                    e.callback(error, parsedResult, result.document.View.Result.count);
+                    callback(error, parsedResult, result.document.View.Result.count);
                 }
             }, this));
         },

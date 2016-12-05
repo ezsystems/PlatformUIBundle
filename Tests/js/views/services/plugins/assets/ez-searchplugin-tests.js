@@ -56,7 +56,6 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                     return {ContentType: that.contentTypeId, MainLocation: ''};
                 }
             };
-
         };
 
         this.Content.prototype.loadFromHash = function (hash) {
@@ -431,7 +430,6 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 run: Y.bind(function (query, callback) {
                     callback(false, response);
                 }, this)
-
             });
 
             this.plugin.findContent({
