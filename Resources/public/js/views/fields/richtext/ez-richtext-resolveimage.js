@@ -19,7 +19,9 @@ YUI.add('ez-richtext-resolveimage', function (Y) {
      * @extends eZ.RichTextResolveEmbed
      * @constructor
      */
-    var ResolveImage = function () { };
+    var ResolveImage = function () {
+            this._notLoadedMessage = "Image could not be loaded";
+        };
 
     Y.extend(ResolveImage, Y.eZ.RichTextResolveEmbed);
 
@@ -71,8 +73,16 @@ YUI.add('ez-richtext-resolveimage', function (Y) {
     };
 
     ResolveImage.prototype._renderEmbed = function (mapNode, view, error, results) {
+        var localMapNode = Y.merge(mapNode);
+
+        if ( error ) {
+            this._renderNotLoadedEmbed(localMapNode);
+            return;
+        }
+
         results.forEach(function (struct) {
             var content = struct.content,
+                contentId = content.get('contentId'),
                 contentType = struct.contentType,
                 imageField;
 
@@ -80,8 +90,21 @@ YUI.add('ez-richtext-resolveimage', function (Y) {
                 contentType.getFieldDefinitionIdentifiers('ezimage')[0],
                 content.get('mainLanguageCode')
             );
-            mapNode[content.get('contentId')].forEach(Y.bind(this._loadVariation, this, view, content, imageField));
+            if ( imageField.fieldValue ) {
+                localMapNode[contentId].forEach(Y.bind(this._loadVariation, this, view, content, imageField));
+            } else {
+                localMapNode[content.get('contentId')].forEach(function (embedNode) {
+                    this._renderEmbedContentNode(content, embedNode);
+                    this._setEmptyImage(embedNode);
+                }, this);
+            }
+            delete localMapNode[contentId];
         }, this);
+        this._renderNotLoadedEmbed(localMapNode);
+    };
+
+    ResolveImage.prototype._setEmptyImage = function (embedNode) {
+        return embedNode.addClass('is-embed-image-empty-image');
     };
 
     /**
@@ -101,6 +124,10 @@ YUI.add('ez-richtext-resolveimage', function (Y) {
             field: imageField,
             callback: Y.bind(function (error, variation) {
                 this._unsetLoading(embedNode);
+                if ( error ) {
+                    this._setNotLoaded(embedNode);
+                    return;
+                }
                 this._getEmbedContent(embedNode).remove(true);
                 this._renderImage(embedNode, content, variation);
             }, this),

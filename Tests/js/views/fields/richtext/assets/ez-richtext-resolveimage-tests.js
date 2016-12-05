@@ -19,8 +19,8 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
             this.mainLanguageCode = 'fre-FR';
             this.fieldDefinitionIdentifier = 'image';
             this.fields = {};
-            this.fields["41"] = {'image': {}};
-            this.fields["42"] = {'image': {}};
+            this.fields["41"] = {'image': {fieldValue: {}}};
+            this.fields["42"] = {'image': {fieldValue: {}}};
         },
 
         tearDown: function () {
@@ -30,48 +30,46 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
             delete this.processor;
         },
 
+        _assertEmbedImageLoading: function (image) {
+            Assert.isTrue(
+                image.hasClass('is-embed-loading'),
+                "The image should get the loading class"
+            );
+            Assert.areEqual(
+                'p', image.one('.ez-embed-content').get('localName'),
+                "The image content element should have been added"
+            );
+        },
+
+        _assertEmbedImageNotLoading: function (embed) {
+            Assert.isFalse(
+                embed.hasClass('is-embed-loading'),
+                "embed not representing an image should be ignored"
+            );
+        },
+
         "Should render the images as loading": function () {
             var image1 = this.view.get('container').one('#image1'),
                 image2 = this.view.get('container').one('#image2');
 
             this.processor.process(this.view);
 
-            Assert.isTrue(
-                image1.hasClass('is-embed-loading'),
-                "The image should get the loading class"
-            );
-            Assert.isTrue(
-                image2.hasClass('is-embed-loading'),
-                "The image should get the loading class"
-            );
-            Assert.areEqual(
-                'p', image1.one('.ez-embed-content').get('localName'),
-                "The image content element should have been added"
-            );
-            Assert.areEqual(
-                'p', image2.one('.ez-embed-content').get('localName'),
-                "The image content element should have been added"
-            );
+            this._assertEmbedImageLoading(image1);
+            this._assertEmbedImageLoading(image2);
         },
 
         "Should ignore already rendered image": function () {
             var image = this.view.get('container').one('#image-loaded');
 
             this.processor.process(this.view);
-            Assert.isFalse(
-                image.hasClass('is-embed-loading'),
-                "The already loaded image should be ignored"
-            );
+            this._assertEmbedImageNotLoading(image);
         },
 
         "Should ignore embed not representing images": function () {
             var notImage = this.view.get('container').one('#not-image');
 
             this.processor.process(this.view);
-            Assert.isFalse(
-                notImage.hasClass('is-embed-loading'),
-                "embed not representing an image should be ignored"
-            );
+            this._assertEmbedImageNotLoading(notImage);
         },
 
         "Should search for the corresponding content": function () {
@@ -136,6 +134,31 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
             return type;
         },
 
+        _assertEmbedImageNotLoaded: function (image) {
+            Assert.isTrue(
+                image.hasClass('is-embed-not-loaded'),
+                "The image should get the not loaded class"
+            );
+            Assert.areEqual(
+                'Image could not be loaded',
+                image.one('.ez-embed-content').getContent(),
+                "The image content element should contain an error message"
+            );
+        },
+
+        "Should handle search error": function () {
+            var image1 = this.view.get('container').one('#image1'),
+                image2 = this.view.get('container').one('#image2');
+
+            this.view.once('contentSearch', function (e) {
+                e.callback.call(this, true, []);
+            });
+            this.processor.process(this.view);
+
+            this._assertEmbedImageNotLoaded(image1);
+            this._assertEmbedImageNotLoaded(image2);
+        },
+
         "Should load the variations": function () {
             var content1 = this._getContentMock("41"),
                 content2 = this._getContentMock("42"),
@@ -169,6 +192,71 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
             );
         },
 
+        "Should handle missing content in search results": function () {
+            var image1 = this.view.get('container').one('#image1'),
+                image2 = this.view.get('container').one('#image2'),
+                content1 = this._getContentMock("41"),
+                type = this._getContentTypeMock(),
+                loadImageVariation = 0;
+
+            this.view.once('contentSearch', function (e) {
+                e.callback.call(this, false, [{content: content1, contentType: type}]);
+            });
+            this.view.on('loadImageVariation', Y.bind(function (e) {
+                loadImageVariation++;
+                if ( this.fields["41"].image === e.field ) {
+                    Assert.areEqual(
+                        "large", e.variation,
+                        "The 'large' variation should be requested"
+                    );
+                } else {
+                    Assert.fail("Unexpected field in loadImageVariation parameter");
+                }
+            }, this));
+            this.processor.process(this.view);
+
+            Assert.areEqual(
+                1, loadImageVariation,
+                "The loadImageVariation event should have been fired once"
+            );
+            this._assertEmbedImageLoading(image1);
+            this._assertEmbedImageNotLoaded(image2);
+        },
+
+        _assertEmbedImageRendered: function (image, uri, name) {
+            Assert.isFalse(
+                image.hasClass('is-embed-loading'),
+                "The loading class should have been removed"
+            );
+            Assert.areEqual(
+                "img", image.one('.ez-embed-content').get('localName'),
+                "The image should be rendered"
+            );
+            Assert.areEqual(
+                uri, image.one('.ez-embed-content').getAttribute('src'),
+                "The image should be rendered"
+            );
+            Assert.areEqual(
+                name, image.one('.ez-embed-content').getAttribute('alt'),
+                "The image should be rendered"
+            );
+        },
+
+        _assertEmbedImageRenderedAsEmbed: function (image) {
+            Assert.isFalse(
+                image.hasClass('is-embed-loading'),
+                "The loading class should have been removed"
+            );
+            Assert.isTrue(
+                image.hasClass('is-embed-image-empty-image'),
+                "The empty class class should have been added"
+            );
+            Assert.areEqual(
+                "p", image.one('.ez-embed-content').get('localName'),
+                "No image should be rendered"
+            );
+        },
+
         "Should render images": function () {
             var image1 = this.view.get('container').one('#image1'),
                 image2 = this.view.get('container').one('#image2'),
@@ -185,38 +273,53 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
             }));
             this.processor.process(this.view);
 
-            Assert.isFalse(
-                image1.hasClass('is-embed-loading'),
-                "The loading class should have been removed"
-            );
-            Assert.areEqual(
-                "img", image1.one('.ez-embed-content').get('localName'),
-                "The image should be rendered"
-            );
-            Assert.areEqual(
-                uri, image1.one('.ez-embed-content').getAttribute('src'),
-                "The image should be rendered"
-            );
-            Assert.areEqual(
-                "name-41", image1.one('.ez-embed-content').getAttribute('alt'),
-                "The image should be rendered"
-            );
-            Assert.isFalse(
-                image2.hasClass('is-embed-loading'),
-                "The loading class should have been removed"
-            );
-            Assert.areEqual(
-                "img", image2.one('.ez-embed-content').get('localName'),
-                "The image should be rendered"
-            );
-            Assert.areEqual(
-                uri, image2.one('.ez-embed-content').getAttribute('src'),
-                "The image should be rendered"
-            );
-            Assert.areEqual(
-                "name-42", image2.one('.ez-embed-content').getAttribute('alt'),
-                "The image should be rendered"
-            );
+            this._assertEmbedImageRendered(image1, uri, "name-41");
+            this._assertEmbedImageRendered(image2, uri, "name-42");
+        },
+
+        "Should handle empty image fields": function () {
+            var image1 = this.view.get('container').one('#image1'),
+                image2 = this.view.get('container').one('#image2'),
+                content1 = this._getContentMock("41"),
+                content2 = this._getContentMock("42"),
+                type = this._getContentTypeMock(),
+                uri = "http://www.reactiongifs.com/r/The-Hills.gif";
+
+            delete this.fields["41"].image.fieldValue;
+            this.view.once('contentSearch', function (e) {
+                e.callback.call(this, false, [{content: content1, contentType: type}, {content: content2, contentType: type}]);
+            });
+            this.view.on('loadImageVariation', Y.bind(function (e) {
+                e.callback.call(this, false, {uri: uri});
+            }));
+            this.processor.process(this.view);
+
+            this._assertEmbedImageRenderedAsEmbed(image1);
+            this._assertEmbedImageRendered(image2, uri, "name-42");
+        },
+
+        "Should handle load variation error": function () {
+            var image1 = this.view.get('container').one('#image1'),
+                image2 = this.view.get('container').one('#image2'),
+                content1 = this._getContentMock("41"),
+                content2 = this._getContentMock("42"),
+                type = this._getContentTypeMock(),
+                uri = "http://www.reactiongifs.com/r/The-Hills.gif";
+
+            this.view.once('contentSearch', function (e) {
+                e.callback.call(this, false, [{content: content1, contentType: type}, {content: content2, contentType: type}]);
+            });
+            this.view.on('loadImageVariation', Y.bind(function (e) {
+                if ( this.fields["41"].image === e.field ) {
+                    e.callback.call(this, true);
+                } else {
+                    e.callback.call(this, false, {uri: uri});
+                }
+            }, this));
+            this.processor.process(this.view);
+
+            this._assertEmbedImageNotLoaded(image1);
+            this._assertEmbedImageRendered(image2, uri, "name-42");
         },
     });
 
