@@ -93,6 +93,17 @@ YUI.add('ez-richtext-resolveembed-tests', function (Y) {
             return content;
         },
 
+        _assertEmbedLoaded: function (embed, contentId) {
+            Assert.isFalse(
+                embed.hasClass('is-embed-loading'),
+                "The loading class should have been removed"
+            );
+            Assert.areEqual(
+                "name-" + contentId, embed.one('.ez-embed-content').getContent(),
+                "The embed should be rendered"
+            );
+        },
+
         "Should render embeds": function () {
             var embed1 = this.view.get('container').one('#embed1'),
                 embed2 = this.view.get('container').one('#embed2'),
@@ -103,23 +114,50 @@ YUI.add('ez-richtext-resolveembed-tests', function (Y) {
                 e.callback.call(this, false, [{content: content1}, {content: content2}]);
             });
             this.processor.process(this.view);
+            this._assertEmbedLoaded(embed1, 41);
+            this._assertEmbedLoaded(embed2, 42);
+        },
 
+        _assertEmbedNotLoaded: function (embed) {
             Assert.isFalse(
-                embed1.hasClass('is-embed-loading'),
+                embed.hasClass('is-embed-loading'),
                 "The loading class should have been removed"
             );
-            Assert.areEqual(
-                "name-41", embed1.one('.ez-embed-content').getContent(),
-                "The embed should be rendered"
-            );
-            Assert.isFalse(
-                embed2.hasClass('is-embed-loading'),
-                "The loading class should have been removed"
+            Assert.isTrue(
+                embed.hasClass('is-embed-not-loaded'),
+                "The not loaded class should have been added"
             );
             Assert.areEqual(
-                "name-42", embed2.one('.ez-embed-content').getContent(),
-                "The embed should be rendered"
+                "embed.content.not.loaded domain=fieldedit",
+                embed.one('.ez-embed-content').getContent(),
+                "The embed should contain an error message"
             );
+        },
+
+        "Should handle search error": function () {
+            var embed1 = this.view.get('container').one('#embed1'),
+                embed2 = this.view.get('container').one('#embed2');
+
+            this.view.once('contentSearch', function (e) {
+                e.callback.call(this, true, []);
+            });
+            this.processor.process(this.view);
+            this._assertEmbedNotLoaded(embed1);
+            this._assertEmbedNotLoaded(embed2);
+        },
+
+        // regression test for EZP-26475
+        "Should handle missing content": function () {
+            var embed1 = this.view.get('container').one('#embed1'),
+                embed2 = this.view.get('container').one('#embed2'),
+                content1 = this._getContentMock(41);
+
+            this.view.once('contentSearch', function (e) {
+                e.callback.call(this, false, [{content: content1}]);
+            });
+            this.processor.process(this.view);
+            this._assertEmbedLoaded(embed1, 41);
+            this._assertEmbedNotLoaded(embed2);
         },
     });
 

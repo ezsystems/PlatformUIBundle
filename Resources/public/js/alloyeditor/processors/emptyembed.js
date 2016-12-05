@@ -32,7 +32,9 @@ YUI.add('ez-editorcontentprocessoremptyembed', function (Y) {
      * @param {DOMNode} embedNode
      */
     EmptyEmbed.prototype._emptyEmbed = function (embedNode) {
-        var element = embedNode.firstChild, next;
+        var element = embedNode.firstChild, next,
+            forEach = Array.prototype.forEach, // for PhantomJS 1.9...
+            removeClass = function () {};
 
         while ( element ) {
             next = element.nextSibling;
@@ -41,6 +43,16 @@ YUI.add('ez-editorcontentprocessoremptyembed', function (Y) {
             }
             element = next;
         }
+        forEach.call(embedNode.classList, function (cl) {
+            var prevRemoveClass = removeClass;
+            if ( cl.indexOf('is-embed-') === 0 ) {
+                removeClass = function () {
+                    embedNode.classList.remove(cl);
+                    prevRemoveClass();
+                };
+            }
+        });
+        removeClass();
     };
 
     /**
