@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="972127730f863287531a351da529a802" resname="content_type.edit_title">
+        <source>content_type.edit_title</source>
+        <target xml:lang="ach">crwdns205055:0crwdne205055:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
