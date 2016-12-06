@@ -1,81 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="ach" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="3883567b167de8cb80d35b5511771914" resname="subitem.no.subitem">
-        <source>subitem.no.subitem</source>
-        <target xml:lang="ach">crwdns205483:0crwdne205483:0</target>
+      <trans-unit id="f28f995a9562088395bf19373c81fda9a89f1585" resname="content.type">
+        <source>Content type</source>
+        <target xml:lang="ach">crwdns206166:0crwdne206166:0</target>
+        <note>key: content.type</note>
+        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="16245e895ed8c82d945fee889be41d1b" resname="subitem.error.loading.image">
-        <source>subitem.error.loading.image</source>
-        <target xml:lang="ach">crwdns205484:0crwdne205484:0</target>
+      <trans-unit id="0bb9f90672f5fc639172ca0404b04581207c530e" resname="grid.view">
+        <source>Grid view</source>
+        <target xml:lang="ach">crwdns206167:0crwdne206167:0</target>
+        <note>key: grid.view</note>
+        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemgridview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="d22bf1ca75120ea5dd691f5e21bc5b7c" resname="subitem.retry">
-        <source>subitem.retry</source>
-        <target xml:lang="ach">crwdns205485:0crwdne205485:0</target>
+      <trans-unit id="22d2dc7a032551838259f398cd5b8dd8e260d17e" resname="list.view">
+        <source>List view</source>
+        <target xml:lang="ach">crwdns206168:0crwdne206168:0</target>
+        <note>key: list.view</note>
+        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="b9492e63640c9f35e788802fa6116eef" resname="subitem.error.loading.list">
-        <source>subitem.error.loading.list</source>
-        <target xml:lang="ach">crwdns205486:0crwdne205486:0</target>
+      <trans-unit id="99db324742823c55d975b605e1fc22f4253a9b7d" resname="modified">
+        <source>Modified</source>
+        <target xml:lang="ach">crwdns206169:0crwdne206169:0</target>
+        <note>key: modified</note>
+        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="3ddb6e8dd639dadf342ced7ae631ca3c" resname="subitem.first">
-        <source>subitem.first</source>
-        <target xml:lang="ach">crwdns205487:0crwdne205487:0</target>
+      <trans-unit id="6ae999552a0d2dca14d62e2bc8b764d377b1dd6c" resname="name">
+        <source>Name</source>
+        <target xml:lang="ach">crwdns206170:0crwdne206170:0</target>
+        <note>key: name</note>
+        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="0afe69746051b11bee14b94bc91a09d6" resname="subitem.previous">
-        <source>subitem.previous</source>
-        <target xml:lang="ach">crwdns205488:0crwdne205488:0</target>
+      <trans-unit id="3345867ecfeeaaae30e155d010fc96d9f5119644" resname="priority">
+        <source>Priority</source>
+        <target xml:lang="ach">crwdns206171:0crwdne206171:0</target>
+        <note>key: priority</note>
+        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="838ef298d67a9bf29a5d62b824cd2e77" resname="subitem.next">
-        <source>subitem.next</source>
-        <target xml:lang="ach">crwdns205489:0crwdne205489:0</target>
+      <trans-unit id="e9fbb7ba38fa94be8b417699fb729a60c7b8ab48" resname="show.more.results">
+        <source><![CDATA[Show <span class="ez-loadmorepagination-more-count">%limit%</span> more results]]></source>
+        <target xml:lang="ach"><![CDATA[crwdns206172:0%limit%crwdne206172:0]]></target>
+        <note>key: show.more.results</note>
+        <jms:reference-file>./Resources/public/templates/subitem/grid.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/subitem/listmore.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="c8c9c9c616ed7b5a730ee796b85ff386" resname="subitem.last">
-        <source>subitem.last</source>
-        <target xml:lang="ach">crwdns205490:0crwdne205490:0</target>
+      <trans-unit id="a48dcd8c90a5ec18b087c64865a8aaeddb83107c" resname="subitem.error.loading.image">
+        <source>An error occurred while loading the image.</source>
+        <target xml:lang="ach">crwdns206173:0crwdne206173:0</target>
+        <note>key: subitem.error.loading.image</note>
+        <jms:reference-file>./Resources/public/templates/subitem/griditem.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="16d1ca2f90557e00680562a475a4db75" resname="subitem.subitems">
-        <source>subitem.subitems</source>
-        <target xml:lang="ach">crwdns205491:0crwdne205491:0</target>
+      <trans-unit id="687a6cc31795b1c3ef4754351319522f21e40d28" resname="subitem.error.loading.list">
+        <source>An error occurred while loading the sub-items list.</source>
+        <target xml:lang="ach">crwdns206174:0crwdne206174:0</target>
+        <note>key: subitem.error.loading.list</note>
+        <jms:reference-file>./Resources/public/js/views/subitem/ez-asynchronoussubitemview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="e77285a90b5a02080b61ebe00aa3c123" resname="viewing.out.of.items">
-        <source>viewing.out.of.items</source>
-        <target xml:lang="ach">crwdns205492:0crwdne205492:0</target>
+      <trans-unit id="1ba785e2cab1df903e4feca2bc9e4eccf5b542dc" resname="subitem.first">
+        <source>First</source>
+        <target xml:lang="ach">crwdns206175:0crwdne206175:0</target>
+        <note>key: subitem.first</note>
+        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="589cf891cd3ad3cc4db8197ef1e32f92" resname="show.more.results">
-        <source>show.more.results</source>
-        <target xml:lang="ach">crwdns205493:0crwdne205493:0</target>
+      <trans-unit id="0729624b971947f00032e59cd4de5fe7e8c92e4e" resname="subitem.last">
+        <source>Last</source>
+        <target xml:lang="ach">crwdns206176:0crwdne206176:0</target>
+        <note>key: subitem.last</note>
+        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="7787b9b9dc6daf9179963f8b1ea560bb" resname="list.view">
-        <source>list.view</source>
-        <target xml:lang="ach">crwdns205494:0crwdne205494:0</target>
+      <trans-unit id="c9196a19ae958da788cf0b5fbb4e0fb6451ebdf2" resname="subitem.next">
+        <source>Next</source>
+        <target xml:lang="ach">crwdns206177:0crwdne206177:0</target>
+        <note>key: subitem.next</note>
+        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="b068931cc450442b63f5b3d276ea4297" resname="name">
-        <source>name</source>
-        <target xml:lang="ach">crwdns205495:0crwdne205495:0</target>
+      <trans-unit id="d5c97668af30fef2819f3f52add12af828cbe9b3" resname="subitem.no.subitem">
+        <source>This location has no sub-item.</source>
+        <target xml:lang="ach">crwdns206178:0crwdne206178:0</target>
+        <note>key: subitem.no.subitem</note>
+        <jms:reference-file>./Resources/public/templates/subitem/grid.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/subitem/listmore.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="9ae73c65f418e6f79ceb4f0e4a4b98d5" resname="modified">
-        <source>modified</source>
-        <target xml:lang="ach">crwdns205496:0crwdne205496:0</target>
+      <trans-unit id="30b83e737fd8950c2dd108986fa2a82820c2a033" resname="subitem.previous">
+        <source>Previous</source>
+        <target xml:lang="ach">crwdns206179:0crwdne206179:0</target>
+        <note>key: subitem.previous</note>
+        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="f6ad414f8441807856aba8e12f3de4f5" resname="content.type">
-        <source>content.type</source>
-        <target xml:lang="ach">crwdns205497:0crwdne205497:0</target>
+      <trans-unit id="a399eccb79686f2421595d297024effd80124451" resname="subitem.retry">
+        <source>Retry</source>
+        <target xml:lang="ach">crwdns206180:0crwdne206180:0</target>
+        <note>key: subitem.retry</note>
+        <jms:reference-file>./Resources/public/templates/subitem/griditem.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="b988295c268025b49dfb3df26171ddc3" resname="priority">
-        <source>priority</source>
-        <target xml:lang="ach">crwdns205498:0crwdne205498:0</target>
+      <trans-unit id="5f58a440086c7ddb295d36e1b7b58af48b6f568a" resname="subitem.subitems">
+        <source>Sub-items</source>
+        <target xml:lang="ach">crwdns206181:0crwdne206181:0</target>
+        <note>key: subitem.subitems</note>
+        <jms:reference-file>./Resources/public/templates/subitembox.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2ed18fafe4199c7cfc187fdb2a5b1a66" resname="translations">
-        <source>translations</source>
-        <target xml:lang="ach">crwdns205499:0crwdne205499:0</target>
+      <trans-unit id="31c20e73fa29248cc7bf440ac9d720ff6d88fd3e" resname="translations">
+        <source>Translations</source>
+        <target xml:lang="ach">crwdns206182:0crwdne206182:0</target>
+        <note>key: translations</note>
+        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="18b3d420b7ba1e4dad05d049b887e387" resname="grid.view">
-        <source>grid.view</source>
-        <target xml:lang="ach">crwdns205500:0crwdne205500:0</target>
+      <trans-unit id="3cae0754bed733e5785947e0b1a795ffeacb8a12" resname="viewing.out.of.items">
+        <source><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%subitemCount%</strong> sub-items]]></source>
+        <target xml:lang="ach"><![CDATA[crwdns206183:0%displayCount%crwdnd206183:0%subitemCount%crwdne206183:0]]></target>
+        <note>key: viewing.out.of.items</note>
+        <jms:reference-file>./Resources/public/templates/subitem/grid.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/subitem/listmore.hbt</jms:reference-file>
       </trans-unit>
     </body>
   </file>
