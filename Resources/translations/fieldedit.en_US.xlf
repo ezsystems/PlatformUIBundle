@@ -7,535 +7,535 @@
     <body>
       <trans-unit id="5dc25b83a6783a2921dee02555c3cc6b" resname="authorinput.name">
         <source>authorinput.name</source>
-        <target xml:lang="en" state="needs-translation">authorinput.name</target>
+        <target xml:lang="en" state="translated">Name:</target>
       </trans-unit>
       <trans-unit id="1602be87d1cb0933a995701fb5c3aede" resname="authorinput.email">
         <source>authorinput.email</source>
-        <target xml:lang="en" state="needs-translation">authorinput.email</target>
+        <target xml:lang="en" state="translated">Email:</target>
       </trans-unit>
       <trans-unit id="e269d5cbd29baa1a791353f11473e695" resname="authorinput.remove">
         <source>authorinput.remove</source>
-        <target xml:lang="en" state="needs-translation">authorinput.remove</target>
+        <target xml:lang="en" state="translated">Remove this author</target>
       </trans-unit>
       <trans-unit id="3ee706fc52164597114293d2bb610104" resname="relationlist.help">
         <source>relationlist.help</source>
-        <target xml:lang="en" state="needs-translation">relationlist.help</target>
+        <target xml:lang="en" state="translated">Set up multiple relations with several contents.</target>
       </trans-unit>
       <trans-unit id="e0f4a20d96727e85eefbcf1c09c3a2c1" resname="relationlist.empty">
         <source>relationlist.empty</source>
-        <target xml:lang="en" state="needs-translation">relationlist.empty</target>
+        <target xml:lang="en" state="translated">No relation.</target>
       </trans-unit>
       <trans-unit id="95135184ab00afca23e0f6f16749cadd" resname="relationlist.table.name">
         <source>relationlist.table.name</source>
-        <target xml:lang="en" state="needs-translation">relationlist.table.name</target>
+        <target xml:lang="en" state="translated">Name</target>
       </trans-unit>
       <trans-unit id="765ab373ae279761ac27c7fda6749c5e" resname="relationlist.table.published">
         <source>relationlist.table.published</source>
-        <target xml:lang="en" state="needs-translation">relationlist.table.published</target>
+        <target xml:lang="en" state="translated">Published</target>
       </trans-unit>
       <trans-unit id="55357c4a95f3b515f5ed6464ffdd1a7d" resname="relationlist.table.modified">
         <source>relationlist.table.modified</source>
-        <target xml:lang="en" state="needs-translation">relationlist.table.modified</target>
+        <target xml:lang="en" state="translated">Modified</target>
       </trans-unit>
       <trans-unit id="fc6009e3380630b593b6a02db80ec11b" resname="relationlist.remove">
         <source>relationlist.remove</source>
-        <target xml:lang="en" state="needs-translation">relationlist.remove</target>
+        <target xml:lang="en" state="translated">Remove</target>
       </trans-unit>
       <trans-unit id="1b1afab9aab457e36c356b0056a054b7" resname="relationlist.error">
         <source>relationlist.error</source>
-        <target xml:lang="en" state="needs-translation">relationlist.error</target>
+        <target xml:lang="en" state="translated">An error occurred while loading the related content.</target>
       </trans-unit>
       <trans-unit id="cdb57d54c553efce5226517339f7532b" resname="relationlist.loading">
         <source>relationlist.loading</source>
-        <target xml:lang="en" state="needs-translation">relationlist.loading</target>
+        <target xml:lang="en" state="translated">Loading the related content(s)</target>
       </trans-unit>
       <trans-unit id="9c6155b32b2ca46c0f9a3eace35272d9" resname="relationlist.select">
         <source>relationlist.select</source>
-        <target xml:lang="en" state="needs-translation">relationlist.select</target>
+        <target xml:lang="en" state="translated">Select contents</target>
       </trans-unit>
       <trans-unit id="c6912655ed135b4a77564d7270b73d54" resname="relationlist.retry">
         <source>relationlist.retry</source>
-        <target xml:lang="en" state="needs-translation">relationlist.retry</target>
+        <target xml:lang="en" state="translated">Retry</target>
       </trans-unit>
       <trans-unit id="c3cd3e4e868d721dcd605d01f3e12407" resname="author.add">
         <source>author.add</source>
-        <target xml:lang="en" state="needs-translation">author.add</target>
+        <target xml:lang="en" state="translated">Add another author</target>
       </trans-unit>
       <trans-unit id="06b14b53a7883c1cdabb2078dbe4f2bd" resname="relation.help">
         <source>relation.help</source>
-        <target xml:lang="en" state="needs-translation">relation.help</target>
+        <target xml:lang="en" state="translated">Select another content and link it up with your content.</target>
       </trans-unit>
       <trans-unit id="f5e386226a27f6117a9e781a8ba73d35" resname="relation.empty">
         <source>relation.empty</source>
-        <target xml:lang="en" state="needs-translation">relation.empty</target>
+        <target xml:lang="en" state="translated">No relation.</target>
       </trans-unit>
       <trans-unit id="3cd7c644d521ae46596543ea19bb30eb" resname="relation.error">
         <source>relation.error</source>
-        <target xml:lang="en" state="needs-translation">relation.error</target>
+        <target xml:lang="en" state="translated">An error occurred while loading the related content.</target>
       </trans-unit>
       <trans-unit id="57ca527530dcb9c05373d4bdb2171586" resname="relation.retry">
         <source>relation.retry</source>
-        <target xml:lang="en" state="needs-translation">relation.retry</target>
+        <target xml:lang="en" state="translated">Retry</target>
       </trans-unit>
       <trans-unit id="fda496f70972008787b419d7bbaed028" resname="relation.loading">
         <source>relation.loading</source>
-        <target xml:lang="en" state="needs-translation">relation.loading</target>
+        <target xml:lang="en" state="translated">Loading the related content</target>
       </trans-unit>
       <trans-unit id="97937ffdd4273cf33bd3f9fd094623f4" resname="relation.select">
         <source>relation.select</source>
-        <target xml:lang="en" state="needs-translation">relation.select</target>
+        <target xml:lang="en" state="translated">Select a content</target>
       </trans-unit>
       <trans-unit id="b0cdbf93103111e038d122a49e05ec35" resname="relation.remove">
         <source>relation.remove</source>
-        <target xml:lang="en" state="needs-translation">relation.remove</target>
+        <target xml:lang="en" state="translated">Remove relation</target>
       </trans-unit>
       <trans-unit id="c60fef63810fa0ccb3ee81d5ccd41091" resname="relation.published">
         <source>relation.published</source>
-        <target xml:lang="en" state="needs-translation">relation.published</target>
+        <target xml:lang="en" state="translated">Published:</target>
       </trans-unit>
       <trans-unit id="633797041c93b25928c13922475845a2" resname="relation.modified">
         <source>relation.modified</source>
-        <target xml:lang="en" state="needs-translation">relation.modified</target>
+        <target xml:lang="en" state="translated">Modified:</target>
       </trans-unit>
       <trans-unit id="611ce788e1688c955d2e2e083788332d" resname="binaryfile.help">
         <source>binaryfile.help</source>
-        <target xml:lang="en" state="needs-translation">binaryfile.help</target>
+        <target xml:lang="en" state="translated">Drag and drop your file here or simply click on the buttons and select your file manually.</target>
       </trans-unit>
       <trans-unit id="95eb06c6ab541e0095f3553756d1093c" resname="binaryfile.download">
         <source>binaryfile.download</source>
-        <target xml:lang="en" state="needs-translation">binaryfile.download</target>
+        <target xml:lang="en" state="translated">Download the file</target>
       </trans-unit>
       <trans-unit id="cb211a905e50d5154b769583e3706132" resname="binaryfile.empty">
         <source>binaryfile.empty</source>
-        <target xml:lang="en" state="needs-translation">binaryfile.empty</target>
+        <target xml:lang="en" state="translated">No file yet.</target>
       </trans-unit>
       <trans-unit id="aafd91c983f217325da1a234319c28e3" resname="binaryfile.upload">
         <source>binaryfile.upload</source>
-        <target xml:lang="en" state="needs-translation">binaryfile.upload</target>
+        <target xml:lang="en" state="translated">Upload a file</target>
       </trans-unit>
       <trans-unit id="baf2b08a74dd8a40cf9ec60adcda4248" resname="binaryfile.replace">
         <source>binaryfile.replace</source>
-        <target xml:lang="en" state="needs-translation">binaryfile.replace</target>
+        <target xml:lang="en" state="translated">Replace this file</target>
       </trans-unit>
       <trans-unit id="b1e5e9b74eff5d1eebf5cc46091d3916" resname="binaryfile.or">
         <source>binaryfile.or</source>
-        <target xml:lang="en" state="needs-translation">binaryfile.or</target>
+        <target xml:lang="en" state="translated">or</target>
       </trans-unit>
       <trans-unit id="4cd055c846d0a470ebb8aff2659e598f" resname="binaryfile.remove">
         <source>binaryfile.remove</source>
-        <target xml:lang="en" state="needs-translation">binaryfile.remove</target>
+        <target xml:lang="en" state="translated">Remove this file</target>
       </trans-unit>
       <trans-unit id="ae6ae8656419023602b79f1ec2b6f01b" resname="binaryfile.name">
         <source>binaryfile.name</source>
-        <target xml:lang="en" state="needs-translation">binaryfile.name</target>
+        <target xml:lang="en" state="translated">File name:</target>
       </trans-unit>
       <trans-unit id="4898d4bfef3b6062f306af74fc0ea8ed" resname="binaryfile.type">
         <source>binaryfile.type</source>
-        <target xml:lang="en" state="needs-translation">binaryfile.type</target>
+        <target xml:lang="en" state="translated">Type:</target>
       </trans-unit>
       <trans-unit id="04d900faab85164c3e1cfbcba9c2e1f6" resname="binaryfile.size">
         <source>binaryfile.size</source>
-        <target xml:lang="en" state="needs-translation">binaryfile.size</target>
+        <target xml:lang="en" state="translated">File size:</target>
       </trans-unit>
       <trans-unit id="88a2997df1364fe26711319f45f3ea7b" resname="media.audio.help">
         <source>media.audio.help</source>
-        <target xml:lang="en" state="needs-translation">media.audio.help</target>
+        <target xml:lang="en" state="translated">Drag and drop your audio file here or simply click on the buttons and select your audio file manually.</target>
       </trans-unit>
       <trans-unit id="0472ea3f59174e09b3c8d98b97cd70b9" resname="media.video.help">
         <source>media.video.help</source>
-        <target xml:lang="en" state="needs-translation">media.video.help</target>
+        <target xml:lang="en" state="translated">Drag and drop your video here or simply click on the buttons and select your video manually. Customize size, controls &amp; view.</target>
       </trans-unit>
       <trans-unit id="b2fcdd315157ec6ca5a5ddedece542af" resname="media.audio.unsupported">
         <source>media.audio.unsupported</source>
-        <target xml:lang="en" state="needs-translation">media.audio.unsupported</target>
+        <target xml:lang="en" state="translated">Unsupported audio format</target>
       </trans-unit>
       <trans-unit id="3a57cbf18b7193e682ca765b4da23ab4" resname="media.video.unsupported">
         <source>media.video.unsupported</source>
-        <target xml:lang="en" state="needs-translation">media.video.unsupported</target>
+        <target xml:lang="en" state="translated">Unsupported video format</target>
       </trans-unit>
       <trans-unit id="960dd83aea45276e2be80c1093747027" resname="media.audio.properties">
         <source>media.audio.properties</source>
-        <target xml:lang="en" state="needs-translation">media.audio.properties</target>
+        <target xml:lang="en" state="translated">Audio file properties</target>
       </trans-unit>
       <trans-unit id="c5723cb30d6ed6c7246c7340539934cb" resname="media.video.properties">
         <source>media.video.properties</source>
-        <target xml:lang="en" state="needs-translation">media.video.properties</target>
+        <target xml:lang="en" state="translated">Video file properties</target>
       </trans-unit>
       <trans-unit id="80447c7706c0defc99ea64add3fe1722" resname="media.newtab">
         <source>media.newtab</source>
-        <target xml:lang="en" state="needs-translation">media.newtab</target>
+        <target xml:lang="en" state="translated">Open it in a new tab</target>
       </trans-unit>
       <trans-unit id="6cfdd463b8c01e575831dd2173d9717f" resname="media.name">
         <source>media.name</source>
-        <target xml:lang="en" state="needs-translation">media.name</target>
+        <target xml:lang="en" state="translated">File name:</target>
       </trans-unit>
       <trans-unit id="1893c754402d34ef10736c1c5bdd3924" resname="media.type">
         <source>media.type</source>
-        <target xml:lang="en" state="needs-translation">media.type</target>
+        <target xml:lang="en" state="translated">Type:</target>
       </trans-unit>
       <trans-unit id="9a8ceaff4dff0f743f5f5889cb988f55" resname="media.size">
         <source>media.size</source>
-        <target xml:lang="en" state="needs-translation">media.size</target>
+        <target xml:lang="en" state="translated">File size:</target>
       </trans-unit>
       <trans-unit id="a7f2f3f945aaea62773db02cbf1c8ff2" resname="media.playersettings">
         <source>media.playersettings</source>
-        <target xml:lang="en" state="needs-translation">media.playersettings</target>
+        <target xml:lang="en" state="translated">Player settings</target>
       </trans-unit>
       <trans-unit id="00726ad687d39e5c2d8a694f842c9bc9" resname="media.audio.empty">
         <source>media.audio.empty</source>
-        <target xml:lang="en" state="needs-translation">media.audio.empty</target>
+        <target xml:lang="en" state="translated">No audio file yet.</target>
       </trans-unit>
       <trans-unit id="b0a0f1eb0f16e5a7a897547942d54fe2" resname="media.video.empty">
         <source>media.video.empty</source>
-        <target xml:lang="en" state="needs-translation">media.video.empty</target>
+        <target xml:lang="en" state="translated">No video file yet.</target>
       </trans-unit>
       <trans-unit id="0e4ed3166e139c1f1fa4b9eb14521c23" resname="media.audio.upload">
         <source>media.audio.upload</source>
-        <target xml:lang="en" state="needs-translation">media.audio.upload</target>
+        <target xml:lang="en" state="translated">Upload an audio file</target>
       </trans-unit>
       <trans-unit id="8104dde1f53dff5e84d89f5384d77463" resname="media.video.upload">
         <source>media.video.upload</source>
-        <target xml:lang="en" state="needs-translation">media.video.upload</target>
+        <target xml:lang="en" state="translated">Upload a video</target>
       </trans-unit>
       <trans-unit id="2ed2f34821cc85db8989f96881b5f324" resname="media.audio.replace">
         <source>media.audio.replace</source>
-        <target xml:lang="en" state="needs-translation">media.audio.replace</target>
+        <target xml:lang="en" state="translated">Replace this audio file</target>
       </trans-unit>
       <trans-unit id="976ee640b4b9fcb0b15433ddd239eeb2" resname="media.video.replace">
         <source>media.video.replace</source>
-        <target xml:lang="en" state="needs-translation">media.video.replace</target>
+        <target xml:lang="en" state="translated">Replace this video</target>
       </trans-unit>
       <trans-unit id="8506e1df8716e1d1c0b57855b712e9d8" resname="media.audio.remove">
         <source>media.audio.remove</source>
-        <target xml:lang="en" state="needs-translation">media.audio.remove</target>
+        <target xml:lang="en" state="translated">Remove this audio file</target>
       </trans-unit>
       <trans-unit id="4941e47f0aa6f4af451b9d76a43e45f8" resname="media.video.remove">
         <source>media.video.remove</source>
-        <target xml:lang="en" state="needs-translation">media.video.remove</target>
+        <target xml:lang="en" state="translated">Remove this video</target>
       </trans-unit>
       <trans-unit id="967ec066a0911abe340cd1c05132ce0a" resname="media.autoplay">
         <source>media.autoplay</source>
-        <target xml:lang="en" state="needs-translation">media.autoplay</target>
+        <target xml:lang="en" state="translated">Auto play:</target>
       </trans-unit>
       <trans-unit id="b796946c1cf48e89026639587967d7ee" resname="media.loop">
         <source>media.loop</source>
-        <target xml:lang="en" state="needs-translation">media.loop</target>
+        <target xml:lang="en" state="translated">Loop:</target>
       </trans-unit>
       <trans-unit id="30ce641ca0efa043b4966276a3d8fbf5" resname="media.width">
         <source>media.width</source>
-        <target xml:lang="en" state="needs-translation">media.width</target>
+        <target xml:lang="en" state="translated">Width:</target>
       </trans-unit>
       <trans-unit id="5d30e408663ab66a74a1de18953cd4f2" resname="media.height">
         <source>media.height</source>
-        <target xml:lang="en" state="needs-translation">media.height</target>
+        <target xml:lang="en" state="translated">Height:</target>
       </trans-unit>
       <trans-unit id="4a8c719b11e3f4b12f82f93310e4709e" resname="media.displaycontrols">
         <source>media.displaycontrols</source>
-        <target xml:lang="en" state="needs-translation">media.displaycontrols</target>
+        <target xml:lang="en" state="translated">Display controls:</target>
       </trans-unit>
       <trans-unit id="c8c80279877d36d24e98500f07587a9d" resname="maplocation.address">
         <source>maplocation.address</source>
-        <target xml:lang="en" state="needs-translation">maplocation.address</target>
+        <target xml:lang="en" state="translated">Address:</target>
       </trans-unit>
       <trans-unit id="4045d0bf7e9c332c477d445fdb444b67" resname="maplocation.locateaddress">
         <source>maplocation.locateaddress</source>
-        <target xml:lang="en" state="needs-translation">maplocation.locateaddress</target>
+        <target xml:lang="en" state="translated">Locate Address</target>
       </trans-unit>
       <trans-unit id="25fe516175d5eb7d5b98bb76cd78e159" resname="maplocation.longitude">
         <source>maplocation.longitude</source>
-        <target xml:lang="en" state="needs-translation">maplocation.longitude</target>
+        <target xml:lang="en" state="translated">Longitude:</target>
       </trans-unit>
       <trans-unit id="7af39c184be0b1d2ee92c811ddd356e4" resname="maplocation.latitude">
         <source>maplocation.latitude</source>
-        <target xml:lang="en" state="needs-translation">maplocation.latitude</target>
+        <target xml:lang="en" state="translated">Latitude:</target>
       </trans-unit>
       <trans-unit id="4b1a0ddd442dc032348f2f0f1f61b482" resname="maplocation.locateme">
         <source>maplocation.locateme</source>
-        <target xml:lang="en" state="needs-translation">maplocation.locateme</target>
+        <target xml:lang="en" state="translated">Locate Me</target>
       </trans-unit>
       <trans-unit id="752a2be0d4c32c88d03e7b5a05b00543" resname="richtext.save">
         <source>richtext.save</source>
-        <target xml:lang="en" state="needs-translation">richtext.save</target>
+        <target xml:lang="en" state="translated">Save and Return</target>
       </trans-unit>
       <trans-unit id="6c19741f2bba8ee829bd4ef815f38e7e" resname="richtext.focus">
         <source>richtext.focus</source>
-        <target xml:lang="en" state="needs-translation">richtext.focus</target>
+        <target xml:lang="en" state="translated">Focus</target>
       </trans-unit>
       <trans-unit id="56ce43bf3b6e258d5b756dad2ec872ce" resname="date.calendar">
         <source>date.calendar</source>
-        <target xml:lang="en" state="needs-translation">date.calendar</target>
+        <target xml:lang="en" state="translated">Calendar</target>
       </trans-unit>
       <trans-unit id="148e6348f8cf9270b308abe072d813dd" resname="user.login">
         <source>user.login</source>
-        <target xml:lang="en" state="needs-translation">user.login</target>
+        <target xml:lang="en" state="translated">Login</target>
       </trans-unit>
       <trans-unit id="57ec3017ee5c15aaf21f619b8aa037e5" resname="user.email">
         <source>user.email</source>
-        <target xml:lang="en" state="needs-translation">user.email</target>
+        <target xml:lang="en" state="translated">Email</target>
       </trans-unit>
       <trans-unit id="005ea07e9e859dfb531c7d8ea16f0c72" resname="user.password">
         <source>user.password</source>
-        <target xml:lang="en" state="needs-translation">user.password</target>
+        <target xml:lang="en" state="translated">Password</target>
       </trans-unit>
       <trans-unit id="f345f65b972217d726502cdc89479914" resname="user.passwordconfirm">
         <source>user.passwordconfirm</source>
-        <target xml:lang="en" state="needs-translation">user.passwordconfirm</target>
+        <target xml:lang="en" state="translated">Confirm password</target>
       </trans-unit>
       <trans-unit id="3238c7e0103f16599e0c54f5b6c4cd22" resname="image.help">
         <source>image.help</source>
-        <target xml:lang="en" state="needs-translation">image.help</target>
+        <target xml:lang="en" state="translated">Drag and drop your image here or simply click on the buttons and select your image manually.</target>
       </trans-unit>
       <trans-unit id="9583bccc574d916be13bc681a3b339dc" resname="image.thumbnail.loading">
         <source>image.thumbnail.loading</source>
-        <target xml:lang="en" state="needs-translation">image.thumbnail.loading</target>
+        <target xml:lang="en" state="translated">Loading a thumbnail of the image...</target>
       </trans-unit>
       <trans-unit id="0598f74f670e49b4558ac3c9a5d47f53" resname="image.thumbnail.retry">
         <source>image.thumbnail.retry</source>
-        <target xml:lang="en" state="needs-translation">image.thumbnail.retry</target>
+        <target xml:lang="en" state="translated">Retry</target>
       </trans-unit>
       <trans-unit id="5c630140d13a7217ee67495886dcd3cf" resname="image.fullwidth">
         <source>image.fullwidth</source>
-        <target xml:lang="en" state="needs-translation">image.fullwidth</target>
+        <target xml:lang="en" state="translated">View the full width image</target>
       </trans-unit>
       <trans-unit id="e87ce99039ac67f93d177893a834c007" resname="image.name">
         <source>image.name</source>
-        <target xml:lang="en" state="needs-translation">image.name</target>
+        <target xml:lang="en" state="translated">File name</target>
       </trans-unit>
       <trans-unit id="bbfe2c6cb23e609c31e1d1ceffebf5e1" resname="image.type">
         <source>image.type</source>
-        <target xml:lang="en" state="needs-translation">image.type</target>
+        <target xml:lang="en" state="translated">Type:</target>
       </trans-unit>
       <trans-unit id="22cf294cfde798ddada0190db26b1f10" resname="image.size">
         <source>image.size</source>
-        <target xml:lang="en" state="needs-translation">image.size</target>
+        <target xml:lang="en" state="translated">File size:</target>
       </trans-unit>
       <trans-unit id="c2c2198259944771ba55398de11265d4" resname="image.alternativetext">
         <source>image.alternativetext</source>
-        <target xml:lang="en" state="needs-translation">image.alternativetext</target>
+        <target xml:lang="en" state="translated">Alternative text:</target>
       </trans-unit>
       <trans-unit id="7bb9c4f26a17f45ea1c50ed38c3a342f" resname="image.noimage">
         <source>image.noimage</source>
-        <target xml:lang="en" state="needs-translation">image.noimage</target>
+        <target xml:lang="en" state="translated">No image yet.</target>
       </trans-unit>
       <trans-unit id="095922b2cea7e11ed103de8bbc755915" resname="image.upload">
         <source>image.upload</source>
-        <target xml:lang="en" state="needs-translation">image.upload</target>
+        <target xml:lang="en" state="translated">Upload an image</target>
       </trans-unit>
       <trans-unit id="e6006edb6670828e560ce977d72bf8f9" resname="image.replace">
         <source>image.replace</source>
-        <target xml:lang="en" state="needs-translation">image.replace</target>
+        <target xml:lang="en" state="translated">Replace this image</target>
       </trans-unit>
       <trans-unit id="812c55972c2d0d53d639e9c2ddf54472" resname="image.or">
         <source>image.or</source>
-        <target xml:lang="en" state="needs-translation">image.or</target>
+        <target xml:lang="en" state="translated">or</target>
       </trans-unit>
       <trans-unit id="34c520a4abbf3ff6cf66f4e6015ae1cf" resname="image.remove">
         <source>image.remove</source>
-        <target xml:lang="en" state="needs-translation">image.remove</target>
+        <target xml:lang="en" state="translated">Remove this image</target>
       </trans-unit>
       <trans-unit id="50f26eb1a988111f6c4e440fbb7008a6" resname="image.thumbnail.error">
         <source>image.thumbnail.error</source>
-        <target xml:lang="en" state="needs-translation">image.thumbnail.error</target>
+        <target xml:lang="en" state="translated">An error occurred while loading the thumbnail.</target>
       </trans-unit>
       <trans-unit id="6a4b36ec6a3c9b3df286d590134c7a9f" resname="image.properties">
         <source>image.properties</source>
-        <target xml:lang="en" state="needs-translation">image.properties</target>
+        <target xml:lang="en" state="translated">Image properties</target>
       </trans-unit>
       <trans-unit id="30023db2daf6a8f5df47ad23099410f1" resname="url.url">
         <source>url.url</source>
-        <target xml:lang="en" state="needs-translation">url.url</target>
+        <target xml:lang="en" state="translated">URL</target>
       </trans-unit>
       <trans-unit id="f259b0b1e6c9cd82d254dc4256d466b5" resname="url.text">
         <source>url.text</source>
-        <target xml:lang="en" state="needs-translation">url.text</target>
+        <target xml:lang="en" state="translated">Text:</target>
       </trans-unit>
       <trans-unit id="91282200f47a3b59675263fb01743b7a" resname="date.placeholder">
         <source>date.placeholder</source>
-        <target xml:lang="en" state="needs-translation">date.placeholder</target>
+        <target xml:lang="en" state="translated">YYYY-MM-DD</target>
       </trans-unit>
       <trans-unit id="1baf4be4ac0efc7b93e278e77e03d27d" resname="image.preview">
         <source>image.preview</source>
-        <target xml:lang="en" state="needs-translation">image.preview</target>
+        <target xml:lang="en" state="translated">Image preview</target>
       </trans-unit>
       <trans-unit id="01c03913d7d788beb4f1d36e14013f4a" resname="file.size">
         <source>file.size</source>
-        <target xml:lang="en" state="needs-translation">file.size</target>
+        <target xml:lang="en" state="translated">(%size% bytes)</target>
       </trans-unit>
       <trans-unit id="b3602d541d8c4c2f7ccab95c9b84f03d" resname="media.file.size">
         <source>media.file.size</source>
-        <target xml:lang="en" state="needs-translation">media.file.size</target>
+        <target xml:lang="en" state="translated">&lt;span class="ez-media-properties-size"&gt;%size%&lt;/span&gt;&amp;nbsp;bytes</target>
       </trans-unit>
       <trans-unit id="4a9c06a367bc5e13427b679d20d6585e" resname="this.field.is.required">
         <source>this.field.is.required</source>
-        <target xml:lang="en" state="needs-translation">this.field.is.required</target>
+        <target xml:lang="en" state="translated">This field is required</target>
       </trans-unit>
       <trans-unit id="7e31dad09775413afc11e0043c5f4a87" resname="over.maximum.allowed.size">
         <source>over.maximum.allowed.size</source>
-        <target xml:lang="en" state="needs-translation">over.maximum.allowed.size</target>
+        <target xml:lang="en" state="translated">The file '%name%' was refused because its size is greater than the maximum allowed size (%max%)</target>
       </trans-unit>
       <trans-unit id="224d9e5febe433d22de24b35b6886ed4" resname="dropped.several.files">
         <source>dropped.several.files</source>
-        <target xml:lang="en" state="needs-translation">dropped.several.files</target>
+        <target xml:lang="en" state="translated">You dropped several files while only one can be stored in this field. Please choose one file.</target>
       </trans-unit>
       <trans-unit id="b2a1f6843e8bd20b55a59b62ae510964" resname="dropped.text.selection">
         <source>dropped.text.selection</source>
-        <target xml:lang="en" state="needs-translation">dropped.text.selection</target>
+        <target xml:lang="en" state="translated">You dropped a text selection while this field can only store a file. Please drop a file instead.</target>
       </trans-unit>
       <trans-unit id="0527ca1b776df33e79c239dd261a300a" resname="select.contents.to.add">
         <source>select.contents.to.add</source>
-        <target xml:lang="en" state="needs-translation">select.contents.to.add</target>
+        <target xml:lang="en" state="translated">Select the contents you want to add in the relation</target>
       </trans-unit>
       <trans-unit id="a488ef1759c60efcdbac531446fc9600" resname="date.and.time.not.valid">
         <source>date.and.time.not.valid</source>
-        <target xml:lang="en" state="needs-translation">date.and.time.not.valid</target>
+        <target xml:lang="en" state="translated">Date and time do not have valid inputs</target>
       </trans-unit>
       <trans-unit id="b93388d7f2d50ea8eedeffff116153e0" resname="date.not.valid.time.required">
         <source>date.not.valid.time.required</source>
-        <target xml:lang="en" state="needs-translation">date.not.valid.time.required</target>
+        <target xml:lang="en" state="translated">Date do not have a valid input and time is required</target>
       </trans-unit>
       <trans-unit id="d84e8cf495b2ba25c85e266a5f1f618a" resname="date.not.valid">
         <source>date.not.valid</source>
-        <target xml:lang="en" state="needs-translation">date.not.valid</target>
+        <target xml:lang="en" state="translated">This is not a correct date</target>
       </trans-unit>
       <trans-unit id="9a5079c19dc24ba2b3340f23eccee10b" resname="time.not.valid.date.required">
         <source>time.not.valid.date.required</source>
-        <target xml:lang="en" state="needs-translation">time.not.valid.date.required</target>
+        <target xml:lang="en" state="translated">Time do not have a valid input and date is required</target>
       </trans-unit>
       <trans-unit id="6f4b65f1214609082d25d4f8c84f00e8" resname="time.not.valid">
         <source>time.not.valid</source>
-        <target xml:lang="en" state="needs-translation">time.not.valid</target>
+        <target xml:lang="en" state="translated">Time do not have a valid input</target>
       </trans-unit>
       <trans-unit id="31bae7959b8a9290d6e131156f150ad7" resname="date.time.required">
         <source>date.time.required</source>
-        <target xml:lang="en" state="needs-translation">date.time.required</target>
+        <target xml:lang="en" state="translated">Date and time are required</target>
       </trans-unit>
       <trans-unit id="8d224639815a152bcd685363899aafbd" resname="time.required">
         <source>time.required</source>
-        <target xml:lang="en" state="needs-translation">time.required</target>
+        <target xml:lang="en" state="translated">Time is required</target>
       </trans-unit>
       <trans-unit id="295036e19bd16ba679bd30cb2a6b4c9c" resname="date.not.valid.time.missing">
         <source>date.not.valid.time.missing</source>
-        <target xml:lang="en" state="needs-translation">date.not.valid.time.missing</target>
+        <target xml:lang="en" state="translated">Date do not have a valid input and time is missing</target>
       </trans-unit>
       <trans-unit id="7c5e17a7589ad998626bb8c30cb7d7c4" resname="time.not.valid.date.missing">
         <source>time.not.valid.date.missing</source>
-        <target xml:lang="en" state="needs-translation">time.not.valid.date.missing</target>
+        <target xml:lang="en" state="translated">Time do not have a valid input and date is missing</target>
       </trans-unit>
       <trans-unit id="ff14bfe64e0422676f10bb70f9cc4cd6" resname="login.required">
         <source>login.required</source>
-        <target xml:lang="en" state="needs-translation">login.required</target>
+        <target xml:lang="en" state="translated">'The login is required</target>
       </trans-unit>
       <trans-unit id="e31829a0ce6c04c53964d26df179352c" resname="email.not.valid">
         <source>email.not.valid</source>
-        <target xml:lang="en" state="needs-translation">email.not.valid</target>
+        <target xml:lang="en" state="translated">The email address should be valid</target>
       </trans-unit>
       <trans-unit id="dcb0c8dc515654f5fcbb6a2f50cf74a7" resname="email.required">
         <source>email.required</source>
-        <target xml:lang="en" state="needs-translation">email.required</target>
+        <target xml:lang="en" state="translated">The email address is required</target>
       </trans-unit>
       <trans-unit id="5c8c9e7d51e00cfd8c3efb70a4ceb22d" resname="email.required.if.name.filled">
         <source>email.required.if.name.filled</source>
-        <target xml:lang="en" state="needs-translation">email.required.if.name.filled</target>
+        <target xml:lang="en" state="translated">The email address is required if the name is filled.</target>
       </trans-unit>
       <trans-unit id="2adbd32f29c77993c650c8fdc30c7261" resname="name.required.if.email.filled">
         <source>name.required.if.email.filled</source>
-        <target xml:lang="en" state="needs-translation">name.required.if.email.filled</target>
+        <target xml:lang="en" state="translated">The name is required if the email is filled</target>
       </trans-unit>
       <trans-unit id="9dbdd928b91e09d9a1a629eebe39d0ce" resname="name.required">
         <source>name.required</source>
-        <target xml:lang="en" state="needs-translation">name.required</target>
+        <target xml:lang="en" state="translated">The name is required</target>
       </trans-unit>
       <trans-unit id="792f3a6485d9474a5ddb97825741af03" resname="invalid.input">
         <source>invalid.input</source>
-        <target xml:lang="en" state="needs-translation">invalid.input</target>
+        <target xml:lang="en" state="translated">This is not a valid input</target>
       </trans-unit>
       <trans-unit id="52e932fb67f4d435af53abcefbd11297" resname="time.not.valid.enter.format">
         <source>time.not.valid.enter.format</source>
-        <target xml:lang="en" state="needs-translation">time.not.valid.enter.format</target>
+        <target xml:lang="en" state="translated">This time is invalid, enter a correct time: HH:MM(:SS)</target>
       </trans-unit>
       <trans-unit id="8644b007e3a9894ebb042a499efdc2f1" resname="input.not.valid">
         <source>input.not.valid</source>
-        <target xml:lang="en" state="needs-translation">input.not.valid</target>
+        <target xml:lang="en" state="translated">This is not a valid input</target>
       </trans-unit>
       <trans-unit id="be770fb78ad1b45fb591eb7aec1bb98d" resname="not.a.correct.isbn13.pattern">
         <source>not.a.correct.isbn13.pattern</source>
-        <target xml:lang="en" state="needs-translation">not.a.correct.isbn13.pattern</target>
+        <target xml:lang="en" state="translated">This is not a correct ISBN13 pattern</target>
       </trans-unit>
       <trans-unit id="e8bb2a3cbb6af816001483b2446ed528" resname="bad.checksum.last.digit.should.be">
         <source>bad.checksum.last.digit.should.be</source>
-        <target xml:lang="en" state="needs-translation">bad.checksum.last.digit.should.be</target>
+        <target xml:lang="en" state="translated">Bad checksum, last digit of ISBN 13 should be %checkDigit%</target>
       </trans-unit>
       <trans-unit id="876a8e60ecef8efc7bc9102507a4a481" resname="invalid.isbn10">
         <source>invalid.isbn10</source>
-        <target xml:lang="en" state="needs-translation">invalid.isbn10</target>
+        <target xml:lang="en" state="translated">invalid ISBN 10</target>
       </trans-unit>
       <trans-unit id="0299a26fd0f11092ec560dc8a3a162c0" resname="invalid.isbn10.sum.not.multiple.of.11">
         <source>invalid.isbn10.sum.not.multiple.of.11</source>
-        <target xml:lang="en" state="needs-translation">invalid.isbn10.sum.not.multiple.of.11</target>
+        <target xml:lang="en" state="translated">invalid ISBN 10 (sum is not a multiple of 11")</target>
       </trans-unit>
       <trans-unit id="a2e215c005370123cc881c8bbdcf4460" resname="failed.retrieve.google.maps.api">
         <source>failed.retrieve.google.maps.api</source>
-        <target xml:lang="en" state="needs-translation">failed.retrieve.google.maps.api</target>
+        <target xml:lang="en" state="translated">Failed to retrieve Google Maps API</target>
       </trans-unit>
       <trans-unit id="93b318981dcdc7440d5eedfc9e10d3e0" resname="unable.find.address">
         <source>unable.find.address</source>
-        <target xml:lang="en" state="needs-translation">unable.find.address</target>
+        <target xml:lang="en" state="translated">Unable to find this address</target>
       </trans-unit>
       <trans-unit id="2a022fd9d6a996e01057b8b95f19a25f" resname="geocoding.error">
         <source>geocoding.error</source>
-        <target xml:lang="en" state="needs-translation">geocoding.error</target>
+        <target xml:lang="en" state="translated">An error occurred during the geocoding request for this address</target>
       </trans-unit>
       <trans-unit id="eaca0c3c3e9bf70ca6a70068acac0199" resname="google.map.not.loaded.correctly">
         <source>google.map.not.loaded.correctly</source>
-        <target xml:lang="en" state="needs-translation">google.map.not.loaded.correctly</target>
+        <target xml:lang="en" state="translated">Google maps are not loaded correctly, try reloading the page</target>
       </trans-unit>
       <trans-unit id="7d3ffac34ea4b4ff17a6cbea68ec0bd7" resname="error.during.geolocation.request">
         <source>error.during.geolocation.request</source>
-        <target xml:lang="en" state="needs-translation">error.during.geolocation.request</target>
+        <target xml:lang="en" state="translated">An error occurred during geolocation request of your current position</target>
       </trans-unit>
       <trans-unit id="10434a8e8d10d54d1d151af17d3230ac" resname="unsupported.html5.geolocation.api">
         <source>unsupported.html5.geolocation.api</source>
-        <target xml:lang="en" state="needs-translation">unsupported.html5.geolocation.api</target>
+        <target xml:lang="en" state="translated">Your browser does not support HTML5 Geolocation API</target>
       </trans-unit>
       <trans-unit id="7b437d45e1f42602ff7ab971657a1d7f" resname="invalid.float.value">
         <source>invalid.float.value</source>
-        <target xml:lang="en" state="needs-translation">invalid.float.value</target>
+        <target xml:lang="en" state="translated">The value should be a valid float number</target>
       </trans-unit>
       <trans-unit id="6f67812274045515acb5c73dc352972d" resname="float.value.should.be.less.than">
         <source>float.value.should.be.less.than</source>
-        <target xml:lang="en" state="needs-translation">float.value.should.be.less.than</target>
+        <target xml:lang="en" state="translated">The value should be less than or equal to %maxFloatValue%</target>
       </trans-unit>
       <trans-unit id="10b1dd6fdbdf37467c2b5683335d1582" resname="float.value.should.be.more.than">
         <source>float.value.should.be.more.than</source>
-        <target xml:lang="en" state="needs-translation">float.value.should.be.more.than</target>
+        <target xml:lang="en" state="translated">The value should be more than or equal to %minFloatValue%</target>
       </trans-unit>
       <trans-unit id="dfa11846aaf06fffbd414984bcf6bfac" resname="refused.not.an.image">
         <source>refused.not.an.image</source>
-        <target xml:lang="en" state="needs-translation">refused.not.an.image</target>
+        <target xml:lang="en" state="translated">The file '%name%' was refused because it seems to not be an image. Please choose an image file.</target>
       </trans-unit>
       <trans-unit id="489d557fd89975e34d4930ff7ea547bc" resname="svg.not.supported">
         <source>svg.not.supported</source>
-        <target xml:lang="en" state="needs-translation">svg.not.supported</target>
+        <target xml:lang="en" state="translated">SVG images are not supported. Please choose another image file.</target>
       </trans-unit>
       <trans-unit id="13d494fd35f9f5b14309b84466cbddf2" resname="loading...">
         <source>loading...</source>
-        <target xml:lang="en" state="needs-translation">loading...</target>
+        <target xml:lang="en" state="translated">Loading...</target>
       </trans-unit>
       <trans-unit id="a4df94a6053c1bebcc386c8a16e69e36" resname="date.required">
         <source>date.required</source>
-        <target xml:lang="en" state="needs-translation">date.required</target>
+        <target xml:lang="en" state="translated">Date is required</target>
       </trans-unit>
       <trans-unit id="c7655b2d1ded7d33ecc831622ef6297e" resname="value.should.be.valid.integer">
         <source>value.should.be.valid.integer</source>
-        <target xml:lang="en" state="needs-translation">value.should.be.valid.integer</target>
+        <target xml:lang="en" state="translated">The value should be a valid integer number</target>
       </trans-unit>
       <trans-unit id="02884526db16f2209e2f3444c73a4d6c" resname="value.should.be.less.than">
         <source>value.should.be.less.than</source>
-        <target xml:lang="en" state="needs-translation">value.should.be.less.than</target>
+        <target xml:lang="en" state="translated">The value should be less than or equal to %maxIntegerValue%</target>
       </trans-unit>
       <trans-unit id="f24e16e259112615d215a2c9557a071c" resname="value.should.be.more.than">
         <source>value.should.be.more.than</source>
-        <target xml:lang="en" state="needs-translation">value.should.be.more.than</target>
+        <target xml:lang="en" state="translated">The value should be more than or equal to %minIntegerValue%</target>
       </trans-unit>
     </body>
   </file>
