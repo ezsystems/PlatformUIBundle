@@ -1,0 +1,107 @@
+ezauthor:
+    # Desc: Auteurs
+    name: Auteurs
+
+ezbinaryfile:
+    # Desc: Fichier
+    name: Fichier
+
+ezboolean:
+    # Desc: Case à cocher
+    name: 'Case à cocher'
+
+ezcountry:
+    # Desc: Pays
+    name: Pays
+
+ezdate:
+    # Desc: Date
+    name: Date
+
+ezdatetime:
+    # Desc: Date et heure
+    name: 'Date et heure'
+
+ezemail:
+    # Desc: Adresse E-mail
+    name: 'Adresse E-mail'
+
+ezfloat:
+    # Desc: Nombre flottant
+    name: 'Nombre flottant'
+
+ezgmaplocation:
+    # Desc: Géolocalisation
+    name: Géolocalisation
+
+ezimage:
+    # Desc: Image
+    name: Image
+
+ezinteger:
+    # Desc: Nombre entier
+    name: 'Nombre entier'
+
+ezisbn:
+    # Desc: ISBN
+    name: ISBN
+
+ezkeyword:
+    # Desc: Mots clés
+    name: 'Mots clés'
+
+ezmedia:
+    # Desc: Média
+    name: Média
+
+ezobjectrelation:
+    # Desc: Relation (simple)
+    name: 'Relation (simple)'
+
+ezobjectrelationlist:
+    # Desc: Relations (multiple)
+    name: 'Relations (multiple)'
+
+ezpage:
+    # Desc: Mise en page
+    name: 'Mise en page'
+
+ezprice:
+    # Desc: Prix
+    name: Prix
+
+ezrichtext:
+    # Desc: Texte riche
+    name: 'Texte riche'
+
+ezselection:
+    # Desc: Selection
+    name: Selection
+
+ezsrrating:
+    # Desc: Rating
+    name: Rating
+
+ezstring:
+    # Desc: Ligne de texte
+    name: 'Ligne de texte'
+
+eztext:
+    # Desc: Bloc de texte
+    name: 'Bloc de texte'
+
+eztime:
+    # Desc: Heure
+    name: Heure
+
+ezurl:
+    # Desc: URL
+    name: URL
+
+ezuser:
+    # Desc: Compte Utilisateur
+    name: 'Compte Utilisateur'
+
+ezxmltext:
+    # Desc: Bloc XML
+    name: 'Bloc XML'
