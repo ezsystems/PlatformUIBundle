@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="8206b5b7056ca3751f2c471cd397dbad" resname="language.list">
+        <source>language.list</source>
+        <target xml:lang="en" state="needs-translation">language.list</target>
+      </trans-unit>
+      <trans-unit id="9829eacbb868c1fae84fe32e44ac6075" resname="language.name">
+        <source>language.name</source>
+        <target xml:lang="en" state="needs-translation">language.name</target>
+      </trans-unit>
+      <trans-unit id="91a5f1b7a3ada0e798677fae3063ddc9" resname="language.code">
+        <source>language.code</source>
+        <target xml:lang="en" state="needs-translation">language.code</target>
+      </trans-unit>
+      <trans-unit id="5978910e7570dc542371d8c56fb41445" resname="language.id">
+        <source>language.id</source>
+        <target xml:lang="en" state="needs-translation">language.id</target>
+      </trans-unit>
+      <trans-unit id="f1823c1f526b7f9cc61bc1d0295791c9" resname="language.enabled">
+        <source>language.enabled</source>
+        <target xml:lang="en" state="needs-translation">language.enabled</target>
+      </trans-unit>
+      <trans-unit id="17c50521c772de260a1832d8a6072d72" resname="language.disabled">
+        <source>language.disabled</source>
+        <target xml:lang="en" state="needs-translation">language.disabled</target>
+      </trans-unit>
+      <trans-unit id="289473f9faf86eb4043ade5fc6d22015" resname="language.edit">
+        <source>language.edit</source>
+        <target xml:lang="en" state="needs-translation">language.edit</target>
+      </trans-unit>
+      <trans-unit id="650abaa6ac50eaa43844b713fc208db5" resname="language.new">
+        <source>language.new</source>
+        <target xml:lang="en" state="needs-translation">language.new</target>
+      </trans-unit>
+      <trans-unit id="ff146c9b28fc9283aa56b87eaf6e01ec" resname="language.remove.selected">
+        <source>language.remove.selected</source>
+        <target xml:lang="en" state="needs-translation">language.remove.selected</target>
+      </trans-unit>
+      <trans-unit id="0adc7e2363d921f0d042cd4515c8426e" resname="language.view.title">
+        <source>language.view.title</source>
+        <target xml:lang="en" state="needs-translation">language.view.title</target>
+      </trans-unit>
+      <trans-unit id="ea9bf3ed60c543cd0a5334e8907cf086" resname="language.create.title">
+        <source>language.create.title</source>
+        <target xml:lang="en" state="needs-translation">language.create.title</target>
+      </trans-unit>
+      <trans-unit id="b26f974c5dc804e268d419eb52e3b6a3" resname="language.edit.title">
+        <source>language.edit.title</source>
+        <target xml:lang="en" state="needs-translation">language.edit.title</target>
+      </trans-unit>
+      <trans-unit id="f8ff765dace028d56840bb16f16b2851" resname="language.name.label">
+        <source>language.name.label</source>
+        <target xml:lang="en" state="needs-translation">language.name.label</target>
+      </trans-unit>
+      <trans-unit id="0e2887c8b3237d1640655e49e24fa505" resname="language.code.label">
+        <source>language.code.label</source>
+        <target xml:lang="en" state="needs-translation">language.code.label</target>
+      </trans-unit>
+      <trans-unit id="9f0a40822bf1ea33e9a9306dc6692977" resname="language.enabled.label">
+        <source>language.enabled.label</source>
+        <target xml:lang="en" state="needs-translation">language.enabled.label</target>
+      </trans-unit>
+      <trans-unit id="1ca53a776853c1d0d6f6bc4cd52a3fc1" resname="language.id.label">
+        <source>language.id.label</source>
+        <target xml:lang="en" state="needs-translation">language.id.label</target>
+      </trans-unit>
+      <trans-unit id="55a3198cbbc654ca93fa3289585c3d04" resname="language.label.edit">
+        <source>language.label.edit</source>
+        <target xml:lang="en" state="needs-translation">language.label.edit</target>
+      </trans-unit>
+      <trans-unit id="a0c628c0593a15e0a1f396ce83019d76" resname="language.error.code_already_exist">
+        <source>language.error.code_already_exist</source>
+        <target xml:lang="en" state="needs-translation">language.error.code_already_exist</target>
+      </trans-unit>
+      <trans-unit id="14de0dd2e9ae1d7dc33074cc722b091f" resname="language.create.submit">
+        <source>language.create.submit</source>
+        <target xml:lang="en" state="needs-translation">language.create.submit</target>
+      </trans-unit>
+      <trans-unit id="ab2a172e79366d7fa1486b49234ac16c" resname="language.cancel">
+        <source>language.cancel</source>
+        <target xml:lang="en" state="needs-translation">language.cancel</target>
+      </trans-unit>
+      <trans-unit id="58587a8315254fb9b88a1287040c4dc0" resname="language.deleted">
+        <source>language.deleted</source>
+        <target xml:lang="en" state="needs-translation">language.deleted</target>
+      </trans-unit>
+      <trans-unit id="7fa04b2e5f016e6b776c2d983b7ceb77" resname="language.notification.created">
+        <source>language.notification.created</source>
+        <target xml:lang="en" state="needs-translation">language.notification.created</target>
+      </trans-unit>
+      <trans-unit id="e0228f289a04543ae0901780ea182512" resname="language.notification.updated">
+        <source>language.notification.updated</source>
+        <target xml:lang="en" state="needs-translation">language.notification.updated</target>
+      </trans-unit>
+      <trans-unit id="3357b5b93ba450880c8163a2e66d1136" resname="language.notification.draft_removed">
+        <source>language.notification.draft_removed</source>
+        <target xml:lang="en" state="needs-translation">language.notification.draft_removed</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
