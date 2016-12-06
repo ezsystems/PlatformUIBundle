@@ -1,49 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="fr" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="168ea7cb62bf63f358233d32263ae360" resname="search.result.list">
-        <source>search.result.list</source>
-        <target xml:lang="fr" state="needs-translation">search.result.list</target>
+      <trans-unit id="f28f995a9562088395bf19373c81fda9a89f1585" resname="content.type">
+        <source>Content type</source>
+        <target xml:lang="fr" state="needs-translation">Content type</target>
+        <note>key: content.type</note>
+        <jms:reference-file>./Resources/public/js/views/ez-searchlistview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="781c57b03fbbd16c6c42edbdd6cfdf1f" resname="search.no.result">
-        <source>search.no.result</source>
-        <target xml:lang="fr" state="needs-translation">search.no.result</target>
+      <trans-unit id="99db324742823c55d975b605e1fc22f4253a9b7d" resname="modified">
+        <source>Modified</source>
+        <target xml:lang="fr" state="needs-translation">Modified</target>
+        <note>key: modified</note>
+        <jms:reference-file>./Resources/public/js/views/ez-searchlistview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="d0f4c68012e75bc7097f43a502021a7f" resname="search.search.content">
-        <source>search.search.content</source>
-        <target xml:lang="fr" state="needs-translation">search.search.content</target>
+      <trans-unit id="6ae999552a0d2dca14d62e2bc8b764d377b1dd6c" resname="name">
+        <source>Name</source>
+        <target xml:lang="fr" state="needs-translation">Name</target>
+        <note>key: name</note>
+        <jms:reference-file>./Resources/public/js/views/ez-searchlistview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="62641ec1a72d0addc93aed4b84b3eb2d" resname="search.search">
-        <source>search.search</source>
-        <target xml:lang="fr" state="needs-translation">search.search</target>
+      <trans-unit id="be2293ce4900a4876cdf20fee5800906463a25e9" resname="search.no.result">
+        <source>This search has no result.</source>
+        <target xml:lang="fr" state="needs-translation">This search has no result.</target>
+        <note>key: search.no.result</note>
+        <jms:reference-file>./Resources/public/templates/searchlistview.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="589cf891cd3ad3cc4db8197ef1e32f92" resname="show.more.results">
-        <source>show.more.results</source>
-        <target xml:lang="fr" state="needs-translation">show.more.results</target>
+      <trans-unit id="bc7325f0409778308bac4fb799fe0a49433b2af5" resname="search.result.list">
+        <source>Result list</source>
+        <target xml:lang="fr" state="needs-translation">Result list</target>
+        <note>key: search.result.list</note>
+        <jms:reference-file>./Resources/public/templates/searchlistview.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="e77285a90b5a02080b61ebe00aa3c123" resname="viewing.out.of.items">
-        <source>viewing.out.of.items</source>
-        <target xml:lang="fr" state="needs-translation">viewing.out.of.items</target>
+      <trans-unit id="6ffbb9b14f98e94b8dda5418ef3910942b42c44e" resname="search.search">
+        <source>Search</source>
+        <target xml:lang="fr" state="needs-translation">Search</target>
+        <note>key: search.search</note>
+        <jms:reference-file>./Resources/public/templates/searchview.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="b068931cc450442b63f5b3d276ea4297" resname="name">
-        <source>name</source>
-        <target xml:lang="fr" state="needs-translation">name</target>
+      <trans-unit id="25cda398863dd104cebf8932e6ba226d0f4f1641" resname="search.search.content">
+        <source>Search content:</source>
+        <target xml:lang="fr" state="needs-translation">Search content:</target>
+        <note>key: search.search.content</note>
+        <jms:reference-file>./Resources/public/templates/searchview.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="9ae73c65f418e6f79ceb4f0e4a4b98d5" resname="modified">
-        <source>modified</source>
-        <target xml:lang="fr" state="needs-translation">modified</target>
+      <trans-unit id="e9fbb7ba38fa94be8b417699fb729a60c7b8ab48" resname="show.more.results">
+        <source><![CDATA[Show <span class="ez-loadmorepagination-more-count">%remainingCount%</span> more results]]></source>
+        <target xml:lang="fr" state="needs-translation"><![CDATA[Show <span class="ez-loadmorepagination-more-count">%remainingCount%</span> more results]]></target>
+        <note>key: show.more.results</note>
+        <jms:reference-file>./Resources/public/templates/searchlistview.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="f6ad414f8441807856aba8e12f3de4f5" resname="content.type">
-        <source>content.type</source>
-        <target xml:lang="fr" state="needs-translation">content.type</target>
+      <trans-unit id="31c20e73fa29248cc7bf440ac9d720ff6d88fd3e" resname="translations">
+        <source>Translations</source>
+        <target xml:lang="fr" state="needs-translation">Translations</target>
+        <note>key: translations</note>
+        <jms:reference-file>./Resources/public/js/views/ez-searchlistview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2ed18fafe4199c7cfc187fdb2a5b1a66" resname="translations">
-        <source>translations</source>
-        <target xml:lang="fr" state="needs-translation">translations</target>
+      <trans-unit id="3cae0754bed733e5785947e0b1a795ffeacb8a12" resname="viewing.out.of.items">
+        <source><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%searchResultCount%</strong> items]]></source>
+        <target xml:lang="fr" state="needs-translation"><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%searchResultCount%</strong> items]]></target>
+        <note>key: viewing.out.of.items</note>
+        <jms:reference-file>./Resources/public/templates/searchlistview.hbt</jms:reference-file>
       </trans-unit>
     </body>
   </file>
