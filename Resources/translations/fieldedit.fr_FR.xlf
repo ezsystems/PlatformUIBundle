@@ -6,833 +6,141 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="30527585f513c4216ef8505ace7adc4cd4504716" resname="author.add">
-        <source>Add another author</source>
-        <target xml:lang="fr" state="needs-translation">Add another author</target>
-        <note>key: author.add</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/author.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0d26cffd2879243fec3052d28eca681b47722093" resname="authorinput.email">
-        <source>Email:</source>
-        <target xml:lang="fr" state="needs-translation">Email:</target>
-        <note>key: authorinput.email</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/authorinput.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="de45b8facdcebc26f1c77df02b4208a89b276855" resname="authorinput.name">
-        <source>Name:</source>
-        <target xml:lang="fr" state="needs-translation">Name:</target>
-        <note>key: authorinput.name</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/authorinput.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="cb37a419e7f74648f3096f17a11b45d29d4f30a9" resname="authorinput.remove">
-        <source>Remove this author</source>
-        <target xml:lang="fr" state="needs-translation">Remove this author</target>
-        <note>key: authorinput.remove</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/authorinput.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9b553533713b1ca3b636ebe184350b5c0301a296" resname="bad.checksum.last.digit.should.be">
-        <source>Bad checksum, last digit of ISBN 13 should be %checkDigit%</source>
-        <target xml:lang="fr" state="needs-translation">Bad checksum, last digit of ISBN 13 should be %checkDigit%</target>
-        <note>key: bad.checksum.last.digit.should.be</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e5070f4a7780feaac79ab807cd1546a70effb49d" resname="binaryfile.download">
-        <source>Download the file</source>
-        <target xml:lang="fr" state="needs-translation">Download the file</target>
-        <note>key: binaryfile.download</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6368a200a5ca556ba56c6065d90cb55ccf4b3262" resname="binaryfile.empty">
-        <source>No file yet.</source>
-        <target xml:lang="fr" state="needs-translation">No file yet.</target>
-        <note>key: binaryfile.empty</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="30424972909697b477376e7ca05c88535f9a2b58" resname="binaryfile.help">
-        <source>Drag and drop your file here or simply click on the buttons and select your file manually.</source>
-        <target xml:lang="fr" state="needs-translation">Drag and drop your file here or simply click on the buttons and select your file manually.</target>
-        <note>key: binaryfile.help</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="deb180f588060bb98b95d7df6d43b0d9d5278774" resname="binaryfile.name">
-        <source>File name:</source>
-        <target xml:lang="fr" state="needs-translation">File name:</target>
-        <note>key: binaryfile.name</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="63b7d9eb28e23a7b075fd63567bb1c021b8f93d0" resname="binaryfile.or">
-        <source>or</source>
-        <target xml:lang="fr" state="needs-translation">or</target>
-        <note>key: binaryfile.or</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="09251818f4f6aabd8f9c9e3caddd0e52a4e94f53" resname="binaryfile.remove">
-        <source>Remove this file</source>
-        <target xml:lang="fr" state="needs-translation">Remove this file</target>
-        <note>key: binaryfile.remove</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1c966af2e1e58bbe0cc2fcedf97a72a128f97e05" resname="binaryfile.replace">
-        <source>Replace this file</source>
-        <target xml:lang="fr" state="needs-translation">Replace this file</target>
-        <note>key: binaryfile.replace</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="43102016be1b21e84fd962003da92c48bc434ad3" resname="binaryfile.size">
-        <source>File size:</source>
-        <target xml:lang="fr" state="needs-translation">File size:</target>
-        <note>key: binaryfile.size</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="012ca0baa21f8d816f95de486b4da746ed42f845" resname="binaryfile.type">
-        <source>Type:</source>
-        <target xml:lang="fr" state="needs-translation">Type:</target>
-        <note>key: binaryfile.type</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="50d21f53a194d59aa5f1e9f3a12af1afcc6ef8fe" resname="binaryfile.upload">
-        <source>Upload a file</source>
-        <target xml:lang="fr" state="needs-translation">Upload a file</target>
-        <note>key: binaryfile.upload</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a471779c9392f01dd003a1bc6879fd783e050f84" resname="date.and.time.not.valid">
-        <source>Date and time do not have valid inputs</source>
-        <target xml:lang="fr" state="needs-translation">Date and time do not have valid inputs</target>
-        <note>key: date.and.time.not.valid</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="81e49b2ea1382af92570ae58ccb754535b55b224" resname="date.calendar">
-        <source>Calendar</source>
-        <target xml:lang="fr" state="needs-translation">Calendar</target>
-        <note>key: date.calendar</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/date.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1096c88b9ecb1c83173e6fe1a7330ac88aae7e1e" resname="date.not.valid">
-        <source>This is not a correct date</source>
-        <target xml:lang="fr" state="needs-translation">This is not a correct date</target>
-        <note>key: date.not.valid</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-date-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="86b1150b591a089eab73f5cb58fc11964ccb5f78" resname="date.not.valid.time.missing">
-        <source>Date do not have a valid input and time is missing</source>
-        <target xml:lang="fr" state="needs-translation">Date do not have a valid input and time is missing</target>
-        <note>key: date.not.valid.time.missing</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b262de6dff7418fd4c316ac5946911aff50c5df1" resname="date.not.valid.time.required">
-        <source>Date do not have a valid input and time is required</source>
-        <target xml:lang="fr" state="needs-translation">Date do not have a valid input and time is required</target>
-        <note>key: date.not.valid.time.required</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5ea84ba9d0dd61b9b47b2104f086c4770daf2c74" resname="date.placeholder">
-        <source>YYYY-MM-DD</source>
-        <target xml:lang="fr" state="needs-translation">YYYY-MM-DD</target>
-        <note>key: date.placeholder</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/date.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="ac8b6151c30254609f6e9f2a7ab5c5570ea94dcd" resname="date.required">
-        <source>Date is required</source>
-        <target xml:lang="fr" state="needs-translation">Date is required</target>
-        <note>key: date.required</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c1eee799ee7368e2089f1eb18e2431108253dc07" resname="date.time.required">
-        <source>Date and time are required</source>
-        <target xml:lang="fr" state="needs-translation">Date and time are required</target>
-        <note>key: date.time.required</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3512b5e328b32d7ad9f98fa9fdc35df7f2207526" resname="dropped.several.files">
-        <source>You dropped several files while only one can be stored in this field. Please choose one file.</source>
-        <target xml:lang="fr" state="needs-translation">You dropped several files while only one can be stored in this field. Please choose one file.</target>
-        <note>key: dropped.several.files</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-binarybase-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="77e9dcf7fa3a6196173e1ef8d749321c078a61fb" resname="dropped.text.selection">
-        <source>You dropped a text selection while this field can only store a file. Please drop a file instead.</source>
-        <target xml:lang="fr" state="needs-translation">You dropped a text selection while this field can only store a file. Please drop a file instead.</target>
-        <note>key: dropped.text.selection</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-binarybase-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7e57a01ae6b4b0385ec149a170df478fa2868f25" resname="email.not.valid">
-        <source>The email address should be valid</source>
-        <target xml:lang="fr" state="needs-translation">The email address should be valid</target>
-        <note>key: email.not.valid</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-author-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-emailaddress-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-user-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9c96ffba7a783d0786368dbf8b2b23dfc4188e66" resname="email.required">
-        <source>The email address is required</source>
-        <target xml:lang="fr" state="needs-translation">The email address is required</target>
-        <note>key: email.required</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-author-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-user-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3baff585bf1b4c49f13ffa7f27f2afb737498a8c" resname="email.required.if.name.filled">
-        <source>The email address is required if the name is filled.</source>
-        <target xml:lang="fr" state="needs-translation">The email address is required if the name is filled.</target>
-        <note>key: email.required.if.name.filled</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-author-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4681faa8e9e01a7b94ecbbc5f581b4d44a5e935d" resname="embed.content.not.loaded">
-        <source>Embedded Content item could not be loaded</source>
-        <target xml:lang="fr" state="needs-translation">Embedded Content item could not be loaded</target>
-        <note>key: embed.content.not.loaded</note>
-        <jms:reference-file>./Resources/public/js/views/fields/richtext/ez-richtext-resolveembed.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0a60003c1459ed6556b63b64c050fd4d070d94e4" resname="error.during.geolocation.request">
-        <source>An error occurred during geolocation request of your current position</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred during geolocation request of your current position</target>
-        <note>key: error.during.geolocation.request</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9c74a8f5f67dd8e07a2912177bc6de9c9cde6d75" resname="failed.retrieve.google.maps.api">
-        <source>Failed to retrieve Google Maps API</source>
-        <target xml:lang="fr" state="needs-translation">Failed to retrieve Google Maps API</target>
-        <note>key: failed.retrieve.google.maps.api</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a64621b5af174b18350e8774d65ac227c79f0077" resname="file.size">
-        <source>(%size% bytes)</source>
-        <target xml:lang="fr" state="needs-translation">(%size% bytes)</target>
-        <note>key: file.size</note>
-        <jms:reference-file>./Resources/public/templates/fields/view/binaryfile.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c02ec1f84b17c734661c3a5935960b7392a3af2a" resname="float.value.should.be.less.than">
-        <source>The value should be less than or equal to %maxFloatValue%</source>
-        <target xml:lang="fr" state="needs-translation">The value should be less than or equal to %maxFloatValue%</target>
-        <note>key: float.value.should.be.less.than</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-float-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f29cb6461d72c2fe892e65d4dd7dd296ed5db961" resname="float.value.should.be.more.than">
-        <source>The value should be more than or equal to %minFloatValue%</source>
-        <target xml:lang="fr" state="needs-translation">The value should be more than or equal to %minFloatValue%</target>
-        <note>key: float.value.should.be.more.than</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-float-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0e560377b2f3909ebf37cd10977860242a93f694" resname="geocoding.error">
-        <source>An error occurred during the geocoding request for this address</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred during the geocoding request for this address</target>
-        <note>key: geocoding.error</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="683f0d47319d2d3671eb34b0aab6bcc549b0ac5e" resname="google.map.not.loaded.correctly">
-        <source>Google maps are not loaded correctly, try reloading the page</source>
-        <target xml:lang="fr" state="needs-translation">Google maps are not loaded correctly, try reloading the page</target>
-        <note>key: google.map.not.loaded.correctly</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5c973cf4cef4fd2936dbd1d7879ccdcd8b9e6ffe" resname="image.alternativetext">
-        <source>Alternative text:</source>
-        <target xml:lang="fr" state="needs-translation">Alternative text:</target>
-        <note>key: image.alternativetext</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b93ecd00f44abdce9d25bb437706b04329a172aa" resname="image.content.not.loaded">
-        <source>Image could not be loaded</source>
-        <target xml:lang="fr" state="needs-translation">Image could not be loaded</target>
-        <note>key: image.content.not.loaded</note>
-        <jms:reference-file>./Resources/public/js/views/fields/richtext/ez-richtext-resolveimage.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c21c1e24ffd073c7213022cf4d0cde8e94be62b8" resname="image.fullwidth">
-        <source>View the full width image</source>
-        <target xml:lang="fr" state="needs-translation">View the full width image</target>
-        <note>key: image.fullwidth</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="421768b6fafc8049fe02c600c5bc6ecb8a5590c2" resname="image.help">
-        <source>Drag and drop your image here or simply click on the buttons and select your image manually.</source>
-        <target xml:lang="fr" state="needs-translation">Drag and drop your image here or simply click on the buttons and select your image manually.</target>
-        <note>key: image.help</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="623d52cead77075eabf73bd844f1870264264f8e" resname="image.name">
-        <source>File name</source>
-        <target xml:lang="fr" state="needs-translation">File name</target>
-        <note>key: image.name</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4869b50f2d217dadd224261042666bd2a3fd0e9e" resname="image.noimage">
-        <source>No image yet.</source>
-        <target xml:lang="fr" state="needs-translation">No image yet.</target>
-        <note>key: image.noimage</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="ddb2b77067d29961704d011d303b42d5fcc00e5c" resname="image.or">
-        <source>or</source>
-        <target xml:lang="fr" state="needs-translation">or</target>
-        <note>key: image.or</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7deddf51ab844e5621b291039176191f8bbdef95" resname="image.preview">
-        <source>Image preview</source>
-        <target xml:lang="fr" state="needs-translation">Image preview</target>
-        <note>key: image.preview</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a291c895782db79ab2693d1e91090f491402f32d" resname="image.properties">
-        <source>Image properties</source>
-        <target xml:lang="fr" state="needs-translation">Image properties</target>
-        <note>key: image.properties</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="eaa4c2c811e8e5048745d4d437e122b67e16bbfa" resname="image.remove">
-        <source>Remove this image</source>
-        <target xml:lang="fr" state="needs-translation">Remove this image</target>
-        <note>key: image.remove</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e7b9c11716066f2b3bcb38ac4db35fb7501118e0" resname="image.replace">
-        <source>Replace this image</source>
-        <target xml:lang="fr" state="needs-translation">Replace this image</target>
-        <note>key: image.replace</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="265c4b8ea4ab58567a9be6610f7dff0b99223299" resname="image.size">
-        <source>File size:</source>
-        <target xml:lang="fr" state="needs-translation">File size:</target>
-        <note>key: image.size</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="16a6d4b19907cd8be6b2be041fca055ad70a3447" resname="image.thumbnail.error">
-        <source>An error occurred while loading the thumbnail.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the thumbnail.</target>
-        <note>key: image.thumbnail.error</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2b17eed3677a5d65192b549375f533751091f25f" resname="image.thumbnail.loading">
-        <source>Loading a thumbnail of the image...</source>
-        <target xml:lang="fr" state="needs-translation">Loading a thumbnail of the image...</target>
-        <note>key: image.thumbnail.loading</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="689cae8350541efc2cad64f32e6d1a9512845b05" resname="image.thumbnail.retry">
-        <source>Retry</source>
-        <target xml:lang="fr" state="needs-translation">Retry</target>
-        <note>key: image.thumbnail.retry</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1fa08ff0c1b3b004705e4fc4884f7c0cf631465a" resname="image.type">
-        <source>Type:</source>
-        <target xml:lang="fr" state="needs-translation">Type:</target>
-        <note>key: image.type</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3cb3d1ded419f0923f0b00e65e3c9b6c112e450c" resname="image.upload">
-        <source>Upload an image</source>
-        <target xml:lang="fr" state="needs-translation">Upload an image</target>
-        <note>key: image.upload</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f0edbc370c196d4d5a74049ed4382bbd16aa4b82" resname="input.not.valid">
-        <source>This is not a valid input</source>
-        <target xml:lang="fr" state="needs-translation">This is not a valid input</target>
-        <note>key: input.not.valid</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-date-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8e49b578596402bf9f38b7a53ee4e6838f31c1a9" resname="invalid.float.value">
-        <source>The value should be a valid float number</source>
-        <target xml:lang="fr" state="needs-translation">The value should be a valid float number</target>
-        <note>key: invalid.float.value</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-float-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="d5afda02a70b4e08a45743098c217ce1cb424278" resname="invalid.input">
-        <source>This is not a valid input</source>
-        <target xml:lang="fr" state="needs-translation">This is not a valid input</target>
-        <note>key: invalid.input</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-time-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="624975ced077be4e434e9ddc7aceb12cdd06a2f7" resname="invalid.isbn10">
-        <source>invalid ISBN 10</source>
-        <target xml:lang="fr" state="needs-translation">invalid ISBN 10</target>
-        <note>key: invalid.isbn10</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a10ccd621b14ed09703e07e31cbfed166450b722" resname="invalid.isbn10.sum.not.multiple.of.11">
-        <source>invalid ISBN 10 (sum is not a multiple of 11")</source>
-        <target xml:lang="fr" state="needs-translation">invalid ISBN 10 (sum is not a multiple of 11")</target>
-        <note>key: invalid.isbn10.sum.not.multiple.of.11</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="65c4aaaab5989949a929cc5f7e96eb7017c2d9f4" resname="loading...">
-        <source>Loading...</source>
-        <target xml:lang="fr" state="needs-translation">Loading...</target>
-        <note>key: loading...</note>
-        <jms:reference-file>./Resources/public/js/views/fields/richtext/ez-richtext-resolveembed.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0d7b8b93e93ce650d31862d74cdc2566058742d3" resname="login.required">
-        <source>'The login is required</source>
-        <target xml:lang="fr" state="needs-translation">'The login is required</target>
-        <note>key: login.required</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-user-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3ebb2a2e0355aff0d63b0a1c644aff0efa6b52c6" resname="maplocation.address">
-        <source>Address:</source>
-        <target xml:lang="fr" state="needs-translation">Address:</target>
-        <note>key: maplocation.address</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/maplocation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e21151edf210d6968aa67c35235066389865f136" resname="maplocation.latitude">
-        <source>Latitude:</source>
-        <target xml:lang="fr" state="needs-translation">Latitude:</target>
-        <note>key: maplocation.latitude</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/maplocation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="04e7fa05923b84dde058e7a8b349de8a019962f8" resname="maplocation.locateaddress">
-        <source>Locate Address</source>
-        <target xml:lang="fr" state="needs-translation">Locate Address</target>
-        <note>key: maplocation.locateaddress</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/maplocation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="748db692b3faa75edc78fe780f125dacc597fdd2" resname="maplocation.locateme">
-        <source>Locate Me</source>
-        <target xml:lang="fr" state="needs-translation">Locate Me</target>
-        <note>key: maplocation.locateme</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/maplocation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="60f60bbfc3c9cd30603670eb6b91fa5a1619f73b" resname="maplocation.longitude">
-        <source>Longitude:</source>
-        <target xml:lang="fr" state="needs-translation">Longitude:</target>
-        <note>key: maplocation.longitude</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/maplocation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="de4d15e55b8a04ee1b6f188b3cf6dac4aca30d5a" resname="media.audio.empty">
-        <source>No audio file yet.</source>
-        <target xml:lang="fr" state="needs-translation">No audio file yet.</target>
-        <note>key: media.audio.empty</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9e333a901ae1af3b53556d2dd70fd6b0d2bd36a2" resname="media.audio.help">
-        <source>Drag and drop your audio file here or simply click on the buttons and select your audio file manually.</source>
-        <target xml:lang="fr" state="needs-translation">Drag and drop your audio file here or simply click on the buttons and select your audio file manually.</target>
-        <note>key: media.audio.help</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0be02246f03eea8192409c98d2742cfc8394379b" resname="media.audio.properties">
-        <source>Audio file properties</source>
-        <target xml:lang="fr" state="needs-translation">Audio file properties</target>
-        <note>key: media.audio.properties</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2d64b8db93429eb250ac521adf66d0b8941cb1e8" resname="media.audio.remove">
-        <source>Remove this audio file</source>
-        <target xml:lang="fr" state="needs-translation">Remove this audio file</target>
-        <note>key: media.audio.remove</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="15a4d5ecb1370c9fad3f37f4235422017660a208" resname="media.audio.replace">
-        <source>Replace this audio file</source>
-        <target xml:lang="fr" state="needs-translation">Replace this audio file</target>
-        <note>key: media.audio.replace</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6a4fa5aa4d83d262f7179096cb94b1de7ef10582" resname="media.audio.unsupported">
-        <source>Unsupported audio format</source>
-        <target xml:lang="fr" state="needs-translation">Unsupported audio format</target>
-        <note>key: media.audio.unsupported</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="05a233289e65681f4b1ddc93eaffd0c756d63fc4" resname="media.audio.upload">
-        <source>Upload an audio file</source>
-        <target xml:lang="fr" state="needs-translation">Upload an audio file</target>
-        <note>key: media.audio.upload</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6eadf968d3be0a9dbf1a708d86cf710bb62ed7bd" resname="media.autoplay">
-        <source>Auto play:</source>
-        <target xml:lang="fr" state="needs-translation">Auto play:</target>
-        <note>key: media.autoplay</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="83643610d46ed56851ef235675f247e24a628112" resname="media.displaycontrols">
-        <source>Display controls:</source>
-        <target xml:lang="fr" state="needs-translation">Display controls:</target>
-        <note>key: media.displaycontrols</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="48f89aa321f9917ee7d69855d638ccc06fbc08cb" resname="media.file.size">
-        <source><![CDATA[<span class="ez-media-properties-size">%size%</span>&nbsp;bytes]]></source>
-        <target xml:lang="fr" state="needs-translation"><![CDATA[<span class="ez-media-properties-size">%size%</span>&nbsp;bytes]]></target>
-        <note>key: media.file.size</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="dbde52fe3c3a99179a4835dcc6d199371fbc91b2" resname="media.height">
-        <source>Height:</source>
-        <target xml:lang="fr" state="needs-translation">Height:</target>
-        <note>key: media.height</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2325191dea1090c18ddab4c6e793dc19ecfab29c" resname="media.loop">
-        <source>Loop:</source>
-        <target xml:lang="fr" state="needs-translation">Loop:</target>
-        <note>key: media.loop</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="ddb130a4e4e9656800990ae5c96df1ea3fcc604e" resname="media.name">
-        <source>File name:</source>
-        <target xml:lang="fr" state="needs-translation">File name:</target>
-        <note>key: media.name</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5fe85b221381eab5cf085d06e93da5fd8cfbd4f3" resname="media.newtab">
-        <source>Open it in a new tab</source>
-        <target xml:lang="fr" state="needs-translation">Open it in a new tab</target>
-        <note>key: media.newtab</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c888da5fa745a2e9517d698c6cadbc1b8404d7a9" resname="media.playersettings">
-        <source>Player settings</source>
-        <target xml:lang="fr" state="needs-translation">Player settings</target>
-        <note>key: media.playersettings</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="135cbb609fe487f5b9df8fdd756028516d582195" resname="media.size">
-        <source>File size:</source>
-        <target xml:lang="fr" state="needs-translation">File size:</target>
-        <note>key: media.size</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="fc651caf3e8f0d087bf50d11af3a5852e4e4f4da" resname="media.type">
-        <source>Type:</source>
-        <target xml:lang="fr" state="needs-translation">Type:</target>
-        <note>key: media.type</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="200321ea1995c3d33324fef4dba05f58873910f3" resname="media.video.empty">
-        <source>No video file yet.</source>
-        <target xml:lang="fr" state="needs-translation">No video file yet.</target>
-        <note>key: media.video.empty</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="99b8daaf90cdc2ee5b0f96b05c92e7452ca5cb7e" resname="media.video.help">
-        <source><![CDATA[Drag and drop your video here or simply click on the buttons and select your video manually. Customize size, controls & view.]]></source>
-        <target xml:lang="fr" state="needs-translation"><![CDATA[Drag and drop your video here or simply click on the buttons and select your video manually. Customize size, controls & view.]]></target>
-        <note>key: media.video.help</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6e2da936d84283d264f260e9f966a11be051096e" resname="media.video.properties">
-        <source>Video file properties</source>
-        <target xml:lang="fr" state="needs-translation">Video file properties</target>
-        <note>key: media.video.properties</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0ea95996960e7e25850641cb651904538b525e0a" resname="media.video.remove">
-        <source>Remove this video</source>
-        <target xml:lang="fr" state="needs-translation">Remove this video</target>
-        <note>key: media.video.remove</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="685b7365429b2f2cf79ff014e38b14c73899a492" resname="media.video.replace">
-        <source>Replace this video</source>
-        <target xml:lang="fr" state="needs-translation">Replace this video</target>
-        <note>key: media.video.replace</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="af7590bb13331b3eda4b2a0ab28f0d2a100781e9" resname="media.video.unsupported">
-        <source>Unsupported video format</source>
-        <target xml:lang="fr" state="needs-translation">Unsupported video format</target>
-        <note>key: media.video.unsupported</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3cce6f7478e77242b2c94108460c48905e28da7f" resname="media.video.upload">
-        <source>Upload a video</source>
-        <target xml:lang="fr" state="needs-translation">Upload a video</target>
-        <note>key: media.video.upload</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e869d62b8c16e01b95bc9d235173e8dba6f42f30" resname="media.width">
-        <source>Width:</source>
-        <target xml:lang="fr" state="needs-translation">Width:</target>
-        <note>key: media.width</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4472d1a8e3b30bcb2a5ca35aef3354d87c4f7e0d" resname="name.required">
-        <source>The name is required</source>
-        <target xml:lang="fr" state="needs-translation">The name is required</target>
-        <note>key: name.required</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-author-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="76a19d250ba3d1fa3c051e03183820ba5a8f6d98" resname="name.required.if.email.filled">
-        <source>The name is required if the email is filled</source>
-        <target xml:lang="fr" state="needs-translation">The name is required if the email is filled</target>
-        <note>key: name.required.if.email.filled</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-author-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="dd18de349adefaf37b5e99873421b2a0ff05b4d3" resname="not.a.correct.isbn13.pattern">
-        <source>This is not a correct ISBN13 pattern</source>
-        <target xml:lang="fr" state="needs-translation">This is not a correct ISBN13 pattern</target>
-        <note>key: not.a.correct.isbn13.pattern</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="bfa3d0165087e1b249eceda81f084e4404ed79f4" resname="over.maximum.allowed.size">
-        <source>The file '%name%' was refused because its size is greater than the maximum allowed size (%max%)</source>
-        <target xml:lang="fr" state="needs-translation">The file '%name%' was refused because its size is greater than the maximum allowed size (%max%)</target>
-        <note>key: over.maximum.allowed.size</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-binarybase-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6fe513c14eb957ff25185e5b3bf73f9f3a8ccee4" resname="refused.not.an.image">
-        <source>The file '%name%' was refused because it seems to not be an image. Please choose an image file.</source>
-        <target xml:lang="fr" state="needs-translation">The file '%name%' was refused because it seems to not be an image. Please choose an image file.</target>
-        <note>key: refused.not.an.image</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-image-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a1e89ea5d1c7efa83d78aecaaf08c993df7b8d7a" resname="relation.empty">
-        <source>No relation.</source>
-        <target xml:lang="fr" state="needs-translation">No relation.</target>
-        <note>key: relation.empty</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c0c592b62ccf324bfae2eba6f869050b32641b0c" resname="relation.error">
-        <source>An error occurred while loading the related content.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the related content.</target>
-        <note>key: relation.error</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1a0432678a22f538bc956d02a1a52709a24019a3" resname="relation.help">
-        <source>Select another content and link it up with your content.</source>
-        <target xml:lang="fr" state="needs-translation">Select another content and link it up with your content.</target>
-        <note>key: relation.help</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="d83d7f0b353c6177f297b5a502f4beae187819ec" resname="relation.loading">
-        <source>Loading the related content</source>
-        <target xml:lang="fr" state="needs-translation">Loading the related content</target>
-        <note>key: relation.loading</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="75d2eb26107e9f1bebc6fd525965df6a2c35dee8" resname="relation.modified">
-        <source>Modified:</source>
-        <target xml:lang="fr" state="needs-translation">Modified:</target>
-        <note>key: relation.modified</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="fe7dd2a6fbf71766715c5ea46100398267102adc" resname="relation.published">
-        <source>Published:</source>
-        <target xml:lang="fr" state="needs-translation">Published:</target>
-        <note>key: relation.published</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f46aad015f05a6ae74da1d451f030dcc02dc1e39" resname="relation.remove">
-        <source>Remove relation</source>
-        <target xml:lang="fr" state="needs-translation">Remove relation</target>
-        <note>key: relation.remove</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="d0a96c335f3402fd4df0fdad937321b580c13eb7" resname="relation.retry">
-        <source>Retry</source>
-        <target xml:lang="fr" state="needs-translation">Retry</target>
-        <note>key: relation.retry</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2e594c668c9f88817270dd8c12acd559fe485f5b" resname="relation.select">
-        <source>Select a content</source>
-        <target xml:lang="fr" state="needs-translation">Select a content</target>
-        <note>key: relation.select</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="76eb23938007b8dc5d74961c52923f34fd9863fc" resname="relationlist.empty">
-        <source>No relation.</source>
-        <target xml:lang="fr" state="needs-translation">No relation.</target>
-        <note>key: relationlist.empty</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7b6f3591c6f295907a1636bd3ea950fa0126d970" resname="relationlist.error">
-        <source>An error occurred while loading the related content.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the related content.</target>
-        <note>key: relationlist.error</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="048ae70654be763915d036765feb172d2baa7559" resname="relationlist.help">
-        <source>Set up multiple relations with several contents.</source>
-        <target xml:lang="fr" state="needs-translation">Set up multiple relations with several contents.</target>
-        <note>key: relationlist.help</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1d30f0399910c05468169bd5a7f737caff136afe" resname="relationlist.loading">
-        <source>Loading the related content(s)</source>
-        <target xml:lang="fr" state="needs-translation">Loading the related content(s)</target>
-        <note>key: relationlist.loading</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b0eb3cbb48be1ff976bd4569a8978d63336dd8b7" resname="relationlist.remove">
-        <source>Remove</source>
-        <target xml:lang="fr" state="needs-translation">Remove</target>
-        <note>key: relationlist.remove</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="493a9cbc47e3af553067486bc8b13b43c8472fc4" resname="relationlist.retry">
-        <source>Retry</source>
-        <target xml:lang="fr" state="needs-translation">Retry</target>
-        <note>key: relationlist.retry</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4d8d4cfb7509f6d02d61100e1b940fb5a847d91d" resname="relationlist.select">
-        <source>Select contents</source>
-        <target xml:lang="fr" state="needs-translation">Select contents</target>
-        <note>key: relationlist.select</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1c46a1068b55e75f3cac49a3f59c85ca19edbc52" resname="relationlist.table.modified">
-        <source>Modified</source>
-        <target xml:lang="fr" state="needs-translation">Modified</target>
-        <note>key: relationlist.table.modified</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="fd35d9bedc6d39be95cef85dd23bc3fd550d6078" resname="relationlist.table.name">
-        <source>Name</source>
-        <target xml:lang="fr" state="needs-translation">Name</target>
-        <note>key: relationlist.table.name</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="fea522d933afafa19ac438bd82d49ddc1c254d2f" resname="relationlist.table.published">
-        <source>Published</source>
-        <target xml:lang="fr" state="needs-translation">Published</target>
-        <note>key: relationlist.table.published</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e1ee64eddc5bc3ee8690f59e23a52dd4c50d036e" resname="richtext.focus">
-        <source>Focus</source>
-        <target xml:lang="fr" state="needs-translation">Focus</target>
-        <note>key: richtext.focus</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/richtext.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a8867a26b3b1adfde513cee1bbc0b2cd0beb5cce" resname="richtext.save">
-        <source>Save and Return</source>
-        <target xml:lang="fr" state="needs-translation">Save and Return</target>
-        <note>key: richtext.save</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/richtext.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2661cb6d447aad0683ba849b76913b44492fe727" resname="select.contents.to.add">
-        <source>Select the contents you want to add in the relation</source>
-        <target xml:lang="fr" state="needs-translation">Select the contents you want to add in the relation</target>
-        <note>key: select.contents.to.add</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-relationlist-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8049139bde69cab92f967e171a9b3f1b933f3151" resname="svg.not.supported">
-        <source>SVG images are not supported. Please choose another image file.</source>
-        <target xml:lang="fr" state="needs-translation">SVG images are not supported. Please choose another image file.</target>
-        <note>key: svg.not.supported</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-image-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="cbeb2eb9d25d8d0349f48bd24450b4431112165a" resname="this.field.is.required">
-        <source>This field is required</source>
-        <target xml:lang="fr" state="needs-translation">This field is required</target>
-        <note>key: this.field.is.required</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-binarybase-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-date-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-emailaddress-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-float-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-keyword-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-relation-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-relationlist-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-textblock-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-textline-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-time-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-url-editview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-xmltext-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a1df2bc73b96d5f4f733b81df6e65eab72e0a707" resname="time.not.valid">
-        <source>Time do not have a valid input</source>
-        <target xml:lang="fr" state="needs-translation">Time do not have a valid input</target>
-        <note>key: time.not.valid</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3ac8de09a795de3e631c721617dab1caf9e90d12" resname="time.not.valid.date.missing">
-        <source>Time do not have a valid input and date is missing</source>
-        <target xml:lang="fr" state="needs-translation">Time do not have a valid input and date is missing</target>
-        <note>key: time.not.valid.date.missing</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c788a67f4c797fb4111df6384dd2d201ae947859" resname="time.not.valid.date.required">
-        <source>Time do not have a valid input and date is required</source>
-        <target xml:lang="fr" state="needs-translation">Time do not have a valid input and date is required</target>
-        <note>key: time.not.valid.date.required</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4547cf11661540086aa7919af220e53df1d305c0" resname="time.not.valid.enter.format">
-        <source>This time is invalid, enter a correct time: HH:MM(:SS)</source>
-        <target xml:lang="fr" state="needs-translation">This time is invalid, enter a correct time: HH:MM(:SS)</target>
-        <note>key: time.not.valid.enter.format</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-time-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="464257823e27d65e1467abb5b4d6421541870a95" resname="time.required">
-        <source>Time is required</source>
-        <target xml:lang="fr" state="needs-translation">Time is required</target>
-        <note>key: time.required</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c93547a1639e55df78bf8797247cbf75c03649c1" resname="unable.find.address">
-        <source>Unable to find this address</source>
-        <target xml:lang="fr" state="needs-translation">Unable to find this address</target>
-        <note>key: unable.find.address</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="45b69f23fd0b5a0e687942663b3acb369ded5c9b" resname="unsupported.html5.geolocation.api">
-        <source>Your browser does not support HTML5 Geolocation API</source>
-        <target xml:lang="fr" state="needs-translation">Your browser does not support HTML5 Geolocation API</target>
-        <note>key: unsupported.html5.geolocation.api</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="96c974ba32d664442a67e0f5885fd4f29e5ab015" resname="url.text">
-        <source>Text:</source>
-        <target xml:lang="fr" state="needs-translation">Text:</target>
-        <note>key: url.text</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/url.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="aa0e54e7bb0afd83ecbc5ac7a5222961cbd911df" resname="url.url">
-        <source>URL</source>
-        <target xml:lang="fr" state="needs-translation">URL</target>
-        <note>key: url.url</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/url.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="20afd5b376ab9ffb3cfe083496345d7e9d11d9f5" resname="user.email">
-        <source>Email</source>
-        <target xml:lang="fr" state="needs-translation">Email</target>
-        <note>key: user.email</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/user.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1d797b831d4559bdebe45193f8b51b570437e97d" resname="user.login">
-        <source>Login</source>
-        <target xml:lang="fr" state="needs-translation">Login</target>
-        <note>key: user.login</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/user.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e4d06be519f5ddd5206349fb39cf7522dd947a3a" resname="user.password">
-        <source>Password</source>
-        <target xml:lang="fr" state="needs-translation">Password</target>
-        <note>key: user.password</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/user.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="782314478554920473f13c4ec6cb6a0471bc8172" resname="user.passwordconfirm">
-        <source>Confirm password</source>
-        <target xml:lang="fr" state="needs-translation">Confirm password</target>
-        <note>key: user.passwordconfirm</note>
-        <jms:reference-file>./Resources/public/templates/fields/edit/user.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="65a42e27e76bf2722822dd28dd0b7ff2d163cb37" resname="value.should.be.less.than">
-        <source>The value should be less than or equal to %maxIntegerValue%</source>
-        <target xml:lang="fr" state="needs-translation">The value should be less than or equal to %maxIntegerValue%</target>
-        <note>key: value.should.be.less.than</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0e3930cc51c59d71efa5464323c96d75b93873f3" resname="value.should.be.more.than">
-        <source>The value should be more than or equal to %minIntegerValue%</source>
-        <target xml:lang="fr" state="needs-translation">The value should be more than or equal to %minIntegerValue%</target>
-        <note>key: value.should.be.more.than</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5c462c60b8cdc7e23d84aca23ffda3d32000247e" resname="value.should.be.valid.integer">
-        <source>The value should be a valid integer number</source>
-        <target xml:lang="fr" state="needs-translation">The value should be a valid integer number</target>
-        <note>key: value.should.be.valid.integer</note>
-        <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
-      </trans-unit>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </body>
   </file>
 </xliff>
