@@ -6,21 +6,9 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="75b39067b1e7bca3c977f2a30426379e819fbbf6" resname="section.validator.identifier.format">
-        <source>Identifier should consist of letters, numbers or '_' with letter prefix.</source>
-        <target xml:lang="fr" state="needs-translation">Identifier should consist of letters, numbers or '_' with letter prefix.</target>
-        <note>key: section.validator.identifier.format</note>
-      </trans-unit>
-      <trans-unit id="f1e18acc46e3c3ad462486f6815c64267c2eb1fa" resname="section.validator.identifier.not_blank">
-        <source>The section identifier can not be empty.</source>
-        <target xml:lang="fr" state="needs-translation">The section identifier can not be empty.</target>
-        <note>key: section.validator.identifier.not_blank</note>
-      </trans-unit>
-      <trans-unit id="bc1b2c67bc416368f449869bb57b50b1d62a4c04" resname="section.validator.name.not_blank">
-        <source>The section name can not be empty.</source>
-        <target xml:lang="fr" state="needs-translation">The section name can not be empty.</target>
-        <note>key: section.validator.name.not_blank</note>
-      </trans-unit>
+      
+      
+      
     </body>
   </file>
 </xliff>
