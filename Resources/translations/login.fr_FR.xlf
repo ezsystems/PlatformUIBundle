@@ -6,54 +6,14 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="521307ddb67a4abc14248801dae5e5989aca76c1" resname="copyright">
-        <source><![CDATA[eZ Platform ©1999-%endYear% <a href="http://ez.no">eZ Systems AS</a> and others.]]></source>
-        <target xml:lang="fr" state="needs-translation"><![CDATA[eZ Platform ©1999-%endYear% <a href="http://ez.no">eZ Systems AS</a> and others.]]></target>
-        <note>key: copyright</note>
-        <jms:reference-file>./Resources/public/templates/loginform.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b1d4fbf05def85430e7e60db5ff4037ea1ee1197" resname="invalid.login.passord">
-        <source>Invalid username or password</source>
-        <target xml:lang="fr" state="needs-translation">Invalid username or password</target>
-        <note>key: invalid.login.passord</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-loginformviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b6b3ad938a789b7901b9d123981d007b69e8077c" resname="loginform.ez.logo">
-        <source>eZ Logo</source>
-        <target xml:lang="fr" state="needs-translation">eZ Logo</target>
-        <note>key: loginform.ez.logo</note>
-        <jms:reference-file>./Resources/public/templates/loginform.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="804e6b4ba4943f9b3ebc6f9ab726bdbc088d44de" resname="loginform.login">
-        <source>Login</source>
-        <target xml:lang="fr" state="needs-translation">Login</target>
-        <note>key: loginform.login</note>
-        <jms:reference-file>./Resources/public/templates/loginform.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a4ca196c29f2015f4b155d47a46a9b59ccfc7e3c" resname="loginform.need.login">
-        <source>You need to login to access this area</source>
-        <target xml:lang="fr" state="needs-translation">You need to login to access this area</target>
-        <note>key: loginform.need.login</note>
-        <jms:reference-file>./Resources/public/templates/loginform.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="53a66da95f881a2e104a73e61af22c1ce3a7b53e" resname="loginform.password">
-        <source>Password</source>
-        <target xml:lang="fr" state="needs-translation">Password</target>
-        <note>key: loginform.password</note>
-        <jms:reference-file>./Resources/public/templates/loginform.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="fd61368971282740aca61a93f8e13ec7dab3c339" resname="loginform.username">
-        <source>Username</source>
-        <target xml:lang="fr" state="needs-translation">Username</target>
-        <note>key: loginform.username</note>
-        <jms:reference-file>./Resources/public/templates/loginform.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="23a8454a8e08b1a75751f4967daa97822870a659" resname="unexpected.error">
-        <source>An unexpected error occurred</source>
-        <target xml:lang="fr" state="needs-translation">An unexpected error occurred</target>
-        <note>key: unexpected.error</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-loginformviewservice.js</jms:reference-file>
-      </trans-unit>
+      
+      
+      
+      
+      
+      
+      
+      
     </body>
   </file>
 </xliff>
