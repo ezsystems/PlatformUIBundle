@@ -7,19 +7,19 @@
     <body>
       <trans-unit id="48f6637cc44536667128a08778de272b" resname="languageselectionbox.base.existing.translation">
         <source>languageselectionbox.base.existing.translation</source>
-        <target xml:lang="en" state="needs-translation">languageselectionbox.base.existing.translation</target>
+        <target xml:lang="en" state="translated">Base this translation on an existing translation</target>
       </trans-unit>
       <trans-unit id="1a5f3e8465f652ffb555f6e3728fac14" resname="languageselectionbox.select.base.language">
         <source>languageselectionbox.select.base.language</source>
-        <target xml:lang="en" state="needs-translation">languageselectionbox.select.base.language</target>
+        <target xml:lang="en" state="translated">Select a base language:</target>
       </trans-unit>
       <trans-unit id="0276a42db5bde7bbc14e62ebd74865d0" resname="languageselectionbox.cancel">
         <source>languageselectionbox.cancel</source>
-        <target xml:lang="en" state="needs-translation">languageselectionbox.cancel</target>
+        <target xml:lang="en" state="translated">Cancel</target>
       </trans-unit>
       <trans-unit id="4288a60764a485a13da36991d953cede" resname="languageselectionbox.confirm">
         <source>languageselectionbox.confirm</source>
-        <target xml:lang="en" state="needs-translation">languageselectionbox.confirm</target>
+        <target xml:lang="en" state="translated">Confirm</target>
       </trans-unit>
     </body>
   </file>
