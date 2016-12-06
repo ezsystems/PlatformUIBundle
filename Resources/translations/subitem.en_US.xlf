@@ -44,7 +44,7 @@
       </trans-unit>
       <trans-unit id="e9fbb7ba38fa94be8b417699fb729a60c7b8ab48" resname="show.more.results">
         <source><![CDATA[Show <span class="ez-loadmorepagination-more-count">%limit%</span> more results]]></source>
-        <target xml:lang="en" state="needs-translation"><![CDATA[Show <span class="ez-loadmorepagination-more-count">%limit%</span> more results]]></target>
+        <target xml:lang="en" state="translated"><![CDATA[Show <span class="ez-loadmorepagination-more-count">%remainingCount%</span> more results]]></target>
         <note>key: show.more.results</note>
         <jms:reference-file>./Resources/public/templates/subitem/grid.hbt</jms:reference-file>
         <jms:reference-file>./Resources/public/templates/subitem/listmore.hbt</jms:reference-file>
@@ -115,7 +115,7 @@
       </trans-unit>
       <trans-unit id="3cae0754bed733e5785947e0b1a795ffeacb8a12" resname="viewing.out.of.items">
         <source><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%subitemCount%</strong> sub-items]]></source>
-        <target xml:lang="en" state="needs-translation"><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%subitemCount%</strong> sub-items]]></target>
+        <target xml:lang="en" state="translated"><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%searchResultCount%</strong> items]]></target>
         <note>key: viewing.out.of.items</note>
         <jms:reference-file>./Resources/public/templates/subitem/grid.hbt</jms:reference-file>
         <jms:reference-file>./Resources/public/templates/subitem/listmore.hbt</jms:reference-file>
