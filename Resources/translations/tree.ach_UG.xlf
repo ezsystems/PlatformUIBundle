@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="ach" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="1f2cfd4c85995e682cebdb3aedf042c6" resname="tree.loading">
-        <source>tree.loading</source>
-        <target xml:lang="ach">crwdns205555:0crwdne205555:0</target>
+      <trans-unit id="a4b16c26cb1349d85fd849abedb5d4e4b921b4ce" resname="tree.empty">
+        <source>The Content Tree is empty</source>
+        <target xml:lang="ach">crwdns206232:0crwdne206232:0</target>
+        <note>key: tree.empty</note>
+        <jms:reference-file>./Resources/public/js/views/ez-treeview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="622a9659c211fa3ab06e3953663d11e2" resname="tree.empty">
-        <source>tree.empty</source>
-        <target xml:lang="ach">crwdns205556:0crwdne205556:0</target>
+      <trans-unit id="f75d3723a7901fb539c3f580f5cdaab5bb7b2257" resname="tree.loading">
+        <source>Loading</source>
+        <target xml:lang="ach">crwdns206233:0crwdne206233:0</target>
+        <note>key: tree.loading</note>
+        <jms:reference-file>./Resources/public/templates/tree.hbt</jms:reference-file>
       </trans-unit>
     </body>
   </file>
