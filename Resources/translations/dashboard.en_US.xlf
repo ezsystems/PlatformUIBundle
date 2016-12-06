@@ -6,9 +6,9 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="e9c04dcd1a73d8cb5fc72ca356e61ab28d38ec46" resname="dashboard.title">
+      <trans-unit id="e9c04dcd1a73d8cb5fc72ca356e61ab28d38ec46" resname="dashboard.title" approved="yes">
         <source>Administration dashboard</source>
-        <target xml:lang="en" state="needs-translation">Administration dashboard</target>
+        <target xml:lang="en">Administration dashboard</target>
         <note>key: dashboard.title</note>
         <jms:reference-file line="13">/../../../../.././Resources/views/ContentType/edit_content_type_group.html.twig</jms:reference-file>
         <jms:reference-file line="7">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
