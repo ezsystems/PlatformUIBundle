@@ -6,120 +6,24 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="f28f995a9562088395bf19373c81fda9a89f1585" resname="content.type">
-        <source>Content type</source>
-        <target xml:lang="fr" state="needs-translation">Content type</target>
-        <note>key: content.type</note>
-        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0bb9f90672f5fc639172ca0404b04581207c530e" resname="grid.view">
-        <source>Grid view</source>
-        <target xml:lang="fr" state="needs-translation">Grid view</target>
-        <note>key: grid.view</note>
-        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemgridview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="22d2dc7a032551838259f398cd5b8dd8e260d17e" resname="list.view">
-        <source>List view</source>
-        <target xml:lang="fr" state="needs-translation">List view</target>
-        <note>key: list.view</note>
-        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="99db324742823c55d975b605e1fc22f4253a9b7d" resname="modified">
-        <source>Modified</source>
-        <target xml:lang="fr" state="needs-translation">Modified</target>
-        <note>key: modified</note>
-        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6ae999552a0d2dca14d62e2bc8b764d377b1dd6c" resname="name">
-        <source>Name</source>
-        <target xml:lang="fr" state="needs-translation">Name</target>
-        <note>key: name</note>
-        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3345867ecfeeaaae30e155d010fc96d9f5119644" resname="priority">
-        <source>Priority</source>
-        <target xml:lang="fr" state="needs-translation">Priority</target>
-        <note>key: priority</note>
-        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e9fbb7ba38fa94be8b417699fb729a60c7b8ab48" resname="show.more.results">
-        <source><![CDATA[Show <span class="ez-loadmorepagination-more-count">%limit%</span> more results]]></source>
-        <target xml:lang="fr" state="needs-translation"><![CDATA[Show <span class="ez-loadmorepagination-more-count">%limit%</span> more results]]></target>
-        <note>key: show.more.results</note>
-        <jms:reference-file>./Resources/public/templates/subitem/grid.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/subitem/listmore.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a48dcd8c90a5ec18b087c64865a8aaeddb83107c" resname="subitem.error.loading.image">
-        <source>An error occurred while loading the image.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the image.</target>
-        <note>key: subitem.error.loading.image</note>
-        <jms:reference-file>./Resources/public/templates/subitem/griditem.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="687a6cc31795b1c3ef4754351319522f21e40d28" resname="subitem.error.loading.list">
-        <source>An error occurred while loading the sub-items list.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the sub-items list.</target>
-        <note>key: subitem.error.loading.list</note>
-        <jms:reference-file>./Resources/public/js/views/subitem/ez-asynchronoussubitemview.js</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1ba785e2cab1df903e4feca2bc9e4eccf5b542dc" resname="subitem.first">
-        <source>First</source>
-        <target xml:lang="fr" state="needs-translation">First</target>
-        <note>key: subitem.first</note>
-        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0729624b971947f00032e59cd4de5fe7e8c92e4e" resname="subitem.last">
-        <source>Last</source>
-        <target xml:lang="fr" state="needs-translation">Last</target>
-        <note>key: subitem.last</note>
-        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c9196a19ae958da788cf0b5fbb4e0fb6451ebdf2" resname="subitem.next">
-        <source>Next</source>
-        <target xml:lang="fr" state="needs-translation">Next</target>
-        <note>key: subitem.next</note>
-        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="d5c97668af30fef2819f3f52add12af828cbe9b3" resname="subitem.no.subitem">
-        <source>This location has no sub-item.</source>
-        <target xml:lang="fr" state="needs-translation">This location has no sub-item.</target>
-        <note>key: subitem.no.subitem</note>
-        <jms:reference-file>./Resources/public/templates/subitem/grid.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/subitem/listmore.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="30b83e737fd8950c2dd108986fa2a82820c2a033" resname="subitem.previous">
-        <source>Previous</source>
-        <target xml:lang="fr" state="needs-translation">Previous</target>
-        <note>key: subitem.previous</note>
-        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a399eccb79686f2421595d297024effd80124451" resname="subitem.retry">
-        <source>Retry</source>
-        <target xml:lang="fr" state="needs-translation">Retry</target>
-        <note>key: subitem.retry</note>
-        <jms:reference-file>./Resources/public/templates/subitem/griditem.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/subitem/list.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5f58a440086c7ddb295d36e1b7b58af48b6f568a" resname="subitem.subitems">
-        <source>Sub-items</source>
-        <target xml:lang="fr" state="needs-translation">Sub-items</target>
-        <note>key: subitem.subitems</note>
-        <jms:reference-file>./Resources/public/templates/subitembox.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="31c20e73fa29248cc7bf440ac9d720ff6d88fd3e" resname="translations">
-        <source>Translations</source>
-        <target xml:lang="fr" state="needs-translation">Translations</target>
-        <note>key: translations</note>
-        <jms:reference-file>./Resources/public/js/views/subitem/ez-subitemlistmoreview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3cae0754bed733e5785947e0b1a795ffeacb8a12" resname="viewing.out.of.items">
-        <source><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%subitemCount%</strong> sub-items]]></source>
-        <target xml:lang="fr" state="needs-translation"><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%subitemCount%</strong> sub-items]]></target>
-        <note>key: viewing.out.of.items</note>
-        <jms:reference-file>./Resources/public/templates/subitem/grid.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/subitem/listmore.hbt</jms:reference-file>
-      </trans-unit>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </body>
   </file>
 </xliff>
