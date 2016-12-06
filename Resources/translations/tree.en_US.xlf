@@ -7,11 +7,11 @@
     <body>
       <trans-unit id="1f2cfd4c85995e682cebdb3aedf042c6" resname="tree.loading">
         <source>tree.loading</source>
-        <target xml:lang="en" state="needs-translation">tree.loading</target>
+        <target xml:lang="en" state="translated">Loading</target>
       </trans-unit>
       <trans-unit id="622a9659c211fa3ab06e3953663d11e2" resname="tree.empty">
         <source>tree.empty</source>
-        <target xml:lang="en" state="needs-translation">tree.empty</target>
+        <target xml:lang="en" state="translated">The Content Tree is empty</target>
       </trans-unit>
     </body>
   </file>
