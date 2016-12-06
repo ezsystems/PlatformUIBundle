@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="8f43b15f9faa5a91f5834c78a47cb864" resname="dashboard.title">
-        <source>dashboard.title</source>
-        <target xml:lang="en" state="needs-translation">dashboard.title</target>
+      <trans-unit id="e9c04dcd1a73d8cb5fc72ca356e61ab28d38ec46" resname="dashboard.title">
+        <source>Administration dashboard</source>
+        <target xml:lang="en" state="needs-translation">Administration dashboard</target>
+        <note>key: dashboard.title</note>
+        <jms:reference-file line="13">/../../../../.././Resources/views/ContentType/edit_content_type_group.html.twig</jms:reference-file>
+        <jms:reference-file line="7">/../../../../.././Resources/views/ContentType/list_content_type_groups.html.twig</jms:reference-file>
+        <jms:reference-file line="14">/../../../../.././Resources/views/ContentType/update_content_type.html.twig</jms:reference-file>
+        <jms:reference-file line="13">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+        <jms:reference-file line="9">/../../../../.././Resources/views/ContentType/view_content_type_group.html.twig</jms:reference-file>
+        <jms:reference-file line="21">/../../../../.././Resources/views/Dashboard/dashboard.html.twig</jms:reference-file>
+        <jms:reference-file line="6">/../../../../.././Resources/views/Dashboard/dashboard.html.twig</jms:reference-file>
+        <jms:reference-file line="13">/../../../../.././Resources/views/Language/edit.html.twig</jms:reference-file>
+        <jms:reference-file line="11">/../../../../.././Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="7">/../../../../.././Resources/views/Language/view.html.twig</jms:reference-file>
+        <jms:reference-file line="9">/../../../../.././Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
+        <jms:reference-file line="14">/../../../../.././Resources/views/Role/edit_policy.html.twig</jms:reference-file>
+        <jms:reference-file line="8">/../../../../.././Resources/views/Role/list_roles.html.twig</jms:reference-file>
+        <jms:reference-file line="13">/../../../../.././Resources/views/Role/update_role.html.twig</jms:reference-file>
+        <jms:reference-file line="9">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="9">/../../../../.././Resources/views/Section/create.html.twig</jms:reference-file>
+        <jms:reference-file line="13">/../../../../.././Resources/views/Section/edit.html.twig</jms:reference-file>
+        <jms:reference-file line="38">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="7">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
+        <jms:reference-file line="7">/../../../../.././Resources/views/SystemInfo/info.html.twig</jms:reference-file>
       </trans-unit>
     </body>
   </file>
