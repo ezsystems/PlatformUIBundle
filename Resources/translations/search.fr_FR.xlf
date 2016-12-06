@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="168ea7cb62bf63f358233d32263ae360" resname="search.result.list">
+        <source>search.result.list</source>
+        <target xml:lang="fr" state="needs-translation">search.result.list</target>
+      </trans-unit>
+      <trans-unit id="781c57b03fbbd16c6c42edbdd6cfdf1f" resname="search.no.result">
+        <source>search.no.result</source>
+        <target xml:lang="fr" state="needs-translation">search.no.result</target>
+      </trans-unit>
+      <trans-unit id="d0f4c68012e75bc7097f43a502021a7f" resname="search.search.content">
+        <source>search.search.content</source>
+        <target xml:lang="fr" state="needs-translation">search.search.content</target>
+      </trans-unit>
+      <trans-unit id="62641ec1a72d0addc93aed4b84b3eb2d" resname="search.search">
+        <source>search.search</source>
+        <target xml:lang="fr" state="needs-translation">search.search</target>
+      </trans-unit>
+      <trans-unit id="589cf891cd3ad3cc4db8197ef1e32f92" resname="show.more.results">
+        <source>show.more.results</source>
+        <target xml:lang="fr" state="needs-translation">show.more.results</target>
+      </trans-unit>
+      <trans-unit id="e77285a90b5a02080b61ebe00aa3c123" resname="viewing.out.of.items">
+        <source>viewing.out.of.items</source>
+        <target xml:lang="fr" state="needs-translation">viewing.out.of.items</target>
+      </trans-unit>
+      <trans-unit id="b068931cc450442b63f5b3d276ea4297" resname="name">
+        <source>name</source>
+        <target xml:lang="fr" state="needs-translation">name</target>
+      </trans-unit>
+      <trans-unit id="9ae73c65f418e6f79ceb4f0e4a4b98d5" resname="modified">
+        <source>modified</source>
+        <target xml:lang="fr" state="needs-translation">modified</target>
+      </trans-unit>
+      <trans-unit id="f6ad414f8441807856aba8e12f3de4f5" resname="content.type">
+        <source>content.type</source>
+        <target xml:lang="fr" state="needs-translation">content.type</target>
+      </trans-unit>
+      <trans-unit id="2ed18fafe4199c7cfc187fdb2a5b1a66" resname="translations">
+        <source>translations</source>
+        <target xml:lang="fr" state="needs-translation">translations</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
