@@ -76,7 +76,34 @@ YUI.add('ez-searchviewservice-tests', function (Y) {
                 this.limit, params.limit,
                 'The limit should be available in the return value of getViewParameters'
             );
-           },
+        },
+
+        "Should NOT find locations and set attributes if no searchString provided (Regression test from EZP-26570)": function () {
+            var callbackCalled = false;
+
+            this.request = {
+                params: {
+                    searchString: '',
+                }
+            };
+            this.service.set('request', this.request);
+
+            Mock.expect(this.service.search, {
+                method: 'findLocations',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                callCount: 0,
+
+            });
+            this.service.load(function(){
+                callbackCalled = true;
+            });
+
+            Y.Assert.isTrue(
+                callbackCalled,
+                'The callback should have been called'
+            );
+            Mock.verify(this.service.search);
+        },
 
         "Should set the searchResultList and searchResultCount": function () {
             var that = this;
