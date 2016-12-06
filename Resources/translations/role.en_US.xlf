@@ -7,251 +7,251 @@
     <body>
       <trans-unit id="fbefa01af4762e0ece92415ab7d1783f" resname="role.dashboard_title">
         <source>role.dashboard_title</source>
-        <target xml:lang="en" state="needs-translation">role.dashboard_title</target>
+        <target xml:lang="en" state="translated">Roles</target>
       </trans-unit>
       <trans-unit id="29a7e96467b69a9f5a93332e29e9b0de" resname="role">
         <source>role</source>
-        <target xml:lang="en" state="needs-translation">role</target>
+        <target xml:lang="en" state="translated">Role</target>
       </trans-unit>
       <trans-unit id="bd0d56d7f8d7b8c5cc209e7314fa867c" resname="role.list">
         <source>role.list</source>
-        <target xml:lang="en" state="needs-translation">role.list</target>
+        <target xml:lang="en" state="translated">Roles</target>
       </trans-unit>
       <trans-unit id="20d183f4e76acf0be43bcd79d2cbaf93" resname="role.name">
         <source>role.name</source>
-        <target xml:lang="en" state="needs-translation">role.name</target>
+        <target xml:lang="en" state="translated">Name</target>
       </trans-unit>
       <trans-unit id="39f63cc920b573a7442f6db748b80187" resname="role.name_new">
         <source>role.name_new</source>
-        <target xml:lang="en" state="needs-translation">role.name_new</target>
+        <target xml:lang="en" state="translated">New Role</target>
       </trans-unit>
       <trans-unit id="861f41a451fbb0db0d5b09860c5e93a0" resname="role.id">
         <source>role.id</source>
-        <target xml:lang="en" state="needs-translation">role.id</target>
+        <target xml:lang="en" state="translated">ID</target>
       </trans-unit>
       <trans-unit id="e51669b1f9b6a8f8150d56442548b2dc" resname="role.edit">
         <source>role.edit</source>
-        <target xml:lang="en" state="needs-translation">role.edit</target>
+        <target xml:lang="en" state="translated">Edit role name</target>
       </trans-unit>
       <trans-unit id="7873f0fb26523ee3b3ba4054606b0212" resname="role.delete">
         <source>role.delete</source>
-        <target xml:lang="en" state="needs-translation">role.delete</target>
+        <target xml:lang="en" state="translated">Delete</target>
       </trans-unit>
       <trans-unit id="c955c27f5651f462ac1974be5ee313cb" resname="role.deleted">
         <source>role.deleted</source>
-        <target xml:lang="en" state="needs-translation">role.deleted</target>
+        <target xml:lang="en" state="translated">Role "%roleIdentifier%" was correctly deleted.</target>
       </trans-unit>
       <trans-unit id="6dfdff7bf14ea7fe6f7e42e8fbcca984" resname="role.error.delete">
         <source>role.error.delete</source>
-        <target xml:lang="en" state="needs-translation">role.error.delete</target>
+        <target xml:lang="en" state="translated">An error occurred when trying to delete role "%roleIdentifier%".</target>
       </trans-unit>
       <trans-unit id="f4fd49921d98688721c174148473d0e0" resname="role.policy_none">
         <source>role.policy_none</source>
-        <target xml:lang="en" state="needs-translation">role.policy_none</target>
+        <target xml:lang="en" state="translated">There are no policies set up for this role.</target>
       </trans-unit>
       <trans-unit id="571f55257925e33c611d091398e4215f" resname="policy.module">
         <source>policy.module</source>
-        <target xml:lang="en" state="needs-translation">policy.module</target>
+        <target xml:lang="en" state="translated">Module</target>
       </trans-unit>
       <trans-unit id="3633b9142a1796051f6fb7cbc21e9ce6" resname="policy.module_all">
         <source>policy.module_all</source>
-        <target xml:lang="en" state="needs-translation">policy.module_all</target>
+        <target xml:lang="en" state="translated">all modules</target>
       </trans-unit>
       <trans-unit id="4aedb6dc2db8e4601bfd0603a105c262" resname="policy.function">
         <source>policy.function</source>
-        <target xml:lang="en" state="needs-translation">policy.function</target>
+        <target xml:lang="en" state="translated">Function</target>
       </trans-unit>
       <trans-unit id="4cf83d88f5af8b8c15d7ebfbacfedb19" resname="policy.function_all">
         <source>policy.function_all</source>
-        <target xml:lang="en" state="needs-translation">policy.function_all</target>
+        <target xml:lang="en" state="translated">all functions</target>
       </trans-unit>
       <trans-unit id="0b7de93cea734ea0f36f0386d94f0eba" resname="policy.limitation">
         <source>policy.limitation</source>
-        <target xml:lang="en" state="needs-translation">policy.limitation</target>
+        <target xml:lang="en" state="translated">Limitation</target>
       </trans-unit>
       <trans-unit id="7533d907494f61967dbac887bc117e19" resname="policy.limitation_none">
         <source>policy.limitation_none</source>
-        <target xml:lang="en" state="needs-translation">policy.limitation_none</target>
+        <target xml:lang="en" state="translated">No limitations</target>
       </trans-unit>
       <trans-unit id="c9f40d15cac0defa8034e2b678d8f1c0" resname="assignment.user_or_group_using">
         <source>assignment.user_or_group_using</source>
-        <target xml:lang="en" state="needs-translation">assignment.user_or_group_using</target>
+        <target xml:lang="en" state="translated">Users and groups using the &lt;%role%&gt; role (%count%)</target>
       </trans-unit>
       <trans-unit id="0f3969e515776fb86bb602329ae3daf8" resname="assignment.user_or_group">
         <source>assignment.user_or_group</source>
-        <target xml:lang="en" state="needs-translation">assignment.user_or_group</target>
+        <target xml:lang="en" state="translated">User/group</target>
       </trans-unit>
       <trans-unit id="4ea969ae3b1c24a3319570bdd9d14db8" resname="assignment.role_limitation">
         <source>assignment.role_limitation</source>
-        <target xml:lang="en" state="needs-translation">assignment.role_limitation</target>
+        <target xml:lang="en" state="translated">Limitation</target>
       </trans-unit>
       <trans-unit id="e95baae148b87a0419dc6ad673923155" resname="assignment.role_limitation_none">
         <source>assignment.role_limitation_none</source>
-        <target xml:lang="en" state="needs-translation">assignment.role_limitation_none</target>
+        <target xml:lang="en" state="translated">No limitations</target>
       </trans-unit>
       <trans-unit id="aa628d51bc39b67fa7f7e47971d1b447" resname="assignment.none">
         <source>assignment.none</source>
-        <target xml:lang="en" state="needs-translation">assignment.none</target>
+        <target xml:lang="en" state="translated">This role is not assigned to any users or user groups.</target>
       </trans-unit>
       <trans-unit id="1de4cf85703b4a84d724dd564c7fb534" resname="role.edit_title">
         <source>role.edit_title</source>
-        <target xml:lang="en" state="needs-translation">role.edit_title</target>
+        <target xml:lang="en" state="translated">Edit</target>
       </trans-unit>
       <trans-unit id="92a2006750293ade6ce86e0c542e132e" resname="role.notification.draft_saved">
         <source>role.notification.draft_saved</source>
-        <target xml:lang="en" state="needs-translation">role.notification.draft_saved</target>
+        <target xml:lang="en" state="translated">The role draft was saved.</target>
       </trans-unit>
       <trans-unit id="b240d97b7556d3bc31828966e57ea495" resname="role.notification.draft_removed">
         <source>role.notification.draft_removed</source>
-        <target xml:lang="en" state="needs-translation">role.notification.draft_removed</target>
+        <target xml:lang="en" state="translated">The role draft was removed.</target>
       </trans-unit>
       <trans-unit id="43f332c7ac9127b99726374b6fbbdbf8" resname="role.notification.published">
         <source>role.notification.published</source>
-        <target xml:lang="en" state="needs-translation">role.notification.published</target>
+        <target xml:lang="en" state="translated">The role was published.</target>
       </trans-unit>
       <trans-unit id="5ec308857475f497e8b5da4f682c1cd3" resname="role.notification.invalid_argument">
         <source>role.notification.invalid_argument</source>
-        <target xml:lang="en" state="needs-translation">role.notification.invalid_argument</target>
+        <target xml:lang="en" state="translated">Invalid argument: The role name must be unique.</target>
       </trans-unit>
       <trans-unit id="887fce568bfcc0612624c5924eededbc" resname="role.notification.unauthorized">
         <source>role.notification.unauthorized</source>
-        <target xml:lang="en" state="needs-translation">role.notification.unauthorized</target>
+        <target xml:lang="en" state="translated">Unauthorized: You do not have access to perform this action.</target>
       </trans-unit>
       <trans-unit id="bc7567a1b13bf52e3a2e33daf83359b5" resname="role.error.name_or_limitation">
         <source>role.error.name_or_limitation</source>
-        <target xml:lang="en" state="needs-translation">role.error.name_or_limitation</target>
+        <target xml:lang="en" state="translated">The role name already exists, or there are errors in the role limitations.</target>
       </trans-unit>
       <trans-unit id="00733f585df25944e6474010d5160954" resname="role.error.limitation_validation">
         <source>role.error.limitation_validation</source>
-        <target xml:lang="en" state="needs-translation">role.error.limitation_validation</target>
+        <target xml:lang="en" state="translated">The policy limitation(s) are invalid.</target>
       </trans-unit>
       <trans-unit id="e92a6182511674146b6eabbcf3111efd" resname="role.error.name_exists">
         <source>role.error.name_exists</source>
-        <target xml:lang="en" state="needs-translation">role.error.name_exists</target>
+        <target xml:lang="en" state="translated">The role name already exists.</target>
       </trans-unit>
       <trans-unit id="c9376f2c3549a973772180d20e7dd3f4" resname="role.error.policy_not_found">
         <source>role.error.policy_not_found</source>
-        <target xml:lang="en" state="needs-translation">role.error.policy_not_found</target>
+        <target xml:lang="en" state="translated">Role #%roleId% doesn't contain any policy with ID #%policyId%</target>
       </trans-unit>
       <trans-unit id="9c259c3d0109145813f3995348aa6733" resname="role.policy.create.title">
         <source>role.policy.create.title</source>
-        <target xml:lang="en" state="needs-translation">role.policy.create.title</target>
+        <target xml:lang="en" state="translated">New policy</target>
       </trans-unit>
       <trans-unit id="9ba886a711e4ebe457f66cb452cc3e69" resname="role.policy.edit.title">
         <source>role.policy.edit.title</source>
-        <target xml:lang="en" state="needs-translation">role.policy.edit.title</target>
+        <target xml:lang="en" state="translated">Edit %policy%</target>
       </trans-unit>
       <trans-unit id="aaa7f6b446325e17084eea8a2ac3a155" resname="role.policy.add">
         <source>role.policy.add</source>
-        <target xml:lang="en" state="needs-translation">role.policy.add</target>
+        <target xml:lang="en" state="translated">Add a new policy</target>
       </trans-unit>
       <trans-unit id="5c20a1e661dce1b3939621cfe4e6c5a4" resname="role.policy.edit_limitations">
         <source>role.policy.edit_limitations</source>
-        <target xml:lang="en" state="needs-translation">role.policy.edit_limitations</target>
+        <target xml:lang="en" state="translated">Edit limitations</target>
       </trans-unit>
       <trans-unit id="cd975a30210ecd0b0339200ab1692eaf" resname="role.policy.notification.draft_saved">
         <source>role.policy.notification.draft_saved</source>
-        <target xml:lang="en" state="needs-translation">role.policy.notification.draft_saved</target>
+        <target xml:lang="en" state="translated">The policy draft was saved.</target>
       </trans-unit>
       <trans-unit id="c1e46572da5c9b25050d7de7cb14df97" resname="role.policy.notification.draft_removed">
         <source>role.policy.notification.draft_removed</source>
-        <target xml:lang="en" state="needs-translation">role.policy.notification.draft_removed</target>
+        <target xml:lang="en" state="translated">The policy draft was removed.</target>
       </trans-unit>
       <trans-unit id="d628cf17bf8ca4a9cbe6e692f4b0ec2c" resname="role.policy.deleted">
         <source>role.policy.deleted</source>
-        <target xml:lang="en" state="needs-translation">role.policy.deleted</target>
+        <target xml:lang="en" state="translated">Policy #%policyId% for role "%roleIdentifier%" was correctly deleted.</target>
       </trans-unit>
       <trans-unit id="43b4c7bf5b67721afb9b1a811b198b7f" resname="role.policy.error.delete">
         <source>role.policy.error.delete</source>
-        <target xml:lang="en" state="needs-translation">role.policy.error.delete</target>
+        <target xml:lang="en" state="translated">An error occurred when trying to delete policy #%policyId% for role "%roleIdentifier%".</target>
       </trans-unit>
       <trans-unit id="74e6d95372347b3d815eb4e0fa086149" resname="role.assign.universaldiscovery.title">
         <source>role.assign.universaldiscovery.title</source>
-        <target xml:lang="en" state="needs-translation">role.assign.universaldiscovery.title</target>
+        <target xml:lang="en" state="translated">Pick the users/groups to assign the role "%roleIdentifier%" to</target>
       </trans-unit>
       <trans-unit id="13a92e3f1c3c36747b3a1fa986831d5b" resname="role.assign.user_or_group">
         <source>role.assign.user_or_group</source>
-        <target xml:lang="en" state="needs-translation">role.assign.user_or_group</target>
+        <target xml:lang="en" state="translated">Assign to users/groups</target>
       </trans-unit>
       <trans-unit id="f1a2d8bb2fcb342bd7ab464732a556cc" resname="role.assign_limit_subtree.universaldiscovery.title">
         <source>role.assign_limit_subtree.universaldiscovery.title</source>
-        <target xml:lang="en" state="needs-translation">role.assign_limit_subtree.universaldiscovery.title</target>
+        <target xml:lang="en" state="translated">Pick the location to use as subtree limitation when assigning the role "%roleIdentifier%"</target>
       </trans-unit>
       <trans-unit id="08fb8a13551d87df557cc58014de2b2d" resname="role.assign_limit_subtree.user_or_group">
         <source>role.assign_limit_subtree.user_or_group</source>
-        <target xml:lang="en" state="needs-translation">role.assign_limit_subtree.user_or_group</target>
+        <target xml:lang="en" state="translated">Assign to users/groups with subtree limitation</target>
       </trans-unit>
       <trans-unit id="65a18bd520463e84d385b16d4690b4ff" resname="role.assign_limit_section.user_or_group">
         <source>role.assign_limit_section.user_or_group</source>
-        <target xml:lang="en" state="needs-translation">role.assign_limit_section.user_or_group</target>
+        <target xml:lang="en" state="translated">Assign to users/groups with section limitation</target>
       </trans-unit>
       <trans-unit id="f327f8131e5d3852572e93fa7cf25fba" resname="role.assign_limit_section.user_or_group.pagetitle">
         <source>role.assign_limit_section.user_or_group.pagetitle</source>
-        <target xml:lang="en" state="needs-translation">role.assign_limit_section.user_or_group.pagetitle</target>
+        <target xml:lang="en" state="translated">Assign role "%roleIdentifier%" to users/groups with limitation on section</target>
       </trans-unit>
       <trans-unit id="fadff0abcb09ff37576dc034baae4795" resname="role.assignment.deleted">
         <source>role.assignment.deleted</source>
-        <target xml:lang="en" state="needs-translation">role.assignment.deleted</target>
+        <target xml:lang="en" state="translated">The role assignment was correctly deleted.</target>
       </trans-unit>
       <trans-unit id="43ef625d9584cb546336a371430a5134" resname="role.assignment.error.delete">
         <source>role.assignment.error.delete</source>
-        <target xml:lang="en" state="needs-translation">role.assignment.error.delete</target>
+        <target xml:lang="en" state="translated">An error occurred when trying to delete the role assignment.</target>
       </trans-unit>
       <trans-unit id="a3a478b4d1e2e7f19ea01fb98a4751dd" resname="role.view.delete_assignment">
         <source>role.view.delete_assignment</source>
-        <target xml:lang="en" state="needs-translation">role.view.delete_assignment</target>
+        <target xml:lang="en" state="translated">Delete assignment</target>
       </trans-unit>
       <trans-unit id="e47cc1022fb397cdaea266dbed2d2c53" resname="role.assign_role_limit_section">
         <source>role.assign_role_limit_section</source>
-        <target xml:lang="en" state="needs-translation">role.assign_role_limit_section</target>
+        <target xml:lang="en" state="translated">Assign role with section limitation</target>
       </trans-unit>
       <trans-unit id="9b9dea3f7dad629da862c7989a7a3197" resname="role.assign_limit_section.cancel">
         <source>role.assign_limit_section.cancel</source>
-        <target xml:lang="en" state="needs-translation">role.assign_limit_section.cancel</target>
+        <target xml:lang="en" state="translated">Cancel</target>
       </trans-unit>
       <trans-unit id="fc69acf8dfb2e695c869587eac3d17f5" resname="role.choose_section">
         <source>role.choose_section</source>
-        <target xml:lang="en" state="needs-translation">role.choose_section</target>
+        <target xml:lang="en" state="translated">Choose a section:</target>
       </trans-unit>
       <trans-unit id="a5f9c8d29cdc801f4e0a9a5dbdc88f14" resname="failed.assigned.role">
         <source>failed.assigned.role</source>
-        <target xml:lang="en" state="needs-translation">failed.assigned.role</target>
+        <target xml:lang="en" state="translated">Role has not been assigned to "%name%": %message%</target>
       </trans-unit>
       <trans-unit id="9e17df25477e0f54b4601768cd7b9108" resname="selected.content.not.user.group">
         <source>selected.content.not.user.group</source>
-        <target xml:lang="en" state="needs-translation">selected.content.not.user.group</target>
+        <target xml:lang="en" state="translated">Selected content is not a user or group.</target>
       </trans-unit>
       <trans-unit id="1d0cea45fb98ee19531a70f580554d57" resname="role.assigned.to.user">
         <source>role.assigned.to.user</source>
-        <target xml:lang="en" state="needs-translation">role.assigned.to.user</target>
+        <target xml:lang="en" state="translated">"%name%" role has been assigned to %count% users/groups</target>
       </trans-unit>
       <trans-unit id="00d942e79ccd742d722a72c7160d6a7e" resname="role.assigned.to.user.section.limited">
         <source>role.assigned.to.user.section.limited</source>
-        <target xml:lang="en" state="needs-translation">role.assigned.to.user.section.limited</target>
+        <target xml:lang="en" state="translated">"%name%" role has been assigned to %count% users/groups limited to "%sectionName%" section</target>
       </trans-unit>
       <trans-unit id="0d242dab3140bc656f560ec73620e8ea" resname="role.assigned.to.user.subtree.limited">
         <source>role.assigned.to.user.subtree.limited</source>
-        <target xml:lang="en" state="needs-translation">role.assigned.to.user.subtree.limited</target>
+        <target xml:lang="en" state="translated">"%name%" role has been assigned to %count% users/groups with a subtree limitation</target>
       </trans-unit>
       <trans-unit id="dd57f23dcef6166ba9d4add2c4d194bb" resname="failed.assigned.role.user">
         <source>failed.assigned.role.user</source>
-        <target xml:lang="en" state="needs-translation">failed.assigned.role.user</target>
+        <target xml:lang="en" state="translated">Role has not been assigned to any users/groups</target>
       </trans-unit>
       <trans-unit id="537ce73dfeac836907a325e4f99630f4" resname="assigning.role.to.users">
         <source>assigning.role.to.users</source>
-        <target xml:lang="en" state="needs-translation">assigning.role.to.users</target>
+        <target xml:lang="en" state="translated">Assigning the role "%roleName%" to %count% users/groups</target>
       </trans-unit>
       <trans-unit id="f5fb5927c875791176206a19f787bec8" resname="assigning.role.to.users.section.limited">
         <source>assigning.role.to.users.section.limited</source>
-        <target xml:lang="en" state="needs-translation">assigning.role.to.users.section.limited</target>
+        <target xml:lang="en" state="translated">Assigning the role "%roleName%" to %count% users/groups limited to "%sectionName%" section</target>
       </trans-unit>
       <trans-unit id="978a7f6c3fe2ef23eabb0a02cb746b20" resname="assigning.role.to.users.subtree.limited">
         <source>assigning.role.to.users.subtree.limited</source>
-        <target xml:lang="en" state="needs-translation">assigning.role.to.users.subtree.limited</target>
+        <target xml:lang="en" state="translated">Assigning the role "%roleName%" to %count% users/groups with a subtree limitation</target>
       </trans-unit>
       <trans-unit id="a0dc2fcf2adbc02e65a9889bfcc011f1" resname="failed.loading.role">
         <source>failed.loading.role</source>
-        <target xml:lang="en" state="needs-translation">failed.loading.role</target>
+        <target xml:lang="en" state="translated">The role "%roleName%" could not be loaded</target>
       </trans-unit>
     </body>
   </file>
