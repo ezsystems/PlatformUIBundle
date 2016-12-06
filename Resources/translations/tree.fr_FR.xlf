@@ -6,18 +6,8 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="a4b16c26cb1349d85fd849abedb5d4e4b921b4ce" resname="tree.empty">
-        <source>The Content Tree is empty</source>
-        <target xml:lang="fr" state="needs-translation">The Content Tree is empty</target>
-        <note>key: tree.empty</note>
-        <jms:reference-file>./Resources/public/js/views/ez-treeview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f75d3723a7901fb539c3f580f5cdaab5bb7b2257" resname="tree.loading">
-        <source>Loading</source>
-        <target xml:lang="fr" state="needs-translation">Loading</target>
-        <note>key: tree.loading</note>
-        <jms:reference-file>./Resources/public/templates/tree.hbt</jms:reference-file>
-      </trans-unit>
+      
+      
     </body>
   </file>
 </xliff>
