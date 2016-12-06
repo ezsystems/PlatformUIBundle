@@ -1,65 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="ach" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="d81e961a086909f4370d811f2517aa82" resname="dashboard.retry">
-        <source>dashboard.retry</source>
-        <target xml:lang="ach">crwdns205041:0crwdne205041:0</target>
+      <trans-unit id="643281298a4a2c0e5590ad430fbf5c503888dfec" resname="cannot.load.root.location">
+        <source>Cannot load root location</source>
+        <target xml:lang="ach">crwdns205743:0crwdne205743:0</target>
+        <note>key: cannot.load.root.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-dashboardblocksviewservice.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="8f43b15f9faa5a91f5834c78a47cb864" resname="dashboard.title">
-        <source>dashboard.title</source>
-        <target xml:lang="ach">crwdns205042:0crwdne205042:0</target>
+      <trans-unit id="ff6664ae5d5b882ee85a683861bf2d39369f3992" resname="dashboard.all.content">
+        <source>All Content</source>
+        <target xml:lang="ach">crwdns205744:0crwdne205744:0</target>
+        <note>key: dashboard.all.content</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="a87bd9b4a203b26343701c9b658f5086" resname="dashboard.content.type">
-        <source>dashboard.content.type</source>
-        <target xml:lang="ach">crwdns205043:0crwdne205043:0</target>
+      <trans-unit id="bb736c34f0a6f3cf53ad082d8e7cba37aa31606a" resname="dashboard.content.type">
+        <source>Content Type</source>
+        <target xml:lang="ach">crwdns205745:0crwdne205745:0</target>
+        <note>key: dashboard.content.type</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="d91fb1f6d32134fc1d7cf85c87c01b73" resname="dashboard.version">
-        <source>dashboard.version</source>
-        <target xml:lang="ach">crwdns205044:0crwdne205044:0</target>
+      <trans-unit id="f3523831ab3c2067acfa6fdf0bc19c64a39647b4" resname="dashboard.last.saved">
+        <source>Last saved</source>
+        <target xml:lang="ach">crwdns205746:0crwdne205746:0</target>
+        <note>key: dashboard.last.saved</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="c2bdea79f75eb390453bc0df4c5527ae" resname="dashboard.last.saved">
-        <source>dashboard.last.saved</source>
-        <target xml:lang="ach">crwdns205045:0crwdne205045:0</target>
+      <trans-unit id="c26996ea8c335b1df9a001af761adf5e2aa5f2e6" resname="dashboard.loading.draft.error">
+        <source>An error occurred while loading the draft list.</source>
+        <target xml:lang="ach">crwdns205747:0crwdne205747:0</target>
+        <note>key: dashboard.loading.draft.error</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="c2151d7ce1691b18dadd35e1b8902d48" resname="dashboard.mycontent.no.modified.content">
-        <source>dashboard.mycontent.no.modified.content</source>
-        <target xml:lang="ach">crwdns205046:0crwdne205046:0</target>
+      <trans-unit id="90451c27b66dffbfea45c8ce24eff1cb380d6d46" resname="dashboard.loading.error">
+        <source>An error occurred while loading the content list.</source>
+        <target xml:lang="ach">crwdns205748:0crwdne205748:0</target>
+        <note>key: dashboard.loading.error</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="e0e454a5847a309744e0b8e56e4e8729" resname="dashboard.loading.error">
-        <source>dashboard.loading.error</source>
-        <target xml:lang="ach">crwdns205047:0crwdne205047:0</target>
+      <trans-unit id="dc6421eab8286e0adb87544214a132d5c31d8fd8" resname="dashboard.my.content">
+        <source>My Content</source>
+        <target xml:lang="ach">crwdns205749:0crwdne205749:0</target>
+        <note>key: dashboard.my.content</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="63ad0c86d5a065fd6074d77935319412" resname="dashboard.loading.draft.error">
-        <source>dashboard.loading.draft.error</source>
-        <target xml:lang="ach">crwdns205048:0crwdne205048:0</target>
+      <trans-unit id="deee7b8356005d3419c3907048b4c62f6c947a3c" resname="dashboard.my.drafts">
+        <source>My Drafts</source>
+        <target xml:lang="ach">crwdns205750:0crwdne205750:0</target>
+        <note>key: dashboard.my.drafts</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="3b2e16e278a1ef2b46e8e0f4f363cd1c" resname="dashboard.mydrafts.no.draft">
-        <source>dashboard.mydrafts.no.draft</source>
-        <target xml:lang="ach">crwdns205049:0crwdne205049:0</target>
+      <trans-unit id="328b897775fad72927fcdd34b26e6c67d77ac6bc" resname="dashboard.mycontent.no.modified.content">
+        <source>You haven't modified any content item yet.</source>
+        <target xml:lang="ach">crwdns205751:0crwdne205751:0</target>
+        <note>key: dashboard.mycontent.no.modified.content</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="d515a3acad4e23e520f82a70f33977d9" resname="dashboardblocks.my.dashboard">
-        <source>dashboardblocks.my.dashboard</source>
-        <target xml:lang="ach">crwdns205050:0crwdne205050:0</target>
+      <trans-unit id="77c0cd3f3cae226e66b157a227ba1c48480c03c9" resname="dashboard.mydrafts.no.draft">
+        <source>You don't have any drafts.</source>
+        <target xml:lang="ach">crwdns205752:0crwdne205752:0</target>
+        <note>key: dashboard.mydrafts.no.draft</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="8785dd46ae0a167845519423c491a1d5" resname="dashboard.my.content">
-        <source>dashboard.my.content</source>
-        <target xml:lang="ach">crwdns205051:0crwdne205051:0</target>
+      <trans-unit id="1598105f8c01cd4d73924667af473114a30c2ae5" resname="dashboard.retry">
+        <source>Retry</source>
+        <target xml:lang="ach">crwdns205753:0crwdne205753:0</target>
+        <note>key: dashboard.retry</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="090a06527a47a8df7d56334606fa7611" resname="dashboard.all.content">
-        <source>dashboard.all.content</source>
-        <target xml:lang="ach">crwdns205052:0crwdne205052:0</target>
+      <trans-unit id="e9c04dcd1a73d8cb5fc72ca356e61ab28d38ec46" resname="dashboard.title">
+        <source>Title</source>
+        <target xml:lang="ach">crwdns205754:0crwdne205754:0</target>
+        <note>key: dashboard.title</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="be3ca37da23b8229c2335730a3786e4e" resname="dashboard.my.drafts">
-        <source>dashboard.my.drafts</source>
-        <target xml:lang="ach">crwdns205053:0crwdne205053:0</target>
+      <trans-unit id="7521275a12ed4eecb89be89777fcabb81f68338c" resname="dashboard.version">
+        <source>Version</source>
+        <target xml:lang="ach">crwdns205755:0crwdne205755:0</target>
+        <note>key: dashboard.version</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="00f0d5e9977dcd134b468f0855679e2b" resname="cannot.load.root.location">
-        <source>cannot.load.root.location</source>
-        <target xml:lang="ach">crwdns205054:0crwdne205054:0</target>
+      <trans-unit id="ad15e855aad7c14d65c0890d9d1e5c3e2aa5c5d0" resname="dashboardblocks.my.dashboard">
+        <source>My Dashboard</source>
+        <target xml:lang="ach">crwdns205756:0crwdne205756:0</target>
+        <note>key: dashboardblocks.my.dashboard</note>
+        <jms:reference-file>./Resources/public/templates/dashboard-blocks.hbt</jms:reference-file>
       </trans-unit>
     </body>
   </file>
