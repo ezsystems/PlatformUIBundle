@@ -6,42 +6,12 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="558c96f6cc252f0dbe70418123dd8bbb13234a2b" resname="confirmbox.cancel">
-        <source>Cancel</source>
-        <target xml:lang="fr" state="needs-translation">Cancel</target>
-        <note>key: confirmbox.cancel</note>
-        <jms:reference-file>./Resources/public/templates/confirmbox.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="333383790307ace20d9c43e23fa613daf0e4492c" resname="confirmbox.confirm">
-        <source>Confirm</source>
-        <target xml:lang="fr" state="needs-translation">Confirm</target>
-        <note>key: confirmbox.confirm</note>
-        <jms:reference-file>./Resources/public/templates/confirmbox.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c478b39ac9ceac6e2a91a937bb1d9fd310cb607d" resname="draftconflict.language">
-        <source>Language</source>
-        <target xml:lang="fr" state="needs-translation">Language</target>
-        <note>key: draftconflict.language</note>
-        <jms:reference-file>./Resources/public/templates/confirmbox/draftconflict.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0061cab899c3a8d9b9f601491b0474f9d85d92a7" resname="draftconflict.lastmodified">
-        <source>Last Modified</source>
-        <target xml:lang="fr" state="needs-translation">Last Modified</target>
-        <note>key: draftconflict.lastmodified</note>
-        <jms:reference-file>./Resources/public/templates/confirmbox/draftconflict.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c35f9f95f267fd0c78da8ae80914a1cbc15bb90b" resname="draftconflict.newdraft">
-        <source>New Draft</source>
-        <target xml:lang="fr" state="needs-translation">New Draft</target>
-        <note>key: draftconflict.newdraft</note>
-        <jms:reference-file>./Resources/public/templates/confirmbox/draftconflict.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="302cfdba7ddbb677d9abb7967b44aaf8ab0ce8d0" resname="draftconflict.owner">
-        <source>Owner</source>
-        <target xml:lang="fr" state="needs-translation">Owner</target>
-        <note>key: draftconflict.owner</note>
-        <jms:reference-file>./Resources/public/templates/confirmbox/draftconflict.hbt</jms:reference-file>
-      </trans-unit>
+      
+      
+      
+      
+      
+      
     </body>
   </file>
 </xliff>
