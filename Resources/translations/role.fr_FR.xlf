@@ -6,348 +6,35 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="0e2f56d6ff6cbc42edfde476c7cffe15b9db7b73" resname="assigning.role.to.users">
-        <source>Assigning the role "%roleName%" to %count% users/groups</source>
-        <target xml:lang="fr" state="needs-translation">Assigning the role "%roleName%" to %count% users/groups</target>
-        <note>key: assigning.role.to.users</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-roleserversideviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="81b99a41b99b84276da27795a150f7bf111243be" resname="assigning.role.to.users.section.limited">
-        <source>Assigning the role "%roleName%" to %count% users/groups limited to "%sectionName%" section</source>
-        <target xml:lang="fr" state="needs-translation">Assigning the role "%roleName%" to %count% users/groups limited to "%sectionName%" section</target>
-        <note>key: assigning.role.to.users.section.limited</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-roleserversideviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="08382c1eeb6c37ae6867e3e2be77303d84e3178d" resname="assigning.role.to.users.subtree.limited">
-        <source>Assigning the role "%roleName%" to %count% users/groups with a subtree limitation</source>
-        <target xml:lang="fr" state="needs-translation">Assigning the role "%roleName%" to %count% users/groups with a subtree limitation</target>
-        <note>key: assigning.role.to.users.subtree.limited</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-roleserversideviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c06ec423bdd64f80f5e1bd403445c8f158cbbf7a" resname="assignment.none">
-        <source>This role is not assigned to any users or user groups.</source>
-        <target xml:lang="fr" state="needs-translation">This role is not assigned to any users or user groups.</target>
-        <note>key: assignment.none</note>
-        <jms:reference-file line="186">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="70dd3723bde281857912354e3abdb2611345e1a1" resname="assignment.role_limitation">
+      <trans-unit id="70dd3723bde281857912354e3abdb2611345e1a1" resname="assignment.role_limitation" approved="yes">
         <source>Limitation</source>
-        <target xml:lang="fr" state="needs-translation">Limitation</target>
+        <target xml:lang="fr">Limitation</target>
         <note>key: assignment.role_limitation</note>
         <jms:reference-file line="137">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="9d40ec6ea2a69dc31d986dd760c5c4d1e58274a0" resname="assignment.role_limitation_none">
-        <source>No limitations</source>
-        <target xml:lang="fr" state="needs-translation">No limitations</target>
-        <note>key: assignment.role_limitation_none</note>
-        <jms:reference-file line="165">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a94d773d3ca19d453ea28717e3a8e00c0c239c32" resname="assignment.user_or_group">
-        <source>User/group</source>
-        <target xml:lang="fr" state="needs-translation">User/group</target>
-        <note>key: assignment.user_or_group</note>
-        <jms:reference-file line="136">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="507cd080bead04f2b94f397dd7a3791ac7548e3c" resname="assignment.user_or_group_using">
-        <source><![CDATA[Users and groups using the <%role%> role (%count%)]]></source>
-        <target xml:lang="fr" state="needs-translation"><![CDATA[Users and groups using the <%role%> role (%count%)]]></target>
-        <note>key: assignment.user_or_group_using</note>
-        <jms:reference-file line="24">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="ca65309bef9a375c91388358cc8304dae5032ca1" resname="failed.assigned.role">
-        <source>Role has not been assigned to "%name%": %message%</source>
-        <target xml:lang="fr" state="needs-translation">Role has not been assigned to "%name%": %message%</target>
-        <note>key: failed.assigned.role</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-roleserversideviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7f17d5ce98c94b79ee8708703b552c2c101714ff" resname="failed.assigned.role.user">
-        <source>Role has not been assigned to any users/groups</source>
-        <target xml:lang="fr" state="needs-translation">Role has not been assigned to any users/groups</target>
-        <note>key: failed.assigned.role.user</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-roleserversideviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c0f6421b8ab278d972511eeb070a3b76a1052a7f" resname="failed.loading.role">
-        <source>The role "%roleName%" could not be loaded</source>
-        <target xml:lang="fr" state="needs-translation">The role "%roleName%" could not be loaded</target>
-        <note>key: failed.loading.role</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-roleserversideviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3444a2a8c58cd51ce588ed98a265546600e82dc4" resname="policy.function">
-        <source>Function</source>
-        <target xml:lang="fr" state="needs-translation">Function</target>
-        <note>key: policy.function</note>
-        <jms:reference-file line="33">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5f14c2cbee4f51ce207b4f179d888d87cc9d92db" resname="policy.function_all">
-        <source>all functions</source>
-        <target xml:lang="fr" state="needs-translation">all functions</target>
-        <note>key: policy.function_all</note>
-        <jms:reference-file line="52">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c5a0621c161804ccfb545695d920a77db05bb686" resname="policy.limitation">
+      <trans-unit id="c5a0621c161804ccfb545695d920a77db05bb686" resname="policy.limitation" approved="yes">
         <source>Limitation</source>
-        <target xml:lang="fr" state="needs-translation">Limitation</target>
+        <target xml:lang="fr">Limitation</target>
         <note>key: policy.limitation</note>
         <jms:reference-file line="34">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="039f70d279c1e69461f9449c9604a273ad21639a" resname="policy.limitation_none">
-        <source>No limitations</source>
-        <target xml:lang="fr" state="needs-translation">No limitations</target>
-        <note>key: policy.limitation_none</note>
-        <jms:reference-file line="70">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b23aadd145c148428bb05af8f0d30a87fad64ef9" resname="policy.module">
+      <trans-unit id="b23aadd145c148428bb05af8f0d30a87fad64ef9" resname="policy.module" approved="yes">
         <source>Module</source>
-        <target xml:lang="fr" state="needs-translation">Module</target>
+        <target xml:lang="fr">Module</target>
         <note>key: policy.module</note>
         <jms:reference-file line="32">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="4006d02c9aa4b140f8526d1a99a02981b8bf62d4" resname="policy.module_all">
-        <source>all modules</source>
-        <target xml:lang="fr" state="needs-translation">all modules</target>
-        <note>key: policy.module_all</note>
-        <jms:reference-file line="45">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8dca46428d005a2f4c2e039fb250964d6139a8b2" resname="role">
-        <source>Role</source>
-        <target xml:lang="fr" state="needs-translation">Role</target>
-        <note>key: role</note>
-        <jms:reference-file line="50">/../../../../.././Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
-        <jms:reference-file line="227">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1fd015af1b28cdbb8999ea2fe2dc08e181f8836e" resname="role.assign.universaldiscovery.title">
-        <source>Pick the users/groups to assign the role "%roleIdentifier%" to</source>
-        <target xml:lang="fr" state="needs-translation">Pick the users/groups to assign the role "%roleIdentifier%" to</target>
-        <note>key: role.assign.universaldiscovery.title</note>
-        <jms:reference-file line="35">/../../../../.././Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
-        <jms:reference-file line="38">/../../../../.././Resources/views/Role/list_roles.html.twig</jms:reference-file>
-        <jms:reference-file line="193">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-        <jms:reference-file line="202">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="75fb0347cd4923218126c0696153902dbb14fb96" resname="role.assign.user_or_group">
-        <source>Assign to users/groups</source>
-        <target xml:lang="fr" state="needs-translation">Assign to users/groups</target>
-        <note>key: role.assign.user_or_group</note>
-        <jms:reference-file line="42">/../../../../.././Resources/views/Role/list_roles.html.twig</jms:reference-file>
-        <jms:reference-file line="199">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e8925242d54f54b2dca206c8ca6ea2c28bc145e0" resname="role.assign_limit_section.cancel">
-        <source>Cancel</source>
-        <target xml:lang="fr" state="needs-translation">Cancel</target>
-        <note>key: role.assign_limit_section.cancel</note>
-        <jms:reference-file line="44">/../../../../.././Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5b49cc21aa5dcceb12fb90e3664f234694496a10" resname="role.assign_limit_section.user_or_group">
-        <source>Assign to users/groups with section limitation</source>
-        <target xml:lang="fr" state="needs-translation">Assign to users/groups with section limitation</target>
-        <note>key: role.assign_limit_section.user_or_group</note>
-        <jms:reference-file line="41">/../../../../.././Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
-        <jms:reference-file line="213">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-        <jms:reference-file line="217">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="eebd438037da98a4efa23f2c3d87080e2b40a957" resname="role.assign_limit_section.user_or_group.pagetitle">
-        <source>Assign role "%roleIdentifier%" to users/groups with limitation on section</source>
-        <target xml:lang="fr" state="needs-translation">Assign role "%roleIdentifier%" to users/groups with limitation on section</target>
-        <note>key: role.assign_limit_section.user_or_group.pagetitle</note>
-        <jms:reference-file line="19">/../../../../.././Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="fb7171e412fc18e77fe5c7c5e20e85a37c0b126a" resname="role.assign_limit_subtree.universaldiscovery.title">
-        <source>Pick the location to use as subtree limitation when assigning the role "%roleIdentifier%"</source>
-        <target xml:lang="fr" state="needs-translation">Pick the location to use as subtree limitation when assigning the role "%roleIdentifier%"</target>
-        <note>key: role.assign_limit_subtree.universaldiscovery.title</note>
-        <jms:reference-file line="203">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8211a64763ecf5a6a1e5d0e2386357c0bc2e7c89" resname="role.assign_limit_subtree.user_or_group">
-        <source>Assign to users/groups with subtree limitation</source>
-        <target xml:lang="fr" state="needs-translation">Assign to users/groups with subtree limitation</target>
-        <note>key: role.assign_limit_subtree.user_or_group</note>
-        <jms:reference-file line="209">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0ce0a34c38d96440f735fd742c5bec62cc5f5ca4" resname="role.assign_role_limit_section">
-        <source>Assign role with section limitation</source>
-        <target xml:lang="fr" state="needs-translation">Assign role with section limitation</target>
-        <note>key: role.assign_role_limit_section</note>
-        <jms:reference-file line="12">/../../../../.././Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3a718931b7236108fa380ba19a963790eaaa7566" resname="role.assigned.to.user">
-        <source>"%name%" role has been assigned to %count% users/groups</source>
-        <target xml:lang="fr" state="needs-translation">"%name%" role has been assigned to %count% users/groups</target>
-        <note>key: role.assigned.to.user</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-roleserversideviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c8259f57183169ec1b3106c34cda7cc61aaf7386" resname="role.assigned.to.user.section.limited">
-        <source>"%name%" role has been assigned to %count% users/groups limited to "%sectionName%" section</source>
-        <target xml:lang="fr" state="needs-translation">"%name%" role has been assigned to %count% users/groups limited to "%sectionName%" section</target>
-        <note>key: role.assigned.to.user.section.limited</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-roleserversideviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="de2a22e85b1f317f6933cfe3fba784ff747d2359" resname="role.assigned.to.user.subtree.limited">
-        <source>"%name%" role has been assigned to %count% users/groups with a subtree limitation</source>
-        <target xml:lang="fr" state="needs-translation">"%name%" role has been assigned to %count% users/groups with a subtree limitation</target>
-        <note>key: role.assigned.to.user.subtree.limited</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-roleserversideviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a170d74c0942f5bb7207fc36c1110b7a75dccfca" resname="role.assignment.deleted">
-        <source>The role assignment was correctly deleted.</source>
-        <target xml:lang="fr" state="needs-translation">The role assignment was correctly deleted.</target>
-        <note>key: role.assignment.deleted</note>
-        <jms:reference-file line="359">/../../../../.././Controller/RoleController.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="af158308ce98ba0ee117306a9dc154cf96cf9c39" resname="role.assignment.error.delete">
-        <source>An error occurred when trying to delete the role assignment.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred when trying to delete the role assignment.</target>
-        <note>key: role.assignment.error.delete</note>
-        <jms:reference-file line="361">/../../../../.././Controller/RoleController.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="be81ab4765e74558f0a751204c0ebaeeb004ffb8" resname="role.choose_section">
-        <source>Choose a section:</source>
-        <target xml:lang="fr" state="needs-translation">Choose a section:</target>
-        <note>key: role.choose_section</note>
-        <jms:reference-file line="25">/../../../../.././Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="93a5221c554b7577697c1a68acbe2e17a3389dea" resname="role.dashboard_title">
-        <source>Roles</source>
-        <target xml:lang="fr" state="needs-translation">Roles</target>
-        <note>key: role.dashboard_title</note>
-        <jms:reference-file line="16">/../../../../.././Resources/views/Dashboard/dashboard.html.twig</jms:reference-file>
-        <jms:reference-file line="10">/../../../../.././Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
-        <jms:reference-file line="15">/../../../../.././Resources/views/Role/edit_policy.html.twig</jms:reference-file>
-        <jms:reference-file line="14">/../../../../.././Resources/views/Role/update_role.html.twig</jms:reference-file>
-        <jms:reference-file line="10">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="bcc05ae9a1700fa988736b98fdb4905bf5894564" resname="role.deleted">
-        <source>Role "%roleIdentifier%" was correctly deleted.</source>
-        <target xml:lang="fr" state="needs-translation">Role "%roleIdentifier%" was correctly deleted.</target>
-        <note>key: role.deleted</note>
-        <jms:reference-file line="241">/../../../../.././Controller/RoleController.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2dc532ed3100b62f85a3e923f51bcdb792561c26" resname="role.edit">
-        <source>Edit role name</source>
-        <target xml:lang="fr" state="needs-translation">Edit role name</target>
-        <note>key: role.edit</note>
-        <jms:reference-file line="45">/../../../../.././Resources/views/Role/list_roles.html.twig</jms:reference-file>
-        <jms:reference-file line="109">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-        <jms:reference-file line="111">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
       <trans-unit id="e9e10ddeb169d59d94b54912d0422481a0a0b140" resname="role.edit_title">
         <source><![CDATA[Edit <%roleName%>]]></source>
-        <target xml:lang="fr" state="needs-translation"><![CDATA[Edit <%roleName%>]]></target>
+        <target xml:lang="fr" state="needs-translation"><![CDATA[ <%roleName%>]]></target>
         <note>key: role.edit_title</note>
         <jms:reference-file line="7">/../../../../.././Resources/views/Role/update_role.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="c3488ceda2728b14f24019f28ed44180b84ed179" resname="role.error.delete">
-        <source>An error occurred when trying to delete role "%roleIdentifier%".</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred when trying to delete role "%roleIdentifier%".</target>
-        <note>key: role.error.delete</note>
-        <jms:reference-file line="243">/../../../../.././Controller/RoleController.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="68310ce0c358df2115b5944a580f158b01c2e719" resname="role.error.policy_not_found">
-        <source>Role #%roleId% doesn't contain any policy with ID #%policyId%</source>
-        <target xml:lang="fr" state="needs-translation">Role #%roleId% doesn't contain any policy with ID #%policyId%</target>
-        <note>key: role.error.policy_not_found</note>
-        <jms:reference-file line="268">/../../../../.././Controller/RoleController.php</jms:reference-file>
-        <jms:reference-file line="330">/../../../../.././Controller/RoleController.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c049089744629771a10145f3c8b52aefbd0cce17" resname="role.id">
+      <trans-unit id="c049089744629771a10145f3c8b52aefbd0cce17" resname="role.id" approved="yes">
         <source>ID</source>
-        <target xml:lang="fr" state="needs-translation">ID</target>
+        <target xml:lang="fr">ID</target>
         <note>key: role.id</note>
         <jms:reference-file line="26">/../../../../.././Resources/views/Role/list_roles.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7bc6d651a804258ae2918bced396ae12e24ea286" resname="role.list">
-        <source>Roles</source>
-        <target xml:lang="fr" state="needs-translation">Roles</target>
-        <note>key: role.list</note>
-        <jms:reference-file line="15">/../../../../.././Resources/views/Role/list_roles.html.twig</jms:reference-file>
-        <jms:reference-file line="64">/../../../../.././Resources/views/Role/list_roles.html.twig</jms:reference-file>
-        <jms:reference-file line="9">/../../../../.././Resources/views/Role/list_roles.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0d01a66ae157f61d7744fb5e60a8f1e19fee4aa1" resname="role.name">
-        <source>Name</source>
-        <target xml:lang="fr" state="needs-translation">Name</target>
-        <note>key: role.name</note>
-        <jms:reference-file line="25">/../../../../.././Resources/views/Role/list_roles.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="723a06ac319ea75dc2c78c3eb8a30ebacded1a64" resname="role.notification.draft_removed">
-        <source>The role draft was removed.</source>
-        <target xml:lang="fr" state="needs-translation">The role draft was removed.</target>
-        <note>key: role.notification.draft_removed</note>
-        <jms:reference-file line="83">/../../../../.././Form/Processor/PolicyFormProcessor.php</jms:reference-file>
-        <jms:reference-file line="100">/../../../../.././Form/Processor/RoleFormProcessor.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b61546f861fa7af02bb566f7cc18b71828f1827b" resname="role.notification.draft_saved">
-        <source>The role draft was saved.</source>
-        <target xml:lang="fr" state="needs-translation">The role draft was saved.</target>
-        <note>key: role.notification.draft_saved</note>
-        <jms:reference-file line="74">/../../../../.././Form/Processor/RoleFormProcessor.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="116219f003b3ddd2b2e8b3529aa96a5b34713a91" resname="role.notification.published">
-        <source>The role was published.</source>
-        <target xml:lang="fr" state="needs-translation">The role was published.</target>
-        <note>key: role.notification.published</note>
-        <jms:reference-file line="69">/../../../../.././Form/Processor/PolicyFormProcessor.php</jms:reference-file>
-        <jms:reference-file line="75">/../../../../.././Form/Processor/RoleFormProcessor.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6dafd96fb9e7b28a8048e7ae6985ce49b0dbff82" resname="role.policy.add">
-        <source>Add a new policy</source>
-        <target xml:lang="fr" state="needs-translation">Add a new policy</target>
-        <note>key: role.policy.add</note>
-        <jms:reference-file line="108">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="bc75703d2446d97b0b9cefd67cd89db4848e9fae" resname="role.policy.create.title">
-        <source>New policy</source>
-        <target xml:lang="fr" state="needs-translation">New policy</target>
-        <note>key: role.policy.create.title</note>
-        <jms:reference-file line="6">/../../../../.././Resources/views/Role/edit_policy.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3d3b8aee83935b3229b0f0f13f92f7f8fdd07853" resname="role.policy.deleted">
-        <source>Policy #%policyId% for role "%roleIdentifier%" was correctly deleted.</source>
-        <target xml:lang="fr" state="needs-translation">Policy #%policyId% for role "%roleIdentifier%" was correctly deleted.</target>
-        <note>key: role.policy.deleted</note>
-        <jms:reference-file line="336">/../../../../.././Controller/RoleController.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="28ccd472ae9e01f00eb14337f9dea449476a0b67" resname="role.policy.edit.title">
-        <source>Edit %policy%</source>
-        <target xml:lang="fr" state="needs-translation">Edit %policy%</target>
-        <note>key: role.policy.edit.title</note>
-        <jms:reference-file line="6">/../../../../.././Resources/views/Role/edit_policy.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b9034a726357d2e19c7493932f9bcee454d4ce97" resname="role.policy.edit_limitations">
-        <source>Edit limitations</source>
-        <target xml:lang="fr" state="needs-translation">Edit limitations</target>
-        <note>key: role.policy.edit_limitations</note>
-        <jms:reference-file line="75">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-        <jms:reference-file line="77">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="692ee66b1323dc62c0d79062c789fa8657ea997b" resname="role.policy.error.delete">
-        <source>An error occurred when trying to delete policy #%policyId% for role "%roleIdentifier%".</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred when trying to delete policy #%policyId% for role "%roleIdentifier%".</target>
-        <note>key: role.policy.error.delete</note>
-        <jms:reference-file line="338">/../../../../.././Controller/RoleController.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="99225f0df6ad50a81ddb060600d0518ae871b105" resname="role.policy.notification.draft_removed">
-        <source>The policy draft was removed.</source>
-        <target xml:lang="fr" state="needs-translation">The policy draft was removed.</target>
-        <note>key: role.policy.notification.draft_removed</note>
-        <jms:reference-file line="82">/../../../../.././Form/Processor/PolicyFormProcessor.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6cefbf6392b5c48497a28d56749439827be0aa39" resname="role.policy.notification.draft_saved">
-        <source>The policy draft was saved.</source>
-        <target xml:lang="fr" state="needs-translation">The policy draft was saved.</target>
-        <note>key: role.policy.notification.draft_saved</note>
-        <jms:reference-file line="47">/../../../../.././Form/Processor/PolicyFormProcessor.php</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f38831dca94d40d24f14cdfa9c00225b90f1e2a7" resname="role.policy_none">
-        <source>There are no policies set up for this role.</source>
-        <target xml:lang="fr" state="needs-translation">There are no policies set up for this role.</target>
-        <note>key: role.policy_none</note>
-        <jms:reference-file line="99">/../../../../.././Resources/views/Role/view_role.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2d54315058102bcb341f1907e5567cefeed78316" resname="selected.content.not.user.group">
-        <source>Selected content is not a user or group.</source>
-        <target xml:lang="fr" state="needs-translation">Selected content is not a user or group.</target>
-        <note>key: selected.content.not.user.group</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-roleserversideviewservice.js</jms:reference-file>
       </trans-unit>
     </body>
   </file>
