@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="2cf44ed7209581f302b0731290d10273" resname="navigationhub.more">
+        <source>navigationhub.more</source>
+        <target xml:lang="ach">crwdns205366:0crwdne205366:0</target>
+      </trans-unit>
+      <trans-unit id="3b69f5fe5fb8db0b6e32a532eaa9edbf" resname="navigationhub.logo.ez">
+        <source>navigationhub.logo.ez</source>
+        <target xml:lang="ach">crwdns205367:0crwdne205367:0</target>
+      </trans-unit>
+      <trans-unit id="cf75252d4dca5b01c2cc1cee859b6fea" resname="navigationhub.content.structure">
+        <source>navigationhub.content.structure</source>
+        <target xml:lang="ach">crwdns205368:0crwdne205368:0</target>
+      </trans-unit>
+      <trans-unit id="9f1cb63100d990f4d4ca2231077d6919" resname="navigationhub.media.library">
+        <source>navigationhub.media.library</source>
+        <target xml:lang="ach">crwdns205369:0crwdne205369:0</target>
+      </trans-unit>
+      <trans-unit id="7a478740156846ce618ab61925bb0e81" resname="navigationhub.dashboard.title">
+        <source>navigationhub.dashboard.title</source>
+        <target xml:lang="ach">crwdns205370:0crwdne205370:0</target>
+      </trans-unit>
+      <trans-unit id="ce0c3e3f82c123c3ea8eb86b20f8e3d1" resname="navigationhub.system.information">
+        <source>navigationhub.system.information</source>
+        <target xml:lang="ach">crwdns205371:0crwdne205371:0</target>
+      </trans-unit>
+      <trans-unit id="c9d2b746d4b4a9f45005e2108203dbec" resname="navigationhub.section.list">
+        <source>navigationhub.section.list</source>
+        <target xml:lang="ach">crwdns205372:0crwdne205372:0</target>
+      </trans-unit>
+      <trans-unit id="9b74eaf9f875741ce6241544b569e2a2" resname="navigationhub.content_type.dashboard_title">
+        <source>navigationhub.content_type.dashboard_title</source>
+        <target xml:lang="ach">crwdns205373:0crwdne205373:0</target>
+      </trans-unit>
+      <trans-unit id="fc4264106649e904174e503f46392f10" resname="navigationhub.language.list">
+        <source>navigationhub.language.list</source>
+        <target xml:lang="ach">crwdns205374:0crwdne205374:0</target>
+      </trans-unit>
+      <trans-unit id="31d7f17d8a1785b049fe0a11cdb02a56" resname="navigationhub.user.list">
+        <source>navigationhub.user.list</source>
+        <target xml:lang="ach">crwdns205375:0crwdne205375:0</target>
+      </trans-unit>
+      <trans-unit id="2d1035553d80ea65899f8dfa074bdb53" resname="navigationhub.role.list">
+        <source>navigationhub.role.list</source>
+        <target xml:lang="ach">crwdns205376:0crwdne205376:0</target>
+      </trans-unit>
+      <trans-unit id="ccd878f075c9c1b8c4d8822d7feee5a0" resname="navigationhub.zone.platform">
+        <source>navigationhub.zone.platform</source>
+        <target xml:lang="ach">crwdns205377:0crwdne205377:0</target>
+      </trans-unit>
+      <trans-unit id="08148e132bac55def3204f0814b8acd0" resname="navigationhub.zone.studio">
+        <source>navigationhub.zone.studio</source>
+        <target xml:lang="ach">crwdns205378:0crwdne205378:0</target>
+      </trans-unit>
+      <trans-unit id="813c60d6bd81552ebc3b8049b3f78ea0" resname="navigationhub.zone.studioplus">
+        <source>navigationhub.zone.studioplus</source>
+        <target xml:lang="ach">crwdns205379:0crwdne205379:0</target>
+      </trans-unit>
+      <trans-unit id="cd2aa1dd5cb6a8cb294ba3754b191124" resname="navigationhub.zone.admin">
+        <source>navigationhub.zone.admin</source>
+        <target xml:lang="ach">crwdns205380:0crwdne205380:0</target>
+      </trans-unit>
+      <trans-unit id="f05dcd418fa23b5d4b06e390321b17d4" resname="failed.to.load.root.locations">
+        <source>failed.to.load.root.locations</source>
+        <target xml:lang="ach">crwdns205381:0crwdne205381:0</target>
+      </trans-unit>
+      <trans-unit id="4236a440a662cc8253d7536e5aa17942" resname="logout">
+        <source>logout</source>
+        <target xml:lang="ach">crwdns205382:0crwdne205382:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

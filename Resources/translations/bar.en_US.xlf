@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="efd1900ac313302929fcb09d0b7bc056" resname="translateaction.existing.translations">
+        <source>translateaction.existing.translations</source>
+        <target xml:lang="en" state="translated">Existing Translations</target>
+      </trans-unit>
+      <trans-unit id="64b399b8999c5cbbab686d6d85a108f0" resname="translateaction.edit">
+        <source>translateaction.edit</source>
+        <target xml:lang="en" state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="2d4a7aceb8415c095005c42adda536b5" resname="translateaction.new.translation">
+        <source>translateaction.new.translation</source>
+        <target xml:lang="en" state="translated">+ New Translation</target>
+      </trans-unit>
+      <trans-unit id="2b15cd805c8b2f8c3eacbcf77d1efef3" resname="createcontentaction.loading">
+        <source>createcontentaction.loading</source>
+        <target xml:lang="en" state="translated">Loading</target>
+      </trans-unit>
+      <trans-unit id="fd1a4523a8f13243cb11bf6d301b3079" resname="actionbar.minimizeActionBar">
+        <source>actionbar.minimizeActionBar</source>
+        <target xml:lang="en" state="translated">Minimize</target>
+      </trans-unit>
+      <trans-unit id="2bcbc7fd4008db165d433f044394b173" resname="actionbar.edit">
+        <source>actionbar.edit</source>
+        <target xml:lang="en" state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="dcd4bcdb2bd45c594ac6f1c821974090" resname="actionbar.move">
+        <source>actionbar.move</source>
+        <target xml:lang="en" state="translated">Move</target>
+      </trans-unit>
+      <trans-unit id="713f4ab4479ef918715bebfbaea246b0" resname="actionbar.copy">
+        <source>actionbar.copy</source>
+        <target xml:lang="en" state="translated">Copy</target>
+      </trans-unit>
+      <trans-unit id="ab22c133ad6e1ab3b5d8736dd4500b86" resname="actionbar.createContent">
+        <source>actionbar.createContent</source>
+        <target xml:lang="en" state="translated">Create</target>
+      </trans-unit>
+      <trans-unit id="87ad6af6d4959002120e417861b5ab3c" resname="actionbar.translate">
+        <source>actionbar.translate</source>
+        <target xml:lang="en" state="translated">Translations</target>
+      </trans-unit>
+      <trans-unit id="8d485c9f2ecc542b96a0456626a7b4bc" resname="actionbar.sendToTrash">
+        <source>actionbar.sendToTrash</source>
+        <target xml:lang="en" state="translated">Send to Trash</target>
+      </trans-unit>
+      <trans-unit id="84042e63502f5c9bb479a8709777a8f7" resname="actionbar.delete">
+        <source>actionbar.delete</source>
+        <target xml:lang="en" state="translated">Delete</target>
+      </trans-unit>
+      <trans-unit id="a40e244892ca600dc6bd49ad5a3ba69d" resname="discoverybar.minimize">
+        <source>discoverybar.minimize</source>
+        <target xml:lang="en" state="translated">Minimize</target>
+      </trans-unit>
+      <trans-unit id="be79a56ce2348bba97dff939be9f18c9" resname="discoverybar.search">
+        <source>discoverybar.search</source>
+        <target xml:lang="en" state="translated">Search</target>
+      </trans-unit>
+      <trans-unit id="6807d92ae8f1d5fbc5c876a8cd718e94" resname="discoverybar.contenttree">
+        <source>discoverybar.contenttree</source>
+        <target xml:lang="en" state="translated">Content tree</target>
+      </trans-unit>
+      <trans-unit id="a30d5f88f1b72f2917a0c9ee359470a5" resname="discoverybar.trash">
+        <source>discoverybar.trash</source>
+        <target xml:lang="en" state="translated">Trash</target>
+      </trans-unit>
+      <trans-unit id="f8f745391e04df457674a23f3046b6b5" resname="select.location.to.copy">
+        <source>select.location.to.copy</source>
+        <target xml:lang="en" state="translated">Select the location you want to copy your content into</target>
+      </trans-unit>
+      <trans-unit id="ba3ff51949fd887be30b92cb94eb1398" resname="content.being.copied.under">
+        <source>content.being.copied.under</source>
+        <target xml:lang="en" state="translated">"%contentName%" is being copied under "%parentContentName%"</target>
+      </trans-unit>
+      <trans-unit id="f6deca857864a88a32e6deaae0788a03" resname="error.occurred.copying">
+        <source>error.occurred.copying</source>
+        <target xml:lang="en" state="translated">An error occurred while copying your content</target>
+      </trans-unit>
+      <trans-unit id="fd5ca0a04ebc37b025f25bbe3c49bade" resname="error.occurred.loading">
+        <source>error.occurred.loading</source>
+        <target xml:lang="en" state="translated">An error occurred while loading your content</target>
+      </trans-unit>
+      <trans-unit id="a2b14154c7fb0f1206e87ef7572dd7f0" resname="select.location.to.create.new.location">
+        <source>select.location.to.create.new.location</source>
+        <target xml:lang="en" state="translated">Select the location where you want to create new location</target>
+      </trans-unit>
+      <trans-unit id="0b7602cf6718622be5655c352b3d6630" resname="creating.new.location.for">
+        <source>creating.new.location.for</source>
+        <target xml:lang="en" state="translated">Creating new location for "%name%"</target>
+      </trans-unit>
+      <trans-unit id="5ddf00ad92bc226ded842b9af79224be" resname="failed.creating.new.location.for">
+        <source>failed.creating.new.location.for</source>
+        <target xml:lang="en" state="translated">Creating new location for "%name%" under "%parentName%" failed</target>
+      </trans-unit>
+      <trans-unit id="5aa9b4939e6e1fa828756495c6f02ec5" resname="location.created">
+        <source>location.created</source>
+        <target xml:lang="en" state="translated">New location for "%name%" has been successfully created</target>
+      </trans-unit>
+      <trans-unit id="98702e2d0f7b324859390ccb3def1a38" resname="locations.created">
+        <source>locations.created</source>
+        <target xml:lang="en" state="translated">%count% new locations for "%name%" have been successfully created</target>
+      </trans-unit>
+      <trans-unit id="1b4ea186d715706ff89f0a9e87c32bfa" resname="creating.new.location.for.failed">
+        <source>creating.new.location.for.failed</source>
+        <target xml:lang="en" state="translated">Creating new location(s) for "%name%" failed</target>
+      </trans-unit>
+      <trans-unit id="a93b958ee0c9703f3ebcec454ab0b14f" resname="hiding.location">
+        <source>hiding.location</source>
+        <target xml:lang="en" state="translated">Hiding Location "%id%"</target>
+      </trans-unit>
+      <trans-unit id="6d458f69cea1147d56a43b4a0ad5eef6" resname="revealing.location">
+        <source>revealing.location</source>
+        <target xml:lang="en" state="translated">Revealing Location "%id%"</target>
+      </trans-unit>
+      <trans-unit id="95331d2a5ff4769c6d2f478867a42b38" resname="error.revealing.location">
+        <source>error.revealing.location</source>
+        <target xml:lang="en" state="translated">Error while revealing location "%id%"</target>
+      </trans-unit>
+      <trans-unit id="fba1a6d113351e8c5cc235c7cd594d5d" resname="revealed.location">
+        <source>revealed.location</source>
+        <target xml:lang="en" state="translated">Location "%id%" has been revealed</target>
+      </trans-unit>
+      <trans-unit id="23a7e67a7ea227ac02f447f775a25f37" resname="error.hiding.location">
+        <source>error.hiding.location</source>
+        <target xml:lang="en" state="translated">Error while hiding location "%id%"</target>
+      </trans-unit>
+      <trans-unit id="3c9c00e2205ad0e95fde357ad177cf36" resname="hidden.location">
+        <source>hidden.location</source>
+        <target xml:lang="en" state="translated">Location "%id" has been hidden</target>
+      </trans-unit>
+      <trans-unit id="92fc7081487dc55aa9388a565ab83bfd" resname="select.a.language.for.new.translation">
+        <source>select.a.language.for.new.translation</source>
+        <target xml:lang="en" state="translated">Select a language for your new translation:</target>
+      </trans-unit>
+      <trans-unit id="88994526ece67e9dbcf786b75d4944be" resname="content.copied.under">
+        <source>content.copied.under</source>
+        <target xml:lang="en" state="translated">'%contentName%' has been successfully copied under '%parentContentName%'</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

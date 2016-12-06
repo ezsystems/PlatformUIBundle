@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="91d135a1eca345232c1f2b8fec170fc6" resname="loading.application">
+        <source>loading.application</source>
+        <target xml:lang="en" state="translated">Loading the application...</target>
+      </trans-unit>
+      <trans-unit id="e4f76807f027ce4426b182b91909f870" resname="javascript.disabled.required">
+        <source>javascript.disabled.required</source>
+        <target xml:lang="en" state="translated">JavaScript is disabled in your browser but it is required to run the eZ Platform User Interface.</target>
+      </trans-unit>
+      <trans-unit id="72d9916ec9abef59ce8e7a31bc28ced6" resname="javascript.enable">
+        <source>javascript.enable</source>
+        <target xml:lang="en" state="translated">Please enable JavaScript to use the eZ Platform User Interface.</target>
+      </trans-unit>
+      <trans-unit id="7243d01e7836a7be3099afcefb289c4e" resname="form.validation_error">
+        <source>form.validation_error</source>
+        <target xml:lang="en" state="translated">Form did not validate. Please review errors below.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

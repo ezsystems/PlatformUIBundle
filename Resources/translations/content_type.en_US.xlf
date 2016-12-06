@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="4f1cfd17c4ea63fdcfb4a10fda0755ff" resname="content_type.dashboard_title">
+        <source>content_type.dashboard_title</source>
+        <target xml:lang="en" state="translated">Content types</target>
+      </trans-unit>
+      <trans-unit id="80d8a14d1f4ec432a49b7acf8af8f3d2" resname="content_type.group.list">
+        <source>content_type.group.list</source>
+        <target xml:lang="en" state="translated">Content type groups</target>
+      </trans-unit>
+      <trans-unit id="3dc2dbac68487a7d3f87f767fc4bbd2e" resname="content_type.group.name">
+        <source>content_type.group.name</source>
+        <target xml:lang="en" state="translated">Name</target>
+      </trans-unit>
+      <trans-unit id="7415e532c85215d11540f3783967446d" resname="content_type.group.id">
+        <source>content_type.group.id</source>
+        <target xml:lang="en" state="translated">ID</target>
+      </trans-unit>
+      <trans-unit id="a5e8ac6ece0bfd015d0fff25748474cb" resname="content_type.group.edit">
+        <source>content_type.group.edit</source>
+        <target xml:lang="en" state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="533cbf0160637dac331c0f2779f6582f" resname="content_type.group.new">
+        <source>content_type.group.new</source>
+        <target xml:lang="en" state="translated">Create a Content type group</target>
+      </trans-unit>
+      <trans-unit id="7b24488c5d8ce01a3dd1a49ca7381d0b" resname="content_type.group">
+        <source>content_type.group</source>
+        <target xml:lang="en" state="translated">Content type group</target>
+      </trans-unit>
+      <trans-unit id="0c6565a851269ed5e86b5338855e23ed" resname="content_type.group.create.title">
+        <source>content_type.group.create.title</source>
+        <target xml:lang="en" state="translated">Creating a new Content type group</target>
+      </trans-unit>
+      <trans-unit id="a6298eb22986a1804622696c91bc28ad" resname="content_type.group.edit.title">
+        <source>content_type.group.edit.title</source>
+        <target xml:lang="en" state="translated">Editing Content type group "%identifier%"</target>
+      </trans-unit>
+      <trans-unit id="9ebab0d28e04a0fe2cbbd5833b995318" resname="content_type.group.cancel">
+        <source>content_type.group.cancel</source>
+        <target xml:lang="en" state="translated">Cancel</target>
+      </trans-unit>
+      <trans-unit id="3e2de2bdb94119c0f07348fe100a158f" resname="content_type.group.notification.created">
+        <source>content_type.group.notification.created</source>
+        <target xml:lang="en" state="translated">Content type group "%identifier%" was correctly created.</target>
+      </trans-unit>
+      <trans-unit id="4b6ba9c7b64e69a199c45aa6ae00c07e" resname="content_type.group.notification.updated">
+        <source>content_type.group.notification.updated</source>
+        <target xml:lang="en" state="translated">Content type group "%identifier%" was correctly updated.</target>
+      </trans-unit>
+      <trans-unit id="4a9243666e4b2db74e3a25ddae694f4b" resname="content_type.group.deleted">
+        <source>content_type.group.deleted</source>
+        <target xml:lang="en" state="translated">Content type group "%identifier%" was correctly deleted.</target>
+      </trans-unit>
+      <trans-unit id="727de183fa8f686e10a786244da41d58" resname="content_type.group.cannot_delete.has_content_types">
+        <source>content_type.group.cannot_delete.has_content_types</source>
+        <target xml:lang="en" state="translated">Cannot delete Content type group "%identifier%" as it still contains Content types.</target>
+      </trans-unit>
+      <trans-unit id="f04e48d37e0034d0db7c2fe532d0a98f" resname="content_type.name">
+        <source>content_type.name</source>
+        <target xml:lang="en" state="translated">Name</target>
+      </trans-unit>
+      <trans-unit id="3654d0b83af5b21165d08ed00c583b24" resname="content_type.id">
+        <source>content_type.id</source>
+        <target xml:lang="en" state="translated">ID</target>
+      </trans-unit>
+      <trans-unit id="b7c7cef3a977522a9eec90f49adfc04e" resname="content_type.identifier">
+        <source>content_type.identifier</source>
+        <target xml:lang="en" state="translated">Identifier</target>
+      </trans-unit>
+      <trans-unit id="c3f683a33cfccf890c919f6432af7877" resname="content_type.edit">
+        <source>content_type.edit</source>
+        <target xml:lang="en" state="translated">Edit</target>
+      </trans-unit>
+      <trans-unit id="972127730f863287531a351da529a802" resname="content_type.edit_title">
+        <source>content_type.edit_title</source>
+        <target xml:lang="en" state="translated">Editing</target>
+      </trans-unit>
+      <trans-unit id="bd31df6edfdfe616bf43312ee6ed4814" resname="content_type.content_count">
+        <source>content_type.content_count</source>
+        <target xml:lang="en" state="translated">{0} %count% content items|{1} %count% content item|]1,Inf[ %count% content items</target>
+      </trans-unit>
+      <trans-unit id="978d4d6fcaabe95baf297bcddced946c" resname="content_type.modified_date">
+        <source>content_type.modified_date</source>
+        <target xml:lang="en" state="translated">Modification date</target>
+      </trans-unit>
+      <trans-unit id="39f42e02559368a6b6ea2bb9f6de6724" resname="content_type.last_modified">
+        <source>content_type.last_modified</source>
+        <target xml:lang="en" state="translated">Last modified: %date% by %modifier%</target>
+      </trans-unit>
+      <trans-unit id="7c0ab0f708330c0d934c7e53a0cff93e" resname="content_type.description">
+        <source>content_type.description</source>
+        <target xml:lang="en" state="translated">Description</target>
+      </trans-unit>
+      <trans-unit id="e1d223825a9bf3ad0d1f810b7426bf3d" resname="content_type.name_schema">
+        <source>content_type.name_schema</source>
+        <target xml:lang="en" state="translated">Content name schema</target>
+      </trans-unit>
+      <trans-unit id="ad868db1b7d6a228c3b83176a33fd8fc" resname="content_type.url_alias_schema">
+        <source>content_type.url_alias_schema</source>
+        <target xml:lang="en" state="translated">URLAlias schema</target>
+      </trans-unit>
+      <trans-unit id="b6a3aa854f989a0573db082c812c2d52" resname="content_type.container">
+        <source>content_type.container</source>
+        <target xml:lang="en" state="translated">Can contain sub-items</target>
+      </trans-unit>
+      <trans-unit id="975a8aa4deca92ef9cd5ffc42efd2467" resname="content_type.default_availability">
+        <source>content_type.default_availability</source>
+        <target xml:lang="en" state="translated">Default availability in primary language, if translation is absent</target>
+      </trans-unit>
+      <trans-unit id="6361724b046699bacda179f0e7397de0" resname="content_type.always_available">
+        <source>content_type.always_available</source>
+        <target xml:lang="en" state="translated">Available</target>
+      </trans-unit>
+      <trans-unit id="5e276b6da192df3e9c622c398fc03d6b" resname="content_type.no_always_available">
+        <source>content_type.no_always_available</source>
+        <target xml:lang="en" state="translated">Not available</target>
+      </trans-unit>
+      <trans-unit id="9297b47a2cead7403adaab0f0ee6fdb2" resname="content_type.default_children_sorting">
+        <source>content_type.default_children_sorting</source>
+        <target xml:lang="en" state="translated">Default children sorting</target>
+      </trans-unit>
+      <trans-unit id="dc20866b714ed1642b9bce242bf460fd" resname="content_type.notification.draft_updated">
+        <source>content_type.notification.draft_updated</source>
+        <target xml:lang="en" state="translated">The Content type draft was successfully updated.</target>
+      </trans-unit>
+      <trans-unit id="9706f09166fa56162a4558261b87a9e2" resname="content_type.notification.draft_removed">
+        <source>content_type.notification.draft_removed</source>
+        <target xml:lang="en" state="translated">The Content type draft was successfully removed.</target>
+      </trans-unit>
+      <trans-unit id="ced84ba84fbde36bb688787c0562b1da" resname="content_type.notification.published">
+        <source>content_type.notification.published</source>
+        <target xml:lang="en" state="translated">The Content type draft was successfully updated and published. Related Content has also been updated.</target>
+      </trans-unit>
+      <trans-unit id="175ebfc2809c7532f761bf322810e3ca" resname="content_type.notification.deleted">
+        <source>content_type.notification.deleted</source>
+        <target xml:lang="en" state="translated">The Content type "%contentTypeName%" was successfully deleted.</target>
+      </trans-unit>
+      <trans-unit id="3833bc9869da7269d0b832230d25c1a6" resname="content_type.is_in_use">
+        <source>content_type.is_in_use</source>
+        <target xml:lang="en" state="translated">The content type cannot be deleted because it has content items, or because you don't have permission.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

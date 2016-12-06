@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="91263c40d83a926684f9800eb3df6988" resname="contenttypeselector.choose.content.type">
+        <source>contenttypeselector.choose.content.type</source>
+        <target xml:lang="fr" state="needs-translation">contenttypeselector.choose.content.type</target>
+      </trans-unit>
+      <trans-unit id="dee0f19d5a0804aa3a0af578e02c25c8" resname="contenttypeselector.filter.group">
+        <source>contenttypeselector.filter.group</source>
+        <target xml:lang="fr" state="needs-translation">contenttypeselector.filter.group</target>
+      </trans-unit>
+      <trans-unit id="b61c2875287f1c24f59cb13f1a44c316" resname="contenttypeselector.available.content.type">
+        <source>contenttypeselector.available.content.type</source>
+        <target xml:lang="fr" state="needs-translation">contenttypeselector.available.content.type</target>
+      </trans-unit>
+      <trans-unit id="7adf41ab0c0a8e72d5db65c3ef764f59" resname="contenttypeselector.start.typing">
+        <source>contenttypeselector.start.typing</source>
+        <target xml:lang="fr" state="needs-translation">contenttypeselector.start.typing</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

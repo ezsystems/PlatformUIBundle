@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="138aa3fb92eafb452c42011915bc30f4" resname="trash.header.name">
+        <source>trash.header.name</source>
+        <target xml:lang="en" state="translated">Trash</target>
+      </trans-unit>
+      <trans-unit id="a95ee11d3aceab0db8bf1c41e8899eef" resname="trash.name.label">
+        <source>trash.name.label</source>
+        <target xml:lang="en" state="translated">Name</target>
+      </trans-unit>
+      <trans-unit id="896a46e46a8a926a72f47e4bdc2fd2cf" resname="trash.type.label">
+        <source>trash.type.label</source>
+        <target xml:lang="en" state="translated">Type</target>
+      </trans-unit>
+      <trans-unit id="0ba1e1e0839f70f657ee3aaea8712257" resname="trash.original.location.label">
+        <source>trash.original.location.label</source>
+        <target xml:lang="en" state="translated">Original Location</target>
+      </trans-unit>
+      <trans-unit id="7160f4a6858f44cb5621d97fe6f5fca9" resname="trash.ancestors">
+        <source>trash.ancestors</source>
+        <target xml:lang="en" state="translated">Item's ancestors are in Trash</target>
+      </trans-unit>
+      <trans-unit id="6761a85f1ad33cd09fa0255fe5836b35" resname="trash.empty">
+        <source>trash.empty</source>
+        <target xml:lang="en" state="translated">The trash is empty</target>
+      </trans-unit>
+      <trans-unit id="88864fdccc1bb59dd5c55d764feb196f" resname="confirm.permanent.delete.items">
+        <source>confirm.permanent.delete.items</source>
+        <target xml:lang="en" state="translated">Are you sure you want to permanently delete %count% items? This action cannot be reversed.</target>
+      </trans-unit>
+      <trans-unit id="b41a4fd62dd58b3e0b9710f306214a0b" resname="failed.load.parent.location.path">
+        <source>failed.load.parent.location.path</source>
+        <target xml:lang="en" state="translated">Failed to load parent location's path</target>
+      </trans-unit>
+      <trans-unit id="f4756e137c410b02487d9b03f1399ce8" resname="error.emptying.trash">
+        <source>error.emptying.trash</source>
+        <target xml:lang="en" state="translated">An error occurred while emptying the Trash</target>
+      </trans-unit>
+      <trans-unit id="10a90314c15b32e51398217dadbae900" resname="items.permanently.deleted">
+        <source>items.permanently.deleted</source>
+        <target xml:lang="en" state="translated">%count items were permanently deleted.</target>
+      </trans-unit>
+      <trans-unit id="aed95c549a270e8b6b498f77461d26ae" resname="restoring.trash.items">
+        <source>restoring.trash.items</source>
+        <target xml:lang="en" state="translated">Restoring trash item(s)</target>
+      </trans-unit>
+      <trans-unit id="634e2ea5482ea4ca35eb3cafc8b3c46a" resname="error.restoring.item">
+        <source>error.restoring.item</source>
+        <target xml:lang="en" state="translated">An error occurred while restoring trash item with id: %id%. For the moment item's whose original location has been deleted can not be restored</target>
+      </trans-unit>
+      <trans-unit id="1b9525ba6c03cac448634c0b4a6e9c41" resname="content.items.restored">
+        <source>content.items.restored</source>
+        <target xml:lang="en" state="translated">%count%  Content item(s) have been restored</target>
+      </trans-unit>
+      <trans-unit id="c018a52c4d1be6a3753382889cbc2115" resname="minimize">
+        <source>minimize</source>
+        <target xml:lang="en" state="translated">Minimize</target>
+      </trans-unit>
+      <trans-unit id="b3128df3a15efed90612ad716bb93aa7" resname="restore.selected">
+        <source>restore.selected</source>
+        <target xml:lang="en" state="translated">Restore selected</target>
+      </trans-unit>
+      <trans-unit id="4ac3f0faf1eec33abfb10869ea7314f1" resname="empty.trash">
+        <source>empty.trash</source>
+        <target xml:lang="en" state="translated">Empty the Trash</target>
+      </trans-unit>
+      <trans-unit id="2164bb0f3588f90c109dc0d907fcced5" resname="failed.load.content.type">
+        <source>failed.load.content.type</source>
+        <target xml:lang="en" state="translated">Failed to load trash item Content Type name</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="36aaf69db32866a9c2dd745ef9f7a643" resname="section.list">
+        <source>section.list</source>
+        <target xml:lang="ach">crwdns205455:0crwdne205455:0</target>
+      </trans-unit>
+      <trans-unit id="d588dd1c265006f31dbb8368dda58226" resname="section.name">
+        <source>section.name</source>
+        <target xml:lang="ach">crwdns205456:0crwdne205456:0</target>
+      </trans-unit>
+      <trans-unit id="6bb9217795bc1c5903f07476a0db6478" resname="section.identifier">
+        <source>section.identifier</source>
+        <target xml:lang="ach">crwdns205457:0crwdne205457:0</target>
+      </trans-unit>
+      <trans-unit id="1fdda1fb639ca79024d03e086790198c" resname="section.id">
+        <source>section.id</source>
+        <target xml:lang="ach">crwdns205458:0crwdne205458:0</target>
+      </trans-unit>
+      <trans-unit id="be3def83a46457e29924c29510691bb9" resname="section.assigned.content">
+        <source>section.assigned.content</source>
+        <target xml:lang="ach">crwdns205459:0crwdne205459:0</target>
+      </trans-unit>
+      <trans-unit id="bd9bc055699bd779f27ce1c3b2e0121d" resname="section.edit">
+        <source>section.edit</source>
+        <target xml:lang="ach">crwdns205460:0crwdne205460:0</target>
+      </trans-unit>
+      <trans-unit id="8a0af0dc53d7aae987d698237d39b11a" resname="section.new">
+        <source>section.new</source>
+        <target xml:lang="ach">crwdns205461:0crwdne205461:0</target>
+      </trans-unit>
+      <trans-unit id="b2e01fb6617d17c162d59f0fb93da661" resname="section.remove.selected">
+        <source>section.remove.selected</source>
+        <target xml:lang="ach">crwdns205462:0crwdne205462:0</target>
+      </trans-unit>
+      <trans-unit id="a1388bfac224ede1622fd041e51384e0" resname="section.view.title">
+        <source>section.view.title</source>
+        <target xml:lang="ach">crwdns205463:0crwdne205463:0</target>
+      </trans-unit>
+      <trans-unit id="c56da0cc0963c5167293932e4409d502" resname="section.assigned.contentcount">
+        <source>section.assigned.contentcount</source>
+        <target xml:lang="ach">crwdns205464:0crwdne205464:0</target>
+      </trans-unit>
+      <trans-unit id="8a8d0e8570dc63672a52d3aad782ae41" resname="section.content.translate">
+        <source>section.content.translate</source>
+        <target xml:lang="ach">crwdns205465:0crwdne205465:0</target>
+      </trans-unit>
+      <trans-unit id="967b7e408a5f43a03f44c7cf479855db" resname="section.create.title">
+        <source>section.create.title</source>
+        <target xml:lang="ach">crwdns205466:0crwdne205466:0</target>
+      </trans-unit>
+      <trans-unit id="f3c4115b0fe3b3ada04e69e775c2db2c" resname="section.edit.title">
+        <source>section.edit.title</source>
+        <target xml:lang="ach">crwdns205467:0crwdne205467:0</target>
+      </trans-unit>
+      <trans-unit id="007cd5845351d36a9ec70173d2b44bb2" resname="section.name.label">
+        <source>section.name.label</source>
+        <target xml:lang="ach">crwdns205468:0crwdne205468:0</target>
+      </trans-unit>
+      <trans-unit id="3de80c254c9555ad1347b034f93f3095" resname="section.identifier.label">
+        <source>section.identifier.label</source>
+        <target xml:lang="ach">crwdns205469:0crwdne205469:0</target>
+      </trans-unit>
+      <trans-unit id="f066f9960df2f81907c3680c9148cef5" resname="section.id.label">
+        <source>section.id.label</source>
+        <target xml:lang="ach">crwdns205470:0crwdne205470:0</target>
+      </trans-unit>
+      <trans-unit id="751bbc52342db46a046c52c4dc0b6b00" resname="section.label.edit">
+        <source>section.label.edit</source>
+        <target xml:lang="ach">crwdns205471:0crwdne205471:0</target>
+      </trans-unit>
+      <trans-unit id="60ff6d8b447be276d65797a5244d79c3" resname="section.error.id_already_exist">
+        <source>section.error.id_already_exist</source>
+        <target xml:lang="ach">crwdns205472:0crwdne205472:0</target>
+      </trans-unit>
+      <trans-unit id="85af0dc2a9b83eb5cfc7871a73cbeab9" resname="section.create.submit">
+        <source>section.create.submit</source>
+        <target xml:lang="ach">crwdns205473:0crwdne205473:0</target>
+      </trans-unit>
+      <trans-unit id="a641bdbba63599811dfc893e7e753288" resname="section.cancel">
+        <source>section.cancel</source>
+        <target xml:lang="ach">crwdns205474:0crwdne205474:0</target>
+      </trans-unit>
+      <trans-unit id="fc5ac273e8d8e9ad2f6a294e79733ce2" resname="section.deleted">
+        <source>section.deleted</source>
+        <target xml:lang="ach">crwdns205475:0crwdne205475:0</target>
+      </trans-unit>
+      <trans-unit id="1bf9bdce5e87c98df324d43e717d9d85" resname="section.assign.universaldiscovery.title">
+        <source>section.assign.universaldiscovery.title</source>
+        <target xml:lang="ach">crwdns205476:0crwdne205476:0</target>
+      </trans-unit>
+      <trans-unit id="058b034a4aa957ab59f853e8375ff2b3" resname="section.assign.contents">
+        <source>section.assign.contents</source>
+        <target xml:lang="ach">crwdns205477:0crwdne205477:0</target>
+      </trans-unit>
+      <trans-unit id="e7f8101140500c3177fe61e8dd107f32" resname="section.notification.created">
+        <source>section.notification.created</source>
+        <target xml:lang="ach">crwdns205478:0crwdne205478:0</target>
+      </trans-unit>
+      <trans-unit id="376ae4cc5cbf22edf13f352450b9ce36" resname="section.notification.updated">
+        <source>section.notification.updated</source>
+        <target xml:lang="ach">crwdns205479:0crwdne205479:0</target>
+      </trans-unit>
+      <trans-unit id="e932eec7fdc19b9f78dc3ae3d4e9c3d9" resname="section.notification.draft_removed">
+        <source>section.notification.draft_removed</source>
+        <target xml:lang="ach">crwdns205480:0crwdne205480:0</target>
+      </trans-unit>
+      <trans-unit id="0c6dfbff3ff21d5b31b96e4593ba9cc7" resname="assigning.section">
+        <source>assigning.section</source>
+        <target xml:lang="ach">crwdns205481:0crwdne205481:0</target>
+      </trans-unit>
+      <trans-unit id="0bae812b55cc894591744d2dd479cd11" resname="assigned.section">
+        <source>assigned.section</source>
+        <target xml:lang="ach">crwdns205482:0crwdne205482:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
