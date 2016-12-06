@@ -1,73 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="fr" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="efd1900ac313302929fcb09d0b7bc056" resname="translateaction.existing.translations">
-        <source>translateaction.existing.translations</source>
-        <target>Traductions existantes</target>
+      <trans-unit id="b89182df324a10cfccb8dac5f047355c3ba043ca" resname="actionbar.copy" approved="yes">
+        <source>Copy</source>
+        <target xml:lang="fr">Copier</target>
+        <note>key: actionbar.copy</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="64b399b8999c5cbbab686d6d85a108f0" resname="translateaction.edit">
-        <source>translateaction.edit</source>
-        <target>Modifier</target>
+      <trans-unit id="e9ce61047248bb9c85bb0984cf597dbfbcc7633b" resname="actionbar.createContent" approved="yes">
+        <source>Create</source>
+        <target xml:lang="fr">Créer</target>
+        <note>key: actionbar.createContent</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2d4a7aceb8415c095005c42adda536b5" resname="translateaction.new.translation">
-        <source>translateaction.new.translation</source>
-        <target>+ Nouvelle traduction</target>
+      <trans-unit id="be3348d5545fb64e8506ae64e667dac048bbc97c" resname="actionbar.delete" approved="yes">
+        <source>Delete</source>
+        <target xml:lang="fr">Supprimer</target>
+        <note>key: actionbar.delete</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2b15cd805c8b2f8c3eacbcf77d1efef3" resname="createcontentaction.loading">
-        <source>createcontentaction.loading</source>
-        <target>Chargement</target>
+      <trans-unit id="5fb95ba95e83264744f36bd3dafb74013b86d315" resname="actionbar.edit" approved="yes">
+        <source>Edit</source>
+        <target xml:lang="fr">Modifier</target>
+        <note>key: actionbar.edit</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="fd1a4523a8f13243cb11bf6d301b3079" resname="actionbar.minimizeActionBar">
-        <source>actionbar.minimizeActionBar</source>
-        <target>Minimiser</target>
+      <trans-unit id="4406c1030566fae57a5e41a797823d41c7775ac8" resname="actionbar.minimizeActionBar" approved="yes">
+        <source>Minimize</source>
+        <target xml:lang="fr">Minimiser</target>
+        <note>key: actionbar.minimizeActionBar</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2bcbc7fd4008db165d433f044394b173" resname="actionbar.edit">
-        <source>actionbar.edit</source>
-        <target>Modifier</target>
+      <trans-unit id="b282633e9e76dd418412580d9232d28d9404dcb5" resname="actionbar.move" approved="yes">
+        <source>Move</source>
+        <target xml:lang="fr">Déplacer</target>
+        <note>key: actionbar.move</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="dcd4bcdb2bd45c594ac6f1c821974090" resname="actionbar.move">
-        <source>actionbar.move</source>
-        <target>Déplacer</target>
+      <trans-unit id="0c208e52af8963639637f9c9ce2163bd98d1628e" resname="actionbar.sendToTrash" approved="yes">
+        <source>Send to Trash</source>
+        <target xml:lang="fr">Envoyer à la corbeille</target>
+        <note>key: actionbar.sendToTrash</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="713f4ab4479ef918715bebfbaea246b0" resname="actionbar.copy">
-        <source>actionbar.copy</source>
-        <target>Copier</target>
+      <trans-unit id="5b0a413f93880e60e8da0cc54c3d2643afef840c" resname="actionbar.translate" approved="yes">
+        <source>Translations</source>
+        <target xml:lang="fr">Traductions</target>
+        <note>key: actionbar.translate</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="ab22c133ad6e1ab3b5d8736dd4500b86" resname="actionbar.createContent">
-        <source>actionbar.createContent</source>
-        <target>Créer</target>
+      <trans-unit id="0bc4676a2e348119912d9a0cb23c8b9c2db54b38" resname="createcontentaction.loading" approved="yes">
+        <source>Loading</source>
+        <target xml:lang="fr">Chargement</target>
+        <note>key: createcontentaction.loading</note>
+        <jms:reference-file>./Resources/public/templates/createcontentaction.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="87ad6af6d4959002120e417861b5ab3c" resname="actionbar.translate">
-        <source>actionbar.translate</source>
-        <target>Traductions</target>
+      <trans-unit id="7eaf9281f3e62d4f3acf5dac5b34060808c363b9" resname="discoverybar.contenttree" approved="yes">
+        <source>Content tree</source>
+        <target xml:lang="fr">Arbre de contenu</target>
+        <note>key: discoverybar.contenttree</note>
+        <jms:reference-file>./Resources/public/js/views/ez-discoverybarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="8d485c9f2ecc542b96a0456626a7b4bc" resname="actionbar.sendToTrash">
-        <source>actionbar.sendToTrash</source>
-        <target>Envoyer à la corbeille</target>
+      <trans-unit id="69eda63e3b6ba8e8eb35db12ef1995c5dba42c17" resname="discoverybar.minimize" approved="yes">
+        <source>Minimize</source>
+        <target xml:lang="fr">Minimiser</target>
+        <note>key: discoverybar.minimize</note>
+        <jms:reference-file>./Resources/public/js/views/ez-discoverybarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="84042e63502f5c9bb479a8709777a8f7" resname="actionbar.delete">
-        <source>actionbar.delete</source>
-        <target>Supprimer</target>
+      <trans-unit id="55ba03a687a73559ef8a2d4e1ff935b47ddc5859" resname="discoverybar.search" approved="yes">
+        <source>Search</source>
+        <target xml:lang="fr">Rechercher</target>
+        <note>key: discoverybar.search</note>
+        <jms:reference-file>./Resources/public/js/views/ez-discoverybarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="a40e244892ca600dc6bd49ad5a3ba69d" resname="discoverybar.minimize">
-        <source>discoverybar.minimize</source>
-        <target>Minimiser</target>
+      <trans-unit id="07eab5f1fb10d5c76c8b190ed9aa24f44b8631b7" resname="discoverybar.trash" approved="yes">
+        <source>Trash</source>
+        <target xml:lang="fr">Corbeille</target>
+        <note>key: discoverybar.trash</note>
+        <jms:reference-file>./Resources/public/js/views/ez-discoverybarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="be79a56ce2348bba97dff939be9f18c9" resname="discoverybar.search">
-        <source>discoverybar.search</source>
-        <target>Rechercher</target>
+      <trans-unit id="45be10e0189e80b08256567362b3f8668b2c4965" resname="translateaction.edit" approved="yes">
+        <source>Edit</source>
+        <target xml:lang="fr">Modifier</target>
+        <note>key: translateaction.edit</note>
+        <jms:reference-file>./Resources/public/templates/translateaction.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="6807d92ae8f1d5fbc5c876a8cd718e94" resname="discoverybar.contenttree">
-        <source>discoverybar.contenttree</source>
-        <target>Arbre de contenu</target>
+      <trans-unit id="0da142a7f050a139b79a5865547744a56a5f4281" resname="translateaction.existing.translations" approved="yes">
+        <source>Existing Translations</source>
+        <target xml:lang="fr">Traductions existantes</target>
+        <note>key: translateaction.existing.translations</note>
+        <jms:reference-file>./Resources/public/templates/translateaction.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="a30d5f88f1b72f2917a0c9ee359470a5" resname="discoverybar.trash">
-        <source>discoverybar.trash</source>
-        <target>Corbeille</target>
+      <trans-unit id="cd6a171f15734694bbc3e15e0f2e4ca47dd5d1ff" resname="translateaction.new.translation" approved="yes">
+        <source>+ New Translation</source>
+        <target xml:lang="fr">+ Nouvelle traduction</target>
+        <note>key: translateaction.new.translation</note>
+        <jms:reference-file>./Resources/public/templates/translateaction.hbt</jms:reference-file>
       </trans-unit>
     </body>
   </file>

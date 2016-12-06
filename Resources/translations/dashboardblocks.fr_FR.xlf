@@ -6,7 +6,14 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      
+      <trans-unit id="e9c04dcd1a73d8cb5fc72ca356e61ab28d38ec46" resname="dashboard.title" approved="yes">
+        <source>Title</source>
+        <target xml:lang="fr">Tableau de bord</target>
+        <note>key: dashboard.title</note>
+        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
+      </trans-unit>
     </body>
   </file>
 </xliff>
