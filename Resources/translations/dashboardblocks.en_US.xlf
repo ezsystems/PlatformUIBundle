@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="d81e961a086909f4370d811f2517aa82" resname="dashboard.retry">
+        <source>dashboard.retry</source>
+        <target xml:lang="en" state="needs-translation">dashboard.retry</target>
+      </trans-unit>
+      <trans-unit id="8f43b15f9faa5a91f5834c78a47cb864" resname="dashboard.title">
+        <source>dashboard.title</source>
+        <target xml:lang="en" state="needs-translation">dashboard.title</target>
+      </trans-unit>
+      <trans-unit id="a87bd9b4a203b26343701c9b658f5086" resname="dashboard.content.type">
+        <source>dashboard.content.type</source>
+        <target xml:lang="en" state="needs-translation">dashboard.content.type</target>
+      </trans-unit>
+      <trans-unit id="d91fb1f6d32134fc1d7cf85c87c01b73" resname="dashboard.version">
+        <source>dashboard.version</source>
+        <target xml:lang="en" state="needs-translation">dashboard.version</target>
+      </trans-unit>
+      <trans-unit id="c2bdea79f75eb390453bc0df4c5527ae" resname="dashboard.last.saved">
+        <source>dashboard.last.saved</source>
+        <target xml:lang="en" state="needs-translation">dashboard.last.saved</target>
+      </trans-unit>
+      <trans-unit id="c2151d7ce1691b18dadd35e1b8902d48" resname="dashboard.mycontent.no.modified.content">
+        <source>dashboard.mycontent.no.modified.content</source>
+        <target xml:lang="en" state="needs-translation">dashboard.mycontent.no.modified.content</target>
+      </trans-unit>
+      <trans-unit id="e0e454a5847a309744e0b8e56e4e8729" resname="dashboard.loading.error">
+        <source>dashboard.loading.error</source>
+        <target xml:lang="en" state="needs-translation">dashboard.loading.error</target>
+      </trans-unit>
+      <trans-unit id="63ad0c86d5a065fd6074d77935319412" resname="dashboard.loading.draft.error">
+        <source>dashboard.loading.draft.error</source>
+        <target xml:lang="en" state="needs-translation">dashboard.loading.draft.error</target>
+      </trans-unit>
+      <trans-unit id="3b2e16e278a1ef2b46e8e0f4f363cd1c" resname="dashboard.mydrafts.no.draft">
+        <source>dashboard.mydrafts.no.draft</source>
+        <target xml:lang="en" state="needs-translation">dashboard.mydrafts.no.draft</target>
+      </trans-unit>
+      <trans-unit id="d515a3acad4e23e520f82a70f33977d9" resname="dashboardblocks.my.dashboard">
+        <source>dashboardblocks.my.dashboard</source>
+        <target xml:lang="en" state="needs-translation">dashboardblocks.my.dashboard</target>
+      </trans-unit>
+      <trans-unit id="8785dd46ae0a167845519423c491a1d5" resname="dashboard.my.content">
+        <source>dashboard.my.content</source>
+        <target xml:lang="en" state="needs-translation">dashboard.my.content</target>
+      </trans-unit>
+      <trans-unit id="090a06527a47a8df7d56334606fa7611" resname="dashboard.all.content">
+        <source>dashboard.all.content</source>
+        <target xml:lang="en" state="needs-translation">dashboard.all.content</target>
+      </trans-unit>
+      <trans-unit id="be3ca37da23b8229c2335730a3786e4e" resname="dashboard.my.drafts">
+        <source>dashboard.my.drafts</source>
+        <target xml:lang="en" state="needs-translation">dashboard.my.drafts</target>
+      </trans-unit>
+      <trans-unit id="00f0d5e9977dcd134b468f0855679e2b" resname="cannot.load.root.location">
+        <source>cannot.load.root.location</source>
+        <target xml:lang="en" state="needs-translation">cannot.load.root.location</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
