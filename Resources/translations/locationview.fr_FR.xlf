@@ -6,626 +6,109 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="41c3a5ae2a605ec7f8c6bdb8f33a730e3967f110" resname="being.moved.under">
-        <source>'%name%' is being moved under '%parentName%'</source>
-        <target xml:lang="fr" state="needs-translation">'%name%' is being moved under '%parentName%'</target>
-        <note>key: being.moved.under</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0a95ef6ccb3ab8cf4b2e04235129c2f08a115a3a" resname="changed.main.location.of">
-        <source>The main location of "%name%" has been changed</source>
-        <target xml:lang="fr" state="needs-translation">The main location of "%name%" has been changed</target>
-        <note>key: changed.main.location.of</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-contentsetmainlocationplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b87552f132d6e0ff4afe5f2f0b12e36dce35c1cb" resname="changing.main.location.of">
-        <source>Changing the main location of "%name%"</source>
-        <target xml:lang="fr" state="needs-translation">Changing the main location of "%name%"</target>
-        <note>key: changing.main.location.of</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-contentsetmainlocationplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="95d6046a734be802fb22460fd8276a042e7e1198" resname="confirm.remove.location">
-        <source>Are you sure you want to remove selected locations?</source>
-        <target xml:lang="fr" state="needs-translation">Are you sure you want to remove selected locations?</target>
-        <note>key: confirm.remove.location</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationremoveplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="10b37ae9b695e443fa4704d7a21efd0cadca7d49" resname="confirm.set.main.location">
-        <source>Are you sure you want to set this location as main location of content?</source>
-        <target xml:lang="fr" state="needs-translation">Are you sure you want to set this location as main location of content?</target>
-        <note>key: confirm.set.main.location</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-contentsetmainlocationplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8a2fbb282605f72d531c11a15b621a9edc4913db" resname="confirmed.delete">
-        <source>Are you sure you want to delete this content?</source>
-        <target xml:lang="fr" state="needs-translation">Are you sure you want to delete this content?</target>
-        <note>key: confirmed.delete</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a98b131ae17c523ac36a36d82c20b082fc2efa73" resname="confirmed.remove.versions">
-        <source>Are you sure you want to remove selected version(s)?</source>
-        <target xml:lang="fr" state="needs-translation">Are you sure you want to remove selected version(s)?</target>
-        <note>key: confirmed.remove.versions</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-versionsplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e751550d2bffb320256d3934693e4cbe1b9610b5" resname="confirmed.send.to.trash">
-        <source>Are you sure you want to send this content to trash?</source>
-        <target xml:lang="fr" state="needs-translation">Are you sure you want to send this content to trash?</target>
-        <note>key: confirmed.send.to.trash</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c44059e516685b63857e6db9c22a11ed0d990519" resname="deleted.content">
-        <source>'%name%' was deleted</source>
-        <target xml:lang="fr" state="needs-translation">'%name%' was deleted</target>
-        <note>key: deleted.content</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="380334ddc39c537065b6b955660ee02d5af915f2" resname="deleting.content">
-        <source>Deleting '%name%'</source>
-        <target xml:lang="fr" state="needs-translation">Deleting '%name%'</target>
-        <note>key: deleting.content</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2b962f456b0226a8cc71d12c14f72fa5e7672f53" resname="failed.changing.main.location.of">
-        <source>Changing main location of "%name%" failed</source>
-        <target xml:lang="fr" state="needs-translation">Changing main location of "%name%" failed</target>
-        <note>key: failed.changing.main.location.of</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-contentsetmainlocationplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="abde0bee2ae04d9f8c4d588cb25a8667ba96d67e" resname="failed.creating.draft.for.based.on">
-        <source>Creating new draft for "%name%" based on version %version% failed.</source>
-        <target xml:lang="fr" state="needs-translation">Creating new draft for "%name%" based on version %version% failed.</target>
-        <note>key: failed.creating.draft.for.based.on</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-versionsplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a35316336667d1d2661322af8daeb7f76c0a7743" resname="failed.deleting.content">
-        <source>An error occurred when deleting '%name%'</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred when deleting '%name%'</target>
-        <note>key: failed.deleting.content</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f569143536f9f8e4e698086f4d85428661a61a37" resname="failed.moving">
-        <source>An error occurred while moving your content</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while moving your content</target>
-        <note>key: failed.moving</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3cb305d711f15ff39be36a9b111cb766c618ec53" resname="failed.removing.locations.of">
-        <source>Removing of %count% location(s) of "%name%" has failed</source>
-        <target xml:lang="fr" state="needs-translation">Removing of %count% location(s) of "%name%" has failed</target>
-        <note>key: failed.removing.locations.of</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationremoveplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="edf8822d85f6e3cc0e13582feee8a65f66ed0d08" resname="failed.removing.versions.of">
-        <source>Removal of %count% version(s) of "%name%" has failed</source>
-        <target xml:lang="fr" state="needs-translation">Removal of %count% version(s) of "%name%" has failed</target>
-        <note>key: failed.removing.versions.of</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-versionsplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="fd0df2ab8df516f5a2900775c5f427ddb9012b77" resname="failed.sending.to.trash">
-        <source>An error occurred when sending '%contentName%' to Trash</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred when sending '%contentName%' to Trash</target>
-        <note>key: failed.sending.to.trash</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="60e53d4c1a6ed1632bf392e34fb5ae864a4683d5" resname="failed.swapping.location.for">
-        <source>Swapping location for "%name%" failed</source>
-        <target xml:lang="fr" state="needs-translation">Swapping location for "%name%" failed</target>
-        <note>key: failed.swapping.location.for</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationswapplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="d427c063172fceb30447a5a485474536ffcc8c91" resname="failed.to.load.content">
-        <source>Failed to load the content %id%</source>
-        <target xml:lang="fr" state="needs-translation">Failed to load the content %id%</target>
-        <note>key: failed.to.load.content</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6e26e79018c441ce904ec1d78372148390d1f076" resname="failed.to.load.content.type">
-        <source>Failed to load the content type %id%</source>
-        <target xml:lang="fr" state="needs-translation">Failed to load the content type %id%</target>
-        <note>key: failed.to.load.content.type</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2fbc2dbfad4beb8f37bac92cce6501b44f264c03" resname="failed.to.load.location">
-        <source>Failed to load the location %id%</source>
-        <target xml:lang="fr" state="needs-translation">Failed to load the location %id%</target>
-        <note>key: failed.to.load.location</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="675d9c2b05e75bb44aec3d051a5793e2bf4746d0" resname="failed.to.load.location.path">
-        <source>Failed to load locations's path</source>
-        <target xml:lang="fr" state="needs-translation">Failed to load locations's path</target>
-        <note>key: failed.to.load.location.path</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e59fc009e6dc0079786973ab8b8542f463d3b233" resname="failed.updated.priority">
-        <source>An error occurred when updating the priority</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred when updating the priority</target>
-        <note>key: failed.updated.priority</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="d68085cf6081898b8757cdee5fb66aff8c0531f6" resname="failed.updating.sort.method">
-        <source>An error occured while updating the sub items sort method</source>
-        <target xml:lang="fr" state="needs-translation">An error occured while updating the sub items sort method</target>
-        <note>key: failed.updating.sort.method</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e0be1422e1af400879a6716220eabc9ad4fca29e" resname="locationview.details.ascending">
-        <source>Ascending</source>
-        <target xml:lang="fr" state="needs-translation">Ascending</target>
-        <note>key: locationview.details.ascending</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2e143171eb44b9d8b17a06195b938181101de957" resname="locationview.details.contentid">
-        <source>Content Id</source>
-        <target xml:lang="fr" state="needs-translation">Content Id</target>
-        <note>key: locationview.details.contentid</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="34ce6c404ac9a5a82f9a598d3e4e62916094c351" resname="locationview.details.contentremoteid">
-        <source>Content remote Id</source>
-        <target xml:lang="fr" state="needs-translation">Content remote Id</target>
-        <note>key: locationview.details.contentremoteid</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="d270971c445eca4fc0e7cd8ec006341f0ff19354" resname="locationview.details.creator">
-        <source>Creator</source>
-        <target xml:lang="fr" state="needs-translation">Creator</target>
-        <note>key: locationview.details.creator</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5095b70f3c9ccc1c77ba2d4f8ae1b2ce6121e233" resname="locationview.details.default.listing.of.subitems.by">
-        <source>Default listing of sub-items by</source>
-        <target xml:lang="fr" state="needs-translation">Default listing of sub-items by</target>
-        <note>key: locationview.details.default.listing.of.subitems.by</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5cc52ce2cc763622f266df9138b7e507cca2d7de" resname="locationview.details.errorcontributor">
-        <source>An error occurred while loading the last contributor.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the last contributor.</target>
-        <note>key: locationview.details.errorcontributor</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6008df6be918183f2a3896c49dd0d19ee35350d2" resname="locationview.details.errorcreator">
-        <source>An error occurred while loading the creator.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the creator.</target>
-        <note>key: locationview.details.errorcreator</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e0d315cc1f7772de59ebb7a943e5331402f087f4" resname="locationview.details.lastcontributor">
-        <source>Last contributor</source>
-        <target xml:lang="fr" state="needs-translation">Last contributor</target>
-        <note>key: locationview.details.lastcontributor</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2fff74da27de7d17b2f5c89efeab74e664378c33" resname="locationview.details.loadingcontributor">
-        <source>Loading the last contributor</source>
-        <target xml:lang="fr" state="needs-translation">Loading the last contributor</target>
-        <note>key: locationview.details.loadingcontributor</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="85dbe816267d441a33ecd4d1778b58f25a350814" resname="locationview.details.loadingcreator">
-        <source>Loading the creator</source>
-        <target xml:lang="fr" state="needs-translation">Loading the creator</target>
-        <note>key: locationview.details.loadingcreator</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7f653bba9440b8a0b2dac47b4c30a5c97ba83678" resname="locationview.details.locationid">
-        <source>Location Id</source>
-        <target xml:lang="fr" state="needs-translation">Location Id</target>
-        <note>key: locationview.details.locationid</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2b72d1da8862e8f7f123df770f7733b294d765a3" resname="locationview.details.remoteid">
-        <source>Location remove Id</source>
-        <target xml:lang="fr" state="needs-translation">Location remove Id</target>
-        <note>key: locationview.details.remoteid</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4d80e1ddcdccb24545ffd7cfc24ca2290bfe2093" resname="locationview.details.retry">
-        <source>Retry</source>
-        <target xml:lang="fr" state="needs-translation">Retry</target>
-        <note>key: locationview.details.retry</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="92ecfb85a6f93f491fb98ca6f584fffaea5d56a2" resname="locationview.details.subitems.default.ordering">
-        <source>Sub-items default ordering</source>
-        <target xml:lang="fr" state="needs-translation">Sub-items default ordering</target>
-        <note>key: locationview.details.subitems.default.ordering</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9699a1cb9c610905dddcb2b123fa7ba10a840957" resname="locationview.details.technicaldetails">
-        <source>Technical details</source>
-        <target xml:lang="fr" state="needs-translation">Technical details</target>
-        <note>key: locationview.details.technicaldetails</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="dacdbac551cb8fc3eb998fead8834693305ba105" resname="locationview.details.title">
-        <source>Content details</source>
-        <target xml:lang="fr" state="needs-translation">Content details</target>
-        <note>key: locationview.details.title</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a651fb9282b5626ba9e3a6cdfd1861b981aa1d76" resname="locationview.details.translations">
-        <source>Translations</source>
-        <target xml:lang="fr" state="needs-translation">Translations</target>
-        <note>key: locationview.details.translations</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="64dfe443da2515d16aaa6de73a00c2dd68111c0b" resname="locationview.details.versions">
-        <source>Versions</source>
-        <target xml:lang="fr" state="needs-translation">Versions</target>
-        <note>key: locationview.details.versions</note>
-        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="cf775f467a5d5f450635af645a5587ada940d885" resname="locationview.locations.add.location">
-        <source>Add Location</source>
-        <target xml:lang="fr" state="needs-translation">Add Location</target>
-        <note>key: locationview.locations.add.location</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="d97d830f21868cefae182b651cb5399379d61a4e" resname="locationview.locations.content.locations">
-        <source>Content locations</source>
-        <target xml:lang="fr" state="needs-translation">Content locations</target>
-        <note>key: locationview.locations.content.locations</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="33ceaa61b8d64b8c3ea118e4f8d1c172c97f5329" resname="locationview.locations.hidden">
-        <source>Hidden</source>
-        <target xml:lang="fr" state="needs-translation">Hidden</target>
-        <note>key: locationview.locations.hidden</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e5850a5016f4965ec5dc59f78bb7e9cd146fc9a4" resname="locationview.locations.hidden.by.superior">
-        <source>Hidden by superior</source>
-        <target xml:lang="fr" state="needs-translation">Hidden by superior</target>
-        <note>key: locationview.locations.hidden.by.superior</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8a1beb515496a34287a6fe56c5e12e752c12a47d" resname="locationview.locations.hide">
-        <source>Hide</source>
-        <target xml:lang="fr" state="needs-translation">Hide</target>
-        <note>key: locationview.locations.hide</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="18ffeb7a312f5b6c621e15a46d902ae1fddefe0f" resname="locationview.locations.loading.location.list">
-        <source>Loading the locations list</source>
-        <target xml:lang="fr" state="needs-translation">Loading the locations list</target>
-        <note>key: locationview.locations.loading.location.list</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="84eeb5f06a07ce1fffe674e87dca6905ad4714a5" resname="locationview.locations.location.list.error">
-        <source>An error occurred while loading the locations list.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the locations list.</target>
-        <note>key: locationview.locations.location.list.error</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="dae83bb328778476ec3e0c5b6db211ca3aa2bc13" resname="locationview.locations.main">
-        <source>Main</source>
-        <target xml:lang="fr" state="needs-translation">Main</target>
-        <note>key: locationview.locations.main</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e4effb18f15a8e0e891860a2b115f08df36a7313" resname="locationview.locations.path">
-        <source>Path</source>
-        <target xml:lang="fr" state="needs-translation">Path</target>
-        <note>key: locationview.locations.path</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c74cc382c1023b02479021fe7b260023d1287df1" resname="locationview.locations.remove.selected">
-        <source>Remove selected</source>
-        <target xml:lang="fr" state="needs-translation">Remove selected</target>
-        <note>key: locationview.locations.remove.selected</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1f6fe54dbf1b1db82393f87d469612c5b307ea81" resname="locationview.locations.reveal">
-        <source>Reveal</source>
-        <target xml:lang="fr" state="needs-translation">Reveal</target>
-        <note>key: locationview.locations.reveal</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="30412ae8741b6ad892f8e7121c1df1c98690fe69" resname="locationview.locations.select.content.item">
-        <source>Select Content item</source>
-        <target xml:lang="fr" state="needs-translation">Select Content item</target>
-        <note>key: locationview.locations.select.content.item</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b5ab365ec9097447d661364c587dd74a3a2a4da3" resname="locationview.locations.subitems">
-        <source>Sub-items</source>
-        <target xml:lang="fr" state="needs-translation">Sub-items</target>
-        <note>key: locationview.locations.subitems</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="78f72ceb515315ffb377e812832368f846c12fec" resname="locationview.locations.swap.with.another">
-        <source>Swap the Content item at this location with another</source>
-        <target xml:lang="fr" state="needs-translation">Swap the Content item at this location with another</target>
-        <note>key: locationview.locations.swap.with.another</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8bf047758974255c4a8001ef57927d5b4098e7b1" resname="locationview.locations.visibility">
-        <source>Visibility</source>
-        <target xml:lang="fr" state="needs-translation">Visibility</target>
-        <note>key: locationview.locations.visibility</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4994eadd8f401eba51181d4d3c394792e3ab1bbd" resname="locationview.locations.visible">
-        <source>Visible</source>
-        <target xml:lang="fr" state="needs-translation">Visible</target>
-        <note>key: locationview.locations.visible</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5f9c385b31ca9a7d5e7ac7f4bec58bcca1418aa9" resname="locationview.relations.content">
-        <source>Content</source>
-        <target xml:lang="fr" state="needs-translation">Content</target>
-        <note>key: locationview.relations.content</note>
-        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e9731695b9a4bd13eb374293087855f8ae449be5" resname="locationview.relations.error.loading.related">
-        <source>An error occurred while loading the related content list.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the related content list.</target>
-        <note>key: locationview.relations.error.loading.related</note>
-        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="d6b8b44043ab3a73bd6a8a1e1e9079e55a816623" resname="locationview.relations.no.related.content">
-        <source>This content has no related content.</source>
-        <target xml:lang="fr" state="needs-translation">This content has no related content.</target>
-        <note>key: locationview.relations.no.related.content</note>
-        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0b409a5f5675b6ee03cfaea432d179c2648a36a3" resname="locationview.relations.related.content">
-        <source>Related content</source>
-        <target xml:lang="fr" state="needs-translation">Related content</target>
-        <note>key: locationview.relations.related.content</note>
-        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8aea3326a700a081784bc0e51f0c91a3583eedc2" resname="locationview.relations.relation.type">
-        <source>Relation type</source>
-        <target xml:lang="fr" state="needs-translation">Relation type</target>
-        <note>key: locationview.relations.relation.type</note>
-        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e23a8cfab8000e4ce2ad014f7b55fb6f777274e4" resname="locationview.retry">
-        <source>Retry</source>
-        <target xml:lang="fr" state="needs-translation">Retry</target>
-        <note>key: locationview.retry</note>
-        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="19f2181b9bb473b99dc985187f631876cebf3b35" resname="locationview.versions.archived.versions">
-        <source>Archived versions</source>
-        <target xml:lang="fr" state="needs-translation">Archived versions</target>
-        <note>key: locationview.versions.archived.versions</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="b7920f94494966e6db92b3937a84d3add836a812" resname="locationview.versions.author">
-        <source>Author</source>
-        <target xml:lang="fr" state="needs-translation">Author</target>
-        <note>key: locationview.versions.author</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="47912146dd99224ef2e39362cf689e245bbf604a" resname="locationview.versions.created">
-        <source>Created</source>
-        <target xml:lang="fr" state="needs-translation">Created</target>
-        <note>key: locationview.versions.created</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="419a69fad078eeaaf43244ac5874bc075affa8dc" resname="locationview.versions.delete.selected.draft">
-        <source>Delete selected draft</source>
-        <target xml:lang="fr" state="needs-translation">Delete selected draft</target>
-        <note>key: locationview.versions.delete.selected.draft</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="a7bf4de2ddd469229edee5cf992afa5b2099cd92" resname="locationview.versions.draft.under.edit">
-        <source>Draft under edit</source>
-        <target xml:lang="fr" state="needs-translation">Draft under edit</target>
-        <note>key: locationview.versions.draft.under.edit</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="150894069d0cf9666ae05e847cce60805208ed82" resname="locationview.versions.edit.selected.draft">
-        <source>Edit selected draft</source>
-        <target xml:lang="fr" state="needs-translation">Edit selected draft</target>
-        <note>key: locationview.versions.edit.selected.draft</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="39ce8495c91402624f5e6729bcdb6bb914a4f9bc" resname="locationview.versions.error.loading.list">
-        <source>An error occurred while loading the versions list.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the versions list.</target>
-        <note>key: locationview.versions.error.loading.list</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="06c5892ec7611863b644cdbd638e57d83f88a303" resname="locationview.versions.language">
-        <source>Language</source>
-        <target xml:lang="fr" state="needs-translation">Language</target>
-        <note>key: locationview.versions.language</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5037377a0c7dc615547308d1ed82755e31176c03" resname="locationview.versions.last.saved">
-        <source>Last saved</source>
-        <target xml:lang="fr" state="needs-translation">Last saved</target>
-        <note>key: locationview.versions.last.saved</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5d85516ece7ea51edb1fcff89135831903ab916b" resname="locationview.versions.loading.archived.list">
-        <source>Loading the archived version list</source>
-        <target xml:lang="fr" state="needs-translation">Loading the archived version list</target>
-        <note>key: locationview.versions.loading.archived.list</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3362319e8e1f3885e6c6e0bfadf77d7c5774f106" resname="locationview.versions.loading.draft.list">
-        <source>Loading the draft list</source>
-        <target xml:lang="fr" state="needs-translation">Loading the draft list</target>
-        <note>key: locationview.versions.loading.draft.list</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f5e46b4632894a0a9a2b38eda614267de3e5e229" resname="locationview.versions.loading.published.list">
-        <source>Loading the published version list</source>
-        <target xml:lang="fr" state="needs-translation">Loading the published version list</target>
-        <note>key: locationview.versions.loading.published.list</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="ab40edd4e3d49edea2de3a5e5339cc9527c9ff03" resname="locationview.versions.new.draft.selected.version">
-        <source>New draft based on selected version</source>
-        <target xml:lang="fr" state="needs-translation">New draft based on selected version</target>
-        <note>key: locationview.versions.new.draft.selected.version</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="bd9a1564891fdc81516078f86ecdb11dd212e86d" resname="locationview.versions.published.version">
-        <source>Published version</source>
-        <target xml:lang="fr" state="needs-translation">Published version</target>
-        <note>key: locationview.versions.published.version</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="51b6a4fff074bf24fc4183bc944890cc849ba82d" resname="locationview.versions.remove.selected.archived.version">
-        <source>Remove selected archived version(s)</source>
-        <target xml:lang="fr" state="needs-translation">Remove selected archived version(s)</target>
-        <note>key: locationview.versions.remove.selected.archived.version</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="199990450f06a84725d61f91a899166d0d3305c4" resname="locationview.versions.version">
-        <source>Version</source>
-        <target xml:lang="fr" state="needs-translation">Version</target>
-        <note>key: locationview.versions.version</note>
-        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9f2228ea94634afa4c264cfa0b36b5f08d653298" resname="moved.under">
-        <source>'%name%' has been successfully moved under '%parentName%'</source>
-        <target xml:lang="fr" state="needs-translation">'%name%' has been successfully moved under '%parentName%'</target>
-        <note>key: moved.under</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f67a3e91c4d5aa8aac6c72fe7027dfba73eb1a4f" resname="rawcontent.content">
-        <source>Content</source>
-        <target xml:lang="fr" state="needs-translation">Content</target>
-        <note>key: rawcontent.content</note>
-        <jms:reference-file>./Resources/public/templates/rawcontent.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9ec896e824bd9e4181a3a6fbc7514c0dba5dde3d" resname="removed.locations.of">
-        <source>%count% location(s) of "%name%" have been removed</source>
-        <target xml:lang="fr" state="needs-translation">%count% location(s) of "%name%" have been removed</target>
-        <note>key: removed.locations.of</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationremoveplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9e5f98b5c3f285bd15fc0a0a23b3a42c2faa47ea" resname="removed.versions.of">
-        <source>%count% version(s) of "%name%" have been removed</source>
-        <target xml:lang="fr" state="needs-translation">%count% version(s) of "%name%" have been removed</target>
-        <note>key: removed.versions.of</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-versionsplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="acf9100e800a6f1f4f9fa47d8958d512a5729f06" resname="removing.locations.for">
-        <source>Removing locations for "%name%"</source>
-        <target xml:lang="fr" state="needs-translation">Removing locations for "%name%"</target>
-        <note>key: removing.locations.for</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationremoveplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6bf8a2da889909164b44ea5b8942e18acb8f29b1" resname="removing.versions.for">
-        <source>Removing versions for "%name%"</source>
-        <target xml:lang="fr" state="needs-translation">Removing versions for "%name%"</target>
-        <note>key: removing.versions.for</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-versionsplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="ae688447d6a0779e33bdbb155806278928d5ec7e" resname="select.location.move.to">
-        <source>Select the location you want to move your content into</source>
-        <target xml:lang="fr" state="needs-translation">Select the location you want to move your content into</target>
-        <note>key: select.location.move.to</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2ebde9679f8621dde1a0069e592eaf1164583c74" resname="select.location.to.swap">
-        <source>Select the location you want to swap with the given one</source>
-        <target xml:lang="fr" state="needs-translation">Select the location you want to swap with the given one</target>
-        <note>key: select.location.to.swap</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationswapplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c3a7268c770036494e916618aae9927d0a353773" resname="sending.to.trash">
-        <source>Sending '%name%' to Trash</source>
-        <target xml:lang="fr" state="needs-translation">Sending '%name%' to Trash</target>
-        <note>key: sending.to.trash</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8766b28d763385b40a48711bd66412d5f4d0f609" resname="sent.to.trash">
-        <source>"%name%" sent to Trash</source>
-        <target xml:lang="fr" state="needs-translation">"%name%" sent to Trash</target>
-        <note>key: sent.to.trash</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5fa3c429a7ffda07ccc05013a851a2beafee966d" resname="sort.content.type.identifier">
-        <source>Content type identifier</source>
-        <target xml:lang="fr" state="needs-translation">Content type identifier</target>
-        <note>key: sort.content.type.identifier</note>
-        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="62a66a9c02d5728bbc517a5d7c11889990cbed12" resname="sort.content.type.name">
-        <source>Content type name</source>
-        <target xml:lang="fr" state="needs-translation">Content type name</target>
-        <note>key: sort.content.type.name</note>
-        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3fc89a073d545b17319f4926105bf536a2481795" resname="sort.depth">
-        <source>Location depth</source>
-        <target xml:lang="fr" state="needs-translation">Location depth</target>
-        <note>key: sort.depth</note>
-        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="8e3b63eca8c0b79018040b44d8ee39701824a187" resname="sort.modified">
-        <source>Modification date</source>
-        <target xml:lang="fr" state="needs-translation">Modification date</target>
-        <note>key: sort.modified</note>
-        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="4f2fcdfe68ca50269b9c334594a8acd1a688809f" resname="sort.name">
-        <source>Content name</source>
-        <target xml:lang="fr" state="needs-translation">Content name</target>
-        <note>key: sort.name</note>
-        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="668f8150c4acd0a0c8075de8b794639b8b4a6519" resname="sort.path">
-        <source>Location path</source>
-        <target xml:lang="fr" state="needs-translation">Location path</target>
-        <note>key: sort.path</note>
-        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="bcb9183148c577a8a232c08847dff0c1647e62e7" resname="sort.priority">
-        <source>Priority</source>
-        <target xml:lang="fr" state="needs-translation">Priority</target>
-        <note>key: sort.priority</note>
-        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="033291f867da64bfb4f9db9ec1b3c947b1e431c5" resname="sort.published">
-        <source>Publication date</source>
-        <target xml:lang="fr" state="needs-translation">Publication date</target>
-        <note>key: sort.published</note>
-        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f0ec72293071715721e084ed98b6ceb112aae22b" resname="sort.section">
-        <source>Section</source>
-        <target xml:lang="fr" state="needs-translation">Section</target>
-        <note>key: sort.section</note>
-        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="52f0c0ed206437d87ca936e0c9b3d4dcf799269d" resname="swapped.location.for.with">
-        <source>Location for "%name%" has been swapped with "%destinationName%"</source>
-        <target xml:lang="fr" state="needs-translation">Location for "%name%" has been swapped with "%destinationName%"</target>
-        <note>key: swapped.location.for.with</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationswapplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="dcb6122be8a1d8ef5aac7e14ba12d8c9729b91e1" resname="swapping.location.for">
-        <source>Swaping location for "%name%"</source>
-        <target xml:lang="fr" state="needs-translation">Swaping location for "%name%"</target>
-        <note>key: swapping.location.for</note>
-        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationswapplugin.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5cf5c23d5f73b6493879db84d39bf6a05940242f" resname="updated.sort.method">
-        <source>The sub-items sort method has been correctly updated</source>
-        <target xml:lang="fr" state="needs-translation">The sub-items sort method has been correctly updated</target>
-        <note>key: updated.sort.method</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="420b18708dcd8de83f92b2cfdeafad23fd6b80a7" resname="updating.sort.method">
-        <source>Updating the sub-items sort method</source>
-        <target xml:lang="fr" state="needs-translation">Updating the sub-items sort method</target>
-        <note>key: updating.sort.method</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
-      </trans-unit>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </body>
   </file>
 </xliff>
