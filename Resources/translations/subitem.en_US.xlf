@@ -48,9 +48,6 @@
         <note>key: show.more.results</note>
         <jms:reference-file>./Resources/public/templates/subitem/grid.hbt</jms:reference-file>
         <jms:reference-file>./Resources/public/templates/subitem/listmore.hbt</jms:reference-file>
-        <alt-trans>
-          <target xml:lang="en"><![CDATA[Show <span class="ez-loadmorepagination-more-count">%remainingCount%</span> more results]]></target>
-        </alt-trans>
       </trans-unit>
       <trans-unit id="a48dcd8c90a5ec18b087c64865a8aaeddb83107c" resname="subitem.error.loading.image" approved="yes">
         <source>An error occurred while loading the image.</source>
@@ -122,9 +119,6 @@
         <note>key: viewing.out.of.items</note>
         <jms:reference-file>./Resources/public/templates/subitem/grid.hbt</jms:reference-file>
         <jms:reference-file>./Resources/public/templates/subitem/listmore.hbt</jms:reference-file>
-        <alt-trans>
-          <target xml:lang="en"><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%searchResultCount%</strong> items]]></target>
-        </alt-trans>
       </trans-unit>
     </body>
   </file>
