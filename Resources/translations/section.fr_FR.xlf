@@ -1,121 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="fr" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="36aaf69db32866a9c2dd745ef9f7a643" resname="section.list">
-        <source>section.list</source>
-        <target xml:lang="fr" state="needs-translation">section.list</target>
+      <trans-unit id="2fde2228bf4d0451dce51640519824f39dca0ad9" resname="assigned.section">
+        <source>Section "%sectionName%" assigned to %count% contents</source>
+        <target xml:lang="fr" state="needs-translation">Section "%sectionName%" assigned to %count% contents</target>
+        <note>key: assigned.section</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-sectionserversideviewservice.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="d588dd1c265006f31dbb8368dda58226" resname="section.name">
-        <source>section.name</source>
-        <target xml:lang="fr" state="needs-translation">section.name</target>
+      <trans-unit id="f7e3a4c368276a309c136f36ba4b0fde89f8258f" resname="assigning.section">
+        <source>Assigning the section "%sectionName%" to %count% contents</source>
+        <target xml:lang="fr" state="needs-translation">Assigning the section "%sectionName%" to %count% contents</target>
+        <note>key: assigning.section</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-sectionserversideviewservice.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="6bb9217795bc1c5903f07476a0db6478" resname="section.identifier">
-        <source>section.identifier</source>
-        <target xml:lang="fr" state="needs-translation">section.identifier</target>
+      <trans-unit id="5752d1a75675e5cd0fde02a23eb424313e42e4c9" resname="section.assign.contents">
+        <source>Assign to content</source>
+        <target xml:lang="fr" state="needs-translation">Assign to content</target>
+        <note>key: section.assign.contents</note>
+        <jms:reference-file line="23">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="75">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="79">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="1fdda1fb639ca79024d03e086790198c" resname="section.id">
-        <source>section.id</source>
-        <target xml:lang="fr" state="needs-translation">section.id</target>
+      <trans-unit id="6e9972f315911664e7e596892c4cce1c3319a6ba" resname="section.assign.universaldiscovery.title">
+        <source>Pick the Content items to assign to section "%sectionName%"</source>
+        <target xml:lang="fr" state="needs-translation">Pick the Content items to assign to section "%sectionName%"</target>
+        <note>key: section.assign.universaldiscovery.title</note>
+        <jms:reference-file line="19">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="71">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="74">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="be3def83a46457e29924c29510691bb9" resname="section.assigned.content">
-        <source>section.assigned.content</source>
-        <target xml:lang="fr" state="needs-translation">section.assigned.content</target>
+      <trans-unit id="bbcee03105f9504c94923b141d067d28d1d7ec54" resname="section.assigned.content">
+        <source>Assigned Content items</source>
+        <target xml:lang="fr" state="needs-translation">Assigned Content items</target>
+        <note>key: section.assigned.content</note>
+        <jms:reference-file line="58">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="bd9bc055699bd779f27ce1c3b2e0121d" resname="section.edit">
-        <source>section.edit</source>
-        <target xml:lang="fr" state="needs-translation">section.edit</target>
+      <trans-unit id="b3a79602ff55ce138d41cd00a9d93ff6a6324604" resname="section.assigned.contentcount">
+        <source xml:space="preserve">{0} This section is assigned to %contentCount% content items.|{1} This section is assigned to
+                    %contentCount% content item.|]1,Inf[ This section is assigned to %contentCount% content items
+                </source>
+        <target xml:space="preserve" xml:lang="fr" state="needs-translation">{0} This section is assigned to %contentCount% content items.|{1} This section is assigned to
+                    %contentCount% content item.|]1,Inf[ This section is assigned to %contentCount% content items
+                </target>
+        <note>key: section.assigned.contentcount</note>
+        <jms:reference-file line="41">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="8a0af0dc53d7aae987d698237d39b11a" resname="section.new">
-        <source>section.new</source>
-        <target xml:lang="fr" state="needs-translation">section.new</target>
+      <trans-unit id="0a8c9188f868f7dfd2f523d0d1eabeb846d39d03" resname="section.cancel">
+        <source>Cancel</source>
+        <target xml:lang="fr" state="needs-translation">Cancel</target>
+        <note>key: section.cancel</note>
+        <jms:reference-file line="52">/../../../../.././Resources/views/Section/edit.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="b2e01fb6617d17c162d59f0fb93da661" resname="section.remove.selected">
-        <source>section.remove.selected</source>
-        <target xml:lang="fr" state="needs-translation">section.remove.selected</target>
+      <trans-unit id="8ca211181d27cce804802165a8831f0b6c06214a" resname="section.content.translate">
+        <source>Content items in this section (%contentCount%)</source>
+        <target xml:lang="fr" state="needs-translation">Content items in this section (%contentCount%)</target>
+        <note>key: section.content.translate</note>
+        <jms:reference-file line="23">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="a1388bfac224ede1622fd041e51384e0" resname="section.view.title">
-        <source>section.view.title</source>
-        <target xml:lang="fr" state="needs-translation">section.view.title</target>
+      <trans-unit id="3fae3294ca2968e5ba3890490c9dbee999176d96" resname="section.create.title">
+        <source>Creating a new section</source>
+        <target xml:lang="fr" state="needs-translation">Creating a new section</target>
+        <note>key: section.create.title</note>
+        <jms:reference-file line="11">/../../../../.././Resources/views/Section/create.html.twig</jms:reference-file>
+        <jms:reference-file line="18">/../../../../.././Resources/views/Section/create.html.twig</jms:reference-file>
+        <jms:reference-file line="5">/../../../../.././Resources/views/Section/create.html.twig</jms:reference-file>
+        <jms:reference-file line="5">/../../../../.././Resources/views/Section/edit.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="c56da0cc0963c5167293932e4409d502" resname="section.assigned.contentcount">
-        <source>section.assigned.contentcount</source>
-        <target xml:lang="fr" state="needs-translation">section.assigned.contentcount</target>
+      <trans-unit id="21bb6cc5af5d7f7dafbb30cc73cfba180dc68803" resname="section.deleted">
+        <source>The Section "%sectionName%" was correctly deleted.</source>
+        <target xml:lang="fr" state="needs-translation">The Section "%sectionName%" was correctly deleted.</target>
+        <note>key: section.deleted</note>
+        <jms:reference-file line="110">/../../../../.././Controller/SectionController.php</jms:reference-file>
       </trans-unit>
-      <trans-unit id="8a8d0e8570dc63672a52d3aad782ae41" resname="section.content.translate">
-        <source>section.content.translate</source>
-        <target xml:lang="fr" state="needs-translation">section.content.translate</target>
+      <trans-unit id="7c2d7a21eb806db794990d728749dde1592be63e" resname="section.edit">
+        <source>Edit</source>
+        <target xml:lang="fr" state="needs-translation">Edit</target>
+        <note>key: section.edit</note>
+        <jms:reference-file line="26">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="79">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="81">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="49">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
+        <jms:reference-file line="53">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="967b7e408a5f43a03f44c7cf479855db" resname="section.create.title">
-        <source>section.create.title</source>
-        <target xml:lang="fr" state="needs-translation">section.create.title</target>
+      <trans-unit id="3b5c5266ffd834f2a4eeea816b49d5fcfac4d608" resname="section.edit.title">
+        <source>Editing the section "%sectionName%"</source>
+        <target xml:lang="fr" state="needs-translation">Editing the section "%sectionName%"</target>
+        <note>key: section.edit.title</note>
+        <jms:reference-file line="5">/../../../../.././Resources/views/Section/edit.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="f3c4115b0fe3b3ada04e69e775c2db2c" resname="section.edit.title">
-        <source>section.edit.title</source>
-        <target xml:lang="fr" state="needs-translation">section.edit.title</target>
+      <trans-unit id="bcb0a8eedc29344eb4ad95a02dd684438aae1df6" resname="section.id">
+        <source>Section ID</source>
+        <target xml:lang="fr" state="needs-translation">Section ID</target>
+        <note>key: section.id</note>
+        <jms:reference-file line="57">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="007cd5845351d36a9ec70173d2b44bb2" resname="section.name.label">
-        <source>section.name.label</source>
-        <target xml:lang="fr" state="needs-translation">section.name.label</target>
+      <trans-unit id="63039a13119dd5a53e5eb66cd798b3c323b57a5b" resname="section.id.label">
+        <source>Section ID:</source>
+        <target xml:lang="fr" state="needs-translation">Section ID:</target>
+        <note>key: section.id.label</note>
+        <jms:reference-file line="36">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="3de80c254c9555ad1347b034f93f3095" resname="section.identifier.label">
-        <source>section.identifier.label</source>
-        <target xml:lang="fr" state="needs-translation">section.identifier.label</target>
+      <trans-unit id="54e249fceb2f506942f7f0ae30107a734b9b3fe5" resname="section.identifier">
+        <source>Section identifier</source>
+        <target xml:lang="fr" state="needs-translation">Section identifier</target>
+        <note>key: section.identifier</note>
+        <jms:reference-file line="56">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="f066f9960df2f81907c3680c9148cef5" resname="section.id.label">
-        <source>section.id.label</source>
-        <target xml:lang="fr" state="needs-translation">section.id.label</target>
+      <trans-unit id="4a040adfce6771857aef17cf0dbb596f2dee2e70" resname="section.identifier.label">
+        <source>Section identifier:</source>
+        <target xml:lang="fr" state="needs-translation">Section identifier:</target>
+        <note>key: section.identifier.label</note>
+        <jms:reference-file line="32">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="751bbc52342db46a046c52c4dc0b6b00" resname="section.label.edit">
-        <source>section.label.edit</source>
-        <target xml:lang="fr" state="needs-translation">section.label.edit</target>
+      <trans-unit id="1f9b6e37416ff607de9d4fa280dce2f734ea622c" resname="section.list">
+        <source>Sections</source>
+        <target xml:lang="fr" state="needs-translation">Sections</target>
+        <note>key: section.list</note>
+        <jms:reference-file line="14">/../../../../.././Resources/views/Dashboard/dashboard.html.twig</jms:reference-file>
+        <jms:reference-file line="10">/../../../../.././Resources/views/Section/create.html.twig</jms:reference-file>
+        <jms:reference-file line="14">/../../../../.././Resources/views/Section/edit.html.twig</jms:reference-file>
+        <jms:reference-file line="115">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="39">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="45">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="8">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="60ff6d8b447be276d65797a5244d79c3" resname="section.error.id_already_exist">
-        <source>section.error.id_already_exist</source>
-        <target xml:lang="fr" state="needs-translation">section.error.id_already_exist</target>
+      <trans-unit id="376986256605f27a204911de172c7bca4bd8e3b6" resname="section.name">
+        <source>Section name</source>
+        <target xml:lang="fr" state="needs-translation">Section name</target>
+        <note>key: section.name</note>
+        <jms:reference-file line="55">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="85af0dc2a9b83eb5cfc7871a73cbeab9" resname="section.create.submit">
-        <source>section.create.submit</source>
-        <target xml:lang="fr" state="needs-translation">section.create.submit</target>
+      <trans-unit id="801aa4a73e669a7f454798a3d5e44b40899e51f1" resname="section.name.label">
+        <source>Section name:</source>
+        <target xml:lang="fr" state="needs-translation">Section name:</target>
+        <note>key: section.name.label</note>
+        <jms:reference-file line="28">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="a641bdbba63599811dfc893e7e753288" resname="section.cancel">
-        <source>section.cancel</source>
-        <target xml:lang="fr" state="needs-translation">section.cancel</target>
+      <trans-unit id="12023a25e9c04ceef708820416f14a5a1e188688" resname="section.new">
+        <source>Create a new section</source>
+        <target xml:lang="fr" state="needs-translation">Create a new section</target>
+        <note>key: section.new</note>
+        <jms:reference-file line="105">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
+        <jms:reference-file line="107">/../../../../.././Resources/views/Section/list.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="fc5ac273e8d8e9ad2f6a294e79733ce2" resname="section.deleted">
-        <source>section.deleted</source>
-        <target xml:lang="fr" state="needs-translation">section.deleted</target>
+      <trans-unit id="73477cdb03483ff68ff67d6a840516b4bcf6e64e" resname="section.notification.created">
+        <source>The section "%sectionName%" was correctly created.</source>
+        <target xml:lang="fr" state="needs-translation">The section "%sectionName%" was correctly created.</target>
+        <note>key: section.notification.created</note>
+        <jms:reference-file line="46">/../../../../.././Form/Processor/SectionFormProcessor.php</jms:reference-file>
       </trans-unit>
-      <trans-unit id="1bf9bdce5e87c98df324d43e717d9d85" resname="section.assign.universaldiscovery.title">
-        <source>section.assign.universaldiscovery.title</source>
-        <target xml:lang="fr" state="needs-translation">section.assign.universaldiscovery.title</target>
+      <trans-unit id="a032c9aa18da02d8892f1cc17d13efbcef32417b" resname="section.notification.updated">
+        <source>The section "%sectionName%" was correctly saved.</source>
+        <target xml:lang="fr" state="needs-translation">The section "%sectionName%" was correctly saved.</target>
+        <note>key: section.notification.updated</note>
+        <jms:reference-file line="48">/../../../../.././Form/Processor/SectionFormProcessor.php</jms:reference-file>
       </trans-unit>
-      <trans-unit id="058b034a4aa957ab59f853e8375ff2b3" resname="section.assign.contents">
-        <source>section.assign.contents</source>
-        <target xml:lang="fr" state="needs-translation">section.assign.contents</target>
-      </trans-unit>
-      <trans-unit id="e7f8101140500c3177fe61e8dd107f32" resname="section.notification.created">
-        <source>section.notification.created</source>
-        <target xml:lang="fr" state="needs-translation">section.notification.created</target>
-      </trans-unit>
-      <trans-unit id="376ae4cc5cbf22edf13f352450b9ce36" resname="section.notification.updated">
-        <source>section.notification.updated</source>
-        <target xml:lang="fr" state="needs-translation">section.notification.updated</target>
-      </trans-unit>
-      <trans-unit id="e932eec7fdc19b9f78dc3ae3d4e9c3d9" resname="section.notification.draft_removed">
-        <source>section.notification.draft_removed</source>
-        <target xml:lang="fr" state="needs-translation">section.notification.draft_removed</target>
-      </trans-unit>
-      <trans-unit id="0c6dfbff3ff21d5b31b96e4593ba9cc7" resname="assigning.section">
-        <source>assigning.section</source>
-        <target xml:lang="fr" state="needs-translation">assigning.section</target>
-      </trans-unit>
-      <trans-unit id="0bae812b55cc894591744d2dd479cd11" resname="assigned.section">
-        <source>assigned.section</source>
-        <target xml:lang="fr" state="needs-translation">assigned.section</target>
+      <trans-unit id="7ca9da842cdea433f0a9e05a8c6b135def0bc6e3" resname="section.view.title">
+        <source>Section: %sectionName%</source>
+        <target xml:lang="fr" state="needs-translation">Section: %sectionName%</target>
+        <note>key: section.view.title</note>
+        <jms:reference-file line="17">/../../../../.././Resources/views/Section/edit.html.twig</jms:reference-file>
+        <jms:reference-file line="16">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
+        <jms:reference-file line="86">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
+        <jms:reference-file line="9">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
       </trans-unit>
     </body>
   </file>
