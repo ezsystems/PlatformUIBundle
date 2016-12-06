@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="3883567b167de8cb80d35b5511771914" resname="subitem.no.subitem">
+        <source>subitem.no.subitem</source>
+        <target xml:lang="fr" state="needs-translation">subitem.no.subitem</target>
+      </trans-unit>
+      <trans-unit id="16245e895ed8c82d945fee889be41d1b" resname="subitem.error.loading.image">
+        <source>subitem.error.loading.image</source>
+        <target xml:lang="fr" state="needs-translation">subitem.error.loading.image</target>
+      </trans-unit>
+      <trans-unit id="d22bf1ca75120ea5dd691f5e21bc5b7c" resname="subitem.retry">
+        <source>subitem.retry</source>
+        <target xml:lang="fr" state="needs-translation">subitem.retry</target>
+      </trans-unit>
+      <trans-unit id="b9492e63640c9f35e788802fa6116eef" resname="subitem.error.loading.list">
+        <source>subitem.error.loading.list</source>
+        <target xml:lang="fr" state="needs-translation">subitem.error.loading.list</target>
+      </trans-unit>
+      <trans-unit id="3ddb6e8dd639dadf342ced7ae631ca3c" resname="subitem.first">
+        <source>subitem.first</source>
+        <target xml:lang="fr" state="needs-translation">subitem.first</target>
+      </trans-unit>
+      <trans-unit id="0afe69746051b11bee14b94bc91a09d6" resname="subitem.previous">
+        <source>subitem.previous</source>
+        <target xml:lang="fr" state="needs-translation">subitem.previous</target>
+      </trans-unit>
+      <trans-unit id="838ef298d67a9bf29a5d62b824cd2e77" resname="subitem.next">
+        <source>subitem.next</source>
+        <target xml:lang="fr" state="needs-translation">subitem.next</target>
+      </trans-unit>
+      <trans-unit id="c8c9c9c616ed7b5a730ee796b85ff386" resname="subitem.last">
+        <source>subitem.last</source>
+        <target xml:lang="fr" state="needs-translation">subitem.last</target>
+      </trans-unit>
+      <trans-unit id="16d1ca2f90557e00680562a475a4db75" resname="subitem.subitems">
+        <source>subitem.subitems</source>
+        <target xml:lang="fr" state="needs-translation">subitem.subitems</target>
+      </trans-unit>
+      <trans-unit id="e77285a90b5a02080b61ebe00aa3c123" resname="viewing.out.of.items">
+        <source>viewing.out.of.items</source>
+        <target xml:lang="fr" state="needs-translation">viewing.out.of.items</target>
+      </trans-unit>
+      <trans-unit id="589cf891cd3ad3cc4db8197ef1e32f92" resname="show.more.results">
+        <source>show.more.results</source>
+        <target xml:lang="fr" state="needs-translation">show.more.results</target>
+      </trans-unit>
+      <trans-unit id="7787b9b9dc6daf9179963f8b1ea560bb" resname="list.view">
+        <source>list.view</source>
+        <target xml:lang="fr" state="needs-translation">list.view</target>
+      </trans-unit>
+      <trans-unit id="b068931cc450442b63f5b3d276ea4297" resname="name">
+        <source>name</source>
+        <target xml:lang="fr" state="needs-translation">name</target>
+      </trans-unit>
+      <trans-unit id="9ae73c65f418e6f79ceb4f0e4a4b98d5" resname="modified">
+        <source>modified</source>
+        <target xml:lang="fr" state="needs-translation">modified</target>
+      </trans-unit>
+      <trans-unit id="f6ad414f8441807856aba8e12f3de4f5" resname="content.type">
+        <source>content.type</source>
+        <target xml:lang="fr" state="needs-translation">content.type</target>
+      </trans-unit>
+      <trans-unit id="b988295c268025b49dfb3df26171ddc3" resname="priority">
+        <source>priority</source>
+        <target xml:lang="fr" state="needs-translation">priority</target>
+      </trans-unit>
+      <trans-unit id="2ed18fafe4199c7cfc187fdb2a5b1a66" resname="translations">
+        <source>translations</source>
+        <target xml:lang="fr" state="needs-translation">translations</target>
+      </trans-unit>
+      <trans-unit id="18b3d420b7ba1e4dad05d049b887e387" resname="grid.view">
+        <source>grid.view</source>
+        <target xml:lang="fr" state="needs-translation">grid.view</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
