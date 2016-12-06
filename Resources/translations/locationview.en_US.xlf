@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="ec6bad396810c74068261b55cc7842c0" resname="rawcontent.content">
+        <source>rawcontent.content</source>
+        <target xml:lang="en" state="needs-translation">rawcontent.content</target>
+      </trans-unit>
+      <trans-unit id="fdebbdb6b33acdce757976a6b2bd789c" resname="locationview.details.title">
+        <source>locationview.details.title</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.title</target>
+      </trans-unit>
+      <trans-unit id="1a3fca998c2afb303c5e9e2495d6d7fd" resname="locationview.details.creator">
+        <source>locationview.details.creator</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.creator</target>
+      </trans-unit>
+      <trans-unit id="b7dd57d3f91bbf9b3fa2b423f9343654" resname="locationview.details.errorcreator">
+        <source>locationview.details.errorcreator</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.errorcreator</target>
+      </trans-unit>
+      <trans-unit id="b0d69fc52d38b836bef824f494b5bb1a" resname="locationview.details.loadingcreator">
+        <source>locationview.details.loadingcreator</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.loadingcreator</target>
+      </trans-unit>
+      <trans-unit id="1455b9610be563fd1965800e369aae43" resname="locationview.details.lastcontributor">
+        <source>locationview.details.lastcontributor</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.lastcontributor</target>
+      </trans-unit>
+      <trans-unit id="18a52024ef48ef27fd4f986058bd4a4a" resname="locationview.details.errorcontributor">
+        <source>locationview.details.errorcontributor</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.errorcontributor</target>
+      </trans-unit>
+      <trans-unit id="3e130919238ab18ee350fa74dc10ff4c" resname="locationview.details.loadingcontributor">
+        <source>locationview.details.loadingcontributor</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.loadingcontributor</target>
+      </trans-unit>
+      <trans-unit id="9372965ca8d9c7bd79ac0baeaa8a68db" resname="locationview.details.translations">
+        <source>locationview.details.translations</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.translations</target>
+      </trans-unit>
+      <trans-unit id="ea38573ef109bef20b00aa86765a3e09" resname="locationview.details.retry">
+        <source>locationview.details.retry</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.retry</target>
+      </trans-unit>
+      <trans-unit id="f029230effe8b86704b0cd6e93627550" resname="locationview.details.technicaldetails">
+        <source>locationview.details.technicaldetails</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.technicaldetails</target>
+      </trans-unit>
+      <trans-unit id="43243c62c72fa8db1ff55e1f5826c9c8" resname="locationview.details.contentid">
+        <source>locationview.details.contentid</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.contentid</target>
+      </trans-unit>
+      <trans-unit id="0c493c8609b3a07905536e4a60066dfc" resname="locationview.details.locationid">
+        <source>locationview.details.locationid</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.locationid</target>
+      </trans-unit>
+      <trans-unit id="b1389c6d4a5d86f0ce60f1dae2f8a245" resname="locationview.details.contentremoteid">
+        <source>locationview.details.contentremoteid</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.contentremoteid</target>
+      </trans-unit>
+      <trans-unit id="83a431903da44bf75cbeddf08dcbab76" resname="locationview.details.remoteid">
+        <source>locationview.details.remoteid</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.remoteid</target>
+      </trans-unit>
+      <trans-unit id="91e040e317bc115d1d9d73d191dbcae8" resname="locationview.details.subitems.default.ordering">
+        <source>locationview.details.subitems.default.ordering</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.subitems.default.ordering</target>
+      </trans-unit>
+      <trans-unit id="f4e95719cd456c9f4ef95b7b84884237" resname="locationview.details.default.listing.of.subitems.by">
+        <source>locationview.details.default.listing.of.subitems.by</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.default.listing.of.subitems.by</target>
+      </trans-unit>
+      <trans-unit id="9ba79d704fbb3e3ed12070f23d003408" resname="locationview.details.ascending">
+        <source>locationview.details.ascending</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.ascending</target>
+      </trans-unit>
+      <trans-unit id="d4ed1f2e03c8e283495e709ed1674f5d" resname="locationview.details.desceding">
+        <source>locationview.details.desceding</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.desceding</target>
+      </trans-unit>
+      <trans-unit id="0d686143b05c238b39b6d8a90d6ac374" resname="locationview.locations.location.list.error">
+        <source>locationview.locations.location.list.error</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.location.list.error</target>
+      </trans-unit>
+      <trans-unit id="d98cce45f72a73debff69ccc9003c052" resname="locationview.retry">
+        <source>locationview.retry</source>
+        <target xml:lang="en" state="needs-translation">locationview.retry</target>
+      </trans-unit>
+      <trans-unit id="92a33cabe655a66c7ae9ddc5b937aaff" resname="locationview.locations.path">
+        <source>locationview.locations.path</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.path</target>
+      </trans-unit>
+      <trans-unit id="a7beb6292defe3596087a75ce8a4c447" resname="locationview.locations.subitems">
+        <source>locationview.locations.subitems</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.subitems</target>
+      </trans-unit>
+      <trans-unit id="6098dd3e06d9b7a585c0842ba28338a5" resname="locationview.locations.visibility">
+        <source>locationview.locations.visibility</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.visibility</target>
+      </trans-unit>
+      <trans-unit id="5ab3a76ba7373173bac0ea9435b9cc3d" resname="locationview.locations.main">
+        <source>locationview.locations.main</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.main</target>
+      </trans-unit>
+      <trans-unit id="f716e2b4f38761d244db448451fb1248" resname="locationview.locations.reveal">
+        <source>locationview.locations.reveal</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.reveal</target>
+      </trans-unit>
+      <trans-unit id="ffeb5b4ea0fcac3800953a368b62f551" resname="locationview.locations.loading.location.list">
+        <source>locationview.locations.loading.location.list</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.loading.location.list</target>
+      </trans-unit>
+      <trans-unit id="90a31d3e62f17cb242c5f55f6616e70b" resname="locationview.locations.remove.selected">
+        <source>locationview.locations.remove.selected</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.remove.selected</target>
+      </trans-unit>
+      <trans-unit id="01c3bd7ce587d955510529418a6bd1be" resname="locationview.locations.add.location">
+        <source>locationview.locations.add.location</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.add.location</target>
+      </trans-unit>
+      <trans-unit id="1a70cfea404291727cc55ce2f60248da" resname="locationview.locations.swap.with.another">
+        <source>locationview.locations.swap.with.another</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.swap.with.another</target>
+      </trans-unit>
+      <trans-unit id="05e6218486f2260611fb0d7160f048dd" resname="locationview.locations.select.content.item">
+        <source>locationview.locations.select.content.item</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.select.content.item</target>
+      </trans-unit>
+      <trans-unit id="533b38bd35d43f6de2699b478f7e67d4" resname="locationview.locations.hidden">
+        <source>locationview.locations.hidden</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.hidden</target>
+      </trans-unit>
+      <trans-unit id="52dd4e9154b04a4bc5af625d2e134510" resname="locationview.locations.hidden.by.superior">
+        <source>locationview.locations.hidden.by.superior</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.hidden.by.superior</target>
+      </trans-unit>
+      <trans-unit id="05ae6556a57b2fd331218d3922277318" resname="locationview.locations.visible">
+        <source>locationview.locations.visible</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.visible</target>
+      </trans-unit>
+      <trans-unit id="fffd15854c6376494cf6db75143ecf51" resname="locationview.locations.hide">
+        <source>locationview.locations.hide</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.hide</target>
+      </trans-unit>
+      <trans-unit id="d5300be986c1f8b79194ce95dd533330" resname="locationview.relations.error.loading.related">
+        <source>locationview.relations.error.loading.related</source>
+        <target xml:lang="en" state="needs-translation">locationview.relations.error.loading.related</target>
+      </trans-unit>
+      <trans-unit id="6537554254869d605b1022788cccdfb9" resname="locationview.relations.content">
+        <source>locationview.relations.content</source>
+        <target xml:lang="en" state="needs-translation">locationview.relations.content</target>
+      </trans-unit>
+      <trans-unit id="90d267e68e89138349b8b399a0bbae9d" resname="locationview.relations.relation.type">
+        <source>locationview.relations.relation.type</source>
+        <target xml:lang="en" state="needs-translation">locationview.relations.relation.type</target>
+      </trans-unit>
+      <trans-unit id="489bb9fc65e5556ad3e44344fee73612" resname="locationview.relations.no.related.content">
+        <source>locationview.relations.no.related.content</source>
+        <target xml:lang="en" state="needs-translation">locationview.relations.no.related.content</target>
+      </trans-unit>
+      <trans-unit id="f7d1c943778d2f3d38ab8b3c42e4cd9f" resname="locationview.versions.version">
+        <source>locationview.versions.version</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.version</target>
+      </trans-unit>
+      <trans-unit id="f1a26f052987f5bd4987cbe5a2b2b430" resname="locationview.versions.language">
+        <source>locationview.versions.language</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.language</target>
+      </trans-unit>
+      <trans-unit id="7159c01a78447026ed43f0a542027c9c" resname="locationview.versions.author">
+        <source>locationview.versions.author</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.author</target>
+      </trans-unit>
+      <trans-unit id="fe670d86240f3f6fac4165d71d1d87ca" resname="locationview.versions.created">
+        <source>locationview.versions.created</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.created</target>
+      </trans-unit>
+      <trans-unit id="1d05e4f29b937597a182cd742821e39c" resname="locationview.versions.last.saved">
+        <source>locationview.versions.last.saved</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.last.saved</target>
+      </trans-unit>
+      <trans-unit id="bfd927ffc6467335e9215f07ba643c55" resname="locationview.versions.edit.selected.draft">
+        <source>locationview.versions.edit.selected.draft</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.edit.selected.draft</target>
+      </trans-unit>
+      <trans-unit id="bdf064d2b316c5457b7b3546a7543207" resname="locationview.versions.delete.selected.draft">
+        <source>locationview.versions.delete.selected.draft</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.delete.selected.draft</target>
+      </trans-unit>
+      <trans-unit id="5cc451bc29b7ed569fb92f50e6e26cd5" resname="locationview.versions.loading.draft.list">
+        <source>locationview.versions.loading.draft.list</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.loading.draft.list</target>
+      </trans-unit>
+      <trans-unit id="b759e1eb7c9eac77e26cc895e5592192" resname="locationview.versions.loading.published.list">
+        <source>locationview.versions.loading.published.list</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.loading.published.list</target>
+      </trans-unit>
+      <trans-unit id="f65e933e7f5099aed4c856a7aca809bd" resname="locationview.versions.new.draft.selected.version">
+        <source>locationview.versions.new.draft.selected.version</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.new.draft.selected.version</target>
+      </trans-unit>
+      <trans-unit id="6abd57a654107c0753f4f5f229636a40" resname="locationview.versions.remove.selected.archived.version">
+        <source>locationview.versions.remove.selected.archived.version</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.remove.selected.archived.version</target>
+      </trans-unit>
+      <trans-unit id="db3a6cdbbabfeb6c56807f55e830a7b8" resname="locationview.versions.loading.archived.list">
+        <source>locationview.versions.loading.archived.list</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.loading.archived.list</target>
+      </trans-unit>
+      <trans-unit id="ea648eed549cb643fb030d541cdc8f65" resname="locationview.versions.error.loading.list">
+        <source>locationview.versions.error.loading.list</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.error.loading.list</target>
+      </trans-unit>
+      <trans-unit id="f6f38b199866880db688472e57ed6f6f" resname="locationview.details.versions">
+        <source>locationview.details.versions</source>
+        <target xml:lang="en" state="needs-translation">locationview.details.versions</target>
+      </trans-unit>
+      <trans-unit id="498ea2da03d5ec1254a61340d45a2737" resname="locationview.locations.content.locations">
+        <source>locationview.locations.content.locations</source>
+        <target xml:lang="en" state="needs-translation">locationview.locations.content.locations</target>
+      </trans-unit>
+      <trans-unit id="646dd94473d2fb6a5c62254e2f7bcaaf" resname="locationview.relations.related.content">
+        <source>locationview.relations.related.content</source>
+        <target xml:lang="en" state="needs-translation">locationview.relations.related.content</target>
+      </trans-unit>
+      <trans-unit id="e3b2e6ca7499f9611ca0dc54ce63a6c1" resname="locationview.versions.draft.under.edit">
+        <source>locationview.versions.draft.under.edit</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.draft.under.edit</target>
+      </trans-unit>
+      <trans-unit id="5cf059d175bbc76833af2660cc089e01" resname="locationview.versions.published.version">
+        <source>locationview.versions.published.version</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.published.version</target>
+      </trans-unit>
+      <trans-unit id="f9c1f1ac084d7a81267b119c71dbcd8e" resname="locationview.versions.archived.versions">
+        <source>locationview.versions.archived.versions</source>
+        <target xml:lang="en" state="needs-translation">locationview.versions.archived.versions</target>
+      </trans-unit>
+      <trans-unit id="0a5e497df0f9df484b9976d623f26d69" resname="failed.creating.draft.for.based.on">
+        <source>failed.creating.draft.for.based.on</source>
+        <target xml:lang="en" state="needs-translation">failed.creating.draft.for.based.on</target>
+      </trans-unit>
+      <trans-unit id="e0bd70e9f29c682957a35ea75b8ce749" resname="confirmed.remove.versions">
+        <source>confirmed.remove.versions</source>
+        <target xml:lang="en" state="needs-translation">confirmed.remove.versions</target>
+      </trans-unit>
+      <trans-unit id="a67b722bb9ad9c4d0d8ddfe5f1888633" resname="removing.versions.for">
+        <source>removing.versions.for</source>
+        <target xml:lang="en" state="needs-translation">removing.versions.for</target>
+      </trans-unit>
+      <trans-unit id="aba7cb8c9442eefa3d1deb86367f8c26" resname="removed.versions.of">
+        <source>removed.versions.of</source>
+        <target xml:lang="en" state="needs-translation">removed.versions.of</target>
+      </trans-unit>
+      <trans-unit id="1f260876f5a904c8e65f676debd49973" resname="failed.removing.versions.of">
+        <source>failed.removing.versions.of</source>
+        <target xml:lang="en" state="needs-translation">failed.removing.versions.of</target>
+      </trans-unit>
+      <trans-unit id="ecc0c583e560d92a93531e155f128a18" resname="select.location.to.swap">
+        <source>select.location.to.swap</source>
+        <target xml:lang="en" state="needs-translation">select.location.to.swap</target>
+      </trans-unit>
+      <trans-unit id="ca54e6fa2aa8780295d8f63cd5ddb442" resname="swapping.location.for">
+        <source>swapping.location.for</source>
+        <target xml:lang="en" state="needs-translation">swapping.location.for</target>
+      </trans-unit>
+      <trans-unit id="4496393fc886cbef0ef6dbcf5d42b67d" resname="failed.swapping.location.for">
+        <source>failed.swapping.location.for</source>
+        <target xml:lang="en" state="needs-translation">failed.swapping.location.for</target>
+      </trans-unit>
+      <trans-unit id="e18afdd063b9c2a19a2777e556acbcf4" resname="swapped.location.for.with">
+        <source>swapped.location.for.with</source>
+        <target xml:lang="en" state="needs-translation">swapped.location.for.with</target>
+      </trans-unit>
+      <trans-unit id="f4c03ee4578675ba036c688eb538a3bd" resname="confirm.remove.location">
+        <source>confirm.remove.location</source>
+        <target xml:lang="en" state="needs-translation">confirm.remove.location</target>
+      </trans-unit>
+      <trans-unit id="c7d7e12410b855e296572aebf719a6d8" resname="removing.locations.for">
+        <source>removing.locations.for</source>
+        <target xml:lang="en" state="needs-translation">removing.locations.for</target>
+      </trans-unit>
+      <trans-unit id="1d396ea78554c5c151beb8ed80833b10" resname="removed.locations.of">
+        <source>removed.locations.of</source>
+        <target xml:lang="en" state="needs-translation">removed.locations.of</target>
+      </trans-unit>
+      <trans-unit id="ada144dbc3e0d877e894cd5a44ee47e7" resname="failed.removing.locations.of">
+        <source>failed.removing.locations.of</source>
+        <target xml:lang="en" state="needs-translation">failed.removing.locations.of</target>
+      </trans-unit>
+      <trans-unit id="1e027a7f37ad06de7015d05f21de6b31" resname="confirm.set.main.location">
+        <source>confirm.set.main.location</source>
+        <target xml:lang="en" state="needs-translation">confirm.set.main.location</target>
+      </trans-unit>
+      <trans-unit id="d13abbe1d2783a7c5e157efa6f045fc1" resname="changing.main.location.of">
+        <source>changing.main.location.of</source>
+        <target xml:lang="en" state="needs-translation">changing.main.location.of</target>
+      </trans-unit>
+      <trans-unit id="77d1e94bf68cd6d0629047cfb42a8f03" resname="failed.changing.main.location.of">
+        <source>failed.changing.main.location.of</source>
+        <target xml:lang="en" state="needs-translation">failed.changing.main.location.of</target>
+      </trans-unit>
+      <trans-unit id="39519543bcbfb85a9d2ca1d7b6d28efd" resname="changed.main.location.of">
+        <source>changed.main.location.of</source>
+        <target xml:lang="en" state="needs-translation">changed.main.location.of</target>
+      </trans-unit>
+      <trans-unit id="06e93a63628c030641f08a5fab456974" resname="failed.updated.priority">
+        <source>failed.updated.priority</source>
+        <target xml:lang="en" state="needs-translation">failed.updated.priority</target>
+      </trans-unit>
+      <trans-unit id="620cf0c922a0c1a4556ea2774daa6c0e" resname="confirmed.send.to.trash">
+        <source>confirmed.send.to.trash</source>
+        <target xml:lang="en" state="needs-translation">confirmed.send.to.trash</target>
+      </trans-unit>
+      <trans-unit id="6db0f7fde7b06ae2f401c5fd266912d4" resname="confirmed.delete">
+        <source>confirmed.delete</source>
+        <target xml:lang="en" state="needs-translation">confirmed.delete</target>
+      </trans-unit>
+      <trans-unit id="41a22668fade7b76a970edd3354ba775" resname="select.location.move.to">
+        <source>select.location.move.to</source>
+        <target xml:lang="en" state="needs-translation">select.location.move.to</target>
+      </trans-unit>
+      <trans-unit id="200ffa2fd83bad7350468fbc84998cb0" resname="sending.to.trash">
+        <source>sending.to.trash</source>
+        <target xml:lang="en" state="needs-translation">sending.to.trash</target>
+      </trans-unit>
+      <trans-unit id="dafa0ab66fa59782289cf95ba3b45363" resname="deleting.content">
+        <source>deleting.content</source>
+        <target xml:lang="en" state="needs-translation">deleting.content</target>
+      </trans-unit>
+      <trans-unit id="d85f3d19b974f560517ba181845e47d2" resname="failed.sending.to.trash">
+        <source>failed.sending.to.trash</source>
+        <target xml:lang="en" state="needs-translation">failed.sending.to.trash</target>
+      </trans-unit>
+      <trans-unit id="46a73baa97d7d95e0cae51f9545d44a7" resname="sent.to.trash">
+        <source>sent.to.trash</source>
+        <target xml:lang="en" state="needs-translation">sent.to.trash</target>
+      </trans-unit>
+      <trans-unit id="4b80b88771cf9646fa579ff864f861a4" resname="failed.deleting.content">
+        <source>failed.deleting.content</source>
+        <target xml:lang="en" state="needs-translation">failed.deleting.content</target>
+      </trans-unit>
+      <trans-unit id="264bddf3cc75a59a4162e884aed3940b" resname="deleted.content">
+        <source>deleted.content</source>
+        <target xml:lang="en" state="needs-translation">deleted.content</target>
+      </trans-unit>
+      <trans-unit id="edec522f11f550aad5a33aeb03104ee3" resname="being.moved.under">
+        <source>being.moved.under</source>
+        <target xml:lang="en" state="needs-translation">being.moved.under</target>
+      </trans-unit>
+      <trans-unit id="b7661a400411190aaf27104f4d7dcbd3" resname="failed.moving">
+        <source>failed.moving</source>
+        <target xml:lang="en" state="needs-translation">failed.moving</target>
+      </trans-unit>
+      <trans-unit id="9c7aa6cf65f19b25f78bf59258750a2f" resname="moved.under">
+        <source>moved.under</source>
+        <target xml:lang="en" state="needs-translation">moved.under</target>
+      </trans-unit>
+      <trans-unit id="3a553fd7dfd2df3f871f43e53a8fce39" resname="updating.sort.method">
+        <source>updating.sort.method</source>
+        <target xml:lang="en" state="needs-translation">updating.sort.method</target>
+      </trans-unit>
+      <trans-unit id="a6782fb8f1567fee8340412b46bdd6a7" resname="updated.sort.method">
+        <source>updated.sort.method</source>
+        <target xml:lang="en" state="needs-translation">updated.sort.method</target>
+      </trans-unit>
+      <trans-unit id="5c666c4b3c3529d6fcaae0f218cb33c2" resname="failed.updating.sort.method">
+        <source>failed.updating.sort.method</source>
+        <target xml:lang="en" state="needs-translation">failed.updating.sort.method</target>
+      </trans-unit>
+      <trans-unit id="99119b2142f5b2a731ab3f1aeb9e64e0" resname="failed.to.load.location">
+        <source>failed.to.load.location</source>
+        <target xml:lang="en" state="needs-translation">failed.to.load.location</target>
+      </trans-unit>
+      <trans-unit id="7246ee8a43fb3154ffdfe22d27f920b2" resname="failed.to.load.content">
+        <source>failed.to.load.content</source>
+        <target xml:lang="en" state="needs-translation">failed.to.load.content</target>
+      </trans-unit>
+      <trans-unit id="c6fc581b9045368d270657fbb19efc29" resname="failed.to.load.content.type">
+        <source>failed.to.load.content.type</source>
+        <target xml:lang="en" state="needs-translation">failed.to.load.content.type</target>
+      </trans-unit>
+      <trans-unit id="7927f7f287f471db0763390d1f368725" resname="failed.to.load.location.path">
+        <source>failed.to.load.location.path</source>
+        <target xml:lang="en" state="needs-translation">failed.to.load.location.path</target>
+      </trans-unit>
+      <trans-unit id="63c450319c762b97b577e92ee4647986" resname="sort.published">
+        <source>sort.published</source>
+        <target xml:lang="en" state="needs-translation">sort.published</target>
+      </trans-unit>
+      <trans-unit id="d72411517e0a191a5e077512850b93d7" resname="sort.path">
+        <source>sort.path</source>
+        <target xml:lang="en" state="needs-translation">sort.path</target>
+      </trans-unit>
+      <trans-unit id="601d0f5c6a935a31c20163d7cbe836b6" resname="sort.content.type.identifier">
+        <source>sort.content.type.identifier</source>
+        <target xml:lang="en" state="needs-translation">sort.content.type.identifier</target>
+      </trans-unit>
+      <trans-unit id="b4247167aad920c2302a8b63657eba1f" resname="sort.modified">
+        <source>sort.modified</source>
+        <target xml:lang="en" state="needs-translation">sort.modified</target>
+      </trans-unit>
+      <trans-unit id="7141fba30f70359220ce2e4155125b8b" resname="sort.section">
+        <source>sort.section</source>
+        <target xml:lang="en" state="needs-translation">sort.section</target>
+      </trans-unit>
+      <trans-unit id="5d9172782363a3a92b229fad41beabbd" resname="sort.content.type.name">
+        <source>sort.content.type.name</source>
+        <target xml:lang="en" state="needs-translation">sort.content.type.name</target>
+      </trans-unit>
+      <trans-unit id="cfed660b16df4a98b3dd2b16ac50630c" resname="sort.priority">
+        <source>sort.priority</source>
+        <target xml:lang="en" state="needs-translation">sort.priority</target>
+      </trans-unit>
+      <trans-unit id="573c954a64aa9bc654b5c2a75963c68d" resname="sort.name">
+        <source>sort.name</source>
+        <target xml:lang="en" state="needs-translation">sort.name</target>
+      </trans-unit>
+      <trans-unit id="65542fb74ebe97a96c97526233c5242b" resname="sort.depth">
+        <source>sort.depth</source>
+        <target xml:lang="en" state="needs-translation">sort.depth</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
