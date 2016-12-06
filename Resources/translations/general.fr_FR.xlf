@@ -6,24 +6,9 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="473791d4ee73c0b1401f37519728414c339edc21" resname="javascript.disabled.required">
-        <source>JavaScript is disabled in your browser but it is required to run the eZ Platform User Interface.</source>
-        <target xml:lang="fr" state="needs-translation">JavaScript is disabled in your browser but it is required to run the eZ Platform User Interface.</target>
-        <note>key: javascript.disabled.required</note>
-        <jms:reference-file line="45">/../../../../.././Resources/views/PlatformUI/shell.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1ac530659b5b57d48cf6d95bc51ead90f1a2ac6d" resname="javascript.enable">
-        <source>Please enable JavaScript to use the eZ Platform User Interface.</source>
-        <target xml:lang="fr" state="needs-translation">Please enable JavaScript to use the eZ Platform User Interface.</target>
-        <note>key: javascript.enable</note>
-        <jms:reference-file line="46">/../../../../.././Resources/views/PlatformUI/shell.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="40797c87a424e73c1893096db97ec0147bd261bf" resname="loading.application">
-        <source>Loading the application...</source>
-        <target xml:lang="fr" state="needs-translation">Loading the application...</target>
-        <note>key: loading.application</note>
-        <jms:reference-file line="30">/../../../../.././Resources/views/PlatformUI/shell.html.twig</jms:reference-file>
-      </trans-unit>
+      
+      
+      
     </body>
   </file>
 </xliff>
