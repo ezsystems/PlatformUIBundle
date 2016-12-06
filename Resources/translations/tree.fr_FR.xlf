@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="1f2cfd4c85995e682cebdb3aedf042c6" resname="tree.loading">
+        <source>tree.loading</source>
+        <target xml:lang="fr" state="needs-translation">tree.loading</target>
+      </trans-unit>
+      <trans-unit id="622a9659c211fa3ab06e3953663d11e2" resname="tree.empty">
+        <source>tree.empty</source>
+        <target xml:lang="fr" state="needs-translation">tree.empty</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
