@@ -6,101 +6,20 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="643281298a4a2c0e5590ad430fbf5c503888dfec" resname="cannot.load.root.location">
-        <source>Cannot load root location</source>
-        <target xml:lang="fr" state="needs-translation">Cannot load root location</target>
-        <note>key: cannot.load.root.location</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-dashboardblocksviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="ff6664ae5d5b882ee85a683861bf2d39369f3992" resname="dashboard.all.content">
-        <source>All Content</source>
-        <target xml:lang="fr" state="needs-translation">All Content</target>
-        <note>key: dashboard.all.content</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="bb736c34f0a6f3cf53ad082d8e7cba37aa31606a" resname="dashboard.content.type">
-        <source>Content Type</source>
-        <target xml:lang="fr" state="needs-translation">Content Type</target>
-        <note>key: dashboard.content.type</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="f3523831ab3c2067acfa6fdf0bc19c64a39647b4" resname="dashboard.last.saved">
-        <source>Last saved</source>
-        <target xml:lang="fr" state="needs-translation">Last saved</target>
-        <note>key: dashboard.last.saved</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c26996ea8c335b1df9a001af761adf5e2aa5f2e6" resname="dashboard.loading.draft.error">
-        <source>An error occurred while loading the draft list.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the draft list.</target>
-        <note>key: dashboard.loading.draft.error</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="90451c27b66dffbfea45c8ce24eff1cb380d6d46" resname="dashboard.loading.error">
-        <source>An error occurred while loading the content list.</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while loading the content list.</target>
-        <note>key: dashboard.loading.error</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="dc6421eab8286e0adb87544214a132d5c31d8fd8" resname="dashboard.my.content">
-        <source>My Content</source>
-        <target xml:lang="fr" state="needs-translation">My Content</target>
-        <note>key: dashboard.my.content</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="deee7b8356005d3419c3907048b4c62f6c947a3c" resname="dashboard.my.drafts">
-        <source>My Drafts</source>
-        <target xml:lang="fr" state="needs-translation">My Drafts</target>
-        <note>key: dashboard.my.drafts</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="328b897775fad72927fcdd34b26e6c67d77ac6bc" resname="dashboard.mycontent.no.modified.content">
-        <source>You haven't modified any content item yet.</source>
-        <target xml:lang="fr" state="needs-translation">You haven't modified any content item yet.</target>
-        <note>key: dashboard.mycontent.no.modified.content</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="77c0cd3f3cae226e66b157a227ba1c48480c03c9" resname="dashboard.mydrafts.no.draft">
-        <source>You don't have any drafts.</source>
-        <target xml:lang="fr" state="needs-translation">You don't have any drafts.</target>
-        <note>key: dashboard.mydrafts.no.draft</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="1598105f8c01cd4d73924667af473114a30c2ae5" resname="dashboard.retry">
-        <source>Retry</source>
-        <target xml:lang="fr" state="needs-translation">Retry</target>
-        <note>key: dashboard.retry</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e9c04dcd1a73d8cb5fc72ca356e61ab28d38ec46" resname="dashboard.title">
-        <source>Title</source>
-        <target xml:lang="fr" state="needs-translation">Title</target>
-        <note>key: dashboard.title</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7521275a12ed4eecb89be89777fcabb81f68338c" resname="dashboard.version">
-        <source>Version</source>
-        <target xml:lang="fr" state="needs-translation">Version</target>
-        <note>key: dashboard.version</note>
-        <jms:reference-file>./Resources/public/templates/dashboard/allcontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mycontent.hbt</jms:reference-file>
-        <jms:reference-file>./Resources/public/templates/dashboard/mydrafts.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="ad15e855aad7c14d65c0890d9d1e5c3e2aa5c5d0" resname="dashboardblocks.my.dashboard">
-        <source>My Dashboard</source>
-        <target xml:lang="fr" state="needs-translation">My Dashboard</target>
-        <note>key: dashboardblocks.my.dashboard</note>
-        <jms:reference-file>./Resources/public/templates/dashboard-blocks.hbt</jms:reference-file>
-      </trans-unit>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </body>
   </file>
 </xliff>
