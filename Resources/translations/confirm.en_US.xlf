@@ -1,33 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="ccc33bddcc2ddda227076b89e5c1feb5" resname="draftconflict.newdraft">
-        <source>draftconflict.newdraft</source>
-        <target xml:lang="en" state="translated">New Draft</target>
+      <trans-unit id="558c96f6cc252f0dbe70418123dd8bbb13234a2b" resname="confirmbox.cancel">
+        <source>Cancel</source>
+        <target xml:lang="en" state="needs-translation">Cancel</target>
+        <note>key: confirmbox.cancel</note>
+        <jms:reference-file>./Resources/public/templates/confirmbox.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="36595b085e28a9a9c678bd8a368f1507" resname="draftconflict.language">
-        <source>draftconflict.language</source>
-        <target xml:lang="en" state="translated">Language</target>
+      <trans-unit id="333383790307ace20d9c43e23fa613daf0e4492c" resname="confirmbox.confirm">
+        <source>Confirm</source>
+        <target xml:lang="en" state="needs-translation">Confirm</target>
+        <note>key: confirmbox.confirm</note>
+        <jms:reference-file>./Resources/public/templates/confirmbox.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="ff9f19d1379eaae89ed53ef575cdcee8" resname="draftconflict.owner">
-        <source>draftconflict.owner</source>
-        <target xml:lang="en" state="translated">Owner</target>
+      <trans-unit id="c478b39ac9ceac6e2a91a937bb1d9fd310cb607d" resname="draftconflict.language">
+        <source>Language</source>
+        <target xml:lang="en" state="needs-translation">Language</target>
+        <note>key: draftconflict.language</note>
+        <jms:reference-file>./Resources/public/templates/confirmbox/draftconflict.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="6fa328851fd01e7d88280f6ec0218f19" resname="draftconflict.lastmodified">
-        <source>draftconflict.lastmodified</source>
-        <target xml:lang="en" state="translated">Last Modified</target>
+      <trans-unit id="0061cab899c3a8d9b9f601491b0474f9d85d92a7" resname="draftconflict.lastmodified">
+        <source>Last Modified</source>
+        <target xml:lang="en" state="needs-translation">Last Modified</target>
+        <note>key: draftconflict.lastmodified</note>
+        <jms:reference-file>./Resources/public/templates/confirmbox/draftconflict.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2cf7824cfd32389672d353e8f19e93c7" resname="confirmbox.cancel">
-        <source>confirmbox.cancel</source>
-        <target xml:lang="en" state="translated">Cancel</target>
+      <trans-unit id="c35f9f95f267fd0c78da8ae80914a1cbc15bb90b" resname="draftconflict.newdraft">
+        <source>New Draft</source>
+        <target xml:lang="en" state="needs-translation">New Draft</target>
+        <note>key: draftconflict.newdraft</note>
+        <jms:reference-file>./Resources/public/templates/confirmbox/draftconflict.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="1e42a660366903eaba382a22451f94e5" resname="confirmbox.confirm">
-        <source>confirmbox.confirm</source>
-        <target xml:lang="en" state="translated">Confirm</target>
+      <trans-unit id="302cfdba7ddbb677d9abb7967b44aaf8ab0ce8d0" resname="draftconflict.owner">
+        <source>Owner</source>
+        <target xml:lang="en" state="needs-translation">Owner</target>
+        <note>key: draftconflict.owner</note>
+        <jms:reference-file>./Resources/public/templates/confirmbox/draftconflict.hbt</jms:reference-file>
       </trans-unit>
     </body>
   </file>
