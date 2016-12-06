@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="ccc33bddcc2ddda227076b89e5c1feb5" resname="draftconflict.newdraft">
+        <source>draftconflict.newdraft</source>
+        <target xml:lang="fr" state="needs-translation">draftconflict.newdraft</target>
+      </trans-unit>
+      <trans-unit id="36595b085e28a9a9c678bd8a368f1507" resname="draftconflict.language">
+        <source>draftconflict.language</source>
+        <target xml:lang="fr" state="needs-translation">draftconflict.language</target>
+      </trans-unit>
+      <trans-unit id="ff9f19d1379eaae89ed53ef575cdcee8" resname="draftconflict.owner">
+        <source>draftconflict.owner</source>
+        <target xml:lang="fr" state="needs-translation">draftconflict.owner</target>
+      </trans-unit>
+      <trans-unit id="6fa328851fd01e7d88280f6ec0218f19" resname="draftconflict.lastmodified">
+        <source>draftconflict.lastmodified</source>
+        <target xml:lang="fr" state="needs-translation">draftconflict.lastmodified</target>
+      </trans-unit>
+      <trans-unit id="2cf7824cfd32389672d353e8f19e93c7" resname="confirmbox.cancel">
+        <source>confirmbox.cancel</source>
+        <target xml:lang="fr" state="needs-translation">confirmbox.cancel</target>
+      </trans-unit>
+      <trans-unit id="1e42a660366903eaba382a22451f94e5" resname="confirmbox.confirm">
+        <source>confirmbox.confirm</source>
+        <target xml:lang="fr" state="needs-translation">confirmbox.confirm</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
