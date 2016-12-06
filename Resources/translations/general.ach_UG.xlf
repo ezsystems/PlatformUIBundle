@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="ach" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="91d135a1eca345232c1f2b8fec170fc6" resname="loading.application">
-        <source>loading.application</source>
-        <target xml:lang="ach">crwdns205222:0crwdne205222:0</target>
+      <trans-unit id="473791d4ee73c0b1401f37519728414c339edc21" resname="javascript.disabled.required">
+        <source>JavaScript is disabled in your browser but it is required to run the eZ Platform User Interface.</source>
+        <target xml:lang="ach">crwdns205925:0crwdne205925:0</target>
+        <note>key: javascript.disabled.required</note>
+        <jms:reference-file line="45">/../../../../.././Resources/views/PlatformUI/shell.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="e4f76807f027ce4426b182b91909f870" resname="javascript.disabled.required">
-        <source>javascript.disabled.required</source>
-        <target xml:lang="ach">crwdns205223:0crwdne205223:0</target>
+      <trans-unit id="1ac530659b5b57d48cf6d95bc51ead90f1a2ac6d" resname="javascript.enable">
+        <source>Please enable JavaScript to use the eZ Platform User Interface.</source>
+        <target xml:lang="ach">crwdns205926:0crwdne205926:0</target>
+        <note>key: javascript.enable</note>
+        <jms:reference-file line="46">/../../../../.././Resources/views/PlatformUI/shell.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="72d9916ec9abef59ce8e7a31bc28ced6" resname="javascript.enable">
-        <source>javascript.enable</source>
-        <target xml:lang="ach">crwdns205224:0crwdne205224:0</target>
-      </trans-unit>
-      <trans-unit id="7243d01e7836a7be3099afcefb289c4e" resname="form.validation_error">
-        <source>form.validation_error</source>
-        <target xml:lang="ach">crwdns205225:0crwdne205225:0</target>
+      <trans-unit id="40797c87a424e73c1893096db97ec0147bd261bf" resname="loading.application">
+        <source>Loading the application...</source>
+        <target xml:lang="ach">crwdns205927:0crwdne205927:0</target>
+        <note>key: loading.application</note>
+        <jms:reference-file line="30">/../../../../.././Resources/views/PlatformUI/shell.html.twig</jms:reference-file>
       </trans-unit>
     </body>
   </file>
