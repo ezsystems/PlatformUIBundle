@@ -7,15 +7,15 @@
     <body>
       <trans-unit id="5387d26cceb54294dafe82be9b0d61d0" resname="section.validator.identifier.format">
         <source>section.validator.identifier.format</source>
-        <target xml:lang="en" state="needs-translation">section.validator.identifier.format</target>
+        <target xml:lang="en" state="translated">Identifier should consist of letters, numbers or '_' with letter prefix.</target>
       </trans-unit>
       <trans-unit id="155500e916d288618860c5236b90621d" resname="section.validator.identifier.not_blank">
         <source>section.validator.identifier.not_blank</source>
-        <target xml:lang="en" state="needs-translation">section.validator.identifier.not_blank</target>
+        <target xml:lang="en" state="translated">The section identifier can not be empty.</target>
       </trans-unit>
       <trans-unit id="a77edcfaca5a3e5b68e4e6ff309ed8d3" resname="section.validator.name.not_blank">
         <source>section.validator.name.not_blank</source>
-        <target xml:lang="en" state="needs-translation">section.validator.name.not_blank</target>
+        <target xml:lang="en" state="translated">The section name can not be empty.</target>
       </trans-unit>
     </body>
   </file>
