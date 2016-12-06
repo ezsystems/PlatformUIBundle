@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="28a1eeeab4e1443ed73c2f75926361d7" resname="loginform.need.login">
+        <source>loginform.need.login</source>
+        <target xml:lang="ach">crwdns205358:0crwdne205358:0</target>
+      </trans-unit>
+      <trans-unit id="a7a94cd994339c9c9d6f7676145bf76b" resname="loginform.username">
+        <source>loginform.username</source>
+        <target xml:lang="ach">crwdns205359:0crwdne205359:0</target>
+      </trans-unit>
+      <trans-unit id="7be0ac579eb8de1ab36951917252eece" resname="loginform.password">
+        <source>loginform.password</source>
+        <target xml:lang="ach">crwdns205360:0crwdne205360:0</target>
+      </trans-unit>
+      <trans-unit id="4d6e96049abc8a73659f61b5492f52dc" resname="loginform.login">
+        <source>loginform.login</source>
+        <target xml:lang="ach">crwdns205361:0crwdne205361:0</target>
+      </trans-unit>
+      <trans-unit id="95e948d85a045f3e0abcd1d020773f21" resname="loginform.ez.logo">
+        <source>loginform.ez.logo</source>
+        <target xml:lang="ach">crwdns205362:0crwdne205362:0</target>
+      </trans-unit>
+      <trans-unit id="2ae41fa6dbd644a6846389ad14167167" resname="copyright">
+        <source>copyright</source>
+        <target xml:lang="ach">crwdns205363:0crwdne205363:0</target>
+      </trans-unit>
+      <trans-unit id="635190f0bd81952f9c846b9eb49ae1a8" resname="invalid.login.passord">
+        <source>invalid.login.passord</source>
+        <target xml:lang="ach">crwdns205364:0crwdne205364:0</target>
+      </trans-unit>
+      <trans-unit id="83b11f7b6e7a71d970a51b83ba34cd82" resname="unexpected.error">
+        <source>unexpected.error</source>
+        <target xml:lang="ach">crwdns205365:0crwdne205365:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
