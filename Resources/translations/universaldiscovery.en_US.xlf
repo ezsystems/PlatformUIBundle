@@ -7,107 +7,107 @@
     <body>
       <trans-unit id="d2347ae43877a7a6642e7c12182258f7" resname="universaldiscovery.selected.item">
         <source>universaldiscovery.selected.item</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.selected.item</target>
+        <target xml:lang="en" state="translated">Selected item</target>
       </trans-unit>
       <trans-unit id="194c6e5d516189dc636459bf82f4dce3" resname="universaldiscovery.choose.this.content">
         <source>universaldiscovery.choose.this.content</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.choose.this.content</target>
+        <target xml:lang="en" state="translated">Choose this content</target>
       </trans-unit>
       <trans-unit id="c02819e18b6762a34ca8b09dc01a151f" resname="universaldiscovery.select.from.left">
         <source>universaldiscovery.select.from.left</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.select.from.left</target>
+        <target xml:lang="en" state="translated">Select a content item from the left</target>
       </trans-unit>
       <trans-unit id="3a8fff3c8c46a8167820055942806e89" resname="universaldiscovery.confirmed.items">
         <source>universaldiscovery.confirmed.items</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.confirmed.items</target>
+        <target xml:lang="en" state="translated">Confirmed items</target>
       </trans-unit>
       <trans-unit id="715137d8fc5001fa9f9da35577fa5d79" resname="universaldiscovery.no.confirmed.contents">
         <source>universaldiscovery.no.confirmed.contents</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.no.confirmed.contents</target>
+        <target xml:lang="en" state="translated">No confirmed content yet.</target>
       </trans-unit>
       <trans-unit id="29627593749621ceab0c07322c31e292" resname="universaldiscovery.search">
         <source>universaldiscovery.search</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.search</target>
+        <target xml:lang="en" state="translated">Search</target>
       </trans-unit>
       <trans-unit id="82ea742e7b96d576e7f8c8535d4511d4" resname="universaldiscovery.error.loading.result">
         <source>universaldiscovery.error.loading.result</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.error.loading.result</target>
+        <target xml:lang="en" state="translated">An error occurred while loading the search result list.</target>
       </trans-unit>
       <trans-unit id="0101e5b679c89b7f21584caa030d1299" resname="universaldiscovery.retry">
         <source>universaldiscovery.retry</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.retry</target>
+        <target xml:lang="en" state="translated">Retry</target>
       </trans-unit>
       <trans-unit id="bbbef777e4a1b12536e4d21c2460648c" resname="universaldiscovery.first">
         <source>universaldiscovery.first</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.first</target>
+        <target xml:lang="en" state="translated">First</target>
       </trans-unit>
       <trans-unit id="aebaef8b533b5190c67aabadaf5b1987" resname="universaldiscovery.previous">
         <source>universaldiscovery.previous</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.previous</target>
+        <target xml:lang="en" state="translated">Previous</target>
       </trans-unit>
       <trans-unit id="eabd1d72cb025bfeb652f75aedee76f5" resname="universaldiscovery.next">
         <source>universaldiscovery.next</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.next</target>
+        <target xml:lang="en" state="translated">Next</target>
       </trans-unit>
       <trans-unit id="d32563d8334f56741c9401447a2d1eb8" resname="universaldiscovery.last">
         <source>universaldiscovery.last</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.last</target>
+        <target xml:lang="en" state="translated">Last</target>
       </trans-unit>
       <trans-unit id="243537b4d9d6114b9cd0475617b25f38" resname="universaldiscovery.preview">
         <source>universaldiscovery.preview</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.preview</target>
+        <target xml:lang="en" state="translated">Preview</target>
       </trans-unit>
       <trans-unit id="aa4fa203c592a7eadb07427ce9181bf2" resname="universaldiscovery.provide.search.text">
         <source>universaldiscovery.provide.search.text</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.provide.search.text</target>
+        <target xml:lang="en" state="translated">Please provide search text</target>
       </trans-unit>
       <trans-unit id="2e345cdf5513da0683cc02178a36489b" resname="universaldiscovery.content.tree">
         <source>universaldiscovery.content.tree</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.content.tree</target>
+        <target xml:lang="en" state="translated">Content tree</target>
       </trans-unit>
       <trans-unit id="d1414af297d4246b331a7958d0be2a95" resname="universaldiscovery.cancel">
         <source>universaldiscovery.cancel</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.cancel</target>
+        <target xml:lang="en" state="translated">Cancel</target>
       </trans-unit>
       <trans-unit id="641254cf02f5497a404848a2a7d8932b" resname="universaldiscovery.confirm.selection">
         <source>universaldiscovery.confirm.selection</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.confirm.selection</target>
+        <target xml:lang="en" state="translated">Confirm selection</target>
       </trans-unit>
       <trans-unit id="2e1b121897030280faf4af531eccc25e" resname="universaldiscovery.error.loading.image">
         <source>universaldiscovery.error.loading.image</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.error.loading.image</target>
+        <target xml:lang="en" state="translated">An error occurred while loading the image.</target>
       </trans-unit>
       <trans-unit id="33c98a2efaab3c5ce220f2a54f712086" resname="universaldiscovery.last.modified">
         <source>universaldiscovery.last.modified</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.last.modified</target>
+        <target xml:lang="en" state="translated">Last Modified</target>
       </trans-unit>
       <trans-unit id="148f497990a6934d77fe7b71d0b6d661" resname="universaldiscovery.translations">
         <source>universaldiscovery.translations</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.translations</target>
+        <target xml:lang="en" state="translated">Translations</target>
       </trans-unit>
       <trans-unit id="222eae4b4a6fce05d1224d7da5361cd7" resname="universaldiscovery.creation.date">
         <source>universaldiscovery.creation.date</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.creation.date</target>
+        <target xml:lang="en" state="translated">Creation Date</target>
       </trans-unit>
       <trans-unit id="dfcedf093a2f085a1234286473e6766a" resname="universaldiscovery.name">
         <source>universaldiscovery.name</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.name</target>
+        <target xml:lang="en" state="translated">Name</target>
       </trans-unit>
       <trans-unit id="84d1b4dbc1498d16a71baed6b204f0f1" resname="universaldiscovery.type">
         <source>universaldiscovery.type</source>
-        <target xml:lang="en" state="needs-translation">universaldiscovery.type</target>
+        <target xml:lang="en" state="translated">Type</target>
       </trans-unit>
       <trans-unit id="a507890e498661e386bf7907b54572c7" resname="no.result">
         <source>no.result</source>
-        <target xml:lang="en" state="needs-translation">no.result</target>
+        <target xml:lang="en" state="translated">No results were found while searching for "%searchText%".</target>
       </trans-unit>
       <trans-unit id="db4840c30c7dbafb7cada74563df1e38" resname="remaining.more">
         <source>remaining.more</source>
-        <target xml:lang="en" state="needs-translation">remaining.more</target>
+        <target xml:lang="en" state="translated">+%remainingCount% more</target>
       </trans-unit>
       <trans-unit id="beef876dd2fc6a2bd3ced57c4516d043" resname="browse">
         <source>browse</source>
-        <target xml:lang="en" state="needs-translation">browse</target>
+        <target xml:lang="en" state="translated">Browse</target>
       </trans-unit>
     </body>
   </file>
