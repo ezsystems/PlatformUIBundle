@@ -1,541 +1,837 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-12-05T14:54:41Z" source-language="en" target-language="ach" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="5dc25b83a6783a2921dee02555c3cc6b" resname="authorinput.name">
-        <source>authorinput.name</source>
-        <target xml:lang="ach">crwdns205056:0crwdne205056:0</target>
-      </trans-unit>
-      <trans-unit id="1602be87d1cb0933a995701fb5c3aede" resname="authorinput.email">
-        <source>authorinput.email</source>
-        <target xml:lang="ach">crwdns205057:0crwdne205057:0</target>
-      </trans-unit>
-      <trans-unit id="e269d5cbd29baa1a791353f11473e695" resname="authorinput.remove">
-        <source>authorinput.remove</source>
-        <target xml:lang="ach">crwdns205058:0crwdne205058:0</target>
-      </trans-unit>
-      <trans-unit id="3ee706fc52164597114293d2bb610104" resname="relationlist.help">
-        <source>relationlist.help</source>
-        <target xml:lang="ach">crwdns205059:0crwdne205059:0</target>
-      </trans-unit>
-      <trans-unit id="e0f4a20d96727e85eefbcf1c09c3a2c1" resname="relationlist.empty">
-        <source>relationlist.empty</source>
-        <target xml:lang="ach">crwdns205060:0crwdne205060:0</target>
-      </trans-unit>
-      <trans-unit id="95135184ab00afca23e0f6f16749cadd" resname="relationlist.table.name">
-        <source>relationlist.table.name</source>
-        <target xml:lang="ach">crwdns205061:0crwdne205061:0</target>
-      </trans-unit>
-      <trans-unit id="765ab373ae279761ac27c7fda6749c5e" resname="relationlist.table.published">
-        <source>relationlist.table.published</source>
-        <target xml:lang="ach">crwdns205062:0crwdne205062:0</target>
-      </trans-unit>
-      <trans-unit id="55357c4a95f3b515f5ed6464ffdd1a7d" resname="relationlist.table.modified">
-        <source>relationlist.table.modified</source>
-        <target xml:lang="ach">crwdns205063:0crwdne205063:0</target>
-      </trans-unit>
-      <trans-unit id="fc6009e3380630b593b6a02db80ec11b" resname="relationlist.remove">
-        <source>relationlist.remove</source>
-        <target xml:lang="ach">crwdns205064:0crwdne205064:0</target>
-      </trans-unit>
-      <trans-unit id="1b1afab9aab457e36c356b0056a054b7" resname="relationlist.error">
-        <source>relationlist.error</source>
-        <target xml:lang="ach">crwdns205065:0crwdne205065:0</target>
-      </trans-unit>
-      <trans-unit id="cdb57d54c553efce5226517339f7532b" resname="relationlist.loading">
-        <source>relationlist.loading</source>
-        <target xml:lang="ach">crwdns205066:0crwdne205066:0</target>
-      </trans-unit>
-      <trans-unit id="9c6155b32b2ca46c0f9a3eace35272d9" resname="relationlist.select">
-        <source>relationlist.select</source>
-        <target xml:lang="ach">crwdns205067:0crwdne205067:0</target>
-      </trans-unit>
-      <trans-unit id="c6912655ed135b4a77564d7270b73d54" resname="relationlist.retry">
-        <source>relationlist.retry</source>
-        <target xml:lang="ach">crwdns205068:0crwdne205068:0</target>
-      </trans-unit>
-      <trans-unit id="c3cd3e4e868d721dcd605d01f3e12407" resname="author.add">
-        <source>author.add</source>
-        <target xml:lang="ach">crwdns205069:0crwdne205069:0</target>
-      </trans-unit>
-      <trans-unit id="06b14b53a7883c1cdabb2078dbe4f2bd" resname="relation.help">
-        <source>relation.help</source>
-        <target xml:lang="ach">crwdns205070:0crwdne205070:0</target>
-      </trans-unit>
-      <trans-unit id="f5e386226a27f6117a9e781a8ba73d35" resname="relation.empty">
-        <source>relation.empty</source>
-        <target xml:lang="ach">crwdns205071:0crwdne205071:0</target>
-      </trans-unit>
-      <trans-unit id="3cd7c644d521ae46596543ea19bb30eb" resname="relation.error">
-        <source>relation.error</source>
-        <target xml:lang="ach">crwdns205072:0crwdne205072:0</target>
-      </trans-unit>
-      <trans-unit id="57ca527530dcb9c05373d4bdb2171586" resname="relation.retry">
-        <source>relation.retry</source>
-        <target xml:lang="ach">crwdns205073:0crwdne205073:0</target>
-      </trans-unit>
-      <trans-unit id="fda496f70972008787b419d7bbaed028" resname="relation.loading">
-        <source>relation.loading</source>
-        <target xml:lang="ach">crwdns205074:0crwdne205074:0</target>
-      </trans-unit>
-      <trans-unit id="97937ffdd4273cf33bd3f9fd094623f4" resname="relation.select">
-        <source>relation.select</source>
-        <target xml:lang="ach">crwdns205075:0crwdne205075:0</target>
-      </trans-unit>
-      <trans-unit id="b0cdbf93103111e038d122a49e05ec35" resname="relation.remove">
-        <source>relation.remove</source>
-        <target xml:lang="ach">crwdns205076:0crwdne205076:0</target>
-      </trans-unit>
-      <trans-unit id="c60fef63810fa0ccb3ee81d5ccd41091" resname="relation.published">
-        <source>relation.published</source>
-        <target xml:lang="ach">crwdns205077:0crwdne205077:0</target>
-      </trans-unit>
-      <trans-unit id="633797041c93b25928c13922475845a2" resname="relation.modified">
-        <source>relation.modified</source>
-        <target xml:lang="ach">crwdns205078:0crwdne205078:0</target>
-      </trans-unit>
-      <trans-unit id="611ce788e1688c955d2e2e083788332d" resname="binaryfile.help">
-        <source>binaryfile.help</source>
-        <target xml:lang="ach">crwdns205079:0crwdne205079:0</target>
-      </trans-unit>
-      <trans-unit id="95eb06c6ab541e0095f3553756d1093c" resname="binaryfile.download">
-        <source>binaryfile.download</source>
-        <target xml:lang="ach">crwdns205080:0crwdne205080:0</target>
-      </trans-unit>
-      <trans-unit id="cb211a905e50d5154b769583e3706132" resname="binaryfile.empty">
-        <source>binaryfile.empty</source>
-        <target xml:lang="ach">crwdns205081:0crwdne205081:0</target>
-      </trans-unit>
-      <trans-unit id="aafd91c983f217325da1a234319c28e3" resname="binaryfile.upload">
-        <source>binaryfile.upload</source>
-        <target xml:lang="ach">crwdns205082:0crwdne205082:0</target>
-      </trans-unit>
-      <trans-unit id="baf2b08a74dd8a40cf9ec60adcda4248" resname="binaryfile.replace">
-        <source>binaryfile.replace</source>
-        <target xml:lang="ach">crwdns205083:0crwdne205083:0</target>
-      </trans-unit>
-      <trans-unit id="b1e5e9b74eff5d1eebf5cc46091d3916" resname="binaryfile.or">
-        <source>binaryfile.or</source>
-        <target xml:lang="ach">crwdns205084:0crwdne205084:0</target>
-      </trans-unit>
-      <trans-unit id="4cd055c846d0a470ebb8aff2659e598f" resname="binaryfile.remove">
-        <source>binaryfile.remove</source>
-        <target xml:lang="ach">crwdns205085:0crwdne205085:0</target>
-      </trans-unit>
-      <trans-unit id="ae6ae8656419023602b79f1ec2b6f01b" resname="binaryfile.name">
-        <source>binaryfile.name</source>
-        <target xml:lang="ach">crwdns205086:0crwdne205086:0</target>
-      </trans-unit>
-      <trans-unit id="4898d4bfef3b6062f306af74fc0ea8ed" resname="binaryfile.type">
-        <source>binaryfile.type</source>
-        <target xml:lang="ach">crwdns205087:0crwdne205087:0</target>
-      </trans-unit>
-      <trans-unit id="04d900faab85164c3e1cfbcba9c2e1f6" resname="binaryfile.size">
-        <source>binaryfile.size</source>
-        <target xml:lang="ach">crwdns205088:0crwdne205088:0</target>
-      </trans-unit>
-      <trans-unit id="88a2997df1364fe26711319f45f3ea7b" resname="media.audio.help">
-        <source>media.audio.help</source>
-        <target xml:lang="ach">crwdns205089:0crwdne205089:0</target>
-      </trans-unit>
-      <trans-unit id="0472ea3f59174e09b3c8d98b97cd70b9" resname="media.video.help">
-        <source>media.video.help</source>
-        <target xml:lang="ach">crwdns205090:0crwdne205090:0</target>
-      </trans-unit>
-      <trans-unit id="b2fcdd315157ec6ca5a5ddedece542af" resname="media.audio.unsupported">
-        <source>media.audio.unsupported</source>
-        <target xml:lang="ach">crwdns205091:0crwdne205091:0</target>
-      </trans-unit>
-      <trans-unit id="3a57cbf18b7193e682ca765b4da23ab4" resname="media.video.unsupported">
-        <source>media.video.unsupported</source>
-        <target xml:lang="ach">crwdns205092:0crwdne205092:0</target>
-      </trans-unit>
-      <trans-unit id="960dd83aea45276e2be80c1093747027" resname="media.audio.properties">
-        <source>media.audio.properties</source>
-        <target xml:lang="ach">crwdns205093:0crwdne205093:0</target>
-      </trans-unit>
-      <trans-unit id="c5723cb30d6ed6c7246c7340539934cb" resname="media.video.properties">
-        <source>media.video.properties</source>
-        <target xml:lang="ach">crwdns205094:0crwdne205094:0</target>
-      </trans-unit>
-      <trans-unit id="80447c7706c0defc99ea64add3fe1722" resname="media.newtab">
-        <source>media.newtab</source>
-        <target xml:lang="ach">crwdns205095:0crwdne205095:0</target>
-      </trans-unit>
-      <trans-unit id="6cfdd463b8c01e575831dd2173d9717f" resname="media.name">
-        <source>media.name</source>
-        <target xml:lang="ach">crwdns205096:0crwdne205096:0</target>
-      </trans-unit>
-      <trans-unit id="1893c754402d34ef10736c1c5bdd3924" resname="media.type">
-        <source>media.type</source>
-        <target xml:lang="ach">crwdns205097:0crwdne205097:0</target>
-      </trans-unit>
-      <trans-unit id="9a8ceaff4dff0f743f5f5889cb988f55" resname="media.size">
-        <source>media.size</source>
-        <target xml:lang="ach">crwdns205098:0crwdne205098:0</target>
-      </trans-unit>
-      <trans-unit id="a7f2f3f945aaea62773db02cbf1c8ff2" resname="media.playersettings">
-        <source>media.playersettings</source>
-        <target xml:lang="ach">crwdns205099:0crwdne205099:0</target>
-      </trans-unit>
-      <trans-unit id="00726ad687d39e5c2d8a694f842c9bc9" resname="media.audio.empty">
-        <source>media.audio.empty</source>
-        <target xml:lang="ach">crwdns205100:0crwdne205100:0</target>
-      </trans-unit>
-      <trans-unit id="b0a0f1eb0f16e5a7a897547942d54fe2" resname="media.video.empty">
-        <source>media.video.empty</source>
-        <target xml:lang="ach">crwdns205101:0crwdne205101:0</target>
-      </trans-unit>
-      <trans-unit id="0e4ed3166e139c1f1fa4b9eb14521c23" resname="media.audio.upload">
-        <source>media.audio.upload</source>
-        <target xml:lang="ach">crwdns205102:0crwdne205102:0</target>
-      </trans-unit>
-      <trans-unit id="8104dde1f53dff5e84d89f5384d77463" resname="media.video.upload">
-        <source>media.video.upload</source>
-        <target xml:lang="ach">crwdns205103:0crwdne205103:0</target>
-      </trans-unit>
-      <trans-unit id="2ed2f34821cc85db8989f96881b5f324" resname="media.audio.replace">
-        <source>media.audio.replace</source>
-        <target xml:lang="ach">crwdns205104:0crwdne205104:0</target>
-      </trans-unit>
-      <trans-unit id="976ee640b4b9fcb0b15433ddd239eeb2" resname="media.video.replace">
-        <source>media.video.replace</source>
-        <target xml:lang="ach">crwdns205105:0crwdne205105:0</target>
-      </trans-unit>
-      <trans-unit id="8506e1df8716e1d1c0b57855b712e9d8" resname="media.audio.remove">
-        <source>media.audio.remove</source>
-        <target xml:lang="ach">crwdns205106:0crwdne205106:0</target>
-      </trans-unit>
-      <trans-unit id="4941e47f0aa6f4af451b9d76a43e45f8" resname="media.video.remove">
-        <source>media.video.remove</source>
-        <target xml:lang="ach">crwdns205107:0crwdne205107:0</target>
-      </trans-unit>
-      <trans-unit id="967ec066a0911abe340cd1c05132ce0a" resname="media.autoplay">
-        <source>media.autoplay</source>
-        <target xml:lang="ach">crwdns205108:0crwdne205108:0</target>
-      </trans-unit>
-      <trans-unit id="b796946c1cf48e89026639587967d7ee" resname="media.loop">
-        <source>media.loop</source>
-        <target xml:lang="ach">crwdns205109:0crwdne205109:0</target>
-      </trans-unit>
-      <trans-unit id="30ce641ca0efa043b4966276a3d8fbf5" resname="media.width">
-        <source>media.width</source>
-        <target xml:lang="ach">crwdns205110:0crwdne205110:0</target>
-      </trans-unit>
-      <trans-unit id="5d30e408663ab66a74a1de18953cd4f2" resname="media.height">
-        <source>media.height</source>
-        <target xml:lang="ach">crwdns205111:0crwdne205111:0</target>
-      </trans-unit>
-      <trans-unit id="4a8c719b11e3f4b12f82f93310e4709e" resname="media.displaycontrols">
-        <source>media.displaycontrols</source>
-        <target xml:lang="ach">crwdns205112:0crwdne205112:0</target>
-      </trans-unit>
-      <trans-unit id="c8c80279877d36d24e98500f07587a9d" resname="maplocation.address">
-        <source>maplocation.address</source>
-        <target xml:lang="ach">crwdns205113:0crwdne205113:0</target>
-      </trans-unit>
-      <trans-unit id="4045d0bf7e9c332c477d445fdb444b67" resname="maplocation.locateaddress">
-        <source>maplocation.locateaddress</source>
-        <target xml:lang="ach">crwdns205114:0crwdne205114:0</target>
-      </trans-unit>
-      <trans-unit id="25fe516175d5eb7d5b98bb76cd78e159" resname="maplocation.longitude">
-        <source>maplocation.longitude</source>
-        <target xml:lang="ach">crwdns205115:0crwdne205115:0</target>
-      </trans-unit>
-      <trans-unit id="7af39c184be0b1d2ee92c811ddd356e4" resname="maplocation.latitude">
-        <source>maplocation.latitude</source>
-        <target xml:lang="ach">crwdns205116:0crwdne205116:0</target>
-      </trans-unit>
-      <trans-unit id="4b1a0ddd442dc032348f2f0f1f61b482" resname="maplocation.locateme">
-        <source>maplocation.locateme</source>
-        <target xml:lang="ach">crwdns205117:0crwdne205117:0</target>
-      </trans-unit>
-      <trans-unit id="752a2be0d4c32c88d03e7b5a05b00543" resname="richtext.save">
-        <source>richtext.save</source>
-        <target xml:lang="ach">crwdns205118:0crwdne205118:0</target>
-      </trans-unit>
-      <trans-unit id="6c19741f2bba8ee829bd4ef815f38e7e" resname="richtext.focus">
-        <source>richtext.focus</source>
-        <target xml:lang="ach">crwdns205119:0crwdne205119:0</target>
-      </trans-unit>
-      <trans-unit id="56ce43bf3b6e258d5b756dad2ec872ce" resname="date.calendar">
-        <source>date.calendar</source>
-        <target xml:lang="ach">crwdns205120:0crwdne205120:0</target>
-      </trans-unit>
-      <trans-unit id="148e6348f8cf9270b308abe072d813dd" resname="user.login">
-        <source>user.login</source>
-        <target xml:lang="ach">crwdns205121:0crwdne205121:0</target>
-      </trans-unit>
-      <trans-unit id="57ec3017ee5c15aaf21f619b8aa037e5" resname="user.email">
-        <source>user.email</source>
-        <target xml:lang="ach">crwdns205122:0crwdne205122:0</target>
-      </trans-unit>
-      <trans-unit id="005ea07e9e859dfb531c7d8ea16f0c72" resname="user.password">
-        <source>user.password</source>
-        <target xml:lang="ach">crwdns205123:0crwdne205123:0</target>
-      </trans-unit>
-      <trans-unit id="f345f65b972217d726502cdc89479914" resname="user.passwordconfirm">
-        <source>user.passwordconfirm</source>
-        <target xml:lang="ach">crwdns205124:0crwdne205124:0</target>
-      </trans-unit>
-      <trans-unit id="3238c7e0103f16599e0c54f5b6c4cd22" resname="image.help">
-        <source>image.help</source>
-        <target xml:lang="ach">crwdns205125:0crwdne205125:0</target>
-      </trans-unit>
-      <trans-unit id="9583bccc574d916be13bc681a3b339dc" resname="image.thumbnail.loading">
-        <source>image.thumbnail.loading</source>
-        <target xml:lang="ach">crwdns205126:0crwdne205126:0</target>
-      </trans-unit>
-      <trans-unit id="0598f74f670e49b4558ac3c9a5d47f53" resname="image.thumbnail.retry">
-        <source>image.thumbnail.retry</source>
-        <target xml:lang="ach">crwdns205127:0crwdne205127:0</target>
-      </trans-unit>
-      <trans-unit id="5c630140d13a7217ee67495886dcd3cf" resname="image.fullwidth">
-        <source>image.fullwidth</source>
-        <target xml:lang="ach">crwdns205128:0crwdne205128:0</target>
-      </trans-unit>
-      <trans-unit id="e87ce99039ac67f93d177893a834c007" resname="image.name">
-        <source>image.name</source>
-        <target xml:lang="ach">crwdns205129:0crwdne205129:0</target>
-      </trans-unit>
-      <trans-unit id="bbfe2c6cb23e609c31e1d1ceffebf5e1" resname="image.type">
-        <source>image.type</source>
-        <target xml:lang="ach">crwdns205130:0crwdne205130:0</target>
-      </trans-unit>
-      <trans-unit id="22cf294cfde798ddada0190db26b1f10" resname="image.size">
-        <source>image.size</source>
-        <target xml:lang="ach">crwdns205131:0crwdne205131:0</target>
-      </trans-unit>
-      <trans-unit id="c2c2198259944771ba55398de11265d4" resname="image.alternativetext">
-        <source>image.alternativetext</source>
-        <target xml:lang="ach">crwdns205132:0crwdne205132:0</target>
-      </trans-unit>
-      <trans-unit id="7bb9c4f26a17f45ea1c50ed38c3a342f" resname="image.noimage">
-        <source>image.noimage</source>
-        <target xml:lang="ach">crwdns205133:0crwdne205133:0</target>
-      </trans-unit>
-      <trans-unit id="095922b2cea7e11ed103de8bbc755915" resname="image.upload">
-        <source>image.upload</source>
-        <target xml:lang="ach">crwdns205134:0crwdne205134:0</target>
-      </trans-unit>
-      <trans-unit id="e6006edb6670828e560ce977d72bf8f9" resname="image.replace">
-        <source>image.replace</source>
-        <target xml:lang="ach">crwdns205135:0crwdne205135:0</target>
-      </trans-unit>
-      <trans-unit id="812c55972c2d0d53d639e9c2ddf54472" resname="image.or">
-        <source>image.or</source>
-        <target xml:lang="ach">crwdns205136:0crwdne205136:0</target>
-      </trans-unit>
-      <trans-unit id="34c520a4abbf3ff6cf66f4e6015ae1cf" resname="image.remove">
-        <source>image.remove</source>
-        <target xml:lang="ach">crwdns205137:0crwdne205137:0</target>
-      </trans-unit>
-      <trans-unit id="50f26eb1a988111f6c4e440fbb7008a6" resname="image.thumbnail.error">
-        <source>image.thumbnail.error</source>
-        <target xml:lang="ach">crwdns205138:0crwdne205138:0</target>
-      </trans-unit>
-      <trans-unit id="6a4b36ec6a3c9b3df286d590134c7a9f" resname="image.properties">
-        <source>image.properties</source>
-        <target xml:lang="ach">crwdns205139:0crwdne205139:0</target>
-      </trans-unit>
-      <trans-unit id="30023db2daf6a8f5df47ad23099410f1" resname="url.url">
-        <source>url.url</source>
-        <target xml:lang="ach">crwdns205140:0crwdne205140:0</target>
-      </trans-unit>
-      <trans-unit id="f259b0b1e6c9cd82d254dc4256d466b5" resname="url.text">
-        <source>url.text</source>
-        <target xml:lang="ach">crwdns205141:0crwdne205141:0</target>
-      </trans-unit>
-      <trans-unit id="91282200f47a3b59675263fb01743b7a" resname="date.placeholder">
-        <source>date.placeholder</source>
-        <target xml:lang="ach">crwdns205142:0crwdne205142:0</target>
-      </trans-unit>
-      <trans-unit id="1baf4be4ac0efc7b93e278e77e03d27d" resname="image.preview">
-        <source>image.preview</source>
-        <target xml:lang="ach">crwdns205143:0crwdne205143:0</target>
-      </trans-unit>
-      <trans-unit id="01c03913d7d788beb4f1d36e14013f4a" resname="file.size">
-        <source>file.size</source>
-        <target xml:lang="ach">crwdns205144:0crwdne205144:0</target>
-      </trans-unit>
-      <trans-unit id="b3602d541d8c4c2f7ccab95c9b84f03d" resname="media.file.size">
-        <source>media.file.size</source>
-        <target xml:lang="ach">crwdns205145:0crwdne205145:0</target>
-      </trans-unit>
-      <trans-unit id="4a9c06a367bc5e13427b679d20d6585e" resname="this.field.is.required">
-        <source>this.field.is.required</source>
-        <target xml:lang="ach">crwdns205146:0crwdne205146:0</target>
-      </trans-unit>
-      <trans-unit id="7e31dad09775413afc11e0043c5f4a87" resname="over.maximum.allowed.size">
-        <source>over.maximum.allowed.size</source>
-        <target xml:lang="ach">crwdns205147:0crwdne205147:0</target>
-      </trans-unit>
-      <trans-unit id="224d9e5febe433d22de24b35b6886ed4" resname="dropped.several.files">
-        <source>dropped.several.files</source>
-        <target xml:lang="ach">crwdns205148:0crwdne205148:0</target>
-      </trans-unit>
-      <trans-unit id="b2a1f6843e8bd20b55a59b62ae510964" resname="dropped.text.selection">
-        <source>dropped.text.selection</source>
-        <target xml:lang="ach">crwdns205149:0crwdne205149:0</target>
-      </trans-unit>
-      <trans-unit id="0527ca1b776df33e79c239dd261a300a" resname="select.contents.to.add">
-        <source>select.contents.to.add</source>
-        <target xml:lang="ach">crwdns205150:0crwdne205150:0</target>
-      </trans-unit>
-      <trans-unit id="a488ef1759c60efcdbac531446fc9600" resname="date.and.time.not.valid">
-        <source>date.and.time.not.valid</source>
-        <target xml:lang="ach">crwdns205151:0crwdne205151:0</target>
-      </trans-unit>
-      <trans-unit id="b93388d7f2d50ea8eedeffff116153e0" resname="date.not.valid.time.required">
-        <source>date.not.valid.time.required</source>
-        <target xml:lang="ach">crwdns205152:0crwdne205152:0</target>
-      </trans-unit>
-      <trans-unit id="d84e8cf495b2ba25c85e266a5f1f618a" resname="date.not.valid">
-        <source>date.not.valid</source>
-        <target xml:lang="ach">crwdns205153:0crwdne205153:0</target>
-      </trans-unit>
-      <trans-unit id="9a5079c19dc24ba2b3340f23eccee10b" resname="time.not.valid.date.required">
-        <source>time.not.valid.date.required</source>
-        <target xml:lang="ach">crwdns205154:0crwdne205154:0</target>
-      </trans-unit>
-      <trans-unit id="6f4b65f1214609082d25d4f8c84f00e8" resname="time.not.valid">
-        <source>time.not.valid</source>
-        <target xml:lang="ach">crwdns205155:0crwdne205155:0</target>
-      </trans-unit>
-      <trans-unit id="31bae7959b8a9290d6e131156f150ad7" resname="date.time.required">
-        <source>date.time.required</source>
-        <target xml:lang="ach">crwdns205156:0crwdne205156:0</target>
-      </trans-unit>
-      <trans-unit id="8d224639815a152bcd685363899aafbd" resname="time.required">
-        <source>time.required</source>
-        <target xml:lang="ach">crwdns205157:0crwdne205157:0</target>
-      </trans-unit>
-      <trans-unit id="295036e19bd16ba679bd30cb2a6b4c9c" resname="date.not.valid.time.missing">
-        <source>date.not.valid.time.missing</source>
-        <target xml:lang="ach">crwdns205158:0crwdne205158:0</target>
-      </trans-unit>
-      <trans-unit id="7c5e17a7589ad998626bb8c30cb7d7c4" resname="time.not.valid.date.missing">
-        <source>time.not.valid.date.missing</source>
-        <target xml:lang="ach">crwdns205159:0crwdne205159:0</target>
-      </trans-unit>
-      <trans-unit id="ff14bfe64e0422676f10bb70f9cc4cd6" resname="login.required">
-        <source>login.required</source>
-        <target xml:lang="ach">crwdns205160:0crwdne205160:0</target>
-      </trans-unit>
-      <trans-unit id="e31829a0ce6c04c53964d26df179352c" resname="email.not.valid">
-        <source>email.not.valid</source>
-        <target xml:lang="ach">crwdns205161:0crwdne205161:0</target>
-      </trans-unit>
-      <trans-unit id="dcb0c8dc515654f5fcbb6a2f50cf74a7" resname="email.required">
-        <source>email.required</source>
-        <target xml:lang="ach">crwdns205162:0crwdne205162:0</target>
-      </trans-unit>
-      <trans-unit id="5c8c9e7d51e00cfd8c3efb70a4ceb22d" resname="email.required.if.name.filled">
-        <source>email.required.if.name.filled</source>
-        <target xml:lang="ach">crwdns205163:0crwdne205163:0</target>
-      </trans-unit>
-      <trans-unit id="2adbd32f29c77993c650c8fdc30c7261" resname="name.required.if.email.filled">
-        <source>name.required.if.email.filled</source>
-        <target xml:lang="ach">crwdns205164:0crwdne205164:0</target>
-      </trans-unit>
-      <trans-unit id="9dbdd928b91e09d9a1a629eebe39d0ce" resname="name.required">
-        <source>name.required</source>
-        <target xml:lang="ach">crwdns205165:0crwdne205165:0</target>
-      </trans-unit>
-      <trans-unit id="792f3a6485d9474a5ddb97825741af03" resname="invalid.input">
-        <source>invalid.input</source>
-        <target xml:lang="ach">crwdns205166:0crwdne205166:0</target>
-      </trans-unit>
-      <trans-unit id="52e932fb67f4d435af53abcefbd11297" resname="time.not.valid.enter.format">
-        <source>time.not.valid.enter.format</source>
-        <target xml:lang="ach">crwdns205167:0crwdne205167:0</target>
-      </trans-unit>
-      <trans-unit id="8644b007e3a9894ebb042a499efdc2f1" resname="input.not.valid">
-        <source>input.not.valid</source>
-        <target xml:lang="ach">crwdns205168:0crwdne205168:0</target>
-      </trans-unit>
-      <trans-unit id="be770fb78ad1b45fb591eb7aec1bb98d" resname="not.a.correct.isbn13.pattern">
-        <source>not.a.correct.isbn13.pattern</source>
-        <target xml:lang="ach">crwdns205169:0crwdne205169:0</target>
-      </trans-unit>
-      <trans-unit id="e8bb2a3cbb6af816001483b2446ed528" resname="bad.checksum.last.digit.should.be">
-        <source>bad.checksum.last.digit.should.be</source>
-        <target xml:lang="ach">crwdns205170:0crwdne205170:0</target>
-      </trans-unit>
-      <trans-unit id="876a8e60ecef8efc7bc9102507a4a481" resname="invalid.isbn10">
-        <source>invalid.isbn10</source>
-        <target xml:lang="ach">crwdns205171:0crwdne205171:0</target>
-      </trans-unit>
-      <trans-unit id="0299a26fd0f11092ec560dc8a3a162c0" resname="invalid.isbn10.sum.not.multiple.of.11">
-        <source>invalid.isbn10.sum.not.multiple.of.11</source>
-        <target xml:lang="ach">crwdns205172:0crwdne205172:0</target>
-      </trans-unit>
-      <trans-unit id="a2e215c005370123cc881c8bbdcf4460" resname="failed.retrieve.google.maps.api">
-        <source>failed.retrieve.google.maps.api</source>
-        <target xml:lang="ach">crwdns205173:0crwdne205173:0</target>
-      </trans-unit>
-      <trans-unit id="93b318981dcdc7440d5eedfc9e10d3e0" resname="unable.find.address">
-        <source>unable.find.address</source>
-        <target xml:lang="ach">crwdns205174:0crwdne205174:0</target>
-      </trans-unit>
-      <trans-unit id="2a022fd9d6a996e01057b8b95f19a25f" resname="geocoding.error">
-        <source>geocoding.error</source>
-        <target xml:lang="ach">crwdns205175:0crwdne205175:0</target>
-      </trans-unit>
-      <trans-unit id="eaca0c3c3e9bf70ca6a70068acac0199" resname="google.map.not.loaded.correctly">
-        <source>google.map.not.loaded.correctly</source>
-        <target xml:lang="ach">crwdns205176:0crwdne205176:0</target>
-      </trans-unit>
-      <trans-unit id="7d3ffac34ea4b4ff17a6cbea68ec0bd7" resname="error.during.geolocation.request">
-        <source>error.during.geolocation.request</source>
-        <target xml:lang="ach">crwdns205177:0crwdne205177:0</target>
-      </trans-unit>
-      <trans-unit id="10434a8e8d10d54d1d151af17d3230ac" resname="unsupported.html5.geolocation.api">
-        <source>unsupported.html5.geolocation.api</source>
-        <target xml:lang="ach">crwdns205178:0crwdne205178:0</target>
-      </trans-unit>
-      <trans-unit id="7b437d45e1f42602ff7ab971657a1d7f" resname="invalid.float.value">
-        <source>invalid.float.value</source>
-        <target xml:lang="ach">crwdns205179:0crwdne205179:0</target>
-      </trans-unit>
-      <trans-unit id="6f67812274045515acb5c73dc352972d" resname="float.value.should.be.less.than">
-        <source>float.value.should.be.less.than</source>
-        <target xml:lang="ach">crwdns205180:0crwdne205180:0</target>
-      </trans-unit>
-      <trans-unit id="10b1dd6fdbdf37467c2b5683335d1582" resname="float.value.should.be.more.than">
-        <source>float.value.should.be.more.than</source>
-        <target xml:lang="ach">crwdns205181:0crwdne205181:0</target>
-      </trans-unit>
-      <trans-unit id="dfa11846aaf06fffbd414984bcf6bfac" resname="refused.not.an.image">
-        <source>refused.not.an.image</source>
-        <target xml:lang="ach">crwdns205182:0crwdne205182:0</target>
-      </trans-unit>
-      <trans-unit id="489d557fd89975e34d4930ff7ea547bc" resname="svg.not.supported">
-        <source>svg.not.supported</source>
-        <target xml:lang="ach">crwdns205183:0crwdne205183:0</target>
-      </trans-unit>
-      <trans-unit id="13d494fd35f9f5b14309b84466cbddf2" resname="loading...">
-        <source>loading...</source>
-        <target xml:lang="ach">crwdns205184:0crwdne205184:0</target>
-      </trans-unit>
-      <trans-unit id="a4df94a6053c1bebcc386c8a16e69e36" resname="date.required">
-        <source>date.required</source>
-        <target xml:lang="ach">crwdns205185:0crwdne205185:0</target>
-      </trans-unit>
-      <trans-unit id="c7655b2d1ded7d33ecc831622ef6297e" resname="value.should.be.valid.integer">
-        <source>value.should.be.valid.integer</source>
-        <target xml:lang="ach">crwdns205186:0crwdne205186:0</target>
-      </trans-unit>
-      <trans-unit id="02884526db16f2209e2f3444c73a4d6c" resname="value.should.be.less.than">
-        <source>value.should.be.less.than</source>
-        <target xml:lang="ach">crwdns205187:0crwdne205187:0</target>
-      </trans-unit>
-      <trans-unit id="f24e16e259112615d215a2c9557a071c" resname="value.should.be.more.than">
-        <source>value.should.be.more.than</source>
-        <target xml:lang="ach">crwdns205188:0crwdne205188:0</target>
+      <trans-unit id="30527585f513c4216ef8505ace7adc4cd4504716" resname="author.add">
+        <source>Add another author</source>
+        <target xml:lang="ach">crwdns205758:0crwdne205758:0</target>
+        <note>key: author.add</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/author.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0d26cffd2879243fec3052d28eca681b47722093" resname="authorinput.email">
+        <source>Email:</source>
+        <target xml:lang="ach">crwdns205759:0crwdne205759:0</target>
+        <note>key: authorinput.email</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/authorinput.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="de45b8facdcebc26f1c77df02b4208a89b276855" resname="authorinput.name">
+        <source>Name:</source>
+        <target xml:lang="ach">crwdns205760:0crwdne205760:0</target>
+        <note>key: authorinput.name</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/authorinput.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="cb37a419e7f74648f3096f17a11b45d29d4f30a9" resname="authorinput.remove">
+        <source>Remove this author</source>
+        <target xml:lang="ach">crwdns205761:0crwdne205761:0</target>
+        <note>key: authorinput.remove</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/authorinput.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9b553533713b1ca3b636ebe184350b5c0301a296" resname="bad.checksum.last.digit.should.be">
+        <source>Bad checksum, last digit of ISBN 13 should be %checkDigit%</source>
+        <target xml:lang="ach">crwdns205762:0%checkDigit%crwdne205762:0</target>
+        <note>key: bad.checksum.last.digit.should.be</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e5070f4a7780feaac79ab807cd1546a70effb49d" resname="binaryfile.download">
+        <source>Download the file</source>
+        <target xml:lang="ach">crwdns205763:0crwdne205763:0</target>
+        <note>key: binaryfile.download</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6368a200a5ca556ba56c6065d90cb55ccf4b3262" resname="binaryfile.empty">
+        <source>No file yet.</source>
+        <target xml:lang="ach">crwdns205764:0crwdne205764:0</target>
+        <note>key: binaryfile.empty</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="30424972909697b477376e7ca05c88535f9a2b58" resname="binaryfile.help">
+        <source>Drag and drop your file here or simply click on the buttons and select your file manually.</source>
+        <target xml:lang="ach">crwdns205765:0crwdne205765:0</target>
+        <note>key: binaryfile.help</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="deb180f588060bb98b95d7df6d43b0d9d5278774" resname="binaryfile.name">
+        <source>File name:</source>
+        <target xml:lang="ach">crwdns205766:0crwdne205766:0</target>
+        <note>key: binaryfile.name</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="63b7d9eb28e23a7b075fd63567bb1c021b8f93d0" resname="binaryfile.or">
+        <source>or</source>
+        <target xml:lang="ach">crwdns205767:0crwdne205767:0</target>
+        <note>key: binaryfile.or</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="09251818f4f6aabd8f9c9e3caddd0e52a4e94f53" resname="binaryfile.remove">
+        <source>Remove this file</source>
+        <target xml:lang="ach">crwdns205768:0crwdne205768:0</target>
+        <note>key: binaryfile.remove</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1c966af2e1e58bbe0cc2fcedf97a72a128f97e05" resname="binaryfile.replace">
+        <source>Replace this file</source>
+        <target xml:lang="ach">crwdns205769:0crwdne205769:0</target>
+        <note>key: binaryfile.replace</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="43102016be1b21e84fd962003da92c48bc434ad3" resname="binaryfile.size">
+        <source>File size:</source>
+        <target xml:lang="ach">crwdns205770:0crwdne205770:0</target>
+        <note>key: binaryfile.size</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="012ca0baa21f8d816f95de486b4da746ed42f845" resname="binaryfile.type">
+        <source>Type:</source>
+        <target xml:lang="ach">crwdns205771:0crwdne205771:0</target>
+        <note>key: binaryfile.type</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="50d21f53a194d59aa5f1e9f3a12af1afcc6ef8fe" resname="binaryfile.upload">
+        <source>Upload a file</source>
+        <target xml:lang="ach">crwdns205772:0crwdne205772:0</target>
+        <note>key: binaryfile.upload</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a471779c9392f01dd003a1bc6879fd783e050f84" resname="date.and.time.not.valid">
+        <source>Date and time do not have valid inputs</source>
+        <target xml:lang="ach">crwdns205773:0crwdne205773:0</target>
+        <note>key: date.and.time.not.valid</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="81e49b2ea1382af92570ae58ccb754535b55b224" resname="date.calendar">
+        <source>Calendar</source>
+        <target xml:lang="ach">crwdns205774:0crwdne205774:0</target>
+        <note>key: date.calendar</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/date.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1096c88b9ecb1c83173e6fe1a7330ac88aae7e1e" resname="date.not.valid">
+        <source>This is not a correct date</source>
+        <target xml:lang="ach">crwdns205775:0crwdne205775:0</target>
+        <note>key: date.not.valid</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-date-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="86b1150b591a089eab73f5cb58fc11964ccb5f78" resname="date.not.valid.time.missing">
+        <source>Date do not have a valid input and time is missing</source>
+        <target xml:lang="ach">crwdns205776:0crwdne205776:0</target>
+        <note>key: date.not.valid.time.missing</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b262de6dff7418fd4c316ac5946911aff50c5df1" resname="date.not.valid.time.required">
+        <source>Date do not have a valid input and time is required</source>
+        <target xml:lang="ach">crwdns205777:0crwdne205777:0</target>
+        <note>key: date.not.valid.time.required</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5ea84ba9d0dd61b9b47b2104f086c4770daf2c74" resname="date.placeholder">
+        <source>YYYY-MM-DD</source>
+        <target xml:lang="ach">crwdns205778:0crwdne205778:0</target>
+        <note>key: date.placeholder</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/date.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ac8b6151c30254609f6e9f2a7ab5c5570ea94dcd" resname="date.required">
+        <source>Date is required</source>
+        <target xml:lang="ach">crwdns205779:0crwdne205779:0</target>
+        <note>key: date.required</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c1eee799ee7368e2089f1eb18e2431108253dc07" resname="date.time.required">
+        <source>Date and time are required</source>
+        <target xml:lang="ach">crwdns205780:0crwdne205780:0</target>
+        <note>key: date.time.required</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3512b5e328b32d7ad9f98fa9fdc35df7f2207526" resname="dropped.several.files">
+        <source>You dropped several files while only one can be stored in this field. Please choose one file.</source>
+        <target xml:lang="ach">crwdns205781:0crwdne205781:0</target>
+        <note>key: dropped.several.files</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-binarybase-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="77e9dcf7fa3a6196173e1ef8d749321c078a61fb" resname="dropped.text.selection">
+        <source>You dropped a text selection while this field can only store a file. Please drop a file instead.</source>
+        <target xml:lang="ach">crwdns205782:0crwdne205782:0</target>
+        <note>key: dropped.text.selection</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-binarybase-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7e57a01ae6b4b0385ec149a170df478fa2868f25" resname="email.not.valid">
+        <source>The email address should be valid</source>
+        <target xml:lang="ach">crwdns205783:0crwdne205783:0</target>
+        <note>key: email.not.valid</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-author-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-emailaddress-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-user-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9c96ffba7a783d0786368dbf8b2b23dfc4188e66" resname="email.required">
+        <source>The email address is required</source>
+        <target xml:lang="ach">crwdns205784:0crwdne205784:0</target>
+        <note>key: email.required</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-author-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-user-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3baff585bf1b4c49f13ffa7f27f2afb737498a8c" resname="email.required.if.name.filled">
+        <source>The email address is required if the name is filled.</source>
+        <target xml:lang="ach">crwdns205785:0crwdne205785:0</target>
+        <note>key: email.required.if.name.filled</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-author-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4681faa8e9e01a7b94ecbbc5f581b4d44a5e935d" resname="embed.content.not.loaded">
+        <source>Embedded Content item could not be loaded</source>
+        <target xml:lang="ach">crwdns205786:0crwdne205786:0</target>
+        <note>key: embed.content.not.loaded</note>
+        <jms:reference-file>./Resources/public/js/views/fields/richtext/ez-richtext-resolveembed.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0a60003c1459ed6556b63b64c050fd4d070d94e4" resname="error.during.geolocation.request">
+        <source>An error occurred during geolocation request of your current position</source>
+        <target xml:lang="ach">crwdns205787:0crwdne205787:0</target>
+        <note>key: error.during.geolocation.request</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9c74a8f5f67dd8e07a2912177bc6de9c9cde6d75" resname="failed.retrieve.google.maps.api">
+        <source>Failed to retrieve Google Maps API</source>
+        <target xml:lang="ach">crwdns205788:0crwdne205788:0</target>
+        <note>key: failed.retrieve.google.maps.api</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a64621b5af174b18350e8774d65ac227c79f0077" resname="file.size">
+        <source>(%size% bytes)</source>
+        <target xml:lang="ach">crwdns205789:0%size%crwdne205789:0</target>
+        <note>key: file.size</note>
+        <jms:reference-file>./Resources/public/templates/fields/view/binaryfile.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c02ec1f84b17c734661c3a5935960b7392a3af2a" resname="float.value.should.be.less.than">
+        <source>The value should be less than or equal to %maxFloatValue%</source>
+        <target xml:lang="ach">crwdns205790:0%maxFloatValue%crwdne205790:0</target>
+        <note>key: float.value.should.be.less.than</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-float-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f29cb6461d72c2fe892e65d4dd7dd296ed5db961" resname="float.value.should.be.more.than">
+        <source>The value should be more than or equal to %minFloatValue%</source>
+        <target xml:lang="ach">crwdns205791:0%minFloatValue%crwdne205791:0</target>
+        <note>key: float.value.should.be.more.than</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-float-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0e560377b2f3909ebf37cd10977860242a93f694" resname="geocoding.error">
+        <source>An error occurred during the geocoding request for this address</source>
+        <target xml:lang="ach">crwdns205792:0crwdne205792:0</target>
+        <note>key: geocoding.error</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="683f0d47319d2d3671eb34b0aab6bcc549b0ac5e" resname="google.map.not.loaded.correctly">
+        <source>Google maps are not loaded correctly, try reloading the page</source>
+        <target xml:lang="ach">crwdns205793:0crwdne205793:0</target>
+        <note>key: google.map.not.loaded.correctly</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5c973cf4cef4fd2936dbd1d7879ccdcd8b9e6ffe" resname="image.alternativetext">
+        <source>Alternative text:</source>
+        <target xml:lang="ach">crwdns205794:0crwdne205794:0</target>
+        <note>key: image.alternativetext</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b93ecd00f44abdce9d25bb437706b04329a172aa" resname="image.content.not.loaded">
+        <source>Image could not be loaded</source>
+        <target xml:lang="ach">crwdns205795:0crwdne205795:0</target>
+        <note>key: image.content.not.loaded</note>
+        <jms:reference-file>./Resources/public/js/views/fields/richtext/ez-richtext-resolveimage.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c21c1e24ffd073c7213022cf4d0cde8e94be62b8" resname="image.fullwidth">
+        <source>View the full width image</source>
+        <target xml:lang="ach">crwdns205796:0crwdne205796:0</target>
+        <note>key: image.fullwidth</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="421768b6fafc8049fe02c600c5bc6ecb8a5590c2" resname="image.help">
+        <source>Drag and drop your image here or simply click on the buttons and select your image manually.</source>
+        <target xml:lang="ach">crwdns205797:0crwdne205797:0</target>
+        <note>key: image.help</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="623d52cead77075eabf73bd844f1870264264f8e" resname="image.name">
+        <source>File name</source>
+        <target xml:lang="ach">crwdns205798:0crwdne205798:0</target>
+        <note>key: image.name</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4869b50f2d217dadd224261042666bd2a3fd0e9e" resname="image.noimage">
+        <source>No image yet.</source>
+        <target xml:lang="ach">crwdns205799:0crwdne205799:0</target>
+        <note>key: image.noimage</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ddb2b77067d29961704d011d303b42d5fcc00e5c" resname="image.or">
+        <source>or</source>
+        <target xml:lang="ach">crwdns205800:0crwdne205800:0</target>
+        <note>key: image.or</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7deddf51ab844e5621b291039176191f8bbdef95" resname="image.preview">
+        <source>Image preview</source>
+        <target xml:lang="ach">crwdns205801:0crwdne205801:0</target>
+        <note>key: image.preview</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a291c895782db79ab2693d1e91090f491402f32d" resname="image.properties">
+        <source>Image properties</source>
+        <target xml:lang="ach">crwdns205802:0crwdne205802:0</target>
+        <note>key: image.properties</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="eaa4c2c811e8e5048745d4d437e122b67e16bbfa" resname="image.remove">
+        <source>Remove this image</source>
+        <target xml:lang="ach">crwdns205803:0crwdne205803:0</target>
+        <note>key: image.remove</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e7b9c11716066f2b3bcb38ac4db35fb7501118e0" resname="image.replace">
+        <source>Replace this image</source>
+        <target xml:lang="ach">crwdns205804:0crwdne205804:0</target>
+        <note>key: image.replace</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="265c4b8ea4ab58567a9be6610f7dff0b99223299" resname="image.size">
+        <source>File size:</source>
+        <target xml:lang="ach">crwdns205805:0crwdne205805:0</target>
+        <note>key: image.size</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="16a6d4b19907cd8be6b2be041fca055ad70a3447" resname="image.thumbnail.error">
+        <source>An error occurred while loading the thumbnail.</source>
+        <target xml:lang="ach">crwdns205806:0crwdne205806:0</target>
+        <note>key: image.thumbnail.error</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2b17eed3677a5d65192b549375f533751091f25f" resname="image.thumbnail.loading">
+        <source>Loading a thumbnail of the image...</source>
+        <target xml:lang="ach">crwdns205807:0crwdne205807:0</target>
+        <note>key: image.thumbnail.loading</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="689cae8350541efc2cad64f32e6d1a9512845b05" resname="image.thumbnail.retry">
+        <source>Retry</source>
+        <target xml:lang="ach">crwdns205808:0crwdne205808:0</target>
+        <note>key: image.thumbnail.retry</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1fa08ff0c1b3b004705e4fc4884f7c0cf631465a" resname="image.type">
+        <source>Type:</source>
+        <target xml:lang="ach">crwdns205809:0crwdne205809:0</target>
+        <note>key: image.type</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3cb3d1ded419f0923f0b00e65e3c9b6c112e450c" resname="image.upload">
+        <source>Upload an image</source>
+        <target xml:lang="ach">crwdns205810:0crwdne205810:0</target>
+        <note>key: image.upload</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/image.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f0edbc370c196d4d5a74049ed4382bbd16aa4b82" resname="input.not.valid">
+        <source>This is not a valid input</source>
+        <target xml:lang="ach">crwdns205811:0crwdne205811:0</target>
+        <note>key: input.not.valid</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-date-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8e49b578596402bf9f38b7a53ee4e6838f31c1a9" resname="invalid.float.value">
+        <source>The value should be a valid float number</source>
+        <target xml:lang="ach">crwdns205812:0crwdne205812:0</target>
+        <note>key: invalid.float.value</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-float-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d5afda02a70b4e08a45743098c217ce1cb424278" resname="invalid.input">
+        <source>This is not a valid input</source>
+        <target xml:lang="ach">crwdns205813:0crwdne205813:0</target>
+        <note>key: invalid.input</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-time-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="624975ced077be4e434e9ddc7aceb12cdd06a2f7" resname="invalid.isbn10">
+        <source>invalid ISBN 10</source>
+        <target xml:lang="ach">crwdns205814:0crwdne205814:0</target>
+        <note>key: invalid.isbn10</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a10ccd621b14ed09703e07e31cbfed166450b722" resname="invalid.isbn10.sum.not.multiple.of.11">
+        <source>invalid ISBN 10 (sum is not a multiple of 11")</source>
+        <target xml:lang="ach">crwdns205815:0crwdne205815:0</target>
+        <note>key: invalid.isbn10.sum.not.multiple.of.11</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="65c4aaaab5989949a929cc5f7e96eb7017c2d9f4" resname="loading...">
+        <source>Loading...</source>
+        <target xml:lang="ach">crwdns205816:0crwdne205816:0</target>
+        <note>key: loading...</note>
+        <jms:reference-file>./Resources/public/js/views/fields/richtext/ez-richtext-resolveembed.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0d7b8b93e93ce650d31862d74cdc2566058742d3" resname="login.required">
+        <source>'The login is required</source>
+        <target xml:lang="ach">crwdns205817:0crwdne205817:0</target>
+        <note>key: login.required</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-user-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3ebb2a2e0355aff0d63b0a1c644aff0efa6b52c6" resname="maplocation.address">
+        <source>Address:</source>
+        <target xml:lang="ach">crwdns205818:0crwdne205818:0</target>
+        <note>key: maplocation.address</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/maplocation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e21151edf210d6968aa67c35235066389865f136" resname="maplocation.latitude">
+        <source>Latitude:</source>
+        <target xml:lang="ach">crwdns205819:0crwdne205819:0</target>
+        <note>key: maplocation.latitude</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/maplocation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="04e7fa05923b84dde058e7a8b349de8a019962f8" resname="maplocation.locateaddress">
+        <source>Locate Address</source>
+        <target xml:lang="ach">crwdns205820:0crwdne205820:0</target>
+        <note>key: maplocation.locateaddress</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/maplocation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="748db692b3faa75edc78fe780f125dacc597fdd2" resname="maplocation.locateme">
+        <source>Locate Me</source>
+        <target xml:lang="ach">crwdns205821:0crwdne205821:0</target>
+        <note>key: maplocation.locateme</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/maplocation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="60f60bbfc3c9cd30603670eb6b91fa5a1619f73b" resname="maplocation.longitude">
+        <source>Longitude:</source>
+        <target xml:lang="ach">crwdns205822:0crwdne205822:0</target>
+        <note>key: maplocation.longitude</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/maplocation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="de4d15e55b8a04ee1b6f188b3cf6dac4aca30d5a" resname="media.audio.empty">
+        <source>No audio file yet.</source>
+        <target xml:lang="ach">crwdns205823:0crwdne205823:0</target>
+        <note>key: media.audio.empty</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9e333a901ae1af3b53556d2dd70fd6b0d2bd36a2" resname="media.audio.help">
+        <source>Drag and drop your audio file here or simply click on the buttons and select your audio file manually.</source>
+        <target xml:lang="ach">crwdns205824:0crwdne205824:0</target>
+        <note>key: media.audio.help</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0be02246f03eea8192409c98d2742cfc8394379b" resname="media.audio.properties">
+        <source>Audio file properties</source>
+        <target xml:lang="ach">crwdns205825:0crwdne205825:0</target>
+        <note>key: media.audio.properties</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2d64b8db93429eb250ac521adf66d0b8941cb1e8" resname="media.audio.remove">
+        <source>Remove this audio file</source>
+        <target xml:lang="ach">crwdns205826:0crwdne205826:0</target>
+        <note>key: media.audio.remove</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="15a4d5ecb1370c9fad3f37f4235422017660a208" resname="media.audio.replace">
+        <source>Replace this audio file</source>
+        <target xml:lang="ach">crwdns205827:0crwdne205827:0</target>
+        <note>key: media.audio.replace</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6a4fa5aa4d83d262f7179096cb94b1de7ef10582" resname="media.audio.unsupported">
+        <source>Unsupported audio format</source>
+        <target xml:lang="ach">crwdns205828:0crwdne205828:0</target>
+        <note>key: media.audio.unsupported</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="05a233289e65681f4b1ddc93eaffd0c756d63fc4" resname="media.audio.upload">
+        <source>Upload an audio file</source>
+        <target xml:lang="ach">crwdns205829:0crwdne205829:0</target>
+        <note>key: media.audio.upload</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6eadf968d3be0a9dbf1a708d86cf710bb62ed7bd" resname="media.autoplay">
+        <source>Auto play:</source>
+        <target xml:lang="ach">crwdns205830:0crwdne205830:0</target>
+        <note>key: media.autoplay</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="83643610d46ed56851ef235675f247e24a628112" resname="media.displaycontrols">
+        <source>Display controls:</source>
+        <target xml:lang="ach">crwdns205831:0crwdne205831:0</target>
+        <note>key: media.displaycontrols</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="48f89aa321f9917ee7d69855d638ccc06fbc08cb" resname="media.file.size">
+        <source><![CDATA[<span class="ez-media-properties-size">%size%</span>&nbsp;bytes]]></source>
+        <target xml:lang="ach"><![CDATA[crwdns205832:0%size%crwdne205832:0]]></target>
+        <note>key: media.file.size</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dbde52fe3c3a99179a4835dcc6d199371fbc91b2" resname="media.height">
+        <source>Height:</source>
+        <target xml:lang="ach">crwdns205833:0crwdne205833:0</target>
+        <note>key: media.height</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2325191dea1090c18ddab4c6e793dc19ecfab29c" resname="media.loop">
+        <source>Loop:</source>
+        <target xml:lang="ach">crwdns205834:0crwdne205834:0</target>
+        <note>key: media.loop</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ddb130a4e4e9656800990ae5c96df1ea3fcc604e" resname="media.name">
+        <source>File name:</source>
+        <target xml:lang="ach">crwdns205835:0crwdne205835:0</target>
+        <note>key: media.name</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5fe85b221381eab5cf085d06e93da5fd8cfbd4f3" resname="media.newtab">
+        <source>Open it in a new tab</source>
+        <target xml:lang="ach">crwdns205836:0crwdne205836:0</target>
+        <note>key: media.newtab</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c888da5fa745a2e9517d698c6cadbc1b8404d7a9" resname="media.playersettings">
+        <source>Player settings</source>
+        <target xml:lang="ach">crwdns205837:0crwdne205837:0</target>
+        <note>key: media.playersettings</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="135cbb609fe487f5b9df8fdd756028516d582195" resname="media.size">
+        <source>File size:</source>
+        <target xml:lang="ach">crwdns205838:0crwdne205838:0</target>
+        <note>key: media.size</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="fc651caf3e8f0d087bf50d11af3a5852e4e4f4da" resname="media.type">
+        <source>Type:</source>
+        <target xml:lang="ach">crwdns205839:0crwdne205839:0</target>
+        <note>key: media.type</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="200321ea1995c3d33324fef4dba05f58873910f3" resname="media.video.empty">
+        <source>No video file yet.</source>
+        <target xml:lang="ach">crwdns205840:0crwdne205840:0</target>
+        <note>key: media.video.empty</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="99b8daaf90cdc2ee5b0f96b05c92e7452ca5cb7e" resname="media.video.help">
+        <source><![CDATA[Drag and drop your video here or simply click on the buttons and select your video manually. Customize size, controls & view.]]></source>
+        <target xml:lang="ach"><![CDATA[crwdns205841:0crwdne205841:0]]></target>
+        <note>key: media.video.help</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6e2da936d84283d264f260e9f966a11be051096e" resname="media.video.properties">
+        <source>Video file properties</source>
+        <target xml:lang="ach">crwdns205842:0crwdne205842:0</target>
+        <note>key: media.video.properties</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0ea95996960e7e25850641cb651904538b525e0a" resname="media.video.remove">
+        <source>Remove this video</source>
+        <target xml:lang="ach">crwdns205843:0crwdne205843:0</target>
+        <note>key: media.video.remove</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="685b7365429b2f2cf79ff014e38b14c73899a492" resname="media.video.replace">
+        <source>Replace this video</source>
+        <target xml:lang="ach">crwdns205844:0crwdne205844:0</target>
+        <note>key: media.video.replace</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="af7590bb13331b3eda4b2a0ab28f0d2a100781e9" resname="media.video.unsupported">
+        <source>Unsupported video format</source>
+        <target xml:lang="ach">crwdns205845:0crwdne205845:0</target>
+        <note>key: media.video.unsupported</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3cce6f7478e77242b2c94108460c48905e28da7f" resname="media.video.upload">
+        <source>Upload a video</source>
+        <target xml:lang="ach">crwdns205846:0crwdne205846:0</target>
+        <note>key: media.video.upload</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e869d62b8c16e01b95bc9d235173e8dba6f42f30" resname="media.width">
+        <source>Width:</source>
+        <target xml:lang="ach">crwdns205847:0crwdne205847:0</target>
+        <note>key: media.width</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/media.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4472d1a8e3b30bcb2a5ca35aef3354d87c4f7e0d" resname="name.required">
+        <source>The name is required</source>
+        <target xml:lang="ach">crwdns205848:0crwdne205848:0</target>
+        <note>key: name.required</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-author-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="76a19d250ba3d1fa3c051e03183820ba5a8f6d98" resname="name.required.if.email.filled">
+        <source>The name is required if the email is filled</source>
+        <target xml:lang="ach">crwdns205849:0crwdne205849:0</target>
+        <note>key: name.required.if.email.filled</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-author-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dd18de349adefaf37b5e99873421b2a0ff05b4d3" resname="not.a.correct.isbn13.pattern">
+        <source>This is not a correct ISBN13 pattern</source>
+        <target xml:lang="ach">crwdns205850:0crwdne205850:0</target>
+        <note>key: not.a.correct.isbn13.pattern</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="bfa3d0165087e1b249eceda81f084e4404ed79f4" resname="over.maximum.allowed.size">
+        <source>The file '%name%' was refused because its size is greater than the maximum allowed size (%max%)</source>
+        <target xml:lang="ach">crwdns205851:0%name%crwdnd205851:0%max%crwdne205851:0</target>
+        <note>key: over.maximum.allowed.size</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-binarybase-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6fe513c14eb957ff25185e5b3bf73f9f3a8ccee4" resname="refused.not.an.image">
+        <source>The file '%name%' was refused because it seems to not be an image. Please choose an image file.</source>
+        <target xml:lang="ach">crwdns205852:0%name%crwdne205852:0</target>
+        <note>key: refused.not.an.image</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-image-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a1e89ea5d1c7efa83d78aecaaf08c993df7b8d7a" resname="relation.empty">
+        <source>No relation.</source>
+        <target xml:lang="ach">crwdns205853:0crwdne205853:0</target>
+        <note>key: relation.empty</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c0c592b62ccf324bfae2eba6f869050b32641b0c" resname="relation.error">
+        <source>An error occurred while loading the related content.</source>
+        <target xml:lang="ach">crwdns205854:0crwdne205854:0</target>
+        <note>key: relation.error</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1a0432678a22f538bc956d02a1a52709a24019a3" resname="relation.help">
+        <source>Select another content and link it up with your content.</source>
+        <target xml:lang="ach">crwdns205855:0crwdne205855:0</target>
+        <note>key: relation.help</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d83d7f0b353c6177f297b5a502f4beae187819ec" resname="relation.loading">
+        <source>Loading the related content</source>
+        <target xml:lang="ach">crwdns205856:0crwdne205856:0</target>
+        <note>key: relation.loading</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="75d2eb26107e9f1bebc6fd525965df6a2c35dee8" resname="relation.modified">
+        <source>Modified:</source>
+        <target xml:lang="ach">crwdns205857:0crwdne205857:0</target>
+        <note>key: relation.modified</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="fe7dd2a6fbf71766715c5ea46100398267102adc" resname="relation.published">
+        <source>Published:</source>
+        <target xml:lang="ach">crwdns205858:0crwdne205858:0</target>
+        <note>key: relation.published</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f46aad015f05a6ae74da1d451f030dcc02dc1e39" resname="relation.remove">
+        <source>Remove relation</source>
+        <target xml:lang="ach">crwdns205859:0crwdne205859:0</target>
+        <note>key: relation.remove</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d0a96c335f3402fd4df0fdad937321b580c13eb7" resname="relation.retry">
+        <source>Retry</source>
+        <target xml:lang="ach">crwdns205860:0crwdne205860:0</target>
+        <note>key: relation.retry</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2e594c668c9f88817270dd8c12acd559fe485f5b" resname="relation.select">
+        <source>Select a content</source>
+        <target xml:lang="ach">crwdns205861:0crwdne205861:0</target>
+        <note>key: relation.select</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relation.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="76eb23938007b8dc5d74961c52923f34fd9863fc" resname="relationlist.empty">
+        <source>No relation.</source>
+        <target xml:lang="ach">crwdns205862:0crwdne205862:0</target>
+        <note>key: relationlist.empty</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7b6f3591c6f295907a1636bd3ea950fa0126d970" resname="relationlist.error">
+        <source>An error occurred while loading the related content.</source>
+        <target xml:lang="ach">crwdns205863:0crwdne205863:0</target>
+        <note>key: relationlist.error</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="048ae70654be763915d036765feb172d2baa7559" resname="relationlist.help">
+        <source>Set up multiple relations with several contents.</source>
+        <target xml:lang="ach">crwdns205864:0crwdne205864:0</target>
+        <note>key: relationlist.help</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1d30f0399910c05468169bd5a7f737caff136afe" resname="relationlist.loading">
+        <source>Loading the related content(s)</source>
+        <target xml:lang="ach">crwdns205865:0crwdne205865:0</target>
+        <note>key: relationlist.loading</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b0eb3cbb48be1ff976bd4569a8978d63336dd8b7" resname="relationlist.remove">
+        <source>Remove</source>
+        <target xml:lang="ach">crwdns205866:0crwdne205866:0</target>
+        <note>key: relationlist.remove</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="493a9cbc47e3af553067486bc8b13b43c8472fc4" resname="relationlist.retry">
+        <source>Retry</source>
+        <target xml:lang="ach">crwdns205867:0crwdne205867:0</target>
+        <note>key: relationlist.retry</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4d8d4cfb7509f6d02d61100e1b940fb5a847d91d" resname="relationlist.select">
+        <source>Select contents</source>
+        <target xml:lang="ach">crwdns205868:0crwdne205868:0</target>
+        <note>key: relationlist.select</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1c46a1068b55e75f3cac49a3f59c85ca19edbc52" resname="relationlist.table.modified">
+        <source>Modified</source>
+        <target xml:lang="ach">crwdns205869:0crwdne205869:0</target>
+        <note>key: relationlist.table.modified</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="fd35d9bedc6d39be95cef85dd23bc3fd550d6078" resname="relationlist.table.name">
+        <source>Name</source>
+        <target xml:lang="ach">crwdns205870:0crwdne205870:0</target>
+        <note>key: relationlist.table.name</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="fea522d933afafa19ac438bd82d49ddc1c254d2f" resname="relationlist.table.published">
+        <source>Published</source>
+        <target xml:lang="ach">crwdns205871:0crwdne205871:0</target>
+        <note>key: relationlist.table.published</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/relationlist.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e1ee64eddc5bc3ee8690f59e23a52dd4c50d036e" resname="richtext.focus">
+        <source>Focus</source>
+        <target xml:lang="ach">crwdns205872:0crwdne205872:0</target>
+        <note>key: richtext.focus</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/richtext.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a8867a26b3b1adfde513cee1bbc0b2cd0beb5cce" resname="richtext.save">
+        <source>Save and Return</source>
+        <target xml:lang="ach">crwdns205873:0crwdne205873:0</target>
+        <note>key: richtext.save</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/richtext.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2661cb6d447aad0683ba849b76913b44492fe727" resname="select.contents.to.add">
+        <source>Select the contents you want to add in the relation</source>
+        <target xml:lang="ach">crwdns205874:0crwdne205874:0</target>
+        <note>key: select.contents.to.add</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-relationlist-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8049139bde69cab92f967e171a9b3f1b933f3151" resname="svg.not.supported">
+        <source>SVG images are not supported. Please choose another image file.</source>
+        <target xml:lang="ach">crwdns205875:0crwdne205875:0</target>
+        <note>key: svg.not.supported</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-image-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="cbeb2eb9d25d8d0349f48bd24450b4431112165a" resname="this.field.is.required">
+        <source>This field is required</source>
+        <target xml:lang="ach">crwdns205876:0crwdne205876:0</target>
+        <note>key: this.field.is.required</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-binarybase-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-date-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-emailaddress-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-float-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-keyword-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-relation-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-relationlist-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-textblock-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-textline-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-time-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-url-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-xmltext-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a1df2bc73b96d5f4f733b81df6e65eab72e0a707" resname="time.not.valid">
+        <source>Time do not have a valid input</source>
+        <target xml:lang="ach">crwdns205877:0crwdne205877:0</target>
+        <note>key: time.not.valid</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3ac8de09a795de3e631c721617dab1caf9e90d12" resname="time.not.valid.date.missing">
+        <source>Time do not have a valid input and date is missing</source>
+        <target xml:lang="ach">crwdns205878:0crwdne205878:0</target>
+        <note>key: time.not.valid.date.missing</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c788a67f4c797fb4111df6384dd2d201ae947859" resname="time.not.valid.date.required">
+        <source>Time do not have a valid input and date is required</source>
+        <target xml:lang="ach">crwdns205879:0crwdne205879:0</target>
+        <note>key: time.not.valid.date.required</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4547cf11661540086aa7919af220e53df1d305c0" resname="time.not.valid.enter.format">
+        <source>This time is invalid, enter a correct time: HH:MM(:SS)</source>
+        <target xml:lang="ach">crwdns205880:0crwdne205880:0</target>
+        <note>key: time.not.valid.enter.format</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-time-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="464257823e27d65e1467abb5b4d6421541870a95" resname="time.required">
+        <source>Time is required</source>
+        <target xml:lang="ach">crwdns205881:0crwdne205881:0</target>
+        <note>key: time.required</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c93547a1639e55df78bf8797247cbf75c03649c1" resname="unable.find.address">
+        <source>Unable to find this address</source>
+        <target xml:lang="ach">crwdns205882:0crwdne205882:0</target>
+        <note>key: unable.find.address</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="45b69f23fd0b5a0e687942663b3acb369ded5c9b" resname="unsupported.html5.geolocation.api">
+        <source>Your browser does not support HTML5 Geolocation API</source>
+        <target xml:lang="ach">crwdns205883:0crwdne205883:0</target>
+        <note>key: unsupported.html5.geolocation.api</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="96c974ba32d664442a67e0f5885fd4f29e5ab015" resname="url.text">
+        <source>Text:</source>
+        <target xml:lang="ach">crwdns205884:0crwdne205884:0</target>
+        <note>key: url.text</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/url.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="aa0e54e7bb0afd83ecbc5ac7a5222961cbd911df" resname="url.url">
+        <source>URL</source>
+        <target xml:lang="ach">crwdns205885:0crwdne205885:0</target>
+        <note>key: url.url</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/url.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="20afd5b376ab9ffb3cfe083496345d7e9d11d9f5" resname="user.email">
+        <source>Email</source>
+        <target xml:lang="ach">crwdns205886:0crwdne205886:0</target>
+        <note>key: user.email</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/user.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1d797b831d4559bdebe45193f8b51b570437e97d" resname="user.login">
+        <source>Login</source>
+        <target xml:lang="ach">crwdns205887:0crwdne205887:0</target>
+        <note>key: user.login</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/user.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e4d06be519f5ddd5206349fb39cf7522dd947a3a" resname="user.password">
+        <source>Password</source>
+        <target xml:lang="ach">crwdns205888:0crwdne205888:0</target>
+        <note>key: user.password</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/user.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="782314478554920473f13c4ec6cb6a0471bc8172" resname="user.passwordconfirm">
+        <source>Confirm password</source>
+        <target xml:lang="ach">crwdns205889:0crwdne205889:0</target>
+        <note>key: user.passwordconfirm</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/user.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="65a42e27e76bf2722822dd28dd0b7ff2d163cb37" resname="value.should.be.less.than">
+        <source>The value should be less than or equal to %maxIntegerValue%</source>
+        <target xml:lang="ach">crwdns205890:0%maxIntegerValue%crwdne205890:0</target>
+        <note>key: value.should.be.less.than</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0e3930cc51c59d71efa5464323c96d75b93873f3" resname="value.should.be.more.than">
+        <source>The value should be more than or equal to %minIntegerValue%</source>
+        <target xml:lang="ach">crwdns205891:0%minIntegerValue%crwdne205891:0</target>
+        <note>key: value.should.be.more.than</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5c462c60b8cdc7e23d84aca23ffda3d32000247e" resname="value.should.be.valid.integer">
+        <source>The value should be a valid integer number</source>
+        <target xml:lang="ach">crwdns205892:0crwdne205892:0</target>
+        <note>key: value.should.be.valid.integer</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
       </trans-unit>
     </body>
   </file>
