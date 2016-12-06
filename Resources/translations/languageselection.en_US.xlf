@@ -6,27 +6,27 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="c241f37eb4b93d08f53db508ae407cea0c0e64f9" resname="languageselectionbox.base.existing.translation">
+      <trans-unit id="c241f37eb4b93d08f53db508ae407cea0c0e64f9" resname="languageselectionbox.base.existing.translation" approved="yes">
         <source>Base this translation on an existing translation</source>
-        <target xml:lang="en" state="needs-translation">Base this translation on an existing translation</target>
+        <target xml:lang="en">Base this translation on an existing translation</target>
         <note>key: languageselectionbox.base.existing.translation</note>
         <jms:reference-file>./Resources/public/templates/languageselectionbox.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="1a2b94f629a46ab9741347bb3d889365d5430b52" resname="languageselectionbox.cancel">
+      <trans-unit id="1a2b94f629a46ab9741347bb3d889365d5430b52" resname="languageselectionbox.cancel" approved="yes">
         <source>Cancel</source>
-        <target xml:lang="en" state="needs-translation">Cancel</target>
+        <target xml:lang="en">Cancel</target>
         <note>key: languageselectionbox.cancel</note>
         <jms:reference-file>./Resources/public/templates/languageselectionbox.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="0dd5d97803b49206317f765692becb52e212c55e" resname="languageselectionbox.confirm">
+      <trans-unit id="0dd5d97803b49206317f765692becb52e212c55e" resname="languageselectionbox.confirm" approved="yes">
         <source>Confirm</source>
-        <target xml:lang="en" state="needs-translation">Confirm</target>
+        <target xml:lang="en">Confirm</target>
         <note>key: languageselectionbox.confirm</note>
         <jms:reference-file>./Resources/public/templates/languageselectionbox.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="f12577db02f302b72857787edaf2db262b509e01" resname="languageselectionbox.select.base.language">
+      <trans-unit id="f12577db02f302b72857787edaf2db262b509e01" resname="languageselectionbox.select.base.language" approved="yes">
         <source>Select a base language:</source>
-        <target xml:lang="en" state="needs-translation">Select a base language:</target>
+        <target xml:lang="en">Select a base language:</target>
         <note>key: languageselectionbox.select.base.language</note>
         <jms:reference-file>./Resources/public/templates/languageselectionbox.hbt</jms:reference-file>
       </trans-unit>
