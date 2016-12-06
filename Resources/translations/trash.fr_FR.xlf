@@ -6,108 +6,23 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="14a71ae047142987a469560ae2f3ed33f46e511b" resname="confirm.permanent.delete.items">
-        <source>Are you sure you want to permanently delete %count% items? This action cannot be reversed.</source>
-        <target xml:lang="fr" state="needs-translation">Are you sure you want to permanently delete %count% items? This action cannot be reversed.</target>
-        <note>key: confirm.permanent.delete.items</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="175a957e55daa96d77e4354c9a79e80401cb8b3c" resname="content.items.restored">
-        <source>%count%  Content item(s) have been restored</source>
-        <target xml:lang="fr" state="needs-translation">%count%  Content item(s) have been restored</target>
-        <note>key: content.items.restored</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="5ed184c9ace808c1f22a8dba32474b2d8c307b90" resname="empty.trash">
-        <source>Empty the Trash</source>
-        <target xml:lang="fr" state="needs-translation">Empty the Trash</target>
-        <note>key: empty.trash</note>
-        <jms:reference-file>./Resources/public/js/views/ez-trashbarview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e472f53d72216a0252d8d8c55c4c565b656201d8" resname="error.emptying.trash">
-        <source>An error occurred while emptying the Trash</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while emptying the Trash</target>
-        <note>key: error.emptying.trash</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c7d0ace34e28047e04285d5d1ca7dbd8a4757432" resname="error.restoring.item">
-        <source>An error occurred while restoring trash item with id: %id%. For the moment item's whose original location has been deleted can not be restored</source>
-        <target xml:lang="fr" state="needs-translation">An error occurred while restoring trash item with id: %id%. For the moment item's whose original location has been deleted can not be restored</target>
-        <note>key: error.restoring.item</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="034c33d9dc24f606046bc88959214744dcb84993" resname="failed.load.content.type">
-        <source>Failed to load trash item Content Type name</source>
-        <target xml:lang="fr" state="needs-translation">Failed to load trash item Content Type name</target>
-        <note>key: failed.load.content.type</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="161c33f86dcd9d9116d020cbc5566086e8bb4c8c" resname="failed.load.parent.location.path">
-        <source>Failed to load parent location's path</source>
-        <target xml:lang="fr" state="needs-translation">Failed to load parent location's path</target>
-        <note>key: failed.load.parent.location.path</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e4070d79791c331da86fcb230fec53235b1519ad" resname="items.permanently.deleted">
-        <source>%count items were permanently deleted.</source>
-        <target xml:lang="fr" state="needs-translation">%count items were permanently deleted.</target>
-        <note>key: items.permanently.deleted</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="0c3639c10994d885f997d2403c4fb64b10a118b3" resname="minimize">
-        <source>Minimize</source>
-        <target xml:lang="fr" state="needs-translation">Minimize</target>
-        <note>key: minimize</note>
-        <jms:reference-file>./Resources/public/js/views/ez-trashbarview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6dcfe1a862453282cc8de9d38d2468fa7bebd7c9" resname="restore.selected">
-        <source>Restore selected</source>
-        <target xml:lang="fr" state="needs-translation">Restore selected</target>
-        <note>key: restore.selected</note>
-        <jms:reference-file>./Resources/public/js/views/ez-trashbarview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="975936b6f9637047ab09d9e23550ee47e44a1308" resname="restoring.trash.items">
-        <source>Restoring trash item(s)</source>
-        <target xml:lang="fr" state="needs-translation">Restoring trash item(s)</target>
-        <note>key: restoring.trash.items</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="bdaee6eee47e0c028566b056680e5f7488772428" resname="trash.ancestors">
-        <source>Item's ancestors are in Trash</source>
-        <target xml:lang="fr" state="needs-translation">Item's ancestors are in Trash</target>
-        <note>key: trash.ancestors</note>
-        <jms:reference-file>./Resources/public/templates/trash.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="7883128cdfb813826271abe90b3a1f3190833ce6" resname="trash.empty">
-        <source>The trash is empty</source>
-        <target xml:lang="fr" state="needs-translation">The trash is empty</target>
-        <note>key: trash.empty</note>
-        <jms:reference-file>./Resources/public/templates/trash.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9bedf5469883778a8aac2f2a0daaa7664704069b" resname="trash.header.name">
-        <source>Trash</source>
-        <target xml:lang="fr" state="needs-translation">Trash</target>
-        <note>key: trash.header.name</note>
-        <jms:reference-file>./Resources/public/templates/trash.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3a3e7b9bb64031650fdee83795a1ff063f6e655b" resname="trash.name.label">
-        <source>Name</source>
-        <target xml:lang="fr" state="needs-translation">Name</target>
-        <note>key: trash.name.label</note>
-        <jms:reference-file>./Resources/public/templates/trash.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="9575bcbf8b3c77d77aaae07deedce83f809818f5" resname="trash.original.location.label">
-        <source>Original Location</source>
-        <target xml:lang="fr" state="needs-translation">Original Location</target>
-        <note>key: trash.original.location.label</note>
-        <jms:reference-file>./Resources/public/templates/trash.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="ca702addebbb7f19ce7adc7b2d990c2abcbe73dc" resname="trash.type.label">
-        <source>Type</source>
-        <target xml:lang="fr" state="needs-translation">Type</target>
-        <note>key: trash.type.label</note>
-        <jms:reference-file>./Resources/public/templates/trash.hbt</jms:reference-file>
-      </trans-unit>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </body>
   </file>
 </xliff>
