@@ -1,425 +1,630 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="ach" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="ec6bad396810c74068261b55cc7842c0" resname="rawcontent.content">
-        <source>rawcontent.content</source>
-        <target xml:lang="ach">crwdns205254:0crwdne205254:0</target>
-      </trans-unit>
-      <trans-unit id="fdebbdb6b33acdce757976a6b2bd789c" resname="locationview.details.title">
-        <source>locationview.details.title</source>
-        <target xml:lang="ach">crwdns205255:0crwdne205255:0</target>
-      </trans-unit>
-      <trans-unit id="1a3fca998c2afb303c5e9e2495d6d7fd" resname="locationview.details.creator">
-        <source>locationview.details.creator</source>
-        <target xml:lang="ach">crwdns205256:0crwdne205256:0</target>
-      </trans-unit>
-      <trans-unit id="b7dd57d3f91bbf9b3fa2b423f9343654" resname="locationview.details.errorcreator">
-        <source>locationview.details.errorcreator</source>
-        <target xml:lang="ach">crwdns205257:0crwdne205257:0</target>
-      </trans-unit>
-      <trans-unit id="b0d69fc52d38b836bef824f494b5bb1a" resname="locationview.details.loadingcreator">
-        <source>locationview.details.loadingcreator</source>
-        <target xml:lang="ach">crwdns205258:0crwdne205258:0</target>
-      </trans-unit>
-      <trans-unit id="1455b9610be563fd1965800e369aae43" resname="locationview.details.lastcontributor">
-        <source>locationview.details.lastcontributor</source>
-        <target xml:lang="ach">crwdns205259:0crwdne205259:0</target>
-      </trans-unit>
-      <trans-unit id="18a52024ef48ef27fd4f986058bd4a4a" resname="locationview.details.errorcontributor">
-        <source>locationview.details.errorcontributor</source>
-        <target xml:lang="ach">crwdns205260:0crwdne205260:0</target>
-      </trans-unit>
-      <trans-unit id="3e130919238ab18ee350fa74dc10ff4c" resname="locationview.details.loadingcontributor">
-        <source>locationview.details.loadingcontributor</source>
-        <target xml:lang="ach">crwdns205261:0crwdne205261:0</target>
-      </trans-unit>
-      <trans-unit id="9372965ca8d9c7bd79ac0baeaa8a68db" resname="locationview.details.translations">
-        <source>locationview.details.translations</source>
-        <target xml:lang="ach">crwdns205262:0crwdne205262:0</target>
-      </trans-unit>
-      <trans-unit id="ea38573ef109bef20b00aa86765a3e09" resname="locationview.details.retry">
-        <source>locationview.details.retry</source>
-        <target xml:lang="ach">crwdns205263:0crwdne205263:0</target>
-      </trans-unit>
-      <trans-unit id="f029230effe8b86704b0cd6e93627550" resname="locationview.details.technicaldetails">
-        <source>locationview.details.technicaldetails</source>
-        <target xml:lang="ach">crwdns205264:0crwdne205264:0</target>
-      </trans-unit>
-      <trans-unit id="43243c62c72fa8db1ff55e1f5826c9c8" resname="locationview.details.contentid">
-        <source>locationview.details.contentid</source>
-        <target xml:lang="ach">crwdns205265:0crwdne205265:0</target>
-      </trans-unit>
-      <trans-unit id="0c493c8609b3a07905536e4a60066dfc" resname="locationview.details.locationid">
-        <source>locationview.details.locationid</source>
-        <target xml:lang="ach">crwdns205266:0crwdne205266:0</target>
-      </trans-unit>
-      <trans-unit id="b1389c6d4a5d86f0ce60f1dae2f8a245" resname="locationview.details.contentremoteid">
-        <source>locationview.details.contentremoteid</source>
-        <target xml:lang="ach">crwdns205267:0crwdne205267:0</target>
-      </trans-unit>
-      <trans-unit id="83a431903da44bf75cbeddf08dcbab76" resname="locationview.details.remoteid">
-        <source>locationview.details.remoteid</source>
-        <target xml:lang="ach">crwdns205268:0crwdne205268:0</target>
-      </trans-unit>
-      <trans-unit id="91e040e317bc115d1d9d73d191dbcae8" resname="locationview.details.subitems.default.ordering">
-        <source>locationview.details.subitems.default.ordering</source>
-        <target xml:lang="ach">crwdns205269:0crwdne205269:0</target>
-      </trans-unit>
-      <trans-unit id="f4e95719cd456c9f4ef95b7b84884237" resname="locationview.details.default.listing.of.subitems.by">
-        <source>locationview.details.default.listing.of.subitems.by</source>
-        <target xml:lang="ach">crwdns205270:0crwdne205270:0</target>
-      </trans-unit>
-      <trans-unit id="9ba79d704fbb3e3ed12070f23d003408" resname="locationview.details.ascending">
-        <source>locationview.details.ascending</source>
-        <target xml:lang="ach">crwdns205271:0crwdne205271:0</target>
-      </trans-unit>
-      <trans-unit id="d4ed1f2e03c8e283495e709ed1674f5d" resname="locationview.details.desceding">
-        <source>locationview.details.desceding</source>
-        <target xml:lang="ach">crwdns205272:0crwdne205272:0</target>
-      </trans-unit>
-      <trans-unit id="0d686143b05c238b39b6d8a90d6ac374" resname="locationview.locations.location.list.error">
-        <source>locationview.locations.location.list.error</source>
-        <target xml:lang="ach">crwdns205273:0crwdne205273:0</target>
-      </trans-unit>
-      <trans-unit id="d98cce45f72a73debff69ccc9003c052" resname="locationview.retry">
-        <source>locationview.retry</source>
-        <target xml:lang="ach">crwdns205274:0crwdne205274:0</target>
-      </trans-unit>
-      <trans-unit id="92a33cabe655a66c7ae9ddc5b937aaff" resname="locationview.locations.path">
-        <source>locationview.locations.path</source>
-        <target xml:lang="ach">crwdns205275:0crwdne205275:0</target>
-      </trans-unit>
-      <trans-unit id="a7beb6292defe3596087a75ce8a4c447" resname="locationview.locations.subitems">
-        <source>locationview.locations.subitems</source>
-        <target xml:lang="ach">crwdns205276:0crwdne205276:0</target>
-      </trans-unit>
-      <trans-unit id="6098dd3e06d9b7a585c0842ba28338a5" resname="locationview.locations.visibility">
-        <source>locationview.locations.visibility</source>
-        <target xml:lang="ach">crwdns205277:0crwdne205277:0</target>
-      </trans-unit>
-      <trans-unit id="5ab3a76ba7373173bac0ea9435b9cc3d" resname="locationview.locations.main">
-        <source>locationview.locations.main</source>
-        <target xml:lang="ach">crwdns205278:0crwdne205278:0</target>
-      </trans-unit>
-      <trans-unit id="f716e2b4f38761d244db448451fb1248" resname="locationview.locations.reveal">
-        <source>locationview.locations.reveal</source>
-        <target xml:lang="ach">crwdns205279:0crwdne205279:0</target>
-      </trans-unit>
-      <trans-unit id="ffeb5b4ea0fcac3800953a368b62f551" resname="locationview.locations.loading.location.list">
-        <source>locationview.locations.loading.location.list</source>
-        <target xml:lang="ach">crwdns205280:0crwdne205280:0</target>
-      </trans-unit>
-      <trans-unit id="90a31d3e62f17cb242c5f55f6616e70b" resname="locationview.locations.remove.selected">
-        <source>locationview.locations.remove.selected</source>
-        <target xml:lang="ach">crwdns205281:0crwdne205281:0</target>
-      </trans-unit>
-      <trans-unit id="01c3bd7ce587d955510529418a6bd1be" resname="locationview.locations.add.location">
-        <source>locationview.locations.add.location</source>
-        <target xml:lang="ach">crwdns205282:0crwdne205282:0</target>
-      </trans-unit>
-      <trans-unit id="1a70cfea404291727cc55ce2f60248da" resname="locationview.locations.swap.with.another">
-        <source>locationview.locations.swap.with.another</source>
-        <target xml:lang="ach">crwdns205283:0crwdne205283:0</target>
-      </trans-unit>
-      <trans-unit id="05e6218486f2260611fb0d7160f048dd" resname="locationview.locations.select.content.item">
-        <source>locationview.locations.select.content.item</source>
-        <target xml:lang="ach">crwdns205284:0crwdne205284:0</target>
-      </trans-unit>
-      <trans-unit id="533b38bd35d43f6de2699b478f7e67d4" resname="locationview.locations.hidden">
-        <source>locationview.locations.hidden</source>
-        <target xml:lang="ach">crwdns205285:0crwdne205285:0</target>
-      </trans-unit>
-      <trans-unit id="52dd4e9154b04a4bc5af625d2e134510" resname="locationview.locations.hidden.by.superior">
-        <source>locationview.locations.hidden.by.superior</source>
-        <target xml:lang="ach">crwdns205286:0crwdne205286:0</target>
-      </trans-unit>
-      <trans-unit id="05ae6556a57b2fd331218d3922277318" resname="locationview.locations.visible">
-        <source>locationview.locations.visible</source>
-        <target xml:lang="ach">crwdns205287:0crwdne205287:0</target>
-      </trans-unit>
-      <trans-unit id="fffd15854c6376494cf6db75143ecf51" resname="locationview.locations.hide">
-        <source>locationview.locations.hide</source>
-        <target xml:lang="ach">crwdns205288:0crwdne205288:0</target>
-      </trans-unit>
-      <trans-unit id="d5300be986c1f8b79194ce95dd533330" resname="locationview.relations.error.loading.related">
-        <source>locationview.relations.error.loading.related</source>
-        <target xml:lang="ach">crwdns205289:0crwdne205289:0</target>
-      </trans-unit>
-      <trans-unit id="6537554254869d605b1022788cccdfb9" resname="locationview.relations.content">
-        <source>locationview.relations.content</source>
-        <target xml:lang="ach">crwdns205290:0crwdne205290:0</target>
-      </trans-unit>
-      <trans-unit id="90d267e68e89138349b8b399a0bbae9d" resname="locationview.relations.relation.type">
-        <source>locationview.relations.relation.type</source>
-        <target xml:lang="ach">crwdns205291:0crwdne205291:0</target>
-      </trans-unit>
-      <trans-unit id="489bb9fc65e5556ad3e44344fee73612" resname="locationview.relations.no.related.content">
-        <source>locationview.relations.no.related.content</source>
-        <target xml:lang="ach">crwdns205292:0crwdne205292:0</target>
-      </trans-unit>
-      <trans-unit id="f7d1c943778d2f3d38ab8b3c42e4cd9f" resname="locationview.versions.version">
-        <source>locationview.versions.version</source>
-        <target xml:lang="ach">crwdns205293:0crwdne205293:0</target>
-      </trans-unit>
-      <trans-unit id="f1a26f052987f5bd4987cbe5a2b2b430" resname="locationview.versions.language">
-        <source>locationview.versions.language</source>
-        <target xml:lang="ach">crwdns205294:0crwdne205294:0</target>
-      </trans-unit>
-      <trans-unit id="7159c01a78447026ed43f0a542027c9c" resname="locationview.versions.author">
-        <source>locationview.versions.author</source>
-        <target xml:lang="ach">crwdns205295:0crwdne205295:0</target>
-      </trans-unit>
-      <trans-unit id="fe670d86240f3f6fac4165d71d1d87ca" resname="locationview.versions.created">
-        <source>locationview.versions.created</source>
-        <target xml:lang="ach">crwdns205296:0crwdne205296:0</target>
-      </trans-unit>
-      <trans-unit id="1d05e4f29b937597a182cd742821e39c" resname="locationview.versions.last.saved">
-        <source>locationview.versions.last.saved</source>
-        <target xml:lang="ach">crwdns205297:0crwdne205297:0</target>
-      </trans-unit>
-      <trans-unit id="bfd927ffc6467335e9215f07ba643c55" resname="locationview.versions.edit.selected.draft">
-        <source>locationview.versions.edit.selected.draft</source>
-        <target xml:lang="ach">crwdns205298:0crwdne205298:0</target>
-      </trans-unit>
-      <trans-unit id="bdf064d2b316c5457b7b3546a7543207" resname="locationview.versions.delete.selected.draft">
-        <source>locationview.versions.delete.selected.draft</source>
-        <target xml:lang="ach">crwdns205299:0crwdne205299:0</target>
-      </trans-unit>
-      <trans-unit id="5cc451bc29b7ed569fb92f50e6e26cd5" resname="locationview.versions.loading.draft.list">
-        <source>locationview.versions.loading.draft.list</source>
-        <target xml:lang="ach">crwdns205300:0crwdne205300:0</target>
-      </trans-unit>
-      <trans-unit id="b759e1eb7c9eac77e26cc895e5592192" resname="locationview.versions.loading.published.list">
-        <source>locationview.versions.loading.published.list</source>
-        <target xml:lang="ach">crwdns205301:0crwdne205301:0</target>
-      </trans-unit>
-      <trans-unit id="f65e933e7f5099aed4c856a7aca809bd" resname="locationview.versions.new.draft.selected.version">
-        <source>locationview.versions.new.draft.selected.version</source>
-        <target xml:lang="ach">crwdns205302:0crwdne205302:0</target>
-      </trans-unit>
-      <trans-unit id="6abd57a654107c0753f4f5f229636a40" resname="locationview.versions.remove.selected.archived.version">
-        <source>locationview.versions.remove.selected.archived.version</source>
-        <target xml:lang="ach">crwdns205303:0crwdne205303:0</target>
-      </trans-unit>
-      <trans-unit id="db3a6cdbbabfeb6c56807f55e830a7b8" resname="locationview.versions.loading.archived.list">
-        <source>locationview.versions.loading.archived.list</source>
-        <target xml:lang="ach">crwdns205304:0crwdne205304:0</target>
-      </trans-unit>
-      <trans-unit id="ea648eed549cb643fb030d541cdc8f65" resname="locationview.versions.error.loading.list">
-        <source>locationview.versions.error.loading.list</source>
-        <target xml:lang="ach">crwdns205305:0crwdne205305:0</target>
-      </trans-unit>
-      <trans-unit id="f6f38b199866880db688472e57ed6f6f" resname="locationview.details.versions">
-        <source>locationview.details.versions</source>
-        <target xml:lang="ach">crwdns205306:0crwdne205306:0</target>
-      </trans-unit>
-      <trans-unit id="498ea2da03d5ec1254a61340d45a2737" resname="locationview.locations.content.locations">
-        <source>locationview.locations.content.locations</source>
-        <target xml:lang="ach">crwdns205307:0crwdne205307:0</target>
-      </trans-unit>
-      <trans-unit id="646dd94473d2fb6a5c62254e2f7bcaaf" resname="locationview.relations.related.content">
-        <source>locationview.relations.related.content</source>
-        <target xml:lang="ach">crwdns205308:0crwdne205308:0</target>
-      </trans-unit>
-      <trans-unit id="e3b2e6ca7499f9611ca0dc54ce63a6c1" resname="locationview.versions.draft.under.edit">
-        <source>locationview.versions.draft.under.edit</source>
-        <target xml:lang="ach">crwdns205309:0crwdne205309:0</target>
-      </trans-unit>
-      <trans-unit id="5cf059d175bbc76833af2660cc089e01" resname="locationview.versions.published.version">
-        <source>locationview.versions.published.version</source>
-        <target xml:lang="ach">crwdns205310:0crwdne205310:0</target>
-      </trans-unit>
-      <trans-unit id="f9c1f1ac084d7a81267b119c71dbcd8e" resname="locationview.versions.archived.versions">
-        <source>locationview.versions.archived.versions</source>
-        <target xml:lang="ach">crwdns205311:0crwdne205311:0</target>
-      </trans-unit>
-      <trans-unit id="0a5e497df0f9df484b9976d623f26d69" resname="failed.creating.draft.for.based.on">
-        <source>failed.creating.draft.for.based.on</source>
-        <target xml:lang="ach">crwdns205312:0crwdne205312:0</target>
-      </trans-unit>
-      <trans-unit id="e0bd70e9f29c682957a35ea75b8ce749" resname="confirmed.remove.versions">
-        <source>confirmed.remove.versions</source>
-        <target xml:lang="ach">crwdns205313:0crwdne205313:0</target>
-      </trans-unit>
-      <trans-unit id="a67b722bb9ad9c4d0d8ddfe5f1888633" resname="removing.versions.for">
-        <source>removing.versions.for</source>
-        <target xml:lang="ach">crwdns205314:0crwdne205314:0</target>
-      </trans-unit>
-      <trans-unit id="aba7cb8c9442eefa3d1deb86367f8c26" resname="removed.versions.of">
-        <source>removed.versions.of</source>
-        <target xml:lang="ach">crwdns205315:0crwdne205315:0</target>
-      </trans-unit>
-      <trans-unit id="1f260876f5a904c8e65f676debd49973" resname="failed.removing.versions.of">
-        <source>failed.removing.versions.of</source>
-        <target xml:lang="ach">crwdns205316:0crwdne205316:0</target>
-      </trans-unit>
-      <trans-unit id="ecc0c583e560d92a93531e155f128a18" resname="select.location.to.swap">
-        <source>select.location.to.swap</source>
-        <target xml:lang="ach">crwdns205317:0crwdne205317:0</target>
-      </trans-unit>
-      <trans-unit id="ca54e6fa2aa8780295d8f63cd5ddb442" resname="swapping.location.for">
-        <source>swapping.location.for</source>
-        <target xml:lang="ach">crwdns205318:0crwdne205318:0</target>
-      </trans-unit>
-      <trans-unit id="4496393fc886cbef0ef6dbcf5d42b67d" resname="failed.swapping.location.for">
-        <source>failed.swapping.location.for</source>
-        <target xml:lang="ach">crwdns205319:0crwdne205319:0</target>
-      </trans-unit>
-      <trans-unit id="e18afdd063b9c2a19a2777e556acbcf4" resname="swapped.location.for.with">
-        <source>swapped.location.for.with</source>
-        <target xml:lang="ach">crwdns205320:0crwdne205320:0</target>
-      </trans-unit>
-      <trans-unit id="f4c03ee4578675ba036c688eb538a3bd" resname="confirm.remove.location">
-        <source>confirm.remove.location</source>
-        <target xml:lang="ach">crwdns205321:0crwdne205321:0</target>
-      </trans-unit>
-      <trans-unit id="c7d7e12410b855e296572aebf719a6d8" resname="removing.locations.for">
-        <source>removing.locations.for</source>
-        <target xml:lang="ach">crwdns205322:0crwdne205322:0</target>
-      </trans-unit>
-      <trans-unit id="1d396ea78554c5c151beb8ed80833b10" resname="removed.locations.of">
-        <source>removed.locations.of</source>
-        <target xml:lang="ach">crwdns205323:0crwdne205323:0</target>
-      </trans-unit>
-      <trans-unit id="ada144dbc3e0d877e894cd5a44ee47e7" resname="failed.removing.locations.of">
-        <source>failed.removing.locations.of</source>
-        <target xml:lang="ach">crwdns205324:0crwdne205324:0</target>
-      </trans-unit>
-      <trans-unit id="1e027a7f37ad06de7015d05f21de6b31" resname="confirm.set.main.location">
-        <source>confirm.set.main.location</source>
-        <target xml:lang="ach">crwdns205325:0crwdne205325:0</target>
-      </trans-unit>
-      <trans-unit id="d13abbe1d2783a7c5e157efa6f045fc1" resname="changing.main.location.of">
-        <source>changing.main.location.of</source>
-        <target xml:lang="ach">crwdns205326:0crwdne205326:0</target>
-      </trans-unit>
-      <trans-unit id="77d1e94bf68cd6d0629047cfb42a8f03" resname="failed.changing.main.location.of">
-        <source>failed.changing.main.location.of</source>
-        <target xml:lang="ach">crwdns205327:0crwdne205327:0</target>
-      </trans-unit>
-      <trans-unit id="39519543bcbfb85a9d2ca1d7b6d28efd" resname="changed.main.location.of">
-        <source>changed.main.location.of</source>
-        <target xml:lang="ach">crwdns205328:0crwdne205328:0</target>
-      </trans-unit>
-      <trans-unit id="06e93a63628c030641f08a5fab456974" resname="failed.updated.priority">
-        <source>failed.updated.priority</source>
-        <target xml:lang="ach">crwdns205329:0crwdne205329:0</target>
-      </trans-unit>
-      <trans-unit id="620cf0c922a0c1a4556ea2774daa6c0e" resname="confirmed.send.to.trash">
-        <source>confirmed.send.to.trash</source>
-        <target xml:lang="ach">crwdns205330:0crwdne205330:0</target>
-      </trans-unit>
-      <trans-unit id="6db0f7fde7b06ae2f401c5fd266912d4" resname="confirmed.delete">
-        <source>confirmed.delete</source>
-        <target xml:lang="ach">crwdns205331:0crwdne205331:0</target>
-      </trans-unit>
-      <trans-unit id="41a22668fade7b76a970edd3354ba775" resname="select.location.move.to">
-        <source>select.location.move.to</source>
-        <target xml:lang="ach">crwdns205332:0crwdne205332:0</target>
-      </trans-unit>
-      <trans-unit id="200ffa2fd83bad7350468fbc84998cb0" resname="sending.to.trash">
-        <source>sending.to.trash</source>
-        <target xml:lang="ach">crwdns205333:0crwdne205333:0</target>
-      </trans-unit>
-      <trans-unit id="dafa0ab66fa59782289cf95ba3b45363" resname="deleting.content">
-        <source>deleting.content</source>
-        <target xml:lang="ach">crwdns205334:0crwdne205334:0</target>
-      </trans-unit>
-      <trans-unit id="d85f3d19b974f560517ba181845e47d2" resname="failed.sending.to.trash">
-        <source>failed.sending.to.trash</source>
-        <target xml:lang="ach">crwdns205335:0crwdne205335:0</target>
-      </trans-unit>
-      <trans-unit id="46a73baa97d7d95e0cae51f9545d44a7" resname="sent.to.trash">
-        <source>sent.to.trash</source>
-        <target xml:lang="ach">crwdns205336:0crwdne205336:0</target>
-      </trans-unit>
-      <trans-unit id="4b80b88771cf9646fa579ff864f861a4" resname="failed.deleting.content">
-        <source>failed.deleting.content</source>
-        <target xml:lang="ach">crwdns205337:0crwdne205337:0</target>
-      </trans-unit>
-      <trans-unit id="264bddf3cc75a59a4162e884aed3940b" resname="deleted.content">
-        <source>deleted.content</source>
-        <target xml:lang="ach">crwdns205338:0crwdne205338:0</target>
-      </trans-unit>
-      <trans-unit id="edec522f11f550aad5a33aeb03104ee3" resname="being.moved.under">
-        <source>being.moved.under</source>
-        <target xml:lang="ach">crwdns205339:0crwdne205339:0</target>
-      </trans-unit>
-      <trans-unit id="b7661a400411190aaf27104f4d7dcbd3" resname="failed.moving">
-        <source>failed.moving</source>
-        <target xml:lang="ach">crwdns205340:0crwdne205340:0</target>
-      </trans-unit>
-      <trans-unit id="9c7aa6cf65f19b25f78bf59258750a2f" resname="moved.under">
-        <source>moved.under</source>
-        <target xml:lang="ach">crwdns205341:0crwdne205341:0</target>
-      </trans-unit>
-      <trans-unit id="3a553fd7dfd2df3f871f43e53a8fce39" resname="updating.sort.method">
-        <source>updating.sort.method</source>
-        <target xml:lang="ach">crwdns205342:0crwdne205342:0</target>
-      </trans-unit>
-      <trans-unit id="a6782fb8f1567fee8340412b46bdd6a7" resname="updated.sort.method">
-        <source>updated.sort.method</source>
-        <target xml:lang="ach">crwdns205343:0crwdne205343:0</target>
-      </trans-unit>
-      <trans-unit id="5c666c4b3c3529d6fcaae0f218cb33c2" resname="failed.updating.sort.method">
-        <source>failed.updating.sort.method</source>
-        <target xml:lang="ach">crwdns205344:0crwdne205344:0</target>
-      </trans-unit>
-      <trans-unit id="99119b2142f5b2a731ab3f1aeb9e64e0" resname="failed.to.load.location">
-        <source>failed.to.load.location</source>
-        <target xml:lang="ach">crwdns205345:0crwdne205345:0</target>
-      </trans-unit>
-      <trans-unit id="7246ee8a43fb3154ffdfe22d27f920b2" resname="failed.to.load.content">
-        <source>failed.to.load.content</source>
-        <target xml:lang="ach">crwdns205346:0crwdne205346:0</target>
-      </trans-unit>
-      <trans-unit id="c6fc581b9045368d270657fbb19efc29" resname="failed.to.load.content.type">
-        <source>failed.to.load.content.type</source>
-        <target xml:lang="ach">crwdns205347:0crwdne205347:0</target>
-      </trans-unit>
-      <trans-unit id="7927f7f287f471db0763390d1f368725" resname="failed.to.load.location.path">
-        <source>failed.to.load.location.path</source>
-        <target xml:lang="ach">crwdns205348:0crwdne205348:0</target>
-      </trans-unit>
-      <trans-unit id="63c450319c762b97b577e92ee4647986" resname="sort.published">
-        <source>sort.published</source>
-        <target xml:lang="ach">crwdns205349:0crwdne205349:0</target>
-      </trans-unit>
-      <trans-unit id="d72411517e0a191a5e077512850b93d7" resname="sort.path">
-        <source>sort.path</source>
-        <target xml:lang="ach">crwdns205350:0crwdne205350:0</target>
-      </trans-unit>
-      <trans-unit id="601d0f5c6a935a31c20163d7cbe836b6" resname="sort.content.type.identifier">
-        <source>sort.content.type.identifier</source>
-        <target xml:lang="ach">crwdns205351:0crwdne205351:0</target>
-      </trans-unit>
-      <trans-unit id="b4247167aad920c2302a8b63657eba1f" resname="sort.modified">
-        <source>sort.modified</source>
-        <target xml:lang="ach">crwdns205352:0crwdne205352:0</target>
-      </trans-unit>
-      <trans-unit id="7141fba30f70359220ce2e4155125b8b" resname="sort.section">
-        <source>sort.section</source>
-        <target xml:lang="ach">crwdns205353:0crwdne205353:0</target>
-      </trans-unit>
-      <trans-unit id="5d9172782363a3a92b229fad41beabbd" resname="sort.content.type.name">
-        <source>sort.content.type.name</source>
-        <target xml:lang="ach">crwdns205354:0crwdne205354:0</target>
-      </trans-unit>
-      <trans-unit id="cfed660b16df4a98b3dd2b16ac50630c" resname="sort.priority">
-        <source>sort.priority</source>
-        <target xml:lang="ach">crwdns205355:0crwdne205355:0</target>
-      </trans-unit>
-      <trans-unit id="573c954a64aa9bc654b5c2a75963c68d" resname="sort.name">
-        <source>sort.name</source>
-        <target xml:lang="ach">crwdns205356:0crwdne205356:0</target>
-      </trans-unit>
-      <trans-unit id="65542fb74ebe97a96c97526233c5242b" resname="sort.depth">
-        <source>sort.depth</source>
-        <target xml:lang="ach">crwdns205357:0crwdne205357:0</target>
+      <trans-unit id="41c3a5ae2a605ec7f8c6bdb8f33a730e3967f110" resname="being.moved.under">
+        <source>'%name%' is being moved under '%parentName%'</source>
+        <target xml:lang="ach">crwdns205951:0%name%crwdnd205951:0%parentName%crwdne205951:0</target>
+        <note>key: being.moved.under</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0a95ef6ccb3ab8cf4b2e04235129c2f08a115a3a" resname="changed.main.location.of">
+        <source>The main location of "%name%" has been changed</source>
+        <target xml:lang="ach">crwdns205952:0%name%crwdne205952:0</target>
+        <note>key: changed.main.location.of</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-contentsetmainlocationplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b87552f132d6e0ff4afe5f2f0b12e36dce35c1cb" resname="changing.main.location.of">
+        <source>Changing the main location of "%name%"</source>
+        <target xml:lang="ach">crwdns205953:0%name%crwdne205953:0</target>
+        <note>key: changing.main.location.of</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-contentsetmainlocationplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="95d6046a734be802fb22460fd8276a042e7e1198" resname="confirm.remove.location">
+        <source>Are you sure you want to remove selected locations?</source>
+        <target xml:lang="ach">crwdns205954:0crwdne205954:0</target>
+        <note>key: confirm.remove.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationremoveplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="10b37ae9b695e443fa4704d7a21efd0cadca7d49" resname="confirm.set.main.location">
+        <source>Are you sure you want to set this location as main location of content?</source>
+        <target xml:lang="ach">crwdns205955:0crwdne205955:0</target>
+        <note>key: confirm.set.main.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-contentsetmainlocationplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8a2fbb282605f72d531c11a15b621a9edc4913db" resname="confirmed.delete">
+        <source>Are you sure you want to delete this content?</source>
+        <target xml:lang="ach">crwdns205956:0crwdne205956:0</target>
+        <note>key: confirmed.delete</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a98b131ae17c523ac36a36d82c20b082fc2efa73" resname="confirmed.remove.versions">
+        <source>Are you sure you want to remove selected version(s)?</source>
+        <target xml:lang="ach">crwdns205957:0crwdne205957:0</target>
+        <note>key: confirmed.remove.versions</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-versionsplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e751550d2bffb320256d3934693e4cbe1b9610b5" resname="confirmed.send.to.trash">
+        <source>Are you sure you want to send this content to trash?</source>
+        <target xml:lang="ach">crwdns205958:0crwdne205958:0</target>
+        <note>key: confirmed.send.to.trash</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c44059e516685b63857e6db9c22a11ed0d990519" resname="deleted.content">
+        <source>'%name%' was deleted</source>
+        <target xml:lang="ach">crwdns205959:0%name%crwdne205959:0</target>
+        <note>key: deleted.content</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="380334ddc39c537065b6b955660ee02d5af915f2" resname="deleting.content">
+        <source>Deleting '%name%'</source>
+        <target xml:lang="ach">crwdns205960:0%name%crwdne205960:0</target>
+        <note>key: deleting.content</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2b962f456b0226a8cc71d12c14f72fa5e7672f53" resname="failed.changing.main.location.of">
+        <source>Changing main location of "%name%" failed</source>
+        <target xml:lang="ach">crwdns205961:0%name%crwdne205961:0</target>
+        <note>key: failed.changing.main.location.of</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-contentsetmainlocationplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="abde0bee2ae04d9f8c4d588cb25a8667ba96d67e" resname="failed.creating.draft.for.based.on">
+        <source>Creating new draft for "%name%" based on version %version% failed.</source>
+        <target xml:lang="ach">crwdns205962:0%name%crwdnd205962:0%version%crwdne205962:0</target>
+        <note>key: failed.creating.draft.for.based.on</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-versionsplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a35316336667d1d2661322af8daeb7f76c0a7743" resname="failed.deleting.content">
+        <source>An error occurred when deleting '%name%'</source>
+        <target xml:lang="ach">crwdns205963:0%name%crwdne205963:0</target>
+        <note>key: failed.deleting.content</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f569143536f9f8e4e698086f4d85428661a61a37" resname="failed.moving">
+        <source>An error occurred while moving your content</source>
+        <target xml:lang="ach">crwdns205964:0crwdne205964:0</target>
+        <note>key: failed.moving</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3cb305d711f15ff39be36a9b111cb766c618ec53" resname="failed.removing.locations.of">
+        <source>Removing of %count% location(s) of "%name%" has failed</source>
+        <target xml:lang="ach">crwdns205965:0%count%crwdnd205965:0%name%crwdne205965:0</target>
+        <note>key: failed.removing.locations.of</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationremoveplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="edf8822d85f6e3cc0e13582feee8a65f66ed0d08" resname="failed.removing.versions.of">
+        <source>Removal of %count% version(s) of "%name%" has failed</source>
+        <target xml:lang="ach">crwdns205966:0%count%crwdnd205966:0%name%crwdne205966:0</target>
+        <note>key: failed.removing.versions.of</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-versionsplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="fd0df2ab8df516f5a2900775c5f427ddb9012b77" resname="failed.sending.to.trash">
+        <source>An error occurred when sending '%contentName%' to Trash</source>
+        <target xml:lang="ach">crwdns205967:0%contentName%crwdne205967:0</target>
+        <note>key: failed.sending.to.trash</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="60e53d4c1a6ed1632bf392e34fb5ae864a4683d5" resname="failed.swapping.location.for">
+        <source>Swapping location for "%name%" failed</source>
+        <target xml:lang="ach">crwdns205968:0%name%crwdne205968:0</target>
+        <note>key: failed.swapping.location.for</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationswapplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d427c063172fceb30447a5a485474536ffcc8c91" resname="failed.to.load.content">
+        <source>Failed to load the content %id%</source>
+        <target xml:lang="ach">crwdns205969:0%id%crwdne205969:0</target>
+        <note>key: failed.to.load.content</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6e26e79018c441ce904ec1d78372148390d1f076" resname="failed.to.load.content.type">
+        <source>Failed to load the content type %id%</source>
+        <target xml:lang="ach">crwdns205970:0%id%crwdne205970:0</target>
+        <note>key: failed.to.load.content.type</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2fbc2dbfad4beb8f37bac92cce6501b44f264c03" resname="failed.to.load.location">
+        <source>Failed to load the location %id%</source>
+        <target xml:lang="ach">crwdns205971:0%id%crwdne205971:0</target>
+        <note>key: failed.to.load.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="675d9c2b05e75bb44aec3d051a5793e2bf4746d0" resname="failed.to.load.location.path">
+        <source>Failed to load locations's path</source>
+        <target xml:lang="ach">crwdns205972:0crwdne205972:0</target>
+        <note>key: failed.to.load.location.path</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e59fc009e6dc0079786973ab8b8542f463d3b233" resname="failed.updated.priority">
+        <source>An error occurred when updating the priority</source>
+        <target xml:lang="ach">crwdns205973:0crwdne205973:0</target>
+        <note>key: failed.updated.priority</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d68085cf6081898b8757cdee5fb66aff8c0531f6" resname="failed.updating.sort.method">
+        <source>An error occured while updating the sub items sort method</source>
+        <target xml:lang="ach">crwdns205974:0crwdne205974:0</target>
+        <note>key: failed.updating.sort.method</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e0be1422e1af400879a6716220eabc9ad4fca29e" resname="locationview.details.ascending">
+        <source>Ascending</source>
+        <target xml:lang="ach">crwdns205975:0crwdne205975:0</target>
+        <note>key: locationview.details.ascending</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2e143171eb44b9d8b17a06195b938181101de957" resname="locationview.details.contentid">
+        <source>Content Id</source>
+        <target xml:lang="ach">crwdns205976:0crwdne205976:0</target>
+        <note>key: locationview.details.contentid</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="34ce6c404ac9a5a82f9a598d3e4e62916094c351" resname="locationview.details.contentremoteid">
+        <source>Content remote Id</source>
+        <target xml:lang="ach">crwdns205977:0crwdne205977:0</target>
+        <note>key: locationview.details.contentremoteid</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d270971c445eca4fc0e7cd8ec006341f0ff19354" resname="locationview.details.creator">
+        <source>Creator</source>
+        <target xml:lang="ach">crwdns205978:0crwdne205978:0</target>
+        <note>key: locationview.details.creator</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5095b70f3c9ccc1c77ba2d4f8ae1b2ce6121e233" resname="locationview.details.default.listing.of.subitems.by">
+        <source>Default listing of sub-items by</source>
+        <target xml:lang="ach">crwdns205979:0crwdne205979:0</target>
+        <note>key: locationview.details.default.listing.of.subitems.by</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5cc52ce2cc763622f266df9138b7e507cca2d7de" resname="locationview.details.errorcontributor">
+        <source>An error occurred while loading the last contributor.</source>
+        <target xml:lang="ach">crwdns205980:0crwdne205980:0</target>
+        <note>key: locationview.details.errorcontributor</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6008df6be918183f2a3896c49dd0d19ee35350d2" resname="locationview.details.errorcreator">
+        <source>An error occurred while loading the creator.</source>
+        <target xml:lang="ach">crwdns205981:0crwdne205981:0</target>
+        <note>key: locationview.details.errorcreator</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e0d315cc1f7772de59ebb7a943e5331402f087f4" resname="locationview.details.lastcontributor">
+        <source>Last contributor</source>
+        <target xml:lang="ach">crwdns205982:0crwdne205982:0</target>
+        <note>key: locationview.details.lastcontributor</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2fff74da27de7d17b2f5c89efeab74e664378c33" resname="locationview.details.loadingcontributor">
+        <source>Loading the last contributor</source>
+        <target xml:lang="ach">crwdns205983:0crwdne205983:0</target>
+        <note>key: locationview.details.loadingcontributor</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="85dbe816267d441a33ecd4d1778b58f25a350814" resname="locationview.details.loadingcreator">
+        <source>Loading the creator</source>
+        <target xml:lang="ach">crwdns205984:0crwdne205984:0</target>
+        <note>key: locationview.details.loadingcreator</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7f653bba9440b8a0b2dac47b4c30a5c97ba83678" resname="locationview.details.locationid">
+        <source>Location Id</source>
+        <target xml:lang="ach">crwdns205985:0crwdne205985:0</target>
+        <note>key: locationview.details.locationid</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2b72d1da8862e8f7f123df770f7733b294d765a3" resname="locationview.details.remoteid">
+        <source>Location remove Id</source>
+        <target xml:lang="ach">crwdns205986:0crwdne205986:0</target>
+        <note>key: locationview.details.remoteid</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4d80e1ddcdccb24545ffd7cfc24ca2290bfe2093" resname="locationview.details.retry">
+        <source>Retry</source>
+        <target xml:lang="ach">crwdns205987:0crwdne205987:0</target>
+        <note>key: locationview.details.retry</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="92ecfb85a6f93f491fb98ca6f584fffaea5d56a2" resname="locationview.details.subitems.default.ordering">
+        <source>Sub-items default ordering</source>
+        <target xml:lang="ach">crwdns205988:0crwdne205988:0</target>
+        <note>key: locationview.details.subitems.default.ordering</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9699a1cb9c610905dddcb2b123fa7ba10a840957" resname="locationview.details.technicaldetails">
+        <source>Technical details</source>
+        <target xml:lang="ach">crwdns205989:0crwdne205989:0</target>
+        <note>key: locationview.details.technicaldetails</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dacdbac551cb8fc3eb998fead8834693305ba105" resname="locationview.details.title">
+        <source>Content details</source>
+        <target xml:lang="ach">crwdns205990:0crwdne205990:0</target>
+        <note>key: locationview.details.title</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a651fb9282b5626ba9e3a6cdfd1861b981aa1d76" resname="locationview.details.translations">
+        <source>Translations</source>
+        <target xml:lang="ach">crwdns205991:0crwdne205991:0</target>
+        <note>key: locationview.details.translations</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="64dfe443da2515d16aaa6de73a00c2dd68111c0b" resname="locationview.details.versions">
+        <source>Versions</source>
+        <target xml:lang="ach">crwdns205992:0crwdne205992:0</target>
+        <note>key: locationview.details.versions</note>
+        <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="cf775f467a5d5f450635af645a5587ada940d885" resname="locationview.locations.add.location">
+        <source>Add Location</source>
+        <target xml:lang="ach">crwdns205993:0crwdne205993:0</target>
+        <note>key: locationview.locations.add.location</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d97d830f21868cefae182b651cb5399379d61a4e" resname="locationview.locations.content.locations">
+        <source>Content locations</source>
+        <target xml:lang="ach">crwdns205994:0crwdne205994:0</target>
+        <note>key: locationview.locations.content.locations</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="33ceaa61b8d64b8c3ea118e4f8d1c172c97f5329" resname="locationview.locations.hidden">
+        <source>Hidden</source>
+        <target xml:lang="ach">crwdns205995:0crwdne205995:0</target>
+        <note>key: locationview.locations.hidden</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e5850a5016f4965ec5dc59f78bb7e9cd146fc9a4" resname="locationview.locations.hidden.by.superior">
+        <source>Hidden by superior</source>
+        <target xml:lang="ach">crwdns205996:0crwdne205996:0</target>
+        <note>key: locationview.locations.hidden.by.superior</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8a1beb515496a34287a6fe56c5e12e752c12a47d" resname="locationview.locations.hide">
+        <source>Hide</source>
+        <target xml:lang="ach">crwdns205997:0crwdne205997:0</target>
+        <note>key: locationview.locations.hide</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="18ffeb7a312f5b6c621e15a46d902ae1fddefe0f" resname="locationview.locations.loading.location.list">
+        <source>Loading the locations list</source>
+        <target xml:lang="ach">crwdns205998:0crwdne205998:0</target>
+        <note>key: locationview.locations.loading.location.list</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="84eeb5f06a07ce1fffe674e87dca6905ad4714a5" resname="locationview.locations.location.list.error">
+        <source>An error occurred while loading the locations list.</source>
+        <target xml:lang="ach">crwdns205999:0crwdne205999:0</target>
+        <note>key: locationview.locations.location.list.error</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dae83bb328778476ec3e0c5b6db211ca3aa2bc13" resname="locationview.locations.main">
+        <source>Main</source>
+        <target xml:lang="ach">crwdns206000:0crwdne206000:0</target>
+        <note>key: locationview.locations.main</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e4effb18f15a8e0e891860a2b115f08df36a7313" resname="locationview.locations.path">
+        <source>Path</source>
+        <target xml:lang="ach">crwdns206001:0crwdne206001:0</target>
+        <note>key: locationview.locations.path</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c74cc382c1023b02479021fe7b260023d1287df1" resname="locationview.locations.remove.selected">
+        <source>Remove selected</source>
+        <target xml:lang="ach">crwdns206002:0crwdne206002:0</target>
+        <note>key: locationview.locations.remove.selected</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1f6fe54dbf1b1db82393f87d469612c5b307ea81" resname="locationview.locations.reveal">
+        <source>Reveal</source>
+        <target xml:lang="ach">crwdns206003:0crwdne206003:0</target>
+        <note>key: locationview.locations.reveal</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="30412ae8741b6ad892f8e7121c1df1c98690fe69" resname="locationview.locations.select.content.item">
+        <source>Select Content item</source>
+        <target xml:lang="ach">crwdns206004:0crwdne206004:0</target>
+        <note>key: locationview.locations.select.content.item</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b5ab365ec9097447d661364c587dd74a3a2a4da3" resname="locationview.locations.subitems">
+        <source>Sub-items</source>
+        <target xml:lang="ach">crwdns206005:0crwdne206005:0</target>
+        <note>key: locationview.locations.subitems</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="78f72ceb515315ffb377e812832368f846c12fec" resname="locationview.locations.swap.with.another">
+        <source>Swap the Content item at this location with another</source>
+        <target xml:lang="ach">crwdns206006:0crwdne206006:0</target>
+        <note>key: locationview.locations.swap.with.another</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8bf047758974255c4a8001ef57927d5b4098e7b1" resname="locationview.locations.visibility">
+        <source>Visibility</source>
+        <target xml:lang="ach">crwdns206007:0crwdne206007:0</target>
+        <note>key: locationview.locations.visibility</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4994eadd8f401eba51181d4d3c394792e3ab1bbd" resname="locationview.locations.visible">
+        <source>Visible</source>
+        <target xml:lang="ach">crwdns206008:0crwdne206008:0</target>
+        <note>key: locationview.locations.visible</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5f9c385b31ca9a7d5e7ac7f4bec58bcca1418aa9" resname="locationview.relations.content">
+        <source>Content</source>
+        <target xml:lang="ach">crwdns206009:0crwdne206009:0</target>
+        <note>key: locationview.relations.content</note>
+        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e9731695b9a4bd13eb374293087855f8ae449be5" resname="locationview.relations.error.loading.related">
+        <source>An error occurred while loading the related content list.</source>
+        <target xml:lang="ach">crwdns206010:0crwdne206010:0</target>
+        <note>key: locationview.relations.error.loading.related</note>
+        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d6b8b44043ab3a73bd6a8a1e1e9079e55a816623" resname="locationview.relations.no.related.content">
+        <source>This content has no related content.</source>
+        <target xml:lang="ach">crwdns206011:0crwdne206011:0</target>
+        <note>key: locationview.relations.no.related.content</note>
+        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0b409a5f5675b6ee03cfaea432d179c2648a36a3" resname="locationview.relations.related.content">
+        <source>Related content</source>
+        <target xml:lang="ach">crwdns206012:0crwdne206012:0</target>
+        <note>key: locationview.relations.related.content</note>
+        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8aea3326a700a081784bc0e51f0c91a3583eedc2" resname="locationview.relations.relation.type">
+        <source>Relation type</source>
+        <target xml:lang="ach">crwdns206013:0crwdne206013:0</target>
+        <note>key: locationview.relations.relation.type</note>
+        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e23a8cfab8000e4ce2ad014f7b55fb6f777274e4" resname="locationview.retry">
+        <source>Retry</source>
+        <target xml:lang="ach">crwdns206014:0crwdne206014:0</target>
+        <note>key: locationview.retry</note>
+        <jms:reference-file>./Resources/public/templates/tabs/locations.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/tabs/relations.hbt</jms:reference-file>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="19f2181b9bb473b99dc985187f631876cebf3b35" resname="locationview.versions.archived.versions">
+        <source>Archived versions</source>
+        <target xml:lang="ach">crwdns206015:0crwdne206015:0</target>
+        <note>key: locationview.versions.archived.versions</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="b7920f94494966e6db92b3937a84d3add836a812" resname="locationview.versions.author">
+        <source>Author</source>
+        <target xml:lang="ach">crwdns206016:0crwdne206016:0</target>
+        <note>key: locationview.versions.author</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="47912146dd99224ef2e39362cf689e245bbf604a" resname="locationview.versions.created">
+        <source>Created</source>
+        <target xml:lang="ach">crwdns206017:0crwdne206017:0</target>
+        <note>key: locationview.versions.created</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="419a69fad078eeaaf43244ac5874bc075affa8dc" resname="locationview.versions.delete.selected.draft">
+        <source>Delete selected draft</source>
+        <target xml:lang="ach">crwdns206018:0crwdne206018:0</target>
+        <note>key: locationview.versions.delete.selected.draft</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a7bf4de2ddd469229edee5cf992afa5b2099cd92" resname="locationview.versions.draft.under.edit">
+        <source>Draft under edit</source>
+        <target xml:lang="ach">crwdns206019:0crwdne206019:0</target>
+        <note>key: locationview.versions.draft.under.edit</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="150894069d0cf9666ae05e847cce60805208ed82" resname="locationview.versions.edit.selected.draft">
+        <source>Edit selected draft</source>
+        <target xml:lang="ach">crwdns206020:0crwdne206020:0</target>
+        <note>key: locationview.versions.edit.selected.draft</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="39ce8495c91402624f5e6729bcdb6bb914a4f9bc" resname="locationview.versions.error.loading.list">
+        <source>An error occurred while loading the versions list.</source>
+        <target xml:lang="ach">crwdns206021:0crwdne206021:0</target>
+        <note>key: locationview.versions.error.loading.list</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="06c5892ec7611863b644cdbd638e57d83f88a303" resname="locationview.versions.language">
+        <source>Language</source>
+        <target xml:lang="ach">crwdns206022:0crwdne206022:0</target>
+        <note>key: locationview.versions.language</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5037377a0c7dc615547308d1ed82755e31176c03" resname="locationview.versions.last.saved">
+        <source>Last saved</source>
+        <target xml:lang="ach">crwdns206023:0crwdne206023:0</target>
+        <note>key: locationview.versions.last.saved</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5d85516ece7ea51edb1fcff89135831903ab916b" resname="locationview.versions.loading.archived.list">
+        <source>Loading the archived version list</source>
+        <target xml:lang="ach">crwdns206024:0crwdne206024:0</target>
+        <note>key: locationview.versions.loading.archived.list</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3362319e8e1f3885e6c6e0bfadf77d7c5774f106" resname="locationview.versions.loading.draft.list">
+        <source>Loading the draft list</source>
+        <target xml:lang="ach">crwdns206025:0crwdne206025:0</target>
+        <note>key: locationview.versions.loading.draft.list</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f5e46b4632894a0a9a2b38eda614267de3e5e229" resname="locationview.versions.loading.published.list">
+        <source>Loading the published version list</source>
+        <target xml:lang="ach">crwdns206026:0crwdne206026:0</target>
+        <note>key: locationview.versions.loading.published.list</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ab40edd4e3d49edea2de3a5e5339cc9527c9ff03" resname="locationview.versions.new.draft.selected.version">
+        <source>New draft based on selected version</source>
+        <target xml:lang="ach">crwdns206027:0crwdne206027:0</target>
+        <note>key: locationview.versions.new.draft.selected.version</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="bd9a1564891fdc81516078f86ecdb11dd212e86d" resname="locationview.versions.published.version">
+        <source>Published version</source>
+        <target xml:lang="ach">crwdns206028:0crwdne206028:0</target>
+        <note>key: locationview.versions.published.version</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="51b6a4fff074bf24fc4183bc944890cc849ba82d" resname="locationview.versions.remove.selected.archived.version">
+        <source>Remove selected archived version(s)</source>
+        <target xml:lang="ach">crwdns206029:0crwdne206029:0</target>
+        <note>key: locationview.versions.remove.selected.archived.version</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="199990450f06a84725d61f91a899166d0d3305c4" resname="locationview.versions.version">
+        <source>Version</source>
+        <target xml:lang="ach">crwdns206030:0crwdne206030:0</target>
+        <note>key: locationview.versions.version</note>
+        <jms:reference-file>./Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9f2228ea94634afa4c264cfa0b36b5f08d653298" resname="moved.under">
+        <source>'%name%' has been successfully moved under '%parentName%'</source>
+        <target xml:lang="ach">crwdns206031:0%name%crwdnd206031:0%parentName%crwdne206031:0</target>
+        <note>key: moved.under</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f67a3e91c4d5aa8aac6c72fe7027dfba73eb1a4f" resname="rawcontent.content">
+        <source>Content</source>
+        <target xml:lang="ach">crwdns206032:0crwdne206032:0</target>
+        <note>key: rawcontent.content</note>
+        <jms:reference-file>./Resources/public/templates/rawcontent.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9ec896e824bd9e4181a3a6fbc7514c0dba5dde3d" resname="removed.locations.of">
+        <source>%count% location(s) of "%name%" have been removed</source>
+        <target xml:lang="ach">crwdns206033:0%count%crwdnd206033:0%name%crwdne206033:0</target>
+        <note>key: removed.locations.of</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationremoveplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9e5f98b5c3f285bd15fc0a0a23b3a42c2faa47ea" resname="removed.versions.of">
+        <source>%count% version(s) of "%name%" have been removed</source>
+        <target xml:lang="ach">crwdns206034:0%count%crwdnd206034:0%name%crwdne206034:0</target>
+        <note>key: removed.versions.of</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-versionsplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="acf9100e800a6f1f4f9fa47d8958d512a5729f06" resname="removing.locations.for">
+        <source>Removing locations for "%name%"</source>
+        <target xml:lang="ach">crwdns206035:0%name%crwdne206035:0</target>
+        <note>key: removing.locations.for</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationremoveplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6bf8a2da889909164b44ea5b8942e18acb8f29b1" resname="removing.versions.for">
+        <source>Removing versions for "%name%"</source>
+        <target xml:lang="ach">crwdns206036:0%name%crwdne206036:0</target>
+        <note>key: removing.versions.for</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-versionsplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ae688447d6a0779e33bdbb155806278928d5ec7e" resname="select.location.move.to">
+        <source>Select the location you want to move your content into</source>
+        <target xml:lang="ach">crwdns206037:0crwdne206037:0</target>
+        <note>key: select.location.move.to</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2ebde9679f8621dde1a0069e592eaf1164583c74" resname="select.location.to.swap">
+        <source>Select the location you want to swap with the given one</source>
+        <target xml:lang="ach">crwdns206038:0crwdne206038:0</target>
+        <note>key: select.location.to.swap</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationswapplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c3a7268c770036494e916618aae9927d0a353773" resname="sending.to.trash">
+        <source>Sending '%name%' to Trash</source>
+        <target xml:lang="ach">crwdns206039:0%name%crwdne206039:0</target>
+        <note>key: sending.to.trash</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8766b28d763385b40a48711bd66412d5f4d0f609" resname="sent.to.trash">
+        <source>"%name%" sent to Trash</source>
+        <target xml:lang="ach">crwdns206040:0%name%crwdne206040:0</target>
+        <note>key: sent.to.trash</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5fa3c429a7ffda07ccc05013a851a2beafee966d" resname="sort.content.type.identifier">
+        <source>Content type identifier</source>
+        <target xml:lang="ach">crwdns206041:0crwdne206041:0</target>
+        <note>key: sort.content.type.identifier</note>
+        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="62a66a9c02d5728bbc517a5d7c11889990cbed12" resname="sort.content.type.name">
+        <source>Content type name</source>
+        <target xml:lang="ach">crwdns206042:0crwdne206042:0</target>
+        <note>key: sort.content.type.name</note>
+        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3fc89a073d545b17319f4926105bf536a2481795" resname="sort.depth">
+        <source>Location depth</source>
+        <target xml:lang="ach">crwdns206043:0crwdne206043:0</target>
+        <note>key: sort.depth</note>
+        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8e3b63eca8c0b79018040b44d8ee39701824a187" resname="sort.modified">
+        <source>Modification date</source>
+        <target xml:lang="ach">crwdns206044:0crwdne206044:0</target>
+        <note>key: sort.modified</note>
+        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4f2fcdfe68ca50269b9c334594a8acd1a688809f" resname="sort.name">
+        <source>Content name</source>
+        <target xml:lang="ach">crwdns206045:0crwdne206045:0</target>
+        <note>key: sort.name</note>
+        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="668f8150c4acd0a0c8075de8b794639b8b4a6519" resname="sort.path">
+        <source>Location path</source>
+        <target xml:lang="ach">crwdns206046:0crwdne206046:0</target>
+        <note>key: sort.path</note>
+        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="bcb9183148c577a8a232c08847dff0c1647e62e7" resname="sort.priority">
+        <source>Priority</source>
+        <target xml:lang="ach">crwdns206047:0crwdne206047:0</target>
+        <note>key: sort.priority</note>
+        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="033291f867da64bfb4f9db9ec1b3c947b1e431c5" resname="sort.published">
+        <source>Publication date</source>
+        <target xml:lang="ach">crwdns206048:0crwdne206048:0</target>
+        <note>key: sort.published</note>
+        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f0ec72293071715721e084ed98b6ceb112aae22b" resname="sort.section">
+        <source>Section</source>
+        <target xml:lang="ach">crwdns206049:0crwdne206049:0</target>
+        <note>key: sort.section</note>
+        <jms:reference-file>./Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="52f0c0ed206437d87ca936e0c9b3d4dcf799269d" resname="swapped.location.for.with">
+        <source>Location for "%name%" has been swapped with "%destinationName%"</source>
+        <target xml:lang="ach">crwdns206050:0%name%crwdnd206050:0%destinationName%crwdne206050:0</target>
+        <note>key: swapped.location.for.with</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationswapplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="dcb6122be8a1d8ef5aac7e14ba12d8c9729b91e1" resname="swapping.location.for">
+        <source>Swaping location for "%name%"</source>
+        <target xml:lang="ach">crwdns206051:0%name%crwdne206051:0</target>
+        <note>key: swapping.location.for</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationswapplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5cf5c23d5f73b6493879db84d39bf6a05940242f" resname="updated.sort.method">
+        <source>The sub-items sort method has been correctly updated</source>
+        <target xml:lang="ach">crwdns206052:0crwdne206052:0</target>
+        <note>key: updated.sort.method</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="420b18708dcd8de83f92b2cfdeafad23fd6b80a7" resname="updating.sort.method">
+        <source>Updating the sub-items sort method</source>
+        <target xml:lang="ach">crwdns206053:0crwdne206053:0</target>
+        <note>key: updating.sort.method</note>
+        <jms:reference-file>./Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
       </trans-unit>
     </body>
   </file>
