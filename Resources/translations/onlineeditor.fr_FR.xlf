@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-12-06T15:20:44Z" source-language="en" target-language="fr" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="305047e96ec089021660ee5965f893ac80268731" resname="center">
+        <source>Center</source>
+        <target xml:lang="fr" state="needs-translation">Center</target>
+        <note>key: center</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/blocktextaligncenter.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/embedcenter.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="cfff27c96089b93150f3553b6ffdd39d0d5d8e78" resname="embed">
+        <source>Embed</source>
+        <target xml:lang="fr" state="needs-translation">Embed</target>
+        <note>key: embed</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/embed.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8809edb77f319ec2f52fca2114de27d637fa4642" resname="heading">
+        <source>Heading</source>
+        <target xml:lang="fr" state="needs-translation">Heading</target>
+        <note>key: heading</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/heading.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="8ccbbbe6115fdd98c98cfd7f699501b3550a050b" resname="heading.1">
+        <source>Heading 1</source>
+        <target xml:lang="fr" state="needs-translation">Heading 1</target>
+        <note>key: heading.1</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/heading.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/paragraph.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4decf57f600f5e23f972092da3023f7065f7008b" resname="heading.2">
+        <source>Heading 2</source>
+        <target xml:lang="fr" state="needs-translation">Heading 2</target>
+        <note>key: heading.2</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/heading.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/paragraph.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6402924fbcdd16ea9dbf4c37c3da4f53db8fd631" resname="heading.3">
+        <source>Heading 3</source>
+        <target xml:lang="fr" state="needs-translation">Heading 3</target>
+        <note>key: heading.3</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/heading.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/paragraph.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="7e65910e3c5725aaff4b648220dab7bb6266df48" resname="heading.4">
+        <source>Heading 4</source>
+        <target xml:lang="fr" state="needs-translation">Heading 4</target>
+        <note>key: heading.4</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/heading.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/paragraph.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f70107bea5df35dd8bd8b8b0321db6190d7d6aba" resname="heading.5">
+        <source>Heading 5</source>
+        <target xml:lang="fr" state="needs-translation">Heading 5</target>
+        <note>key: heading.5</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/heading.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/paragraph.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="29b64da968aa203bc30bea66937d98b1808f7061" resname="heading.6">
+        <source>Heading 6</source>
+        <target xml:lang="fr" state="needs-translation">Heading 6</target>
+        <note>key: heading.6</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/heading.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/paragraph.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0e76292794888d4f1fa75fb3aff4ca27c58f56a6" resname="image">
+        <source>Image</source>
+        <target xml:lang="fr" state="needs-translation">Image</target>
+        <note>key: image</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/image.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3d7a034a83cbfb625391d2e897c5163400413b6b" resname="justify">
+        <source>Justify</source>
+        <target xml:lang="fr" state="needs-translation">Justify</target>
+        <note>key: justify</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/blocktextalignjustify.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="12c0f1fbadc4046b5f2bb9e063b227ef8750d9d6" resname="left">
+        <source>Left</source>
+        <target xml:lang="fr" state="needs-translation">Left</target>
+        <note>key: left</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/blocktextalignleft.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/embedleft.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="38b62be4bddaa5661c7d6b8e36e28159314df5c7" resname="list">
+        <source>List</source>
+        <target xml:lang="fr" state="needs-translation">List</target>
+        <note>key: list</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/list.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f416747c2f302b11d2360559f101e49353e88038" resname="paragraph">
+        <source>Paragraph</source>
+        <target xml:lang="fr" state="needs-translation">Paragraph</target>
+        <note>key: paragraph</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/paragraph.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/heading.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/toolbars/config/paragraph.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="c5ef10db9a6a48b85cd15ce1050f42933a4305ae" resname="remove.this.block">
+        <source>Remove this block</source>
+        <target xml:lang="fr" state="needs-translation">Remove this block</target>
+        <note>key: remove.this.block</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/blockremove.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d27a1f11771200949714b1af99f048a416f5d6f4" resname="right">
+        <source>Right</source>
+        <target xml:lang="fr" state="needs-translation">Right</target>
+        <note>key: right</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/blocktextalignright.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/embedright.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="66e4d5a581b0460c2a07236f815ada78bfa75a68" resname="select.a.content.to.embed">
+        <source>Select a content to embed</source>
+        <target xml:lang="fr" state="needs-translation">Select a content to embed</target>
+        <note>key: select.a.content.to.embed</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/embed.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/embedhref.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="180522f369f637cf58b08e8526b86bf4fe9f6e96" resname="select.an.image.to.embed">
+        <source>Select an image to embed</source>
+        <target xml:lang="fr" state="needs-translation">Select an image to embed</target>
+        <note>key: select.an.image.to.embed</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/image.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/imagehref.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="01f73cbcef515e5358afb1631af189449219fe73" resname="select.another.content.item">
+        <source>Select another content item</source>
+        <target xml:lang="fr" state="needs-translation">Select another content item</target>
+        <note>key: select.another.content.item</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/embedhref.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6c7ff48bfb23af1c48100802f28c610bb4e477b6" resname="select.another.image">
+        <source>Select another image</source>
+        <target xml:lang="fr" state="needs-translation">Select another image</target>
+        <note>key: select.another.image</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/imagehref.js</jms:reference-file>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
