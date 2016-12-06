@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="4f8e41706e12e3b904720688ff4deb18" resname="contentedit.close.preview">
+        <source>contentedit.close.preview</source>
+        <target xml:lang="ach">crwdns205005:0crwdne205005:0</target>
+      </trans-unit>
+      <trans-unit id="3421b18a00269bbef4c659ece8a11fae" resname="contentedit.previewing">
+        <source>contentedit.previewing</source>
+        <target xml:lang="ach">crwdns205006:0crwdne205006:0</target>
+      </trans-unit>
+      <trans-unit id="eb399bcaca686f8609137153307eecf1" resname="change">
+        <source>change</source>
+        <target xml:lang="ach">crwdns205007:0crwdne205007:0</target>
+      </trans-unit>
+      <trans-unit id="7d05148036e9c074f403124ec637829b" resname="content.id.location.id">
+        <source>content.id.location.id</source>
+        <target xml:lang="ach">crwdns205008:0crwdne205008:0</target>
+      </trans-unit>
+      <trans-unit id="4db37a2501795c5b942376d08166eba1" resname="created.by">
+        <source>created.by</source>
+        <target xml:lang="ach">crwdns205009:0crwdne205009:0</target>
+      </trans-unit>
+      <trans-unit id="d7aa74b131919283973bbc30606831f0" resname="content.published">
+        <source>content.published</source>
+        <target xml:lang="ach">crwdns205010:0crwdne205010:0</target>
+      </trans-unit>
+      <trans-unit id="c4c1ba368b91ac1d35fc14e8fb0f1a10" resname="error.publishing.draft">
+        <source>error.publishing.draft</source>
+        <target xml:lang="ach">crwdns205011:0crwdne205011:0</target>
+      </trans-unit>
+      <trans-unit id="2e2fe8fca9cf188ac65c7bb123bd98cc" resname="saving.draft">
+        <source>saving.draft</source>
+        <target xml:lang="ach">crwdns205012:0crwdne205012:0</target>
+      </trans-unit>
+      <trans-unit id="01573cc38bddb2677f08a71810df90f3" resname="draft.saved">
+        <source>draft.saved</source>
+        <target xml:lang="ach">crwdns205013:0crwdne205013:0</target>
+      </trans-unit>
+      <trans-unit id="020aff5a068e3a512ec56ed13bc60076" resname="error.saving.draft">
+        <source>error.saving.draft</source>
+        <target xml:lang="ach">crwdns205014:0crwdne205014:0</target>
+      </trans-unit>
+      <trans-unit id="f332c40947aea1ce23bb242c310c89fa" resname="select.a.draft">
+        <source>select.a.draft</source>
+        <target xml:lang="ach">crwdns205015:0crwdne205015:0</target>
+      </trans-unit>
+      <trans-unit id="6047c8e4f5ce23cd68317d8888f5d605" resname="failed.loading.content.type">
+        <source>failed.loading.content.type</source>
+        <target xml:lang="ach">crwdns205016:0crwdne205016:0</target>
+      </trans-unit>
+      <trans-unit id="f0e7e8995643aa5633ffbf88b98ff24a" resname="name.new.content.of.type">
+        <source>name.new.content.of.type</source>
+        <target xml:lang="ach">crwdns205017:0crwdne205017:0</target>
+      </trans-unit>
+      <trans-unit id="30ceaeec0310cf05268f5ff1faad58e9" resname="change.language.to">
+        <source>change.language.to</source>
+        <target xml:lang="ach">crwdns205018:0crwdne205018:0</target>
+      </trans-unit>
+      <trans-unit id="5502bd0d6c262c22658970f314a0824b" resname="language.changed.to">
+        <source>language.changed.to</source>
+        <target xml:lang="ach">crwdns205019:0crwdne205019:0</target>
+      </trans-unit>
+      <trans-unit id="e70ffcb83bf242d9551293f51968330b" resname="failed.loading.content.id.language">
+        <source>failed.loading.content.id.language</source>
+        <target xml:lang="ach">crwdns205020:0crwdne205020:0</target>
+      </trans-unit>
+      <trans-unit id="f15707cae356e9ad3c2c886902a02db3" resname="version.not.a.draft">
+        <source>version.not.a.draft</source>
+        <target xml:lang="ach">crwdns205021:0crwdne205021:0</target>
+      </trans-unit>
+      <trans-unit id="6c7e7e2ea7c903d91fc848eb5c23e229" resname="version.not.a.draft.of.content">
+        <source>version.not.a.draft.of.content</source>
+        <target xml:lang="ach">crwdns205022:0crwdne205022:0</target>
+      </trans-unit>
+      <trans-unit id="fba48e64f1d15ee024b8f89c2fc74a15" resname="version.not.exist.in">
+        <source>version.not.exist.in</source>
+        <target xml:lang="ach">crwdns205023:0crwdne205023:0</target>
+      </trans-unit>
+      <trans-unit id="ac4c34d12f8e0f91b38ca158bbe64c72" resname="version.not.belong.to.you">
+        <source>version.not.belong.to.you</source>
+        <target xml:lang="ach">crwdns205024:0crwdne205024:0</target>
+      </trans-unit>
+      <trans-unit id="b7dbcbee13c20796877ce3b6f351371d" resname="failed.loading.content.in">
+        <source>failed.loading.content.in</source>
+        <target xml:lang="ach">crwdns205025:0crwdne205025:0</target>
+      </trans-unit>
+      <trans-unit id="c256205e6333253608831978038a1bb9" resname="failed.loading.version.in">
+        <source>failed.loading.version.in</source>
+        <target xml:lang="ach">crwdns205026:0crwdne205026:0</target>
+      </trans-unit>
+      <trans-unit id="1a20b1a6573a6a9d9d273f0d2e664eba" resname="failed.finding.content">
+        <source>failed.finding.content</source>
+        <target xml:lang="ach">crwdns205027:0crwdne205027:0</target>
+      </trans-unit>
+      <trans-unit id="c702cf91b38761def371ba3bec53202d" resname="failed.loading.location">
+        <source>failed.loading.location</source>
+        <target xml:lang="ach">crwdns205028:0crwdne205028:0</target>
+      </trans-unit>
+      <trans-unit id="417e230ae000f16d13f7c4da03246892" resname="saving.draft.to.generate.the.preview">
+        <source>saving.draft.to.generate.the.preview</source>
+        <target xml:lang="ach">crwdns205029:0crwdne205029:0</target>
+      </trans-unit>
+      <trans-unit id="d419f7ed53b35c89d0ca100b1e6d3d05" resname="failed.saving.draft.to.generate.the.preview">
+        <source>failed.saving.draft.to.generate.the.preview</source>
+        <target xml:lang="ach">crwdns205030:0crwdne205030:0</target>
+      </trans-unit>
+      <trans-unit id="9b6d0bb3102b87fae57bc4a39149518e" resname="publish">
+        <source>publish</source>
+        <target xml:lang="ach">crwdns205031:0crwdne205031:0</target>
+      </trans-unit>
+      <trans-unit id="270e55e7219c8a666809457737c4685a" resname="discard.changes">
+        <source>discard.changes</source>
+        <target xml:lang="ach">crwdns205032:0crwdne205032:0</target>
+      </trans-unit>
+      <trans-unit id="43781db5c40ecc39fd718685594f0956" resname="save">
+        <source>save</source>
+        <target xml:lang="ach">crwdns205033:0crwdne205033:0</target>
+      </trans-unit>
+      <trans-unit id="5ebeb6065f64f2346dbb00ab789cf001" resname="preview">
+        <source>preview</source>
+        <target xml:lang="ach">crwdns205034:0crwdne205034:0</target>
+      </trans-unit>
+      <trans-unit id="0334c0402a405260bc2b1c82b5541dac" resname="publishing.content">
+        <source>publishing.content</source>
+        <target xml:lang="ach">crwdns205035:0crwdne205035:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
