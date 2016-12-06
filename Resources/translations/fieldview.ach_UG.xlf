@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="0f695e53f85380350a25274afc15ea28" resname="relationlist.error.loading">
+        <source>relationlist.error.loading</source>
+        <target xml:lang="ach">crwdns205189:0crwdne205189:0</target>
+      </trans-unit>
+      <trans-unit id="cdb57d54c553efce5226517339f7532b" resname="relationlist.loading">
+        <source>relationlist.loading</source>
+        <target xml:lang="ach">crwdns205190:0crwdne205190:0</target>
+      </trans-unit>
+      <trans-unit id="7e5cad33e10b1f66e6dd5cad074d8ca8" resname="relation.error.loading">
+        <source>relation.error.loading</source>
+        <target xml:lang="ach">crwdns205191:0crwdne205191:0</target>
+      </trans-unit>
+      <trans-unit id="fda496f70972008787b419d7bbaed028" resname="relation.loading">
+        <source>relation.loading</source>
+        <target xml:lang="ach">crwdns205192:0crwdne205192:0</target>
+      </trans-unit>
+      <trans-unit id="a5936f77b720ce3e694fe7b7994fcb90" resname="media.unsupported.audio">
+        <source>media.unsupported.audio</source>
+        <target xml:lang="ach">crwdns205193:0crwdne205193:0</target>
+      </trans-unit>
+      <trans-unit id="2b63b56c1aab41a7a12140ecaf10c087" resname="media.unsupported.video">
+        <source>media.unsupported.video</source>
+        <target xml:lang="ach">crwdns205194:0crwdne205194:0</target>
+      </trans-unit>
+      <trans-unit id="6fb4aa04a204ca71f84e5e646a0bcf55" resname="media.audio.file.properties">
+        <source>media.audio.file.properties</source>
+        <target xml:lang="ach">crwdns205195:0crwdne205195:0</target>
+      </trans-unit>
+      <trans-unit id="7dc4e75511ad48b4b2dca3f92255318a" resname="media.video.file.properties">
+        <source>media.video.file.properties</source>
+        <target xml:lang="ach">crwdns205196:0crwdne205196:0</target>
+      </trans-unit>
+      <trans-unit id="47a0e8d6fa243dfc585304ef73cc01fe" resname="media.file.name">
+        <source>media.file.name</source>
+        <target xml:lang="ach">crwdns205197:0crwdne205197:0</target>
+      </trans-unit>
+      <trans-unit id="18cd75473c6ba07744c16bf5cc304afb" resname="media.file.type">
+        <source>media.file.type</source>
+        <target xml:lang="ach">crwdns205198:0crwdne205198:0</target>
+      </trans-unit>
+      <trans-unit id="b3602d541d8c4c2f7ccab95c9b84f03d" resname="media.file.size">
+        <source>media.file.size</source>
+        <target xml:lang="ach">crwdns205199:0crwdne205199:0</target>
+      </trans-unit>
+      <trans-unit id="1d6ea693f118399204ca4790e7bad71b" resname="media.bytes">
+        <source>media.bytes</source>
+        <target xml:lang="ach">crwdns205200:0crwdne205200:0</target>
+      </trans-unit>
+      <trans-unit id="fe5954465496c40a4db2fa619dc1da59" resname="fieldview.field.empty">
+        <source>fieldview.field.empty</source>
+        <target xml:lang="ach">crwdns205201:0crwdne205201:0</target>
+      </trans-unit>
+      <trans-unit id="537511d1883a52d32596e57e23658a8f" resname="fieldview.retry">
+        <source>fieldview.retry</source>
+        <target xml:lang="ach">crwdns205202:0crwdne205202:0</target>
+      </trans-unit>
+      <trans-unit id="06a100fa2759f283d99638ce5938cf21" resname="media.display.controls">
+        <source>media.display.controls</source>
+        <target xml:lang="ach">crwdns205203:0crwdne205203:0</target>
+      </trans-unit>
+      <trans-unit id="85d41139127e19ccb7325d53b562b1fc" resname="fieldview.yes">
+        <source>fieldview.yes</source>
+        <target xml:lang="ach">crwdns205204:0crwdne205204:0</target>
+      </trans-unit>
+      <trans-unit id="d4e35877ca20ce5d54fbc0204b67ee15" resname="fieldview.no">
+        <source>fieldview.no</source>
+        <target xml:lang="ach">crwdns205205:0crwdne205205:0</target>
+      </trans-unit>
+      <trans-unit id="f77210c17aceb7080628ec2ee735fdd1" resname="media.auto.play">
+        <source>media.auto.play</source>
+        <target xml:lang="ach">crwdns205206:0crwdne205206:0</target>
+      </trans-unit>
+      <trans-unit id="b796946c1cf48e89026639587967d7ee" resname="media.loop">
+        <source>media.loop</source>
+        <target xml:lang="ach">crwdns205207:0crwdne205207:0</target>
+      </trans-unit>
+      <trans-unit id="30ce641ca0efa043b4966276a3d8fbf5" resname="media.width">
+        <source>media.width</source>
+        <target xml:lang="ach">crwdns205208:0crwdne205208:0</target>
+      </trans-unit>
+      <trans-unit id="17181e3063c14a1af27c7d5b7d29d184" resname="media.heigth">
+        <source>media.heigth</source>
+        <target xml:lang="ach">crwdns205209:0crwdne205209:0</target>
+      </trans-unit>
+      <trans-unit id="2b0591edbc349e92e5a2b5f5b9c5d971" resname="maplocation.map.loading">
+        <source>maplocation.map.loading</source>
+        <target xml:lang="ach">crwdns205210:0crwdne205210:0</target>
+      </trans-unit>
+      <trans-unit id="7af39c184be0b1d2ee92c811ddd356e4" resname="maplocation.latitude">
+        <source>maplocation.latitude</source>
+        <target xml:lang="ach">crwdns205211:0crwdne205211:0</target>
+      </trans-unit>
+      <trans-unit id="25fe516175d5eb7d5b98bb76cd78e159" resname="maplocation.longitude">
+        <source>maplocation.longitude</source>
+        <target xml:lang="ach">crwdns205212:0crwdne205212:0</target>
+      </trans-unit>
+      <trans-unit id="72b35b9d17044a70a23520605ca6bbdb" resname="richtext.parsing.error">
+        <source>richtext.parsing.error</source>
+        <target xml:lang="ach">crwdns205213:0crwdne205213:0</target>
+      </trans-unit>
+      <trans-unit id="76f48b0e4ec6ca3c4c73fe3486373270" resname="user.username">
+        <source>user.username</source>
+        <target xml:lang="ach">crwdns205214:0crwdne205214:0</target>
+      </trans-unit>
+      <trans-unit id="c223c858238991c065f60270ed2256cb" resname="user.mail">
+        <source>user.mail</source>
+        <target xml:lang="ach">crwdns205215:0crwdne205215:0</target>
+      </trans-unit>
+      <trans-unit id="0492f2e4f542f0452ca390d98c886b51" resname="image.error.loading">
+        <source>image.error.loading</source>
+        <target xml:lang="ach">crwdns205216:0crwdne205216:0</target>
+      </trans-unit>
+      <trans-unit id="2e7bce38bf7a9290e97ab7811003e423" resname="image.loading">
+        <source>image.loading</source>
+        <target xml:lang="ach">crwdns205217:0crwdne205217:0</target>
+      </trans-unit>
+      <trans-unit id="b1bbd59c4bcf9a626d3c7c70ee851f56" resname="binaryfile.download.file">
+        <source>binaryfile.download.file</source>
+        <target xml:lang="ach">crwdns205218:0crwdne205218:0</target>
+      </trans-unit>
+      <trans-unit id="01c03913d7d788beb4f1d36e14013f4a" resname="file.size">
+        <source>file.size</source>
+        <target xml:lang="ach">crwdns205219:0crwdne205219:0</target>
+      </trans-unit>
+      <trans-unit id="9a8ceaff4dff0f743f5f5889cb988f55" resname="media.size">
+        <source>media.size</source>
+        <target xml:lang="ach">crwdns205220:0crwdne205220:0</target>
+      </trans-unit>
+      <trans-unit id="c80f973a458a59bdbfad15427a39346e" resname="failed.to.load.the.map">
+        <source>failed.to.load.the.map</source>
+        <target xml:lang="ach">crwdns205221:0crwdne205221:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
