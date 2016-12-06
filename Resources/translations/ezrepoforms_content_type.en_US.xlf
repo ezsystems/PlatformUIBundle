@@ -6,9 +6,9 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="38a48d5b27331f27a6a51e3bb9be3e6340fc1ccb" resname="content_type.edit_title">
+      <trans-unit id="38a48d5b27331f27a6a51e3bb9be3e6340fc1ccb" resname="content_type.edit_title" approved="yes">
         <source>__content_type.edit_title</source>
-        <target xml:lang="en" state="needs-translation">__content_type.edit_title</target>
+        <target xml:lang="en">__content_type.edit_title</target>
         <note>key: content_type.edit_title</note>
         <jms:reference-file line="6">/../../../../.././Resources/views/ContentType/update_content_type.html.twig</jms:reference-file>
       </trans-unit>
