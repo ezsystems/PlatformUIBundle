@@ -6,66 +6,16 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="f28f995a9562088395bf19373c81fda9a89f1585" resname="content.type">
-        <source>Content type</source>
-        <target xml:lang="fr" state="needs-translation">Content type</target>
-        <note>key: content.type</note>
-        <jms:reference-file>./Resources/public/js/views/ez-searchlistview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="99db324742823c55d975b605e1fc22f4253a9b7d" resname="modified">
-        <source>Modified</source>
-        <target xml:lang="fr" state="needs-translation">Modified</target>
-        <note>key: modified</note>
-        <jms:reference-file>./Resources/public/js/views/ez-searchlistview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6ae999552a0d2dca14d62e2bc8b764d377b1dd6c" resname="name">
-        <source>Name</source>
-        <target xml:lang="fr" state="needs-translation">Name</target>
-        <note>key: name</note>
-        <jms:reference-file>./Resources/public/js/views/ez-searchlistview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="be2293ce4900a4876cdf20fee5800906463a25e9" resname="search.no.result">
-        <source>This search has no result.</source>
-        <target xml:lang="fr" state="needs-translation">This search has no result.</target>
-        <note>key: search.no.result</note>
-        <jms:reference-file>./Resources/public/templates/searchlistview.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="bc7325f0409778308bac4fb799fe0a49433b2af5" resname="search.result.list">
-        <source>Result list</source>
-        <target xml:lang="fr" state="needs-translation">Result list</target>
-        <note>key: search.result.list</note>
-        <jms:reference-file>./Resources/public/templates/searchlistview.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="6ffbb9b14f98e94b8dda5418ef3910942b42c44e" resname="search.search">
-        <source>Search</source>
-        <target xml:lang="fr" state="needs-translation">Search</target>
-        <note>key: search.search</note>
-        <jms:reference-file>./Resources/public/templates/searchview.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="25cda398863dd104cebf8932e6ba226d0f4f1641" resname="search.search.content">
-        <source>Search content:</source>
-        <target xml:lang="fr" state="needs-translation">Search content:</target>
-        <note>key: search.search.content</note>
-        <jms:reference-file>./Resources/public/templates/searchview.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e9fbb7ba38fa94be8b417699fb729a60c7b8ab48" resname="show.more.results">
-        <source><![CDATA[Show <span class="ez-loadmorepagination-more-count">%remainingCount%</span> more results]]></source>
-        <target xml:lang="fr" state="needs-translation"><![CDATA[Show <span class="ez-loadmorepagination-more-count">%remainingCount%</span> more results]]></target>
-        <note>key: show.more.results</note>
-        <jms:reference-file>./Resources/public/templates/searchlistview.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="31c20e73fa29248cc7bf440ac9d720ff6d88fd3e" resname="translations">
-        <source>Translations</source>
-        <target xml:lang="fr" state="needs-translation">Translations</target>
-        <note>key: translations</note>
-        <jms:reference-file>./Resources/public/js/views/ez-searchlistview.js</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3cae0754bed733e5785947e0b1a795ffeacb8a12" resname="viewing.out.of.items">
-        <source><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%searchResultCount%</strong> items]]></source>
-        <target xml:lang="fr" state="needs-translation"><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%searchResultCount%</strong> items]]></target>
-        <note>key: viewing.out.of.items</note>
-        <jms:reference-file>./Resources/public/templates/searchlistview.hbt</jms:reference-file>
-      </trans-unit>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
     </body>
   </file>
 </xliff>
