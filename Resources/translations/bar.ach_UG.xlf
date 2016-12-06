@@ -1,145 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" target-language="ach" datatype="plaintext" original="file.ext">
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="ach" datatype="plaintext" original="not.available">
     <header>
-      <tool tool-id="symfony" tool-name="Symfony"/>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="efd1900ac313302929fcb09d0b7bc056" resname="translateaction.existing.translations">
-        <source>translateaction.existing.translations</source>
-        <target xml:lang="ach">crwdns204930:0crwdne204930:0</target>
+      <trans-unit id="b89182df324a10cfccb8dac5f047355c3ba043ca" resname="actionbar.copy">
+        <source>Copy</source>
+        <target xml:lang="ach">crwdns205633:0crwdne205633:0</target>
+        <note>key: actionbar.copy</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="64b399b8999c5cbbab686d6d85a108f0" resname="translateaction.edit">
-        <source>translateaction.edit</source>
-        <target xml:lang="ach">crwdns204931:0crwdne204931:0</target>
+      <trans-unit id="e9ce61047248bb9c85bb0984cf597dbfbcc7633b" resname="actionbar.createContent">
+        <source>Create</source>
+        <target xml:lang="ach">crwdns205634:0crwdne205634:0</target>
+        <note>key: actionbar.createContent</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2d4a7aceb8415c095005c42adda536b5" resname="translateaction.new.translation">
-        <source>translateaction.new.translation</source>
-        <target xml:lang="ach">crwdns204932:0crwdne204932:0</target>
+      <trans-unit id="be3348d5545fb64e8506ae64e667dac048bbc97c" resname="actionbar.delete">
+        <source>Delete</source>
+        <target xml:lang="ach">crwdns205635:0crwdne205635:0</target>
+        <note>key: actionbar.delete</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2b15cd805c8b2f8c3eacbcf77d1efef3" resname="createcontentaction.loading">
-        <source>createcontentaction.loading</source>
-        <target xml:lang="ach">crwdns204933:0crwdne204933:0</target>
+      <trans-unit id="5fb95ba95e83264744f36bd3dafb74013b86d315" resname="actionbar.edit">
+        <source>Edit</source>
+        <target xml:lang="ach">crwdns205636:0crwdne205636:0</target>
+        <note>key: actionbar.edit</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="fd1a4523a8f13243cb11bf6d301b3079" resname="actionbar.minimizeActionBar">
-        <source>actionbar.minimizeActionBar</source>
-        <target xml:lang="ach">crwdns204934:0crwdne204934:0</target>
+      <trans-unit id="4406c1030566fae57a5e41a797823d41c7775ac8" resname="actionbar.minimizeActionBar">
+        <source>Minimize</source>
+        <target xml:lang="ach">crwdns205637:0crwdne205637:0</target>
+        <note>key: actionbar.minimizeActionBar</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="2bcbc7fd4008db165d433f044394b173" resname="actionbar.edit">
-        <source>actionbar.edit</source>
-        <target xml:lang="ach">crwdns204935:0crwdne204935:0</target>
+      <trans-unit id="b282633e9e76dd418412580d9232d28d9404dcb5" resname="actionbar.move">
+        <source>Move</source>
+        <target xml:lang="ach">crwdns205638:0crwdne205638:0</target>
+        <note>key: actionbar.move</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="dcd4bcdb2bd45c594ac6f1c821974090" resname="actionbar.move">
-        <source>actionbar.move</source>
-        <target xml:lang="ach">crwdns204936:0crwdne204936:0</target>
+      <trans-unit id="0c208e52af8963639637f9c9ce2163bd98d1628e" resname="actionbar.sendToTrash">
+        <source>Send to Trash</source>
+        <target xml:lang="ach">crwdns205639:0crwdne205639:0</target>
+        <note>key: actionbar.sendToTrash</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="713f4ab4479ef918715bebfbaea246b0" resname="actionbar.copy">
-        <source>actionbar.copy</source>
-        <target xml:lang="ach">crwdns204937:0crwdne204937:0</target>
+      <trans-unit id="5b0a413f93880e60e8da0cc54c3d2643afef840c" resname="actionbar.translate">
+        <source>Translations</source>
+        <target xml:lang="ach">crwdns205640:0crwdne205640:0</target>
+        <note>key: actionbar.translate</note>
+        <jms:reference-file>./Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="ab22c133ad6e1ab3b5d8736dd4500b86" resname="actionbar.createContent">
-        <source>actionbar.createContent</source>
-        <target xml:lang="ach">crwdns204938:0crwdne204938:0</target>
+      <trans-unit id="36ec797c4394265124b47a9ef9d8981ab3cb80c1" resname="content.being.copied.under">
+        <source>"%contentName%" is being copied under "%parentContentName%"</source>
+        <target xml:lang="ach">crwdns205641:0%contentName%crwdnd205641:0%parentContentName%crwdne205641:0</target>
+        <note>key: content.being.copied.under</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-copycontentplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="87ad6af6d4959002120e417861b5ab3c" resname="actionbar.translate">
-        <source>actionbar.translate</source>
-        <target xml:lang="ach">crwdns204939:0crwdne204939:0</target>
+      <trans-unit id="a45dde06d9f58df76767d6fdaa8da714979b737d" resname="content.copied.under">
+        <source>'%contentName%' has been successfully copied under '%parentContentName%'</source>
+        <target xml:lang="ach">crwdns205642:0%contentName%crwdnd205642:0%parentContentName%crwdne205642:0</target>
+        <note>key: content.copied.under</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-copycontentplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="8d485c9f2ecc542b96a0456626a7b4bc" resname="actionbar.sendToTrash">
-        <source>actionbar.sendToTrash</source>
-        <target xml:lang="ach">crwdns204940:0crwdne204940:0</target>
+      <trans-unit id="0bc4676a2e348119912d9a0cb23c8b9c2db54b38" resname="createcontentaction.loading">
+        <source>Loading</source>
+        <target xml:lang="ach">crwdns205643:0crwdne205643:0</target>
+        <note>key: createcontentaction.loading</note>
+        <jms:reference-file>./Resources/public/templates/createcontentaction.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="84042e63502f5c9bb479a8709777a8f7" resname="actionbar.delete">
-        <source>actionbar.delete</source>
-        <target xml:lang="ach">crwdns204941:0crwdne204941:0</target>
+      <trans-unit id="8168e6a5b68d175e892512352ec75bdfe1275631" resname="creating.new.location.for">
+        <source>Creating new location for "%name%"</source>
+        <target xml:lang="ach">crwdns205644:0%name%crwdne205644:0</target>
+        <note>key: creating.new.location.for</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationcreateplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="a40e244892ca600dc6bd49ad5a3ba69d" resname="discoverybar.minimize">
-        <source>discoverybar.minimize</source>
-        <target xml:lang="ach">crwdns204942:0crwdne204942:0</target>
+      <trans-unit id="bad3f2a8b005e430f9760b9b3c47e37faa3176bd" resname="creating.new.location.for.failed">
+        <source>Creating new location(s) for "%name%" failed</source>
+        <target xml:lang="ach">crwdns205645:0%name%crwdne205645:0</target>
+        <note>key: creating.new.location.for.failed</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationcreateplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="be79a56ce2348bba97dff939be9f18c9" resname="discoverybar.search">
-        <source>discoverybar.search</source>
-        <target xml:lang="ach">crwdns204943:0crwdne204943:0</target>
+      <trans-unit id="7eaf9281f3e62d4f3acf5dac5b34060808c363b9" resname="discoverybar.contenttree">
+        <source>Content tree</source>
+        <target xml:lang="ach">crwdns205646:0crwdne205646:0</target>
+        <note>key: discoverybar.contenttree</note>
+        <jms:reference-file>./Resources/public/js/views/ez-discoverybarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="6807d92ae8f1d5fbc5c876a8cd718e94" resname="discoverybar.contenttree">
-        <source>discoverybar.contenttree</source>
-        <target xml:lang="ach">crwdns204944:0crwdne204944:0</target>
+      <trans-unit id="69eda63e3b6ba8e8eb35db12ef1995c5dba42c17" resname="discoverybar.minimize">
+        <source>Minimize</source>
+        <target xml:lang="ach">crwdns205647:0crwdne205647:0</target>
+        <note>key: discoverybar.minimize</note>
+        <jms:reference-file>./Resources/public/js/views/ez-discoverybarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="a30d5f88f1b72f2917a0c9ee359470a5" resname="discoverybar.trash">
-        <source>discoverybar.trash</source>
-        <target xml:lang="ach">crwdns204945:0crwdne204945:0</target>
+      <trans-unit id="55ba03a687a73559ef8a2d4e1ff935b47ddc5859" resname="discoverybar.search">
+        <source>Search</source>
+        <target xml:lang="ach">crwdns205648:0crwdne205648:0</target>
+        <note>key: discoverybar.search</note>
+        <jms:reference-file>./Resources/public/js/views/ez-discoverybarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="f8f745391e04df457674a23f3046b6b5" resname="select.location.to.copy">
-        <source>select.location.to.copy</source>
-        <target xml:lang="ach">crwdns204946:0crwdne204946:0</target>
+      <trans-unit id="07eab5f1fb10d5c76c8b190ed9aa24f44b8631b7" resname="discoverybar.trash">
+        <source>Trash</source>
+        <target xml:lang="ach">crwdns205649:0crwdne205649:0</target>
+        <note>key: discoverybar.trash</note>
+        <jms:reference-file>./Resources/public/js/views/ez-discoverybarview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="ba3ff51949fd887be30b92cb94eb1398" resname="content.being.copied.under">
-        <source>content.being.copied.under</source>
-        <target xml:lang="ach">crwdns204947:0crwdne204947:0</target>
+      <trans-unit id="4f05b52ccc249d1a7747839ea78300f80c6011d3" resname="error.hiding.location">
+        <source>Error while hiding location "%id%"</source>
+        <target xml:lang="ach">crwdns205650:0%id%crwdne205650:0</target>
+        <note>key: error.hiding.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-visibilityswitcherplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="f6deca857864a88a32e6deaae0788a03" resname="error.occurred.copying">
-        <source>error.occurred.copying</source>
-        <target xml:lang="ach">crwdns204948:0crwdne204948:0</target>
+      <trans-unit id="b751b43622c766dad211b5892e401abe17292918" resname="error.occurred.copying">
+        <source>An error occurred while copying your content</source>
+        <target xml:lang="ach">crwdns205651:0crwdne205651:0</target>
+        <note>key: error.occurred.copying</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-copycontentplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="fd5ca0a04ebc37b025f25bbe3c49bade" resname="error.occurred.loading">
-        <source>error.occurred.loading</source>
-        <target xml:lang="ach">crwdns204949:0crwdne204949:0</target>
+      <trans-unit id="e3215cb818603963b4e6b318ed9874ba881ca5bb" resname="error.occurred.loading">
+        <source>An error occurred while loading your content</source>
+        <target xml:lang="ach">crwdns205652:0crwdne205652:0</target>
+        <note>key: error.occurred.loading</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-copycontentplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="a2b14154c7fb0f1206e87ef7572dd7f0" resname="select.location.to.create.new.location">
-        <source>select.location.to.create.new.location</source>
-        <target xml:lang="ach">crwdns204950:0crwdne204950:0</target>
+      <trans-unit id="310cc7a3978ffe18c9e51dc5038b371f5428f46f" resname="error.revealing.location">
+        <source>Error while revealing location "%id%"</source>
+        <target xml:lang="ach">crwdns205653:0%id%crwdne205653:0</target>
+        <note>key: error.revealing.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-visibilityswitcherplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="0b7602cf6718622be5655c352b3d6630" resname="creating.new.location.for">
-        <source>creating.new.location.for</source>
-        <target xml:lang="ach">crwdns204951:0crwdne204951:0</target>
+      <trans-unit id="e650b8f59c13ba2541db9ae6ac90a1857d88cb54" resname="failed.creating.new.location.for">
+        <source>Creating new location for "%name%" under "%parentName%" failed</source>
+        <target xml:lang="ach">crwdns205654:0%name%crwdnd205654:0%parentName%crwdne205654:0</target>
+        <note>key: failed.creating.new.location.for</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationcreateplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="5ddf00ad92bc226ded842b9af79224be" resname="failed.creating.new.location.for">
-        <source>failed.creating.new.location.for</source>
-        <target xml:lang="ach">crwdns204952:0crwdne204952:0</target>
+      <trans-unit id="69136005da4d2304538601244f76e7e68a009049" resname="hidden.location">
+        <source>Location "%id" has been hidden</source>
+        <target xml:lang="ach">crwdns205655:0%icrwdne205655:0</target>
+        <note>key: hidden.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-visibilityswitcherplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="5aa9b4939e6e1fa828756495c6f02ec5" resname="location.created">
-        <source>location.created</source>
-        <target xml:lang="ach">crwdns204953:0crwdne204953:0</target>
+      <trans-unit id="a08ae71216dacd8a23c388addb647ecab7e3fcc1" resname="hiding.location">
+        <source>Hiding Location "%id%"</source>
+        <target xml:lang="ach">crwdns205656:0%id%crwdne205656:0</target>
+        <note>key: hiding.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-visibilityswitcherplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="98702e2d0f7b324859390ccb3def1a38" resname="locations.created">
-        <source>locations.created</source>
-        <target xml:lang="ach">crwdns204954:0crwdne204954:0</target>
+      <trans-unit id="892075dad374cd4df8ce78ea7aa1bba5eb5b3244" resname="location.created">
+        <source>New location for "%name%" has been successfully created</source>
+        <target xml:lang="ach">crwdns205657:0%name%crwdne205657:0</target>
+        <note>key: location.created</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationcreateplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="1b4ea186d715706ff89f0a9e87c32bfa" resname="creating.new.location.for.failed">
-        <source>creating.new.location.for.failed</source>
-        <target xml:lang="ach">crwdns204955:0crwdne204955:0</target>
+      <trans-unit id="9ed496cc88a3a2f48a33464deb00f217d41803ca" resname="locations.created">
+        <source>%count% new locations for "%name%" have been successfully created</source>
+        <target xml:lang="ach">crwdns205658:0%count%crwdnd205658:0%name%crwdne205658:0</target>
+        <note>key: locations.created</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationcreateplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="a93b958ee0c9703f3ebcec454ab0b14f" resname="hiding.location">
-        <source>hiding.location</source>
-        <target xml:lang="ach">crwdns204956:0crwdne204956:0</target>
+      <trans-unit id="0303d73c8f63f2d6b9f34ac721f6622214ad458d" resname="revealed.location">
+        <source>Location "%id%" has been revealed</source>
+        <target xml:lang="ach">crwdns205659:0%id%crwdne205659:0</target>
+        <note>key: revealed.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-visibilityswitcherplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="6d458f69cea1147d56a43b4a0ad5eef6" resname="revealing.location">
-        <source>revealing.location</source>
-        <target xml:lang="ach">crwdns204957:0crwdne204957:0</target>
+      <trans-unit id="67b19056cc5015b057182c283116f05c69507d22" resname="revealing.location">
+        <source>Revealing Location "%id%"</source>
+        <target xml:lang="ach">crwdns205660:0%id%crwdne205660:0</target>
+        <note>key: revealing.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-visibilityswitcherplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="95331d2a5ff4769c6d2f478867a42b38" resname="error.revealing.location">
-        <source>error.revealing.location</source>
-        <target xml:lang="ach">crwdns204958:0crwdne204958:0</target>
+      <trans-unit id="7fc31d0ca90043a53df1a70b6d9d84c8c4fddf30" resname="select.a.language.for.new.translation">
+        <source>Select a language for your new translation:</source>
+        <target xml:lang="ach">crwdns205661:0crwdne205661:0</target>
+        <note>key: select.a.language.for.new.translation</note>
+        <jms:reference-file>./Resources/public/js/views/actions/ez-translateactionview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="fba1a6d113351e8c5cc235c7cd594d5d" resname="revealed.location">
-        <source>revealed.location</source>
-        <target xml:lang="ach">crwdns204959:0crwdne204959:0</target>
+      <trans-unit id="801849651d85606aa04da1b4ea58fad208793e3a" resname="select.location.to.copy">
+        <source>Select the location you want to copy your content into</source>
+        <target xml:lang="ach">crwdns205662:0crwdne205662:0</target>
+        <note>key: select.location.to.copy</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-copycontentplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="23a7e67a7ea227ac02f447f775a25f37" resname="error.hiding.location">
-        <source>error.hiding.location</source>
-        <target xml:lang="ach">crwdns204960:0crwdne204960:0</target>
+      <trans-unit id="303fa8448e329ecb88341279a1a17b044549270a" resname="select.location.to.create.new.location">
+        <source>Select the location where you want to create new location</source>
+        <target xml:lang="ach">crwdns205663:0crwdne205663:0</target>
+        <note>key: select.location.to.create.new.location</note>
+        <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationcreateplugin.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="3c9c00e2205ad0e95fde357ad177cf36" resname="hidden.location">
-        <source>hidden.location</source>
-        <target xml:lang="ach">crwdns204961:0crwdne204961:0</target>
+      <trans-unit id="45be10e0189e80b08256567362b3f8668b2c4965" resname="translateaction.edit">
+        <source>Edit</source>
+        <target xml:lang="ach">crwdns205664:0crwdne205664:0</target>
+        <note>key: translateaction.edit</note>
+        <jms:reference-file>./Resources/public/templates/translateaction.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="92fc7081487dc55aa9388a565ab83bfd" resname="select.a.language.for.new.translation">
-        <source>select.a.language.for.new.translation</source>
-        <target xml:lang="ach">crwdns204962:0crwdne204962:0</target>
+      <trans-unit id="0da142a7f050a139b79a5865547744a56a5f4281" resname="translateaction.existing.translations">
+        <source>Existing Translations</source>
+        <target xml:lang="ach">crwdns205665:0crwdne205665:0</target>
+        <note>key: translateaction.existing.translations</note>
+        <jms:reference-file>./Resources/public/templates/translateaction.hbt</jms:reference-file>
       </trans-unit>
-      <trans-unit id="88994526ece67e9dbcf786b75d4944be" resname="content.copied.under">
-        <source>content.copied.under</source>
-        <target xml:lang="ach">crwdns204963:0crwdne204963:0</target>
+      <trans-unit id="cd6a171f15734694bbc3e15e0f2e4ca47dd5d1ff" resname="translateaction.new.translation">
+        <source>+ New Translation</source>
+        <target xml:lang="ach">crwdns205666:0crwdne205666:0</target>
+        <note>key: translateaction.new.translation</note>
+        <jms:reference-file>./Resources/public/templates/translateaction.hbt</jms:reference-file>
       </trans-unit>
     </body>
   </file>
