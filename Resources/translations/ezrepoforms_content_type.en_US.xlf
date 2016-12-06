@@ -7,7 +7,7 @@
     <body>
       <trans-unit id="972127730f863287531a351da529a802" resname="content_type.edit_title">
         <source>content_type.edit_title</source>
-        <target xml:lang="en" state="needs-translation">content_type.edit_title</target>
+        <target xml:lang="en" state="translated">__content_type.edit_title</target>
       </trans-unit>
     </body>
   </file>
