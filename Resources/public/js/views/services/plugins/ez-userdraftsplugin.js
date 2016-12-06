@@ -43,7 +43,7 @@ YUI.add('ez-userdraftsplugin', function (Y) {
                 target = event.target;
 
             service.get('app').get('user').loadDrafts(options, Y.bind(function (error, versions) {
-                if (error) {
+                if (!error) {
                     target.set('loadingError', true);
                     return;
                 }

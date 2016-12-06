@@ -80,6 +80,9 @@ YUI.add('ez-asynchronousview', function (Y) {
             if ( !this._triggerAttribute ) {
                 this._triggerAttribute = 'active';
             }
+            if ( !this._defaultWatchAttributeValue ) {
+                this._defaultWatchAttributeValue = null;
+            }
 
             this.after(this._triggerAttribute + 'Change', function (e) {
                 if ( this.get(this._triggerAttribute) ) {
@@ -114,7 +117,7 @@ YUI.add('ez-asynchronousview', function (Y) {
                 };
 
             if ( this._watchAttribute ) {
-                attrs[this._watchAttribute] = null;
+                attrs[this._watchAttribute] = this._defaultWatchAttributeValue;
             }
             this.setAttrs(attrs);
             this._fireMethod.call(this);

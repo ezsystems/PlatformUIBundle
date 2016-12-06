@@ -32,6 +32,8 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
         initializer: function () {
             this._fireMethod = this._fireLoadDataEvent;
             this._watchAttribute = 'items';
+            this._defaultWatchAttributeValue = [];
+            this._errorHandlingMethod = this._errorHandling;
             /**
              * Stores the click outside event handler
              *
@@ -70,6 +72,17 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
             }));
 
             return this;
+        },
+
+        /**
+         * Handle loading error by removing the loader and rendering the view
+         *
+         * @method _errorHandling
+         * @protected
+         */
+        _errorHandling: function () {
+            this._uiEndLoading();
+            this.render();
         },
 
         /**
