@@ -6,30 +6,10 @@
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
-      <trans-unit id="18580d499d23b1effb39341a73927da90b41fea3" resname="contenttypeselector.available.content.type">
-        <source>Available content types</source>
-        <target xml:lang="fr" state="needs-translation">Available content types</target>
-        <note>key: contenttypeselector.available.content.type</note>
-        <jms:reference-file>./Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="3fc804a965ff2e460abe746886d45fd7d40e9d3b" resname="contenttypeselector.choose.content.type">
-        <source>Choose a content type</source>
-        <target xml:lang="fr" state="needs-translation">Choose a content type</target>
-        <note>key: contenttypeselector.choose.content.type</note>
-        <jms:reference-file>./Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="2f48fb3d3a4a4b1347c8f9019a2e9fa1cc78a674" resname="contenttypeselector.filter.group">
-        <source>Filter by group</source>
-        <target xml:lang="fr" state="needs-translation">Filter by group</target>
-        <note>key: contenttypeselector.filter.group</note>
-        <jms:reference-file>./Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="e1d6420dd5ff75aabc939563cb4e874c0f9cbb00" resname="contenttypeselector.start.typing">
-        <source>start typing to refine the list</source>
-        <target xml:lang="fr" state="needs-translation">start typing to refine the list</target>
-        <note>key: contenttypeselector.start.typing</note>
-        <jms:reference-file>./Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
-      </trans-unit>
+      
+      
+      
+      
     </body>
   </file>
 </xliff>
