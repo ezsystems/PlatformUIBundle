@@ -1,0 +1,8 @@
+system:
+    default:
+        content_view:
+            line:
+                pjax_line:
+                    template: "eZPlatformUIBundle:content:line.html.twig"
+                    match:
+                        ezsystems.platformui.view_matcher.pjax_request: true

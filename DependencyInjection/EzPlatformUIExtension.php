@@ -45,6 +45,11 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
         $this->prependYui($container);
         $this->prependCss($container);
         $this->prependImageVariations($container);
+
+        $configFile = __DIR__ . '/../Resources/config/views.yml';
+        $config = Yaml::parse(file_get_contents($configFile));
+        $container->prependExtensionConfig('ezpublish', $config);
+        $container->addResource(new FileResource($configFile));
     }
 
     private function prependYui(ContainerBuilder $container)
