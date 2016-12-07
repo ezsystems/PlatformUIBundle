@@ -404,7 +404,9 @@ YUI.add('ez-searchplugin', function (Y) {
             query = this._createNewCreateViewStruct('contents-loading-' + viewName, 'ContentQuery', {
                 criteria: {
                     "ContentIdCriterion": contentIds
-                }
+                },
+                // In case we are asking for more then 25 items which is default limit, specify limit
+                limit: Object.keys(contentIdsLocationIndexMap).length
             });
 
             contentService.createView(query, Y.bind(function (err, response) {
