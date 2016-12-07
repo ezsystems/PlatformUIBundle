@@ -5,6 +5,8 @@
 
 {% set edit_title = "content_type.edit_title"|trans({"%contentTypeName%": contentTypeName}, "ezrepoforms_content_type") %}
 
+{% set content_type_group = contentTypeDraft.contentTypeGroups|first %}
+
 {% block title %}
     {{ edit_title }}
 {% endblock %}
@@ -13,6 +15,7 @@
     {% set breadcrumb_items = [
         {link: path("admin_dashboard"), label: "dashboard.title"|trans({}, "dashboard")},
         {link: path("admin_contenttype"), label: "content_type.dashboard_title"|trans({}, "content_type")},
+        {link: path('admin_contenttypeGroupView', {'contentTypeGroupId': content_type_group.id}), label: content_type_group.identifier},
         {link: null, label: edit_title}
     ] %}
 
