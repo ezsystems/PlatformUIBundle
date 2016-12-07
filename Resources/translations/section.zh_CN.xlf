@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="zh-CN" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="b3a79602ff55ce138d41cd00a9d93ff6a6324604" resname="section.assigned.contentcount">
+        <source xml:space="preserve">{0} This section is assigned to %contentCount% content items.|{1} This section is assigned to
+                    %contentCount% content item.|]1,Inf[ This section is assigned to %contentCount% content items
+                </source>
+        <target xml:space="preserve" xml:lang="zh-CN" state="needs-translation">
+                </target>
+        <note>key: section.assigned.contentcount</note>
+        <jms:reference-file line="41">/../../../../.././Resources/views/Section/view.html.twig</jms:reference-file>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
