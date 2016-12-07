@@ -2,7 +2,102 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-
 .ez-view-serversideview .ez-platform-version {
     margin-top: 0;
+}
+
+.ez-view-serversideview .ez-contenttype-icon:before {
+    padding-right: 0.3em;
+}
+
+.ez-view-serversideview .ez-serverside-content {
+    padding-top: 0;
+}
+
+.ez-view-serversideview .ez-contenttype-view {
+    padding: 0.5em 1em;
+}
+
+.ez-view-serversideview .ez-field-definition-group {
+    padding-left: 2.5em;
+}
+
+.ez-view-serversideview .ez-contenttype-title {
+    padding: 0.8em 0;
+}
+
+.ez-view-serversideview .ez-contenttype-subtitle {
+    padding: 0.5em 0;
+}
+
+.ez-view-serversideview .ez-contenttype-metadata {
+    display: flex;
+}
+
+.ez-view-serversideview .ez-contenttype-metadata-name,
+.ez-view-serversideview .ez-contenttype-metadata-value {
+    padding: 0.8em 1em;
+}
+
+.ez-view-serversideview .ez-contenttype-metadata-name {
+    width: 250px;
+}
+
+.ez-view-serversideview .ez-field-definitions {
+    width: 100%;
+    overflow: hidden;
+}
+
+.ez-view-serversideview .ez-field-definition-header {
+    padding: 1em;
+    text-align: left;
+}
+
+.ez-view-serversideview .ez-field-definition-main-properties {
+    padding: 0.8em 1em;
+    text-align: left;
+}
+
+.ez-view-serversideview .ez-field-definition-properties {
+    width: 100%;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.ez-view-serversideview .ez-field-definition-property {
+    display: flex;
+}
+
+.ez-view-serversideview .ez-field-definition-property-name {
+    width: 200px;
+    padding: 0.8em 1em;
+}
+
+.ez-view-serversideview .ez-field-definition-property-value {
+    padding: 0.8em 1em;
+    width: 100%;
+}
+
+.ez-view-serversideview .ez-fielddefinition-settings {
+    width: 100%;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.ez-view-serversideview .ez-fielddefinition-setting {
+    display: flex;
+}
+
+.ez-view-serversideview .ez-fielddefinition-setting-name {
+    width: 200px;
+    padding: 0.8em 1em;
+}
+
+.ez-view-serversideview .ez-fielddefinition-setting-value {
+    padding: 0.8em 1em;
+    width: 100%;
+}
+
+.ez-view-serversideview .ez-toolbar .ez-toolbar-action {
+    display: inline;
 }

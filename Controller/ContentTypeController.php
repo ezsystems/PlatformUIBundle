@@ -224,12 +224,18 @@ class ContentTypeController extends Controller
             $languageCode = $this->getPrioritizedLanguage($contentType);
         }
 
+        $fieldDefinitionsByGroup = [];
+        foreach ($contentType->fieldDefinitions as $fieldDefinition) {
+            $fieldDefinitionsByGroup[$fieldDefinition->fieldGroup ?: 'content'][] = $fieldDefinition;
+        }
+
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type.html.twig', [
             'language_code' => $languageCode,
             'content_type' => $contentType,
             'content_count' => $contentCount,
             'modifier' => $this->userService->loadUser($contentType->modifierId),
             'delete_form' => $deleteForm->createView(),
+            'fielddefinitions_by_group' => $fieldDefinitionsByGroup,
             'can_edit' => $this->isGranted(new Attribute('class', 'update')),
             'can_delete' => ($this->isGranted(new Attribute('class', 'delete')) && !$this->contentTypeService->isContentTypeUsed($contentType)),
         ]);
