@@ -63,6 +63,7 @@ class Configuration extends SiteAccessConfiguration
                         ->info("Filter to apply to module urls. This filter will modify the default path for all modules.\nPossible values are 'raw', 'min' or 'debug''")
                     ->end()
                     ->booleanNode('combine')
+                        ->defaultTrue()
                         ->info('If true, YUI combo loader will be used.')
                     ->end()
                     ->arrayNode('modules')
