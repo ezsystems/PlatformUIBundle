@@ -33,6 +33,7 @@ parameters:
     ezsystems.platformui.translation.extractor.javascript.class: EzSystems\PlatformUIBundle\Translation\JavascriptExtractor
     ezsystems.platformui.event_subscriber.request_locale.class: EzSystems\PlatformUIBundle\EventListener\RequestLocaleSubscriber
     ezsystems.platformui.pjax.request_matcher.class: EzSystems\PlatformUIBundle\Http\PjaxRequestMatcher
+    ezsystems.platformui.view_matcher.pjax_request.class: EzSystems\PlatformUIBundle\Matcher\PjaxRequest
 
     # override of the REST content controller
     ezpublish_rest.controller.content.class: EzSystems\PlatformUIBundle\Controller\Rest\ContentController
@@ -284,3 +285,9 @@ services:
         class: EzSystems\PlatformUIBundle\Translation\PhpNotificationFileVisitor
         tags:
             - { name: jms_translation.file_visitor, alias: ez_php_notification }
+
+    ezsystems.platformui.view_matcher.pjax_request:
+            class: "%ezsystems.platformui.view_matcher.pjax_request.class%"
+            calls:
+                - [setRequestStack, ['@request_stack']]
+                - [setPjaxRequestMatcher, ['@ezsystems.platformui.pjax.request_matcher']]
