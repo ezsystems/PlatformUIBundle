@@ -1,27 +1,107 @@
-ezauthor: { name: "Authors" }
-ezbinaryfile: { name: "File" }
-ezboolean: { name: "Checkbox" }
-ezcountry: { name: "Country" }
-ezdate: { name: "Date" }
-ezdatetime: { name: "Date and time" }
-ezemail: { name: "E-mail address" }
-ezfloat: { name: "Float" }
-ezgmaplocation: { name: "Map location" }
-ezisbn: { name: "ISBN" }
-ezimage: { name: "Image" }
-ezinteger: { name: "Integer" }
-ezkeyword: { name: "Keywords" }
-ezmedia: { name: "Media" }
-ezobjectrelation: { name: "Content relation (single)" }
-ezobjectrelationlist: { name: "Content relations (multiple)" }
-ezpage: { name: "Layout" }
-ezprice: { name: "Price" }
-ezrichtext: { name: "Rich text" }
-ezsrrating: { name: "Rating" }
-ezselection: { name: "Selection" }
-ezstring: { name: "Text line" }
-eztext: { name: "Text block" }
-eztime: { name: "Time" }
-ezurl: { name: "URL" }
-ezuser: { name: "User account" }
-ezxmltext: { name: "XML block" }
+ezauthor:
+    # Desc: Authors
+    name: Authors
+
+ezbinaryfile:
+    # Desc: File
+    name: File
+
+ezboolean:
+    # Desc: Checkbox
+    name: Checkbox
+
+ezcountry:
+    # Desc: Country
+    name: Country
+
+ezdate:
+    # Desc: Date
+    name: Date
+
+ezdatetime:
+    # Desc: Date and time
+    name: 'Date and time'
+
+ezemail:
+    # Desc: E-mail address
+    name: 'E-mail address'
+
+ezfloat:
+    # Desc: Float
+    name: Float
+
+ezgmaplocation:
+    # Desc: Map location
+    name: 'Map location'
+
+ezimage:
+    # Desc: Image
+    name: Image
+
+ezinteger:
+    # Desc: Integer
+    name: Integer
+
+ezisbn:
+    # Desc: ISBN
+    name: ISBN
+
+ezkeyword:
+    # Desc: Keywords
+    name: Keywords
+
+ezmedia:
+    # Desc: Media
+    name: Media
+
+ezobjectrelation:
+    # Desc: Content relation (single)
+    name: 'Content relation (single)'
+
+ezobjectrelationlist:
+    # Desc: Content relations (multiple)
+    name: 'Content relations (multiple)'
+
+ezpage:
+    # Desc: Layout
+    name: Layout
+
+ezprice:
+    # Desc: Price
+    name: Price
+
+ezrichtext:
+    # Desc: Rich text
+    name: 'Rich text'
+
+ezselection:
+    # Desc: Selection
+    name: Selection
+
+ezsrrating:
+    # Desc: Rating
+    name: Rating
+
+ezstring:
+    # Desc: Text line
+    name: 'Text line'
+
+eztext:
+    # Desc: Text block
+    name: 'Text block'
+
+eztime:
+    # Desc: Time
+    name: Time
+
+ezurl:
+    # Desc: URL
+    name: URL
+
+ezuser:
+    # Desc: User account
+    name: 'User account'
+
+ezxmltext:
+    # Desc: XML block
+    name: 'XML block'
