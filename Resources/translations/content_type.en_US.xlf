@@ -29,6 +29,12 @@
         <note>key: content_type.default_availability.help</note>
         <jms:reference-file line="76">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="d14799b2ac8854ab3f0bb9976258c3db39213d09" resname="content_type.default_availability.value" approved="yes">
+        <source>{0} Not available|{1} Available</source>
+        <target xml:lang="en">{0} Not available|{1} Available</target>
+        <note>key: content_type.default_availability.value</note>
+        <jms:reference-file line="78">/../../../../.././Resources/views/ContentType/view_content_type.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="f2a3cc77cdadcff8883b0022e006e24918307687" resname="content_type.description" approved="yes">
         <source>Description</source>
         <target xml:lang="en">Description</target>
