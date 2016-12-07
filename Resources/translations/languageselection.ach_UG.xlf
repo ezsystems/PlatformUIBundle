@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="ach" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="c241f37eb4b93d08f53db508ae407cea0c0e64f9" resname="languageselectionbox.base.existing.translation">
+        <source>Base this translation on an existing translation</source>
+        <target xml:lang="ach">crwdns206615:0crwdne206615:0</target>
+        <note>key: languageselectionbox.base.existing.translation</note>
+        <jms:reference-file>./Resources/public/templates/languageselectionbox.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="1a2b94f629a46ab9741347bb3d889365d5430b52" resname="languageselectionbox.cancel">
+        <source>Cancel</source>
+        <target xml:lang="ach">crwdns206616:0crwdne206616:0</target>
+        <note>key: languageselectionbox.cancel</note>
+        <jms:reference-file>./Resources/public/templates/languageselectionbox.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0dd5d97803b49206317f765692becb52e212c55e" resname="languageselectionbox.confirm">
+        <source>Confirm</source>
+        <target xml:lang="ach">crwdns206617:0crwdne206617:0</target>
+        <note>key: languageselectionbox.confirm</note>
+        <jms:reference-file>./Resources/public/templates/languageselectionbox.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="f12577db02f302b72857787edaf2db262b509e01" resname="languageselectionbox.select.base.language">
+        <source>Select a base language:</source>
+        <target xml:lang="ach">crwdns206618:0crwdne206618:0</target>
+        <note>key: languageselectionbox.select.base.language</note>
+        <jms:reference-file>./Resources/public/templates/languageselectionbox.hbt</jms:reference-file>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
