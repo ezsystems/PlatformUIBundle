@@ -2,5 +2,15 @@
     <div class="ez-fieldview-label pure-u">
         <p class="ez-fieldview-name"><strong>{{ translate_property fieldDefinition.names }}</strong></p>
     </div>
-    <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">{{#if isEmpty}}This field is empty{{else}}{{ value }}{{/if}}</div></div>
+    <div class="ez-fieldview-value pure-u">
+        {{#if isEmpty}}
+        <div class="ez-fieldview-value-content">
+            This field is empty
+        </div>
+        {{else}}
+        <div class="ez-fieldview-value-content" title="{{ value }}">
+            {{ value }}
+        </div>
+        {{/if}}
+    </div>
 </div>

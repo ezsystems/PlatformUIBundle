@@ -29,4 +29,7 @@
 
 .ez-view-fieldview .ez-fieldview-value-content {
     margin: 0 1em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
