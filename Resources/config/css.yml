@@ -50,6 +50,7 @@ system:
                 - 'bundles/ezplatformui/css/views/fields/view/country.css'
                 - 'bundles/ezplatformui/css/views/fields/view/media.css'
                 - 'bundles/ezplatformui/css/views/fields/view/richtext.css'
+                - 'bundles/ezplatformui/css/views/fields/view/relationlist.css'
                 - 'bundles/ezplatformui/css/views/contenteditform.css'
                 - 'bundles/ezplatformui/css/views/bar.css'
                 - 'bundles/ezplatformui/css/views/discoverybar.css'
