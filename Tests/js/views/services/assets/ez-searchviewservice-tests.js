@@ -46,7 +46,7 @@ YUI.add('ez-searchviewservice-tests', function (Y) {
                 that = this;
 
             Mock.expect(this.service.search, {
-                method: 'findLocations',
+                method: 'findContent',
                 args: [Mock.Value.Object, Mock.Value.Function],
                 run: function (search, callback) {
                     callback(false, that.searchResultList, that.searchResultCount);
@@ -109,7 +109,7 @@ YUI.add('ez-searchviewservice-tests', function (Y) {
             var that = this;
 
             Mock.expect(this.service.search, {
-                method: 'findLocations',
+                method: 'findContent',
                 args: [Mock.Value.Object, Mock.Value.Function],
                 run: function (search, callback) {
                     callback(false, that.searchResultList, that.searchResultCount);
@@ -153,7 +153,7 @@ YUI.add('ez-searchviewservice-tests', function (Y) {
 
             this.service.search = new Mock();
             Mock.expect(this.service.search, {
-                method: 'findLocations',
+                method: 'findContent',
                 args: [Mock.Value.Object, Mock.Value.Function],
             });
         },
@@ -215,7 +215,7 @@ YUI.add('ez-searchviewservice-tests', function (Y) {
 
             this.service.search = new Mock();
             Mock.expect(this.service.search, {
-                method: 'findLocations',
+                method: 'findContent',
                 args: [Mock.Value.Object, Mock.Value.Function],
             });
         },
