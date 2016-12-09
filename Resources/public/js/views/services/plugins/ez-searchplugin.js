@@ -111,6 +111,7 @@ YUI.add('ez-searchplugin', function (Y) {
 
             search.viewName = e.viewName;
             search.loadContentType = e.loadContentType;
+            search.loadLocation = e.loadLocation;
             delete search.callback;
             this.findContent(search, e.callback);
         },
@@ -159,15 +160,6 @@ YUI.add('ez-searchplugin', function (Y) {
                             callback(error, structs, result.document.View.Result.count);
                         }
                     );
-                    /*
-                    endContentTypeLoad = function (error, response) {
-                        callback(error, parsedResult, result.document.View.Result.count);
-                    };
-
-                    this._loadContentTypeForStruct(parsedResult, function (struct) {
-                        return struct.content.get('resources').ContentType;
-                    }, endContentTypeLoad);
-                    */
                 } else {
                     callback(error, parsedResult, result.document.View.Result.count);
                 }
@@ -414,9 +406,9 @@ YUI.add('ez-searchplugin', function (Y) {
                 loadResourcesError = false;
 
             if (loadContentType) {
-                var endContentTypeLoad = tasks.add(function (error, response) {
+                var endContentTypeLoad = tasks.add(function (error) {
                         if (error) {
-                            loadResourcesError = true;
+                            loadResourcesError = error;
                             return;
                         }
                     });
@@ -427,9 +419,9 @@ YUI.add('ez-searchplugin', function (Y) {
             }
 
             if (loadLocation) {
-                var endContentLoad = tasks.add(function (error, response) {
+                var endContentLoad = tasks.add(function (error) {
                         if (error) {
-                            loadResourcesError = true;
+                            loadResourcesError = error;
                             return;
                         }
                     });
@@ -526,7 +518,7 @@ YUI.add('ez-searchplugin', function (Y) {
             query = this._createNewCreateViewStruct('contents-loading-' + viewName, 'ContentQuery', {
                 filter: {
                     "ContentIdCriterion": contentIds
-                }
+                },
             });
 
             contentService.createView(query, Y.bind(function (err, response) {
@@ -534,7 +526,7 @@ YUI.add('ez-searchplugin', function (Y) {
                     callback(err, locationStructArr);
                     return;
                 }
-                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit, i) {
+                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit) {
                     var content = this._createContent(hit),
                         locationIndexes = contentIdsLocationIndexMap[content.get('contentId')];
 
@@ -560,38 +552,47 @@ YUI.add('ez-searchplugin', function (Y) {
                 locationsIds,
                 query;
 
-            locationsIds = Y.Array.reduce(contentStructArr, '', function (previousId, struct, index) {
-                // TODO this is bad but no other way it seems
-                var locationId = struct.content.get('resources').MainLocation.split('/').pop();
+            locationsIds = Y.Array.reduce(contentStructArr, '', function (previousId, struct) {
+                var locationId;
 
-                previousId = previousId ? previousId + ',' : previousId;
-                return previousId + locationId;
-            });
+                if (struct.content.get('resources').MainLocation) {
+                    locationId = struct.content.get('resources').MainLocation.split('/').pop();
 
-            query = this._createNewCreateViewStruct('locations-loading-' + viewName, 'LocationQuery', {
-                filter: {
-                    "LocationIdCriterion": locationsIds,
+                    previousId = previousId ? previousId + ',' : previousId;
+                    return previousId + locationId;
                 }
+                return;
             });
 
-            contentService.createView(query, Y.bind(function (err, response) {
-                if (err) {
+            if (locationsIds) {
+                query = this._createNewCreateViewStruct('locations-loading-' + viewName, 'LocationQuery', {
+                    filter: {
+                        "LocationIdCriterion": locationsIds,
+                    },
+                    limit: contentStructArr.length
+                });
+
+                contentService.createView(query, Y.bind(function (err, response) {
+                    if (err) {
+                        callback(err, contentStructArr);
+                        return;
+                    }
+                    Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit) {
+                        var location = this._createLocation(hit);
+
+                        Y.Array.some(contentStructArr, function (struct) {
+                            if ( struct.content.get('resources').MainLocation === location.get('id') ) {
+                                struct.location = location;
+                                return true;
+                            }
+                            return false;
+                        });
+                    }, this);
                     callback(err, contentStructArr);
-                    return;
-                }
-                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit, i) {
-                    var location = this._createLocation(hit);
-
-                    Y.Array.some(contentStructArr, function (struct) {
-                        if ( struct.content.get('resources').MainLocation === location.get('id') ) {
-                            struct.location = location;
-                            return true;
-                        }
-                        return false;
-                    });
-                }, this);
-                callback(err, contentStructArr);
-            }, this));
+                }, this));
+            } else {
+                callback(false, contentStructArr);
+            }
         },
     }, {
         NS: 'search',
