@@ -948,6 +948,11 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                             query.body.ViewInput.ContentQuery.Criteria.ContentIdCriterion,
                             "The request should be on the Content Ids"
                         );
+                        Assert.areEqual(
+                            that.contentResponse.document.View.Result.searchHits.searchHit.length,
+                            query.body.ViewInput.ContentQuery.limit,
+                            "The request should have limit that corresponds to number of content id's asked for"
+                        );
                         cb(false, that.contentResponse);
                     }
                 }
