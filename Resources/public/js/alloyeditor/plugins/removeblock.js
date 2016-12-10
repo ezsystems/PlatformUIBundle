@@ -22,10 +22,31 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
          * @param {CKEDITOR.dom.element} element
          */
         _moveCaretToElement: function (editor, element) {
-            var range = editor.createRange();
+            var range = editor.createRange(),
+                caretElement = this._findCaretElement(element);
 
-            range.moveToPosition(element, CKEDITOR.POSITION_AFTER_START);
+            range.moveToPosition(caretElement, CKEDITOR.POSITION_AFTER_START);
             editor.getSelection().selectRanges([range]);
+            this._fireEditorInteraction(editor, caretElement);
+        },
+
+        /**
+         * Finds the "caret element" for the given element. For some elements,
+         * like ul or table, moving the caret inside them actually means finding
+         * the first element that can be filled by the user.
+         *
+         * @method _findCaretElement
+         * @protected
+         * @param {CKEDITOR.dom.element} element
+         * @return {CKEDITOR.dom.element}
+         */
+        _findCaretElement: function (element) {
+            var child = element.getChild(0);
+
+            if ( child.type !== CKEDITOR.NODE_TEXT ) {
+                return this._findCaretElement(child);
+            }
+            return element;
         },
 
         /**
@@ -62,8 +83,13 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
          * @method _changeFocus
          */
         _changeFocus: function (editor, newFocus) {
-            this._moveCaretToElement(editor, newFocus);
-            this._fireEditorInteraction(editor, newFocus);
+            var widget = editor.widgets.getByElement(newFocus);
+
+            if ( widget ) {
+                widget.focus();
+            } else {
+                this._moveCaretToElement(editor, newFocus);
+            }
        },
 
         exec: function (editor, data) {
@@ -76,7 +102,7 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
                 toRemove = editor.widgets.focused.wrapper;
             }
             newFocus = toRemove.getNext();
-            if ( !newFocus || newFocus.hasAttribute('data-cke-temp') ) {
+            if ( !newFocus || newFocus.type === CKEDITOR.NODE_TEXT || newFocus.hasAttribute('data-cke-temp') ) {
                 // the data-cke-temp element is added by the Widget plugin for
                 // internal purposes but it exposes no API to handle it, so we
                 // are forced to manually check if newFocus is this element
@@ -101,6 +127,8 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
      * @constructor
      */
     CKEDITOR.plugins.add('ezremoveblock', {
+        requires: 'widget',
+
         init: function (editor) {
             editor.addCommand('eZRemoveBlock', removeBlockCommand);
         },

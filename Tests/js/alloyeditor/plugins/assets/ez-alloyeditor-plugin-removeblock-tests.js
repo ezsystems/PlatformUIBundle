@@ -117,7 +117,7 @@ YUI.add('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
             this.container = Y.one('.container');
             this.editor = AlloyEditor.editable(
                 this.container.getDOMNode(), {
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezremoveblock',
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezremoveblock,widget,ezembed',
                 }
             );
             this.editor.get('nativeEditor').on('instanceReady', function () {
@@ -171,6 +171,56 @@ YUI.add('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
             );
         },
 
+        "Should give the focus to a child of the next sibling element": function () {
+            var editor = this.editor.get('nativeEditor'),
+                editorInteractionFired = false;
+
+            editor.once('editorInteraction', function (evt) {
+                var natEvt = evt.data.nativeEvent,
+                    deeper = Y.one('#deeper').getDOMNode();
+
+                editorInteractionFired = true;
+                Assert.areSame(
+                    deeper, natEvt.target,
+                    "The target should be the newly focused element"
+                );
+                Assert.areEqual(
+                    deeper, editor.getSelection().getStartElement().$,
+                    "The deeper next sibling element should have been selected"
+                );
+            });
+            this._removeElement(
+                '<p id="remove-me">Remove me</p><ul><li id="deeper">Deeper</li></ul>',
+                '#remove-me'
+            );
+            Assert.isTrue(
+                editorInteractionFired,
+                "The `editorInteraction` event should have been fired"
+            );
+        },
+
+
+        "Should give the focus to the next sibling element (widget)": function () {
+            var editor = this.editor.get('nativeEditor'),
+                editorInteractionFired = false;
+
+            editor.once('editorInteraction', function (evt) {
+                editorInteractionFired = true;
+                Assert.areEqual(
+                    editor.widgets.focused.element.getId(),
+                    "embed"
+                );
+            });
+            this._removeElement(
+                '<p id="remove-me">Remove me</p><div data-ezelement="ezembed" id="embed">Foo Fighters</div>',
+                '#remove-me'
+            );
+            Assert.isTrue(
+                editorInteractionFired,
+                "The `editorInteraction` event should have been fired"
+            );
+        },
+
         "Should give the focus to the previous sibling": function () {
             var editor = this.editor.get('nativeEditor'),
                 editorInteractionFired = false;
@@ -195,6 +245,27 @@ YUI.add('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
             });
             this._removeElement(
                 '<p id="remaining">Next remaining</p><p id="remove-me">Remove me</p>',
+                '#remove-me'
+            );
+            Assert.isTrue(
+                editorInteractionFired,
+                "The `editorInteraction` event should have been fired"
+            );
+        },
+
+        "Should give the focus to the previous sibling element (widget)": function () {
+            var editor = this.editor.get('nativeEditor'),
+                editorInteractionFired = false;
+
+            editor.once('editorInteraction', function (evt) {
+                editorInteractionFired = true;
+                Assert.areEqual(
+                    editor.widgets.focused.element.getId(),
+                    "embed"
+                );
+            });
+            this._removeElement(
+                '<div data-ezelement="ezembed" id="embed">Foo Fighters</div><p id="remove-me">Remove me</p>',
                 '#remove-me'
             );
             Assert.isTrue(
@@ -253,7 +324,6 @@ YUI.add('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
                 "The `editorInteraction` event should have been fired"
             );
         },
-
     });
 
     Y.Test.Runner.setName("eZ AlloyEditor removeblock plugin tests");
