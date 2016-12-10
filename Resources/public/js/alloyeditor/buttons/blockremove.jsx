@@ -18,17 +18,14 @@ YUI.add('ez-alloyeditor-button-blockremove', function (Y) {
     /**
      * The ButtonBlockRemove component represents a button to remove the block
      * element holding the caret in the editor.
-     *
-     * @uses AlloyEditor.ButtonCommand
+     * Note: this component does not use AlloyEditorButton.ButtonCommand mixin
+     * because after executing the eZRemoveBlock command we don't want the
+     * `actionPerformed` event to be fired.
      *
      * @class ButtonBlockRemove
      * @namespace eZ.AlloyEditorButton
      */
     ButtonBlockRemove = React.createClass({
-        mixins: [
-            AlloyEditor.ButtonCommand,
-        ],
-
         statics: {
             key: 'ezblockremove'
         },
@@ -41,14 +38,41 @@ YUI.add('ez-alloyeditor-button-blockremove', function (Y) {
              * @deprecated
              */
             label: React.PropTypes.string,
+
+            /**
+             * The command that should be executed.
+             *
+             * @property {String} command
+             */
+            command: React.PropTypes.string.isRequired,
+
+            /**
+             * Indicates that the command may cause the editor to have a different.
+             *
+             * @property {boolean} modifiesSelection
+             * @deprecated
+             */
+            modifiesSelection: React.PropTypes.bool
         },
 
         getDefaultProps: function () {
             return {
                 command: 'eZRemoveBlock',
-                modifiesSelection: true,
                 label: "Remove this block",
             };
+        },
+
+        /**
+         * Executes the configured command.
+         *
+         * @method execCommand
+         * @param {Mixed} data command parameters
+         */
+        execCommand: function(data) {
+            var editor = this.props.editor.get('nativeEditor');
+
+            editor.execCommand(this.props.command, data);
+            editor.selectionChange(true);
         },
 
         render: function () {

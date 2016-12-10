@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-alloyeditor-button-blockremove-tests', function (Y) {
-    var defineTest, renderTest, clickTest,
+    var defineTest, renderTest, commandTest,
         AlloyEditor = Y.eZ.AlloyEditor,
         ReactDOM = Y.eZ.ReactDOM,
         React = Y.eZ.React,
@@ -20,7 +20,7 @@ YUI.add('ez-alloyeditor-button-blockremove-tests', function (Y) {
             );
         },
     });
- 
+
     renderTest = new Y.Test.Case({
         name: "eZ AlloyEditor blockremove button render test",
 
@@ -57,8 +57,8 @@ YUI.add('ez-alloyeditor-button-blockremove-tests', function (Y) {
         },
     });
 
-    clickTest= new Y.Test.Case({
-        name: "eZ AlloyEditor blockremove button click test",
+    commandTest = new Y.Test.Case({
+        name: "eZ AlloyEditor blockremove command test",
 
         setUp: function () {
             this.container = Y.one('.container');
@@ -77,10 +77,6 @@ YUI.add('ez-alloyeditor-button-blockremove-tests', function (Y) {
                 method: 'selectionChange',
                 args: [true],
             });
-            Mock.expect(this.nativeEditor, {
-                method: 'fire',
-                args: ['actionPerformed', Mock.Value.Object],
-            });
         },
 
         tearDown: function () {
@@ -89,7 +85,7 @@ YUI.add('ez-alloyeditor-button-blockremove-tests', function (Y) {
             delete this.nativeEditor;
         },
 
-        "Should execute the eZRemoveBlock command": function () {
+        "Should execute the eZRemoveBlock command on click": function () {
             var button;
 
             button = ReactDOM.render(
@@ -100,10 +96,22 @@ YUI.add('ez-alloyeditor-button-blockremove-tests', function (Y) {
             this.container.one('button').simulate('click');
             Mock.verify(this.nativeEditor);
         },
+
+        "Should execute the eZRemoveBlock command": function () {
+            var button;
+
+            button = ReactDOM.render(
+                <Y.eZ.AlloyEditorButton.ButtonBlockRemove editor={this.editor} />,
+                this.container.getDOMNode()
+            );
+
+            button.execCommand();
+            Mock.verify(this.nativeEditor);
+        },
     });
 
     Y.Test.Runner.setName("eZ AlloyEditor blockremove button tests");
     Y.Test.Runner.add(defineTest);
     Y.Test.Runner.add(renderTest);
-    Y.Test.Runner.add(clickTest);
+    Y.Test.Runner.add(commandTest);
 }, '', {requires: ['test', 'node', 'node-event-simulate', 'ez-alloyeditor-button-blockremove']});
