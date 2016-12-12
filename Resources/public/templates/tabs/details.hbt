@@ -15,7 +15,7 @@
             </p>
         {{else}}
             {{#if contentCreator }}
-                {{contentCreator.name}} ({{content.publishedDate}})
+                {{contentCreator.name}} ({{ formatTime content.publishedDate day="numeric" month="long" year="numeric" }})
             {{else}}
                 <p class="ez-font-icon ez-asynchronousview-loading">{{ translate 'locationview.details.loadingcreator' 'locationview' }}</p>
             {{/if}}
@@ -33,7 +33,7 @@
             </p>
         {{else}}
             {{#if lastContributor}}
-                 {{lastContributor.name}} ({{content.lastModificationDate}})
+                 {{lastContributor.name}} ({{ formatTime content.lastModificationDate day="numeric" month="long" year="numeric" }})
             {{else}}
                 <p class="ez-font-icon ez-asynchronousview-loading">{{ translate 'locationview.details.loadingcontributor' 'locationview' }}</p>
             {{/if}}

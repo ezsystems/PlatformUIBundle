@@ -24,11 +24,11 @@
 
             <dl class="ez-ud-selected-infos">
                 <dt class="ez-ud-selected-infos-title" >{{ translate 'universaldiscovery.last.modified' 'universaldiscovery' }}</dt>
-                <dd class="ez-ud-selected-info">{{ contentInfo.lastModificationDate }}</dd>
+                <dd class="ez-ud-selected-info">{{ formatTime contentInfo.lastModificationDate day="numeric" month="long" year="numeric" }}</dd>
                 <dt class="ez-ud-selected-infos-title" >{{ translate 'universaldiscovery.translations' 'universaldiscovery' }}</dt>
                 <dd class="ez-ud-selected-info">{{ translations }}</dd>
                 <dt class="ez-ud-selected-infos-title">{{ translate 'universaldiscovery.creation.date' 'universaldiscovery' }}</dt>
-                <dd class="ez-ud-selected-info">{{ contentInfo.publishedDate }}</dd>
+                <dd class="ez-ud-selected-info">{{ formatTime contentInfo.publishedDate day="numeric" month="long" year="numeric" }}</dd>
             </dl>
             <div class="ez-ud-selected-animation"></div>
         </div>
