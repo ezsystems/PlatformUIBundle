@@ -206,10 +206,8 @@ YUI.add('ez-subitemlistitemview', function (Y) {
         _formatDate: function (property) {
             var date = property.value;
 
-            return date.toLocaleDateString(
-                'en', {year: "numeric", month: "short", day: "numeric"}
-            ) + ' ' + date.toLocaleTimeString(
-                'en', {hour: '2-digit', minute: '2-digit'}
+            return date.toLocaleTimeString(
+                'en', {year: "numeric", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit'}
             );
         },
 
