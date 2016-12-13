@@ -207,7 +207,7 @@ YUI.add('ez-subitemlistitemview', function (Y) {
             var date = property.value;
 
             return date.toLocaleTimeString(
-                'en', {year: "numeric", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit'}
+                undefined, {year: "numeric", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit'}
             );
         },
 
