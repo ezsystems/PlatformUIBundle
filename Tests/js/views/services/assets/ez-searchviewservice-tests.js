@@ -89,7 +89,7 @@ YUI.add('ez-searchviewservice-tests', function (Y) {
             this.service.set('request', this.request);
 
             Mock.expect(this.service.search, {
-                method: 'findLocations',
+                method: 'findContent',
                 args: [Mock.Value.Object, Mock.Value.Function],
                 callCount: 0,
 

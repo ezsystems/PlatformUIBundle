@@ -1493,7 +1493,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             });
             Mock.expect(this.contentQuery, {
                 method: 'setLimitAndOffset',
-                args: [undefined, undefined],
+                args: [this.contentResponse.document.View.Result.searchHits.searchHit.length, undefined],
             });
             Mock.expect(this.capi, {
                 method: 'getContentService',

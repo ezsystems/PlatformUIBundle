@@ -43,7 +43,7 @@ YUI.add('ez-searchviewservice', function (Y) {
                     'limit',
                     this.get('request').params.limit ?  Number(this.get('request').params.limit) : this.get('loadMoreAddingNumber')
                 );
-                this.search.findLocations({
+                this.search.findContent({
                     viewName: 'search-' + this.get('searchString'),
                     loadLocation: true,
                     loadContentType: true,
