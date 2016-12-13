@@ -24,7 +24,7 @@
                         <td class="ez-block-cell">{{ translate_property contentType.names }}</td>
                         <td class="ez-block-cell">{{ contentInfo.currentVersionNo }}</td>
                         <td class="ez-block-cell ez-block-cell-options">
-                            {{ formatTime contentInfo.lastModificationDate day="numeric" month="long" year="numeric" }}
+                            {{ formatTime contentInfo.lastModificationDate day="numeric" month="long" year="numeric" hour="numeric" minute="2-digit" }}
                             <div class="ez-block-row-options">
                                 <a  class="ez-block-option-edit ez-font-icon ez-edit-content-button"
                                     href="{{ path "editContent" id=contentInfo.id languageCode=contentInfo.mainLanguageCode }}"

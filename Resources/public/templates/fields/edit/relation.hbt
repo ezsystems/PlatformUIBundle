@@ -27,10 +27,10 @@
                         <h2 class="ez-relation-content-name">{{ destinationContent.name }}</h2>
                         <ul class="ez-relation-properties">
                             <li class="ez-relation-property">
-                                <strong>{{translate "relation.published" "fieldedit"}}</strong> {{ formatTime destinationContent.publishedDate day="numeric" month="long" year="numeric" }}
+                                <strong>{{translate "relation.published" "fieldedit"}}</strong> {{ formatTime destinationContent.publishedDate day="numeric" month="long" year="numeric" hour="numeric" minute="2-digit" }}
                             </li>
                             <li class="ez-relation-property">
-                                <strong>{{translate "relation.modified" "fieldedit"}}</strong> {{ formatTime destinationContent.lastModificationDate day="numeric" month="long" year="numeric" }}
+                                <strong>{{translate "relation.modified" "fieldedit"}}</strong> {{ formatTime destinationContent.lastModificationDate day="numeric" month="long" year="numeric" hour="numeric" minute="2-digit" }}
                             </li>
                         </ul>
                     </div>
