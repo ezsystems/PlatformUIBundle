@@ -209,7 +209,7 @@ YUI.add('ez-subitemlistitemview', function (Y) {
             return date.toLocaleDateString(
                 'en', {year: "numeric", month: "short", day: "numeric"}
             ) + ' ' + date.toLocaleTimeString(
-                'en', {hour: '2-digit', minute: '2-digit', hour12: true}
+                'en', {hour: '2-digit', minute: '2-digit'}
             );
         },
 

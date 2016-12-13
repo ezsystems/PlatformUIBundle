@@ -24,7 +24,7 @@
                         <td class="ez-block-cell">{{ translate_property contentType.names }}</td>
                         <td class="ez-block-cell">{{ version.versionNo }}</td>
                         <td class="ez-block-cell ez-block-cell-options">
-                            {{ formatTime version.modificationDate day="numeric" month="long" year="numeric" hour="numeric" minute="2-digit" }}
+                            {{ formatTime version.modificationDate day="numeric" month="short" year="numeric" hour="2-digit" minute="2-digit" }}
                             <div class="ez-block-row-options">
                                 <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContentVersion" id=contentInfo.id versionId=version.id languageCode=version.initialLanguageCode }}"></a>
                             </div>

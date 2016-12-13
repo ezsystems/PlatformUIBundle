@@ -10,7 +10,7 @@
                         <li>{{ translate 'created.by' 'contentedit' name=owner.name }}</li>
                     {{/if}}
                     {{#if content.contentId}}
-                    <li>{{ formatTime content.lastModificationDate day="numeric" month="long" year="numeric" hour="numeric" minute="2-digit" }}</li>
+                    <li>{{ formatTime content.lastModificationDate day="numeric" month="short" year="numeric" hour="2-digit" minute="2-digit" }}</li>
                     <li>{{ translate 'content.id.location.id' 'contentedit' contentId=content.contentId locationId=mainLocation.locationId }}</li>
                     {{/if}}
                 </ul>
