@@ -317,9 +317,9 @@ YUI.add('ez-contentmodel', function (Y) {
                     'LocationQuery'
                 );
 
-            query.body.ViewInput.LocationQuery.Criteria = {
+            query.setFilter({
                 ContentIdCriterion: this.get('contentId')
-            };
+            });
 
             contentService.createView(
                 query,

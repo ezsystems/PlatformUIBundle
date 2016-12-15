@@ -765,16 +765,19 @@ YUI.add('ez-locationmodel-tests', function (Y) {
                     }
                 }
             };
-            this.viewCreateStruct = {
-                body: {
-                    ViewInput: {
-                        LocationQuery : {
+            this.viewCreateStruct = new Y.Mock();
 
-                        }
-                    }
-                }
-            };
-
+            Mock.expect(this.viewCreateStruct, {
+                method: 'setFilter',
+                args: [Mock.Value.Object],
+                run: Y.bind(function (arg) {
+                    Assert.areSame(
+                        arg.AncestorCriterion,
+                        this.pathString,
+                        'Parameter should have the pathString as AncestorCriterion'
+                    );
+                }, this),
+            });
             Y.Mock.expect(this.capiMock, {
                 method: 'getContentService',
                 returns: this.contentService,
@@ -835,15 +838,7 @@ YUI.add('ez-locationmodel-tests', function (Y) {
                 method: 'createView',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
                 run: function (query, callback) {
-                    Assert.isString(
-                        query.body.ViewInput.LocationQuery.Criteria.AncestorCriterion,
-                        "The query should contain AncestorCriterion"
-                    );
-                    Assert.areSame(
-                        query.body.ViewInput.LocationQuery.Criteria.AncestorCriterion,
-                        that.pathString,
-                        "The AncestorCriterion of query should be set to the location's pathString"
-                    );
+                    Mock.verify(that.viewCreateStruct);
                     callback(false, that.loadAncestorsResponse);
                 }
             });

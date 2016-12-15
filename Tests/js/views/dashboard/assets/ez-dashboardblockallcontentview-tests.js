@@ -129,7 +129,7 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                 );
                 Assert.areSame(
                     view.get('rootLocation').get('pathString'),
-                    event.search.criteria.SubtreeCriterion,
+                    event.search.filter.SubtreeCriterion,
                     'Should pass a correct search `SubtreeCriterion` criterion value'
                 );
                 Assert.areEqual(

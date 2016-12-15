@@ -67,7 +67,7 @@ YUI.add('ez-richtext-resolveembed-tests', function (Y) {
 
                 Assert.areEqual(
                     "41,42",
-                    e.search.criteria.ContentIdCriterion,
+                    e.search.filter.ContentIdCriterion,
                     "The content should be loaded by id"
                 );
             });

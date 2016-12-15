@@ -46,7 +46,9 @@ YUI.add('ez-searchplugin', function (Y) {
          * @param {String} name
          * @param {String} type
          * @param {Object} search
-         * @param {Object} search.criteria
+         * @param {Object} [search.criteria]
+         * @param {Object} [search.query]
+         * @param {Object} [search.filter]
          * @param {Object} search.sortClauses
          * @param {Number} [search.limit]
          * @param {Number} [search.offset]
@@ -59,13 +61,24 @@ YUI.add('ez-searchplugin', function (Y) {
             query = contentService.newViewCreateStruct(name, type);
             // TODO ViewCreateStruct should expose an API
             // see https://jira.ez.no/browse/EZP-24808
-            query.body.ViewInput[type].Criteria = search.criteria;
-            query.body.ViewInput[type].offset = search.offset;
-            query.body.ViewInput[type].limit = search.limit;
+            if (search.query) {
+                query.setQuery(search.query);
+            }
+            if (search.filter) {
+                query.setFilter(search.filter);
+            }
+            if (search.criteria) {
+                query.setCriteria(search.criteria);
+                console.log('[DEPRECATED] Criteria property is deprecated');
+                console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
+                console.log('[DEPRECATED] Please use Query or Filter instead');
+            }
+
+            query.setLimitAndOffset(search.limit, search.offset);
             if ( search.sortClauses ) {
-                query.body.ViewInput[type].SortClauses = search.sortClauses;
+                query.setSortClauses(search.sortClauses);
             } else if ( search.sortLocation ) {
-                query.body.ViewInput[type].SortClauses = search.sortLocation.getSortClause();
+                query.setSortClauses(search.sortLocation.getSortClause());
             }
 
             return query;
@@ -94,27 +107,61 @@ YUI.add('ez-searchplugin', function (Y) {
          * @param {Number} e.callback.count the total number of search result
          */
         _doContentSearch: function (e) {
-            var query = this._createNewCreateViewStruct(e.viewName, 'ContentQuery', e.search),
+            var search = Y.merge(e.search);
+
+            search.viewName = e.viewName;
+            search.loadContentType = e.loadContentType;
+            search.loadLocation = e.loadLocation;
+            delete search.callback;
+            this.findContent(search, e.callback);
+        },
+
+        /**
+         * Executes a Content search based on the provided `search` object.
+         *
+         * @method findContent
+         * @param {Object} search
+         * @param {String} search.viewName the name of the REST view to use
+         * @param {Object} search.criteria (deprecated) the search criteria used as Criteria in ContentQuery
+         * @param {Object} search.query  the search query used as Query in ContentQuery
+         * @param {Object} search.filter the search filter used as Filter in ContentQuery
+         * @param {Object} [search.sortClauses] the sort clauses
+         * @param {Number} [search.offset]
+         * @param {Number} [search.limit]
+         * @param {Boolean} [search.loadContentType] flag indicating whether the
+         * Content Type of each result has to be loaded in addition
+         * @param {Function} callback
+         * @param {Error|null} callback.error
+         * @param {Response|Array} callback.result the Response object in case
+         * of error or an array of Content struct. A Content struct is object
+         * containing the Content item and the Content
+         * Type depending on the `loadContentType` flag.
+         * @param {Number} callback.resultCount the total result number of the
+         * search
+         */
+        findContent: function (search, callback) {
+            var query = this._createNewCreateViewStruct(search.viewName, 'ContentQuery', search),
                 contentService = this._getContentService();
 
             contentService.createView(query, Y.bind(function (error, result) {
-                var parsedResult,
-                    endContentTypeLoad;
+                var parsedResult;
 
                 if ( error ) {
-                    return e.callback(error);
+                    return callback(error);
                 }
                 parsedResult = this._parseSearchResult(result, 'content', '_createContent');
-                if ( e.loadContentType ) {
-                    endContentTypeLoad = function (error, response) {
-                        e.callback(error, parsedResult, result.document.View.Result.count);
-                    };
-
-                    this._loadContentTypeForStruct(parsedResult, function (struct) {
-                        return struct.content.get('resources').ContentType;
-                    }, endContentTypeLoad);
+                if (parsedResult.length && (search.loadLocation || search.loadContentType)) {
+                    this._loadContentResources(
+                        search.viewName,
+                        search.loadContentType,
+                        search.loadLocation,
+                        parsedResult,
+                        function (error, structs) {
+                            callback(error, structs, result.document.View.Result.count);
+                        }
+                    );
                 } else {
-                    e.callback(error, parsedResult, result.document.View.Result.count);
+                    callback(error, parsedResult, result.document.View.Result.count);
                 }
             }, this));
         },
@@ -125,7 +172,9 @@ YUI.add('ez-searchplugin', function (Y) {
          * @method findLocations
          * @param {Object} search
          * @param {String} search.viewName the name of the REST view to use
-         * @param {Object} search.criteria the search criteria used as Criteria in LocationQuery
+         * @param {Object} search.criteria (deprecated) the search criteria used as Criteria in LocationQuery
+         * @param {Object} search.query  the search query used as Query in LocationQuery
+         * @param {Object} search.filter the search filter used as Filter in LocationQuery
          * @param {Object} [search.sortClauses] the sort clauses
          * @param {eZ.Location} [search.sortLocation] the Location to use to
          * generate the sort clauses
@@ -157,7 +206,7 @@ YUI.add('ez-searchplugin', function (Y) {
                 }
                 parsedResult = this._parseSearchResult(result, 'location', '_createLocation');
                 if (parsedResult.length && (search.loadContentType || search.loadContent)) {
-                    this._loadResources(
+                    this._loadLocationResources(
                         search.viewName,
                         search.loadContentType,
                         search.loadContent,
@@ -180,7 +229,9 @@ YUI.add('ez-searchplugin', function (Y) {
          * @protected
          * @param {EventFacade} e
          * @param {Object} e.search
-         * @param {Object} e.search.criteria the search criteria used as Criteria in LocationQuery
+         * @param {Object} e.search.criteria (deprecated) the search criteria used as Criteria in LocationQuery
+         * @param {Object} e.search.query  the search query used as Query in LocationQuery
+         * @param {Object} e.search.filter the search filter used as Filter in LocationQuery
          * @param {Object} [e.search.sortClauses] the search sort clauses
          * @param {eZ.Location} [search.sortLocation] the Location to use to
          * generate the sort clauses
@@ -274,7 +325,6 @@ YUI.add('ez-searchplugin', function (Y) {
             return content;
         },
 
-
         /**
          * Loads resources for the given array of location structs. Depending on given
          * `loadContentType` and `loadContent` bool parameters it loads Content and ContentType
@@ -282,12 +332,31 @@ YUI.add('ez-searchplugin', function (Y) {
          *
          * @method _loadResources
          * @protected
+         * @deprecated
          * @param {Bool|undefined} loadContentType
          * @param {Bool|undefined} loadContent
          * @param {Array} locationStructArr
          * @param {Function} callback
          */
         _loadResources: function (viewName, loadContentType, loadContent, locationStructArr, callback) {
+            console.log('[DEPRECATED] _loadResources is deprecated, it will be removed from PlatformUI 2.0');
+            console.log('[DEPRECATED] Use _loadLocationResources instead');
+            this._loadLocationResources(viewName, loadContentType, loadContentType, locationStructArr, callback);
+        },
+
+        /**
+         * Loads resources for the given array of location structs. Depending on
+         * given `loadContentType` and `loadContent` bool parameters it loads
+         * Content and ContentType and includes them into the location structs.
+         *
+         * @method _loadLocationResources
+         * @protected
+         * @param {Bool|undefined} loadContentType
+         * @param {Bool|undefined} loadContent
+         * @param {Array} locationStructArr
+         * @param {Function} callback
+         */
+        _loadLocationResources: function (viewName, loadContentType, loadContent, locationStructArr, callback) {
             var tasks = new Y.Parallel(),
                 loadResourcesError = false;
 
@@ -317,6 +386,51 @@ YUI.add('ez-searchplugin', function (Y) {
 
             tasks.done(function () {
                 callback(loadResourcesError, locationStructArr);
+            });
+        },
+
+        /**
+         * Loads resources for the given array of content structs. Depending on
+         * given `loadContentType` and `loadLocation` bool parameters it loads
+         * ContentType and Location and includes them into the content structs.
+         *
+         * @method _loadContentResources
+         * @protected
+         * @param {Bool|undefined} loadContentType
+         * @param {Bool|undefined} loadLocation
+         * @param {Array} contentStructArr
+         * @param {Function} callback
+         */
+        _loadContentResources: function (viewName, loadContentType, loadLocation, contentStructArr, callback) {
+            var tasks = new Y.Parallel(),
+                loadResourcesError = false;
+
+            if (loadContentType) {
+                var endContentTypeLoad = tasks.add(function (error) {
+                        if (error) {
+                            loadResourcesError = error;
+                            return;
+                        }
+                    });
+
+                this._loadContentTypeForStruct(contentStructArr, function (struct) {
+                    return struct.content.get('resources').ContentType;
+                }, endContentTypeLoad);
+            }
+
+            if (loadLocation) {
+                var endContentLoad = tasks.add(function (error) {
+                        if (error) {
+                            loadResourcesError = error;
+                            return;
+                        }
+                    });
+
+                this._loadLocationForContent(viewName, contentStructArr, endContentLoad);
+            }
+
+            tasks.done(function () {
+                callback(loadResourcesError, contentStructArr);
             });
         },
 
@@ -402,7 +516,7 @@ YUI.add('ez-searchplugin', function (Y) {
             });
 
             query = this._createNewCreateViewStruct('contents-loading-' + viewName, 'ContentQuery', {
-                criteria: {
+                filter: {
                     "ContentIdCriterion": contentIds
                 },
                 // In case we are asking for more then 25 items which is default limit, specify limit
@@ -414,7 +528,7 @@ YUI.add('ez-searchplugin', function (Y) {
                     callback(err, locationStructArr);
                     return;
                 }
-                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit, i) {
+                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit) {
                     var content = this._createContent(hit),
                         locationIndexes = contentIdsLocationIndexMap[content.get('contentId')];
 
@@ -424,6 +538,63 @@ YUI.add('ez-searchplugin', function (Y) {
                 }, this);
                 callback(err, locationStructArr);
             }, this));
+        },
+
+        /**
+         * Loads Location for each content struct in given array and puts it in the new `location`
+         * field for the content struct.
+         *
+         * @method _loadLocationForContent
+         * @protected
+         * @param {Array|Null} contentStructArr
+         * @param {Function} callback
+         */
+        _loadLocationForContent: function (viewName, contentStructArr, callback) {
+            var contentService = this._getContentService(),
+                locationsIds,
+                query;
+
+            locationsIds = Y.Array.reduce(contentStructArr, '', function (previousId, struct) {
+                var locationId;
+
+                if (struct.content.get('resources').MainLocation) {
+                    locationId = struct.content.get('resources').MainLocation.split('/').pop();
+
+                    previousId = previousId ? previousId + ',' : previousId;
+                    return previousId + locationId;
+                }
+                return;
+            });
+
+            if (locationsIds) {
+                query = this._createNewCreateViewStruct('locations-loading-' + viewName, 'LocationQuery', {
+                    filter: {
+                        "LocationIdCriterion": locationsIds,
+                    },
+                    limit: contentStructArr.length
+                });
+
+                contentService.createView(query, Y.bind(function (err, response) {
+                    if (err) {
+                        callback(err, contentStructArr);
+                        return;
+                    }
+                    Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit) {
+                        var location = this._createLocation(hit);
+
+                        Y.Array.some(contentStructArr, function (struct) {
+                            if ( struct.content.get('resources').MainLocation === location.get('id') ) {
+                                struct.location = location;
+                                return true;
+                            }
+                            return false;
+                        });
+                    }, this);
+                    callback(err, contentStructArr);
+                }, this));
+            } else {
+                callback(false, contentStructArr);
+            }
         },
     }, {
         NS: 'search',

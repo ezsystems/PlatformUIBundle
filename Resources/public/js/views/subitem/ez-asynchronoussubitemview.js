@@ -122,7 +122,7 @@ YUI.add('ez-asynchronoussubitemview', function (Y) {
                 loadContentType: true,
                 loadContent: true,
                 search: {
-                    criteria: {
+                    filter: {
                         "ParentLocationIdCriterion": this.get('location').get('locationId'),
                     },
                     offset: forceLimit ? 0 : this.get('offset'),

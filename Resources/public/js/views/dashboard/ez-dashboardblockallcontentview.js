@@ -70,7 +70,7 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
                 resultAttribute: 'items',
                 loadContentType: true,
                 search: {
-                    criteria: {SubtreeCriterion: rootLocation.get('pathString')},
+                    filter: {SubtreeCriterion: rootLocation.get('pathString')},
                     sortClauses: {DateModified: 'descending'},
                     limit: 10
                 }
