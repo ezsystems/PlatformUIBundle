@@ -819,16 +819,19 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                     }
                 }
             };
-
-            this.query = {
-                'body': {
-                    ViewInput: {
-                        'LocationQuery': {
-                            'Criteria' : ""
-                        }
-                    }
-                }
-            };
+            
+            this.query = new Y.Mock();
+            Mock.expect(this.query, {
+                method: 'setFilter',
+                args: [Mock.Value.Object],
+                run: Y.bind(function (arg) {
+                    Assert.areSame(
+                        arg.ContentIdCriterion,
+                        this.contentId,
+                        'Parameter should have the contentId as ContentIdCriterion'
+                    );
+                }, this),
+            });
 
             Mock.expect(this.contentService, {
                 method: 'newViewCreateStruct',
@@ -880,6 +883,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             });
 
             Assert.isTrue(callbackCalled, 'Should call callback function');
+            Mock.verify(this.query);
         },
 
         'Should pass error to callback function when CAPI loadLocations fails': function () {
@@ -909,6 +913,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             });
 
             Assert.isTrue(callbackCalled, 'Should call callback function');
+            Mock.verify(this.query);
         },
     });
 

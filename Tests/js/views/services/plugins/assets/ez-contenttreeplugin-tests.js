@@ -115,7 +115,7 @@ YUI.add('ez-contenttreeplugin-tests', function (Y) {
             );
             Assert.areEqual(
                 location.get('locationId'),
-                search.criteria.ParentLocationIdCriterion,
+                search.filter.ParentLocationIdCriterion,
                 "The ParentLocationIdCriterion should be used in the search"
             );
             Assert.areSame(

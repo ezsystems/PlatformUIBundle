@@ -666,7 +666,7 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
 
                 Assert.isTrue(e.loadContentType, "The loadContentType param should be set to TRUE");
                 Assert.areSame(
-                    e.search.criteria.FullTextCriterion,
+                    e.search.query.FullTextCriterion,
                     that.searchText,
                     "The search text should be set as FullTextCriterion"
                 );

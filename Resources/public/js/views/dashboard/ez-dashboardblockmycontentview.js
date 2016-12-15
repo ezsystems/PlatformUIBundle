@@ -75,7 +75,7 @@ YUI.add('ez-dashboardblockmycontentview', function (Y) {
                 resultAttribute: 'items',
                 loadContentType: true,
                 search: {
-                    criteria: { UserMetadataCriterion: {
+                    filter: { UserMetadataCriterion: {
                         Target: "modifier",
                         Value: user.get('userId'),
                     }},
