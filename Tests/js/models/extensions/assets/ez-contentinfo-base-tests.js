@@ -167,6 +167,29 @@ YUI.add('ez-contentinfo-base-tests', function (Y) {
 
             Assert.isTrue(callbackCalled, 'Should call callback function');
         },
+
+        'Should handle error when trying to load versions by status without versions': function () {
+            var options = {
+                    api: this.capi,
+                },
+                callbackCalled = false;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'loadVersions',
+                args: [this.id, Mock.Value.Function],
+                run: Y.bind(function (contentId, cb) {
+                    cb(true, undefined);
+                }, this)
+            });
+
+            this.model.loadVersionsSortedByStatus(options, Y.bind(function (err, response) {
+                callbackCalled = true;
+                Assert.areSame(0, Object.keys(response).length, 'versions by status should be empty');
+                Assert.isTrue(err, 'Should return the error');
+            }, this));
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
     });
 
     Y.Test.Runner.setName("eZ Content Model tests");
