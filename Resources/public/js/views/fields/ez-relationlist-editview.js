@@ -32,6 +32,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
         },
 
         initializer: function () {
+
             var fieldValue = this.get('field').fieldValue;
 
             this._fireMethod = this._fireLoadObjectRelations;
@@ -51,6 +52,24 @@ YUI.add('ez-relationlist-editview', function (Y) {
                     this.render();
                 }
             });
+
+            this._makeSortable();
+
+        },
+
+        _makeSortable: function(){
+
+//ez-relation-input-ui
+
+            var sortable = new Y.Sortable({
+                container: '#demo',
+                nodes: 'li',
+                opacity: '.1'
+            });
+
+
+            console.log('sortableu!');
+
         },
 
         /**
