@@ -139,7 +139,6 @@ YUI.add('ez-navigationhubview', function (Y) {
          *
          * @method _navigateToZone
          * @param {String|Null} zone
-         * @method _navigateToZone
          * @protected
          */
         _navigateToZone: function (zone) {
