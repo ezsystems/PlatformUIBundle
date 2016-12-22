@@ -51,26 +51,20 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 } else {
                     this.render();
                 }
-            });
 
-            setTimeout( () => {
                 this._makeSortable();
-            },1000);
+
+            });
 
         },
 
         _makeSortable: function(){
-
-//ez-relation-input-ui
 
             var sortable = new Y.Sortable({
                 container: '.ez-relation-input-ui tbody',
                 nodes: 'tr',
                 opacity: '.1'
             });
-
-
-            console.log('sortableu!');
 
         },
 
