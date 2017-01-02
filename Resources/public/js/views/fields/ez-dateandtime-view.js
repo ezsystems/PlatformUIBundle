@@ -66,7 +66,7 @@ YUI.add('ez-dateandtime-view', function (Y) {
             var options = {year: "numeric", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit'};
 
             if ( this.get('fieldDefinition').fieldSettings.useSeconds ) {
-                options['second'] = '2-digit';
+                options.second = '2-digit';
             }
             return date.toLocaleTimeString(undefined, options);
         },
@@ -85,7 +85,7 @@ YUI.add('ez-dateandtime-view', function (Y) {
             var options = {hour: '2-digit', minute: '2-digit'};
 
             if ( this.get('fieldDefinition').fieldSettings.useSeconds ) {
-                options['second'] = '2-digit';
+                options.second = '2-digit';
             }
             return date.toLocaleTimeString(undefined, options);
         },
