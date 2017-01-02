@@ -13,7 +13,8 @@ YUI.add('ez-date-view-tests', function (Y) {
                 this.fieldValue = {
                     timestamp: 374388330,
                 };
-                this.date = '11/12/1981';
+                this.dateObject = new Date(this.timestamp * 1000)
+                this.date = this.dateObject.toLocaleDateString(undefined, {year: "numeric", month: "short", day: "numeric"});
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {
                     fieldType: 'ezdate',
@@ -32,7 +33,7 @@ YUI.add('ez-date-view-tests', function (Y) {
             "Should format the date": function () {
                 this._testValue(
                     this.fieldValue, this.date,
-                    "The value in the template should be a formatted date with the seconds"
+                    "The value in the template should be a formatted date"
                 );
             },
 

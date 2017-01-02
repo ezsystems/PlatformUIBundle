@@ -33,7 +33,7 @@ YUI.add('ez-dateandtime-view', function (Y) {
             var date =  this._getDateObject();
 
             if ( date ) {
-                return this._formatDate(date) + ' ' + this._formatTime(date);
+                return this._formatDateTime(date);
             }
             return '';
         },
@@ -48,7 +48,27 @@ YUI.add('ez-dateandtime-view', function (Y) {
          * @return String
          */
         _formatDate: function (date) {
-            return date.toLocaleDateString();
+            return date.toLocaleDateString(
+                undefined, {year: "numeric", month: "short", day: "numeric"}
+            );
+        },
+
+        /**
+         * Formats the date part of the date object according to the locale
+         * settings of the browser
+         *
+         * @method _formatDateTime
+         * @protected
+         * @param {Date} date
+         * @return String
+         */
+        _formatDateTime: function (date) {
+            var options = {year: "numeric", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit'};
+
+            if ( this.get('fieldDefinition').fieldSettings.useSeconds ) {
+                options['second'] = '2-digit';
+            }
+            return date.toLocaleTimeString(undefined, options);
         },
 
         /**
@@ -56,16 +76,16 @@ YUI.add('ez-dateandtime-view', function (Y) {
          * settings of the browser and to the `useSeconds` field definition
          * settings.
          *
-         * @method _formatDate
+         * @method _formatTime
          * @protected
          * @param {Date} date
          * @return String
          */
         _formatTime: function (date) {
-            var options;
+            var options = {hour: '2-digit', minute: '2-digit'};
 
-            if ( !this.get('fieldDefinition').fieldSettings.useSeconds ) {
-                options = {hour: 'numeric', minute: 'numeric'};
+            if ( this.get('fieldDefinition').fieldSettings.useSeconds ) {
+                options['second'] = '2-digit';
             }
             return date.toLocaleTimeString(undefined, options);
         },
