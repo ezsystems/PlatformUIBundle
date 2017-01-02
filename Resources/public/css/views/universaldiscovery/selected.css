@@ -96,6 +96,7 @@
 
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-infos {
     overflow: auto;
+    min-height: 5em;
 }
 
 .ez-view-universaldiscoveryselectedview .ez-ud-pane-content {
