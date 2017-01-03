@@ -81,6 +81,9 @@ system:
                 ez-alloyeditor-button-paragraph:
                     requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js"
+                ez-alloyeditor-button-table:
+                    requires: ['ez-alloyeditor', 'ez-translator']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/table.js"
                 ez-alloyeditor-button-list:
                     requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/list.js"
@@ -947,6 +950,7 @@ system:
                         - 'ez-alloyeditor-button-paragraph'
                         - 'ez-alloyeditor-button-list'
                         - 'ez-alloyeditor-button-embed'
+                        - 'ez-alloyeditor-button-table'
                         - 'ez-alloyeditor-button-image'
                         - 'ez-alloyeditor-button-imagevariation'
                         - 'ez-alloyeditor-button-embedcenter'

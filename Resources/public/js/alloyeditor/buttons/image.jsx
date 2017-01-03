@@ -44,6 +44,18 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
         },
 
         /**
+         * Lifecycle. Invoked once before the component is mounted.
+         * The return value will be used as the initial value of this.state.
+         *
+         * @method getInitialState
+         */
+        getInitialState: function() {
+            return {
+                isDisabled: false,
+            };
+        },
+
+        /**
          * Returns the UDW title to pick a Content to embed.
          *
          * @method _getUDWTitle
@@ -52,6 +64,23 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
          */
         _getUDWTitle: function () {
             return Y.eZ.trans('select.an.image.to.embed', {}, 'onlineeditor');
+        },
+
+        /**
+         * Checks if the command is disabled in the current selection.
+         *
+         * @method isDisabled
+         * @return {Boolean} True if the command is disabled, false otherwise.
+         */
+        isDisabled: function () {
+            var path = this.props.editor.get('nativeEditor').elementPath();
+
+            // http://docs.ckeditor.com/#!/api/CKEDITOR.dom.elementPath
+            // There is also isContextFor( tag ), so if there is a way to specify where embeds
+            // are valid that would potentially be cleaner
+            this.state.isDisabled = path && path.contains('table', true) !== null;
+
+            return this.state.isDisabled;
         },
 
         /**
@@ -77,10 +106,10 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
         },
 
         render: function () {
-            var css = "ae-button ez-ae-labeled-button" + this.getStateClasses();
+            var css = "ae-button ez-ae-labeled-button" + this.getStateClasses(), disabled = this.state.isDisabled;
 
             return (
-                <button className={css} onClick={this._chooseContent} tabIndex={this.props.tabIndex}>
+                <button className={css} disabled={disabled} onClick={this._chooseContent} tabIndex={this.props.tabIndex}>
                     <span className="ez-ae-icon ez-ae-icon-image ez-font-icon"></span>
                     <p className="ez-ae-label">{Y.eZ.trans('image', {}, 'onlineeditor')}</p>
                 </button>
