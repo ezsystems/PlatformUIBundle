@@ -42,21 +42,21 @@ YUI.add('ez-dateandtime-view', function (Y) {
          * Formats the date part of the date object according to the locale
          * settings of the browser
          *
+         * @deprecated Since 1.7.1
          * @method _formatDate
          * @protected
          * @param {Date} date
          * @return String
          */
         _formatDate: function (date) {
-            return date.toLocaleDateString(
-                undefined, {year: "numeric", month: "short", day: "numeric"}
-            );
+            return date.toLocaleDateString();
         },
 
         /**
          * Formats the date part of the date object according to the locale
          * settings of the browser
          *
+         * @since 1.7.1
          * @method _formatDateTime
          * @protected
          * @param {Date} date
@@ -76,16 +76,17 @@ YUI.add('ez-dateandtime-view', function (Y) {
          * settings of the browser and to the `useSeconds` field definition
          * settings.
          *
+         * @deprecated Since 1.7.1
          * @method _formatTime
          * @protected
          * @param {Date} date
          * @return String
          */
         _formatTime: function (date) {
-            var options = {hour: '2-digit', minute: '2-digit'};
+            var options;
 
-            if ( this.get('fieldDefinition').fieldSettings.useSeconds ) {
-                options.second = '2-digit';
+            if ( !this.get('fieldDefinition').fieldSettings.useSeconds ) {
+                options = {hour: 'numeric', minute: 'numeric'};
             }
             return date.toLocaleTimeString(undefined, options);
         },

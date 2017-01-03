@@ -48,6 +48,21 @@ YUI.add('ez-date-view', function (Y) {
             }
             return '';
         },
+
+        /**
+         * Formats the date part of the date object according to the locale
+         * settings of the browser
+         *
+         * @method _formatDate
+         * @protected
+         * @param {Date} date
+         * @return String
+         */
+        _formatDate: function (date) {
+            return date.toLocaleDateString(
+                undefined, {year: "numeric", month: "short", day: "numeric"}
+            );
+        },
     });
 
     Y.eZ.FieldView.registerFieldView('ezdate', Y.eZ.DateView);
