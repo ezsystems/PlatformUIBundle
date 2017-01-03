@@ -25,7 +25,7 @@ YUI.add('ez-dateandtime-view-tests', function (Y) {
                 this.dateObject = new Date(this.timestamp * 1000);
                 this.expectedDateTime = this.dateObject.toLocaleTimeString(
                     undefined,
-                    {year: "numeric", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit'}
+                    {year: "numeric", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit', second: '2-digit'}
                 );
                 this.expectedDateTimeNoSeconds = this.dateObject.toLocaleTimeString(
                     undefined,
