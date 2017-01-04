@@ -49,10 +49,17 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
                 this.view.get('limit'),
                 "The search event should contain the limit"
             );
+
             Assert.areSame(
-                this.view.get('location'),
-                evt.search.sortLocation,
-                "The current Location should be used to sort the subitems"
+                'MODIFIED',
+                evt.search.sortCondition.sortField,
+                "The current Location's sortField should be used to sort the subitems"
+            );
+
+            Assert.areSame(
+                'DESC',
+                evt.search.sortCondition.sortOrder,
+                "The current Location's sortOrder should be used to sort the subitems"
             );
         },
 
@@ -181,14 +188,14 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
     };
 
     Y.eZ.Test.AsynchronousSubitemView.RefreshTestCase = {
-        _noRefreshTest: function (attr) {
+        _noRefreshTest: function (updateFunction) {
             var initialItems = this.view.get('items');
 
             this.view.on('locationSearch', function (e) {
                 Assert.fail('The locationSearch event should have been fired');
             });
 
-            this.location.set(attr, 'whatever');
+            updateFunction();
 
             Assert.areSame(
                 initialItems,
@@ -202,14 +209,18 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
         },
 
         "Should ignore the sortField change when the view is not active": function () {
-            this._noRefreshTest('sortField');
+            this._noRefreshTest(Y.bind(function () {
+                this.location.set('sortField', 'MODIFIED');
+            },this));
         },
 
         "Should ignore the sortOrder change when the view is not active": function () {
-            this._noRefreshTest('sortOrder');
+            this._noRefreshTest(Y.bind(function () {
+                this.location.set('sortOrder', 'DESC');
+            }, this));
         },
 
-        _resetView: function (attr) {
+        _resetView: function (updateFunction) {
             var initialItemCount = 10;
 
             this.view.set('items', this._getSubItemStructs(initialItemCount));
@@ -219,7 +230,8 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
             this.view.on('locationSearch', function (e) {
                 Assert.fail('The locationSearch event should have been fired');
             });
-            this.location.set(attr, 'whatever');
+
+            updateFunction();
 
             Assert.areSame(
                 0,
@@ -233,14 +245,18 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
         },
 
         "Should reset the view state when Location sortField is changed": function () {
-            this._resetView('sortField');
+            this._resetView(Y.bind(function () {
+                this.location.set('sortField', 'MODIFIED');
+            },this));
         },
 
         "Should reset the view state when Location sortOrder is changed": function () {
-            this._resetView('sortOrder');
+            this._resetView(Y.bind(function () {
+                this.location.set('sortOrder', 'DESC');
+            },this));
         },
 
-        _noReloadItems: function (attr) {
+        _noReloadItems: function (updateFunction) {
             var initialOffset = this.view.get('offset');
 
             this.location.set('childCount', 0);
@@ -249,7 +265,7 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
             this.view.on('locationSearch', function (e) {
                 Assert.fail('The locationSearch event should have been fired');
             });
-            this.location.set(attr, 'whatever');
+            updateFunction();
             Assert.areEqual(
                 initialOffset,
                 this.view.get('offset'),
@@ -258,14 +274,18 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
         },
 
         "Should ignore Location sortField change if no subitems": function () {
-            this._noReloadItems('sortField');
+            this._noReloadItems(Y.bind(function () {
+                this.location.set('sortField', 'MODIFIED');
+            },this));
         },
 
         "Should ignore Location sortOrder change if no subitems": function () {
-            this._noReloadItems('sortOrder');
+            this._noReloadItems(Y.bind(function () {
+                this.location.set('sortOrder', 'DESC');
+            },this));
         },
 
-        _reloadItems: function (attr) {
+        _reloadItems: function (updateFunction, expectField, expectOrder) {
             var initialItems = this.view.get('items'),
                 locationSearchFired = false;
 
@@ -303,13 +323,19 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
                     "The search event should contain the view offset + view limit as the limit"
                 );
                 Assert.areSame(
-                    this.view.get('location'),
-                    evt.search.sortLocation,
-                    "The current Location should be used to sort the subitems"
+                    expectField,
+                    evt.search.sortCondition.sortField,
+                    "The current Location's sortField should be used to sort the subitems"
+                );
+
+                Assert.areSame(
+                    expectOrder,
+                    evt.search.sortCondition.sortOrder,
+                    "The current Location's sortOrder should be used to sort the subitems"
                 );
             }, this));
 
-            this.location.set(attr, 'whatever');
+            updateFunction();
 
             Assert.areNotSame(
                 initialItems,
@@ -337,14 +363,18 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
         _getSubItemStructs: getSubItemStructs,
 
         "Should reload the items when Location sortOrder is changed": function () {
-            this._reloadItems('sortOrder');
+            this._reloadItems(Y.bind(function () {
+                this.location.set('sortOrder', 'DESC');
+            },this), 'PRIORITY', 'DESC');
         },
 
         "Should reload the items when Location sortField is changed": function () {
-            this._reloadItems('sortField');
+            this._reloadItems(Y.bind(function () {
+                this.location.set('sortField', 'MODIFIED');
+            },this), 'MODIFIED', 'ASC');
         },
 
-        _destroyAfterUpdate: function (attr) {
+        _destroyAfterUpdate: function (updateFunction, expectField, expectOrder) {
             var initialItemCount = 10,
                 destroyed = 0;
 
@@ -352,7 +382,7 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
             this.view.after('itemView:destroy', function (e) {
                 destroyed++;
             });
-            this._reloadItems('sortField');
+            this._reloadItems(updateFunction, expectField, expectOrder);
             this.view.set('items', this._getSubItemStructs(this.view.get('offset') + this.view.get('limit')));
 
             Assert.areEqual(
@@ -363,11 +393,15 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
         },
 
         "Should destroys the items view when receiving the items after sortField change": function () {
-            this._destroyAfterUpdate('sortField');
+            this._destroyAfterUpdate(Y.bind(function () {
+                this.location.set('sortOrder', 'DESC');
+            },this), 'PRIORITY', 'DESC');
         },
 
         "Should destroys the items view when receiving the items after sortOrder change": function () {
-            this._destroyAfterUpdate('sortOrder');
+            this._destroyAfterUpdate(Y.bind(function () {
+                this.location.set('sortField', 'MODIFIED');
+            },this), 'MODIFIED', 'ASC');
         },
     };
 });

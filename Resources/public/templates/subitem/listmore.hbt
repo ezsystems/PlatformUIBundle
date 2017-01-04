@@ -3,7 +3,10 @@
         <thead>
         <tr class="ez-subitem-headline">
             {{#each columns}}
-            <th class="ez-subitem-column-head ez-subitem-{{ identifier }}-column">{{ name }}</th>
+            <th class="ez-subitem-column-head ez-subitem-{{ identifier }}-column {{#if sortable}}ez-subitem-column-sortable ez-font-icon{{/if}}"
+                data-column-identifier="{{identifier}}">
+                {{ name }}
+            </th>
             {{/each}}
         </tr>
         </thead>

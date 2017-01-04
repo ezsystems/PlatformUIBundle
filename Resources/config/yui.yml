@@ -463,6 +463,7 @@ system:
                         - 'ez-subitemlistitemview'
                         - 'subitemlistmoreview-ez-template'
                         - 'ez-translator'
+                        - 'event-tap'
                     path: "%ez_platformui.public_dir%/js/views/subitem/ez-subitemlistmoreview.js"
                 subitemlistmoreview-ez-template:
                     type: 'template'

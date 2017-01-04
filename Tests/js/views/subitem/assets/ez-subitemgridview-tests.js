@@ -13,7 +13,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({
-                childCount: 5,                          
+                childCount: 5,
             });
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
@@ -109,7 +109,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({
-                childCount: 5,                          
+                childCount: 5,
             });
             Y.eZ.SubitemGridItemView = Y.View;
             this.view = new Y.eZ.SubitemGridView({
@@ -129,7 +129,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({
-                childCount: 5,                          
+                childCount: 5,
             });
             Y.eZ.SubitemGridItemView = Y.View;
             this.view = new Y.eZ.SubitemGridView({
@@ -150,7 +150,11 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
         name: "eZ Subitem Grid View load subitems test",
 
         setUp: function () {
-            this.location = new Y.Model({locationId: 42});
+            this.location = new Y.Model({
+                locationId: 42,
+                sortField: 'MODIFIED',
+                sortOrder: 'DESC',
+            });
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
                 loadingError: true,
@@ -169,7 +173,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({
-                childCount: 5,                          
+                childCount: 5,
             });
             Y.eZ.SubitemGridItemView = Y.Base.create('gridItemView', Y.View, [Y.View.NodeMap], {});
             this.ItemView = Y.eZ.SubitemGridItemView;
@@ -333,7 +337,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
             this.location = new Y.Model({
                 locationId: 42,
                 sortOrder: 'ASC',
-                sortField: 'SECTION',
+                sortField: 'PRIORITY',
             });
             this.view = new Y.eZ.SubitemGridView({
                 container: '.container',

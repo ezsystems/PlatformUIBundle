@@ -354,6 +354,7 @@ YUI.add('ez-locationmodel', function (Y) {
          *
          * @method _getSortDirection
          * @protected
+         * @deprecated Use `getSortClauseIdentifier` in the search plugin
          * @return 'ascending' or 'descending'
          */
         _getSortDirection: function () {
@@ -366,6 +367,7 @@ YUI.add('ez-locationmodel', function (Y) {
          *
          * @method _getSortClauseIdentifier
          * @protected
+         * @deprecated Use `_getSortClauseIdentifier` in the search plugin
          * @return {String|Null}
          */
         _getSortClauseIdentifier: function () {
@@ -401,11 +403,15 @@ YUI.add('ez-locationmodel', function (Y) {
          * Location's sortOrder and sortField attribute.
          *
          * @method getSortClause
+         * @deprecated Use `getSortClause` in the search plugin
          * @return {Object}
          */
         getSortClause: function () {
             var clause = {},
                 identifier = this._getSortClauseIdentifier();
+
+            console.log('[DEPRECATED] `Location#getSortClause` is deprecated and will be removed from PlatformUI 2.0');
+            console.log('[DEPRECATED] Please use the search plugin instead');
 
             if ( identifier ) {
                 clause[this._getSortClauseIdentifier()] = this._getSortDirection();

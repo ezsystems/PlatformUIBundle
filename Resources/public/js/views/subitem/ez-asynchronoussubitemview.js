@@ -39,8 +39,25 @@ YUI.add('ez-asynchronoussubitemview', function (Y) {
             });
             this.get('location').after(
                 ['sortOrderChange', 'sortFieldChange'],
+                Y.bind(this._fillSortConditionWithLocation, this)
+            );
+            this.after(
+                'sortConditionChange',
                 Y.bind(this._refresh, this)
             );
+        },
+
+        /**
+         * Fills `sortConditon` attribute with the location sortField and sortOrder
+         *
+         * @method _fillSortConditionWithLocation
+         * @protected
+         */
+        _fillSortConditionWithLocation: function() {
+            this.set('sortCondition', {
+                sortField: this.get('location').get('sortField'),
+                sortOrder: this.get('location').get('sortOrder')
+            });
         },
 
         /**
@@ -127,9 +144,23 @@ YUI.add('ez-asynchronoussubitemview', function (Y) {
                     },
                     offset: forceLimit ? 0 : this.get('offset'),
                     limit: forceLimit ? forceLimit : this.get('limit'),
-                    sortLocation: this.get('location'),
+                    sortCondition: this.get('sortCondition'),
                 },
             });
         },
+    }, {
+        ATTRS: {
+            /**
+             * How the subitems should be sorted.
+             *
+             * @attribute sortCondition
+             * @type Object
+             */
+            sortCondition: {
+                valueFn: function () {
+                    return this._fillSortConditionWithLocation();
+                }
+            }
+        }
     });
 });
