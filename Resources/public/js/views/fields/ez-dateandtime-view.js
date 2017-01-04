@@ -49,6 +49,8 @@ YUI.add('ez-dateandtime-view', function (Y) {
          * @return String
          */
         _formatDate: function (date) {
+            console.log('[DEPRECATED] _formatDate is deprecated, use _formatDateTime instead');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
             return date.toLocaleDateString();
         },
 
@@ -83,6 +85,8 @@ YUI.add('ez-dateandtime-view', function (Y) {
          * @return String
          */
         _formatTime: function (date) {
+            console.log('[DEPRECATED] _formatTime is deprecated, use _formatDateTime instead');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
             var options;
 
             if ( !this.get('fieldDefinition').fieldSettings.useSeconds ) {
