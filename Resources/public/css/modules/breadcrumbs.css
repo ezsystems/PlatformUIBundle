@@ -5,7 +5,11 @@
 }
 
 .ez-breadcrumbs-list .ez-breadcrumbs-item {
-    display: inline;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
 }
 
 .ez-breadcrumbs-list .ez-breadcrumbs-item:after {

@@ -32,11 +32,15 @@
                                     <ul class="ez-breadcrumbs-list">
                                         {{#each this.path}}
                                         <li class="ez-breadcrumbs-item">
-                                            <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">{{ contentInfo.name }}</a>
+                                            <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}" title="{{ contentInfo.name }}">
+                                                {{ contentInfo.name }}
+                                            </a>
                                         </li>
                                         {{/each}}
                                         <li class="ez-breadcrumbs-item">
-                                            <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">{{ contentInfo.name }}</a>
+                                            <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}" title="{{ contentInfo.name }}">
+                                                {{ contentInfo.name }}
+                                            </a>
                                         </li>
                                     </ul>
                                 </td>
