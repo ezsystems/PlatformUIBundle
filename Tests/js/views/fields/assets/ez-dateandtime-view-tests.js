@@ -23,15 +23,14 @@ YUI.add('ez-dateandtime-view-tests', function (Y) {
                     timestamp: this.timestamp,
                 };
                 this.dateObject = new Date(this.timestamp * 1000);
-                this.expectedDate = this.dateObject.toLocaleDateString();
-                this.expectedTime = this.dateObject.toLocaleTimeString();
-                this.expectedTimeNoSeconds = this.dateObject.toLocaleTimeString(
+                this.expectedDateTime = this.dateObject.toLocaleTimeString(
                     undefined,
-                    {hour: 'numeric', minute: 'numeric'}
+                    {year: "numeric", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit', second: '2-digit'}
                 );
-
-                this.datetime = this.expectedDate + ' ' + this.expectedTime;
-                this.datetimeNoSeconds = this.expectedDate + ' ' + this.expectedTimeNoSeconds;
+                this.expectedDateTimeNoSeconds = this.dateObject.toLocaleTimeString(
+                    undefined,
+                    {year: "numeric", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit'}
+                );
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {
                     fieldType: 'ezdatetime',
@@ -52,7 +51,7 @@ YUI.add('ez-dateandtime-view-tests', function (Y) {
 
             "Should format the date with the seconds": function () {
                 this._testValue(
-                    this.fieldValue, this.datetime,
+                    this.fieldValue, this.expectedDateTime,
                     "The value in the template should be a formatted date with the seconds"
                 );
             },
@@ -60,7 +59,7 @@ YUI.add('ez-dateandtime-view-tests', function (Y) {
             "Should format the date without the seconds": function () {
                 this.view.get('fieldDefinition').fieldSettings.useSeconds = false;
                 this._testValue(
-                    this.fieldValue, this.datetimeNoSeconds,
+                    this.fieldValue, this.expectedDateTimeNoSeconds,
                     "The value in the template should be a formatted date without the seconds"
                 );
             },

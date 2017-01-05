@@ -265,18 +265,12 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
 
         "Should format a date value": function () {
             var attr = 'formatDate',
-                localeDate = 'locale date',
                 localeTime = 'locale time',
                 date = new Mock(); // PhantomJS 1.9 does not suppoer toLocaleDateString/toLocaleTimeString...
 
             Mock.expect(date, {
-                method: 'toLocaleDateString',
-                args: ['en', Mock.Value.Object],
-                returns: localeDate,
-            });
-            Mock.expect(date, {
                 method: 'toLocaleTimeString',
-                args: ['en', Mock.Value.Object],
+                args: [undefined, Mock.Value.Object],
                 returns: localeTime,
             });
 
@@ -289,7 +283,7 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
 
             this._testProperty(attr, function (property) {
                 Assert.areEqual(
-                    localeDate + ' ' + localeTime,
+                    localeTime,
                     property.value,
                     "The date should have been formatted"
                 );

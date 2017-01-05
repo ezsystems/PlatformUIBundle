@@ -19,11 +19,13 @@ YUI.add('ez-time-view-tests', function (Y) {
 
             setUp: function () {
                 this.fieldValue = 374388330;
-                this.tzOffset = new Date(this.fieldValue * 1000).getTimezoneOffset() * 60000;
-                this.utcDate = new Date((this.fieldValue * 1000) + this.tzOffset);
+                this.dateObject = new Date(this.fieldValue * 1000);
 
-                this.time = Y.Date.format(this.utcDate, {format:"%T"});
-                this.timeNoSeconds = Y.Date.format(this.utcDate, {format:"%R"});
+                this.time = this.dateObject.toLocaleTimeString(
+                    undefined,
+                    {hour: '2-digit', minute: '2-digit', second: '2-digit'}
+                );
+                this.timeNoSeconds = this.dateObject.toLocaleTimeString(undefined, {hour: '2-digit', minute: '2-digit'});
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {
                     identifier: 'some_identifier',

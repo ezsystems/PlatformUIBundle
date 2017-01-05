@@ -34,6 +34,7 @@ YUI.add('ez-time-view', function (Y) {
         /**
          * Returns a timestamps in UTC
          *
+         * @deprecated Since 1.7.1
          * @protected
          * @method _getUtcTimeStamp
          * @param {Number} localizedTimestamp
@@ -53,15 +54,12 @@ YUI.add('ez-time-view', function (Y) {
          * @return String
          */
         _formatTime: function (date) {
-            var format;
+            var options = {hour: '2-digit', minute: '2-digit'};
 
-            if (!this.get('fieldDefinition').fieldSettings.useSeconds) {
-                format = "%R";
-            } else {
-                format = "%T";
+            if ( this.get('fieldDefinition').fieldSettings.useSeconds ) {
+                options.second = '2-digit';
             }
-
-            return Y.Date.format(new Date(this._getUtcTimeStamp(date.getTime())), {format:format});
+            return date.toLocaleTimeString(undefined, options);
         },
 
         /**

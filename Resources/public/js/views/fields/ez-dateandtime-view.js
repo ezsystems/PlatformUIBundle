@@ -33,7 +33,7 @@ YUI.add('ez-dateandtime-view', function (Y) {
             var date =  this._getDateObject();
 
             if ( date ) {
-                return this._formatDate(date) + ' ' + this._formatTime(date);
+                return this._formatDateTime(date);
             }
             return '';
         },
@@ -42,13 +42,35 @@ YUI.add('ez-dateandtime-view', function (Y) {
          * Formats the date part of the date object according to the locale
          * settings of the browser
          *
+         * @deprecated Since 1.7.1
          * @method _formatDate
          * @protected
          * @param {Date} date
          * @return String
          */
         _formatDate: function (date) {
+            console.log('[DEPRECATED] _formatDate is deprecated, use _formatDateTime instead');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
             return date.toLocaleDateString();
+        },
+
+        /**
+         * Formats the date part of the date object according to the locale
+         * settings of the browser
+         *
+         * @since 1.7.1
+         * @method _formatDateTime
+         * @protected
+         * @param {Date} date
+         * @return String
+         */
+        _formatDateTime: function (date) {
+            var options = {year: "numeric", month: "short", day: "numeric", hour: '2-digit', minute: '2-digit'};
+
+            if ( this.get('fieldDefinition').fieldSettings.useSeconds ) {
+                options.second = '2-digit';
+            }
+            return date.toLocaleTimeString(undefined, options);
         },
 
         /**
@@ -56,12 +78,15 @@ YUI.add('ez-dateandtime-view', function (Y) {
          * settings of the browser and to the `useSeconds` field definition
          * settings.
          *
-         * @method _formatDate
+         * @deprecated Since 1.7.1
+         * @method _formatTime
          * @protected
          * @param {Date} date
          * @return String
          */
         _formatTime: function (date) {
+            console.log('[DEPRECATED] _formatTime is deprecated, use _formatDateTime instead');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
             var options;
 
             if ( !this.get('fieldDefinition').fieldSettings.useSeconds ) {
