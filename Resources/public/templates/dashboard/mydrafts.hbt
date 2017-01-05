@@ -20,7 +20,10 @@
             {{#if items.length}}
                 {{#each items}}
                     <tr class="ez-block-row">
-                        <td class="ez-block-cell">{{ lookup version.names version.initialLanguageCode }}</td>
+                        <td title="{{ lookup version.names version.initialLanguageCode }}"
+                            class="ez-block-cell ez-dashboard-content-name">
+                            {{ lookup version.names version.initialLanguageCode }}
+                        </td>
                         <td class="ez-block-cell">{{ translate_property contentType.names }}</td>
                         <td class="ez-block-cell">{{ version.versionNo }}</td>
                         <td class="ez-block-cell ez-block-cell-options">

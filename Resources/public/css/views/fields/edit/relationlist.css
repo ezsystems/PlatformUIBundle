@@ -23,6 +23,10 @@
 
 .ez-view-relationlisteditview .ez-relation-content-name {
     margin: 0 0 0.3em 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 15em;
 }
 
 .ez-view-relationlisteditview .ez-relation-tools {

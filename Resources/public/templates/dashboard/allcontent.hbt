@@ -18,7 +18,10 @@
         <tbody class="ez-block-content">
         {{#each items}}
             <tr class="ez-block-row">
-                <td class="ez-block-cell">{{ contentInfo.name }}</td>
+                <td class="ez-block-cell ez-dashboard-content-name"
+                    title="{{ contentInfo.name }}">
+                    {{ contentInfo.name }}
+                </td>
                 <td class="ez-block-cell">{{ translate_property contentType.names }}</td>
                 <td class="ez-block-cell">{{ contentInfo.currentVersionNo }}</td>
                 <td class="ez-block-cell ez-block-cell-options">

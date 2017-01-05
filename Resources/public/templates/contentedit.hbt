@@ -2,7 +2,7 @@
     <div class="ez-main-content pure-u" tabindex="0">
         <header class="ez-page-header">
             <a href="#" class="ez-view-close" data-icon-after="&#xe62a;"></a>
-            <h1 class="ez-page-header-name" data-icon="&#xe601;">{{ content.name }}</h1>
+            <h1 title="{{ content.name }}" class="ez-page-header-name" data-icon="&#xe601;">{{ content.name }}</h1>
             <div class="ez-infos">
                 <ul class="ez-technical-infos">
                     <li>{{ translate_property contentType.names }}</li>

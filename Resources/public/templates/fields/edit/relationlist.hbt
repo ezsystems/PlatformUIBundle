@@ -31,7 +31,7 @@
                         <tbody>
                             {{#each relatedContents}}
                                 <tr class="ez-relation-content" data-content-id="{{id}}">
-                                    <td class="ez-relation-content-name" data-icon="&#xe601;">{{ name }}</td>
+                                    <td class="ez-relation-content-name" data-icon="&#xe601;" title="{{ name }}">{{ name }}</td>
                                     <td class="ez-relation-property">{{ publishedDate }}</td>
                                     <td class="ez-relation-property">{{ lastModificationDate }}</td>
                                     <td class="ez-relation-remove-content">

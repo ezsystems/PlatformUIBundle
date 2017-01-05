@@ -38,6 +38,9 @@
     margin-bottom: 0;
     display: block;
     margin-left: 2.3rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .ez-view-locationviewview .ez-page-header-contenttype {
