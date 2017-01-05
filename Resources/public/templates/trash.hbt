@@ -21,20 +21,22 @@
                             <input class='ez-selection-table-checkbox ez-trashitem-box'
                                    type="checkbox" value="{{ item.id }}"/>
                         </td>
-                        <td>{{item.contentInfo.name}}</td>
+                        <td><span class="ez-trash-item-name" title="{{ item.contentInfo.name }}">{{item.contentInfo.name}}</span></td>
                         <td>{{ translate_property contentType.names }}</td>
                         <td>
                             {{#if parentLocation.locationId}}
                             <ul class="ez-breadcrumbs-list">
                             {{#each parentLocation.path}}
                                 <li class="ez-breadcrumbs-item">
-                                    <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">
+                                    <a  href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}"
+                                        title="{{ contentInfo.name }}">
                                         {{ contentInfo.name }}
                                     </a>
                                 </li>
                             {{/each}}
                                 <li class="ez-breadcrumbs-item">
-                                    <a href="{{ path "viewLocation" id=parentLocation.id languageCode=parentLocation.contentInfo.mainLanguageCode }}">
+                                    <a  href="{{ path "viewLocation" id=parentLocation.id languageCode=parentLocation.contentInfo.mainLanguageCode }}"
+                                        title="{{ parentLocation.contentInfo.name }}">
                                         {{ parentLocation.contentInfo.name }}
                                     </a>
                                 </li>

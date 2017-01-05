@@ -9,7 +9,7 @@
                 {{#if relatedContents }}
                     <ul>
                     {{#each relatedContents}}
-                        <li>
+                        <li class="ez-relationlistview-item" title="{{ name }}">
                             <a href="{{path "viewLocation" id=resources.MainLocation languageCode=mainLanguageCode}}">{{ name }}</a>
                         </li>
                     {{/each}}
