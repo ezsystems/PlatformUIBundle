@@ -93,9 +93,9 @@ class TwigYuiExtension extends Twig_Extension
 
         if ($combine === true) {
             $yui['combine'] = true;
-            $yui['root'] = '';
-            $yui['comboBase'] = $this->router->generate('yui_combo_loader') . '?';
         }
+        $yui['root'] = '';
+        $yui['comboBase'] = $this->router->generate('yui_combo_loader') . '?';
 
         foreach (array_keys($modules) as $module) {
             if (!isset($yui['modules'][$module]['requires'])) {
