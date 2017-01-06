@@ -559,7 +559,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     return [
                         new Y.eZ.UniversalDiscoveryBrowseView({
                             bubbleTargets: this,
-                            priority: 100,
+                            priority: 1000,
                             multiple: this.get('multiple'),
                             loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
@@ -568,6 +568,14 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                         new Y.eZ.UniversalDiscoverySearchView({
                             bubbleTargets: this,
                             priority: 200,
+                            multiple: this.get('multiple'),
+                            loadContent: true,
+                            isAlreadySelected: Y.bind(this._isAlreadySelected, this),
+                            startingLocationId: this.get('startingLocationId')
+                        }),
+                        new Y.eZ.UniversalDiscoveryFinderView({
+                            bubbleTargets: this,
+                            priority: 100,
                             multiple: this.get('multiple'),
                             loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
@@ -582,10 +590,10 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              *
              * @attribute visibleMethod
              * @type String
-             * @default 'browse'
+             * @default 'finder'
              */
             visibleMethod: {
-                value: 'browse',
+                value: 'finder',
             },
 
             /**

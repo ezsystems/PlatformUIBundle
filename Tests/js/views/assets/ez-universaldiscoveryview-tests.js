@@ -626,6 +626,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Y.eZ.UniversalDiscoverySearchView = Y.Base.create(
                 'testSearchView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
             );
+            Y.eZ.UniversalDiscoveryFinderView = Y.Base.create(
+                'testFinderView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
+            );
             this.view = new Y.eZ.UniversalDiscoveryView({
                 multiple: this.multiple,
                 confirmedListView: this.confirmedList,
@@ -649,8 +652,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The method list should be an array"
             );
             Assert.areEqual(
-                2, methods.length,
-                "The default method list should contain 2 elements"
+                3, methods.length,
+                "The default method list should contain 3 elements"
             );
             Assert.isInstanceOf(
                 Y.eZ.UniversalDiscoveryBrowseView, methods[0],
@@ -956,7 +959,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         setUp: function () {
             this.method = new Y.eZ.UniversalDiscoveryMethodBaseView();
-            this.method._set('identifier', 'browse');
+            this.method._set('identifier', 'finder');
             this.confirmedList = new Y.View();
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
@@ -995,7 +998,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         setUp: function () {
             this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
-            this.method1._set('identifier', 'browse');
+            this.method1._set('identifier', 'finder');
             this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
             this.method2._set('identifier', 'create');
             this.confirmedList = new Y.View();
