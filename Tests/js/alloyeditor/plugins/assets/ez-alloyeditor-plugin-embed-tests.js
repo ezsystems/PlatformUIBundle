@@ -7,6 +7,7 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     var definePluginTest, embedWidgetTest, focusTest,
         setHrefTest, setWidgetContentTest, setConfigTest, imageTypeTest,
         getHrefTest, getConfigTest, initTest, alignMethodsTest, insertEditTest,
+        moveTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
@@ -827,6 +828,67 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         },
     });
 
+    moveTest = new Y.Test.Case({
+        name: "eZ AlloyEditor embed moveAfter / moveBefore test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
+            CKEDITOR.plugins.addExternal('widget', '../../../widget/');
+            this.container = Y.one('.container-move');
+            this.editor = AlloyEditor.editable(
+                this.container.getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',widget,ezembed',
+                    eZ: {
+                        editableRegion: '.editable',
+                    },
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+        },
+
+        _getWidget: function () {
+			var nativeEditor = this.editor.get('nativeEditor');
+
+            return nativeEditor.widgets.getByElement(
+				nativeEditor.element.findOne('#moving')
+			);
+        },
+
+        "Should move the widget before the element": function () {
+            var ref = this.editor.get('nativeEditor').element.findOne('#before'),
+                widget = this._getWidget();
+
+            widget.moveBefore(ref);
+
+            Assert.areSame(
+                ref.$,
+                widget.wrapper.getNext().$,
+                "The widget should have been moved before the element"
+            );
+        },
+
+        "Should move the widget after the element": function () {
+            var ref = this.editor.get('nativeEditor').element.findOne('#after'),
+                widget = this._getWidget();
+
+            widget.moveAfter(ref);
+
+            Assert.areSame(
+                ref.$,
+                widget.wrapper.getPrevious().$,
+                "The widget should have been moved after the element"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ AlloyEditor embed plugin tests");
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(embedWidgetTest);
@@ -840,4 +902,5 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     Y.Test.Runner.add(initTest);
     Y.Test.Runner.add(alignMethodsTest);
     Y.Test.Runner.add(insertEditTest);
+    Y.Test.Runner.add(moveTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-alloyeditor-plugin-embed']});
