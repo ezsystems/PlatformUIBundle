@@ -26,7 +26,6 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
      */
     Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create('universalDiscoveryBrowseView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {
         initializer: function () {
-            console.warn('UniversalDiscoveryBrowseView is deprecated');
             this.on('*:treeNavigate', this._uiSelectContent);
             this.after(['multipleChange', 'isSelectableChange'], this._setSelectedViewAttrs);
             this.after('visibleChange', this._unselectContent);

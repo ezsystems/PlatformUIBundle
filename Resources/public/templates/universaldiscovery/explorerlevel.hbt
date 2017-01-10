@@ -1,8 +1,8 @@
 <div class="ez-ud-finder-explorerlevel-content ez-asynchronousview">
-    {{#if loading}}
-        <div class="ez-ud-finder-explorerlevel-loading ez-asynchronousview ez-font-icon"></div>
 
-    {{/if}}
+        <div class="ez-ud-finder-explorerlevel-loading ez-font-icon"></div>
+
+
     {{#if loadingError}}
         <p class="ez-asynchronousview-error ez-font-icon">
             <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button"></button>
@@ -10,10 +10,9 @@
     {{else}}
         <ul>
             {{#each items}}
-                <li class="ez-font-icon
-                {{#if selectedLocationId}} is-selected{{/if}}
-                {{#if location.childCount}} is-parent-location{{/if}}">
-                    <a class="ez-explorer-level-item" data-location-id="{{location.locationId}}"> {{ contentInfo.name }}</a>
+                <li class="ez-font-icon">
+                    <a class="ez-explorer-level-item ez-font-icon{{#if selectedLocationId}} is-selected{{/if}}{{#if location.childCount}} is-parent-location{{/if}}"
+                       data-location-id="{{location.locationId}}"> {{ contentInfo.name }}</a>
                 </li>
 
             {{/each}}

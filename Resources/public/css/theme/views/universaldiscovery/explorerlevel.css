@@ -14,11 +14,7 @@
     background: #7AAABE;
 }
 
-.ez-view-universaldiscoveryfinderexplorerlevelview .ez-ud-finder-explorerlevel-content.is-loading {
-    background: #7AAABE;
-}
-
-.ez-view-universaldiscoveryfinderexplorerlevelview .ez-ud-finder-explorerlevel-loading:after {
+.ez-view-universaldiscoveryfinderexplorerlevelview.is-loading .ez-ud-finder-explorerlevel-loading:after {
     color: #999;
     font-size: 2em;
     content: '\e61c';

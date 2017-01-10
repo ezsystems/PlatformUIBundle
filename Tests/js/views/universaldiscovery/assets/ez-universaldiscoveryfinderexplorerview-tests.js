@@ -214,26 +214,6 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
             delete Y.eZ.UniversalDiscoveryFinderExplorerLevelView;
         },
 
-        "Should render and activate levelView on explorerNavigate": function () {
-            this.view.render();
-            this.view.set('active', true);
-            Y.Array.each(this.view.get('levelViews'), function (levelView) {
-                levelView.set('active', false);
-            });
-            this.view.fire('explorerNavigate', {location: this.location, depth: 2});
-
-            Y.Array.each(this.view.get('levelViews'), function (levelView) {
-                Assert.isTrue(
-                    levelView.get('active'),
-                    "The levelView should be active"
-                );
-                Assert.isTrue(
-                    levelView.get('rendered'),
-                    "The levelView should be rendered"
-                );
-            });
-        },
-
         "Should add a levelView if the location explored is having children": function () {
             this.childCount = 1;
 
@@ -245,6 +225,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
 
 
             this.view.render();
+            this.view.set('active', true);
             this.view.fire('explorerNavigate', {location: this.location, depth: 2});
 
             Assert.areSame(
@@ -256,6 +237,14 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
                 this.view.get('levelViews')[this.view.get('levelViews').length - 1].get('depth'),
                 this.view.get('levelViews').length,
                 "The new levelView should get have a depth"
+            );
+            Assert.isTrue(
+                this.view.get('levelViews')[this.view.get('levelViews').length - 1].get('active'),
+                "The new levelView should be active"
+            );
+            Assert.isTrue(
+                this.view.get('levelViews')[this.view.get('levelViews').length - 1].get('rendered'),
+                "The new levelView should be rendered"
             );
         },
 

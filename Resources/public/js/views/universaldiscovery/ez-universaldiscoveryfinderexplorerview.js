@@ -24,23 +24,11 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
         initializer: function () {
             this.after('activeChange', function () {
                 if (this.get('active')) {
-                    Y.Array.each(this.get('levelViews'), function (levelView) {
-                        this._activateLevelView(levelView);
-                    }, this);
+                    this.wakeUp();
                 }
             });
             this.on('*:explorerNavigate', function(e) {
-                if (e.depth < this.get('levelViews').length) {
-                    var count = this.get('levelViews').length - e.depth;
-                    this._removeLevels(count);
-                }
-                if (e.location.get('childCount')) {
-                    this._addLevel(e.location);
-                }
-                Y.Array.each(this.get('levelViews'), function (levelView) {
-                    this._renderLevelView(levelView);
-                    this._activateLevelView(levelView);
-                }, this);
+                this._handleLevelViews(e.depth, e.location);
             });
         },
 
@@ -69,6 +57,24 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
             Y.Array.each(this.get('levelViews'), function (levelView) {
                 this._activateLevelView(levelView);
             }, this);
+        },
+
+        /**
+         * explorerNavigates event handler. Handles the levelViews by removing and/or adding levels if necessary
+         *
+         * @method _handleLevelViews
+         * @param {Number} depth
+         * @param {eZ.Location} location
+         * @protected
+         */
+        _handleLevelViews: function (depth, location) {
+            if (depth < this.get('levelViews').length) {
+                var count = this.get('levelViews').length - depth;
+                this._removeLevels(count);
+            }
+            if (location.get('childCount')) {
+                this._addLevel(location);
+            }
         },
 
         /**
@@ -116,7 +122,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
         },
 
         /**
-         * Creates and add an explorer level view to the levelViews.
+         * Creates and add an explorer level view to the levelViews. Then renders and activates it.
          *
          * @method _addLevel
          * @param {Y.eZ.Location} location the parent location
@@ -125,9 +131,13 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
             var LevelView = this.get('levelViewConstructor'),
                 levelView = new LevelView({
                     parentLocation: location,
-                    depth: this.get('levelViews').length + 1});
+                    depth: this.get('levelViews').length + 1,
+                });
 
             levelView.addTarget(this);
+            this._renderLevelView(this.get('levelViews')[this.get('levelViews').length - 1]);
+            this._renderLevelView(levelView);
+            this._activateLevelView(levelView);
             this.get('levelViews').push(levelView);
         },
 
@@ -145,16 +155,6 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
                 valueFn: function () {
                     return Y.eZ.UniversalDiscoveryFinderExplorerLevelView;
                 },
-            },
-
-            /**
-             * The search result list containing the items to display
-             *
-             * @attribute searchResultList
-             * @type Array
-             */
-            searchResultList: {
-                value: []
             },
 
             /**
