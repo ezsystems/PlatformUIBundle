@@ -42,11 +42,14 @@ system:
                 ez-alloyeditor-toolbar-config-image:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/image.js"
-                ez-alloyeditor-plugin-addcontent:
+                ez-alloyeditor-plugin-caret:
                     requires: ['ez-alloyeditor']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/caret.js"
+                ez-alloyeditor-plugin-addcontent:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-caret']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/addcontent.js"
                 ez-alloyeditor-plugin-removeblock:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-caret']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/removeblock.js"
                 ez-alloyeditor-plugin-yui3:
                     requires: ['ez-alloyeditor']

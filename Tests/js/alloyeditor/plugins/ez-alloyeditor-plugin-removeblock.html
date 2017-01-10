@@ -32,6 +32,7 @@
         filter: loaderFilter,
         modules: {
             "ez-alloyeditor-plugin-removeblock": {
+                requires: ['ez-alloyeditor-plugin-caret'],
                 fullpath: "../../../../Resources/public/js/alloyeditor/plugins/removeblock.js",
             },
             "ez-alloyeditor-plugin-embed": {
@@ -40,6 +41,9 @@
             },
             "ez-alloyeditor-plugin-addcontent": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/plugins/addcontent.js",
+            },
+            "ez-alloyeditor-plugin-caret": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/caret.js",
             },
         }
     }).use('ez-alloyeditor-plugin-removeblock-tests', function (Y) {

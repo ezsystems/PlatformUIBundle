@@ -22,11 +22,9 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
          * @param {CKEDITOR.dom.element} element
          */
         _moveCaretToElement: function (editor, element) {
-            var range = editor.createRange(),
-                caretElement = this._findCaretElement(element);
+            var caretElement = this._findCaretElement(element);
 
-            range.moveToPosition(caretElement, CKEDITOR.POSITION_AFTER_START);
-            editor.getSelection().selectRanges([range]);
+            editor.eZ.moveCaretToElement(editor, caretElement);
             this._fireEditorInteraction(editor, caretElement);
         },
 
@@ -127,7 +125,7 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
      * @constructor
      */
     CKEDITOR.plugins.add('ezremoveblock', {
-        requires: 'widget',
+        requires: 'widget,ezcaret',
 
         init: function (editor) {
             editor.addCommand('eZRemoveBlock', removeBlockCommand);
