@@ -4,7 +4,7 @@
  */
 /* global CKEDITOR, AlloyEditor */
 YUI.add('ez-alloyeditor-plugin-caret-tests', function (Y) {
-    var definePluginTest, moveCaretToElementTest,
+    var definePluginTest, moveCaretToElementTest, findCaretElementTest,
         Assert = Y.Assert;
 
     definePluginTest = new Y.Test.Case({
@@ -94,7 +94,60 @@ YUI.add('ez-alloyeditor-plugin-caret-tests', function (Y) {
         },
     });
 
+    findCaretElementTest = new Y.Test.Case({
+        name: "eZ AlloyEditor caret plugin findCaretElement test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            this.container = Y.one('.container');
+            this.containerContent = this.container.getHTML();
+            this.editor = AlloyEditor.editable(
+                this.container.getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezcaret',
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+            this.container.setHTML(this.containerContent);
+        },
+
+        "Should return the element itself": function () {
+            var editor = this.editor.get('nativeEditor'),
+                paragraph = editor.element.findOne('p'),
+                caretElement;
+
+            caretElement = editor.eZ.findCaretElement(paragraph);
+
+            Assert.areSame(
+                paragraph.$,
+                caretElement.$,
+                "The element itself should have been returned"
+            );
+        },
+
+        "Should return the first list item element": function () {
+            var editor = this.editor.get('nativeEditor'),
+                list = editor.element.findOne('ul'),
+                caretElement;
+
+            caretElement = editor.eZ.findCaretElement(list);
+
+            Assert.areSame(
+                list.getChild(0).$,
+                caretElement.$,
+                "The first list item element should have been returned"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ AlloyEditor caret plugin tests");
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(moveCaretToElementTest);
+    Y.Test.Runner.add(findCaretElementTest);
 }, '', {requires: ['test', 'node', 'ez-alloyeditor-plugin-caret']});
