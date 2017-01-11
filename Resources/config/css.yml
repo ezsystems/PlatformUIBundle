@@ -208,3 +208,4 @@ system:
                 - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/blockremove.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/embedhref.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/embedalign.css'
+                - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/move.css'

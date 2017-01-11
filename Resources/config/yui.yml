@@ -66,6 +66,12 @@ system:
                 ez-alloyeditor-plugin-paste:
                     requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/paste.js"
+                ez-alloyeditor-button-moveup:
+                    requires: ['ez-alloyeditor', 'ez-translator']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/moveup.js"
+                ez-alloyeditor-button-movedown:
+                    requires: ['ez-alloyeditor', 'ez-translator']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/movedown.js"
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js"
