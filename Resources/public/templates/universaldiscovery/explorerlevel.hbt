@@ -8,10 +8,10 @@
             <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button"></button>
         </p>
     {{else}}
-        <ul>
+        <ul class="ez-explorer-level-list">
             {{#each items}}
-                <li class="ez-font-icon">
-                    <a class="ez-explorer-level-item ez-font-icon{{#if selectedLocationId}} is-selected{{/if}}{{#if location.childCount}} is-parent-location{{/if}}"
+                <li class="ez-explorer-level-list-item ez-font-icon {{#if location.childCount}} is-parent-location{{/if}}{{#if selectedLocationId}} is-selected{{/if}}">
+                    <a class="ez-explorer-level-item ez-font-icon{{#if selectedLocationId}} is-selected{{/if}}"
                        data-location-id="{{location.locationId}}"> {{ contentInfo.name }}</a>
                 </li>
 

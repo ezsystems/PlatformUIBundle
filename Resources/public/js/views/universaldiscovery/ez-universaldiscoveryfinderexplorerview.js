@@ -72,6 +72,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
                 var count = this.get('levelViews').length - depth;
                 this._removeLevels(count);
             }
+            this._renderLevelView(this.get('levelViews')[this.get('levelViews').length - 1]);
             if (location.get('childCount')) {
                 this._addLevel(location);
             }
@@ -135,7 +136,6 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
                 });
 
             levelView.addTarget(this);
-            this._renderLevelView(this.get('levelViews')[this.get('levelViews').length - 1]);
             this._renderLevelView(levelView);
             this._activateLevelView(levelView);
             this.get('levelViews').push(levelView);

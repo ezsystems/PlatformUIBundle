@@ -1,5 +1,5 @@
 .ez-view-universaldiscoveryfinderexplorerview .ez-ud-finder-explorerlevel {
-    width: 5%;
+    height: 100%;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -9,4 +9,8 @@
     -webkit-flex-direction: row;
     -ms-flex-direction: row;
     flex-direction: row;
+}
+
+.ez-view-universaldiscoveryfinderexplorerview {
+    height: 100%;
 }

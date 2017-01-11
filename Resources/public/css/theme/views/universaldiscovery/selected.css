@@ -3,6 +3,10 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
+.ez-view-universaldiscoveryselectedview {
+    margin-left: 1em;
+}
+
 .ez-view-universaldiscoveryselectedview .ez-ud-help-text {
     font-size: 250%;
     font-weight: bold;
@@ -31,6 +35,8 @@
 .ez-view-universaldiscoveryselectedview .ez-ud-pane-content {
     padding-left: 0.5em;
     padding-right: 0.5em;
+    margin: 0 1em 1em 0;
+    border-radius: 10px;
 }
 
 .ez-view-universaldiscoveryselectedview .ez-asynchronousview-error {

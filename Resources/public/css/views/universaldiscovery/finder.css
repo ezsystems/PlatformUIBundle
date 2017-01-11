@@ -23,6 +23,10 @@
     flex: 1 1 auto;
 }
 
+.ez-view-universaldiscoveryfinderview .ez-ud-finder-selected {
+    max-width: 20%;
+}
+
 .ez-view-universaldiscoveryfinderview .ez-ud-browse-selected {
     margin-left: 1em;
 }
