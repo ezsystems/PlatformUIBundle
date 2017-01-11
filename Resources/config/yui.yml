@@ -51,6 +51,9 @@ system:
                 ez-alloyeditor-plugin-removeblock:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-caret']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/removeblock.js"
+                ez-alloyeditor-plugin-moveelement:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-caret']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/moveelement.js"
                 ez-alloyeditor-plugin-yui3:
                     requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/yui3.js"
