@@ -21,7 +21,14 @@ YUI.add('ez-alloyeditor-toolbar-config-table', function (Y) {
      */
     Y.eZ.AlloyEditorToolbarConfig.Table = {
         name: 'table',
-        buttons: ['tableRow', 'tableColumn', 'tableCell', 'tableRemove'],
+        buttons: [
+            'ezmoveup',
+            'ezmovedown',
+            'tableRow',
+            'tableColumn',
+            'tableCell',
+            'tableRemove',
+        ],
         getArrowBoxClasses: AlloyEditor.SelectionGetArrowBoxClasses.table,
         setPosition: AlloyEditor.SelectionSetPosition.table,
         test: AlloyEditor.SelectionTest.table
