@@ -123,7 +123,8 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
         },
 
         /**
-         * Creates and add an explorer level view to the levelViews. Then renders and activates it.
+         * Creates and add an explorer level view to the levelViews.
+         * Then renders, activates and scroll to it.
          *
          * @method _addLevel
          * @param {Y.eZ.Location} location the parent location
@@ -138,6 +139,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
             levelView.addTarget(this);
             this._renderLevelView(levelView);
             this._activateLevelView(levelView);
+            levelView.displayLevelView();
             this.get('levelViews').push(levelView);
         },
 

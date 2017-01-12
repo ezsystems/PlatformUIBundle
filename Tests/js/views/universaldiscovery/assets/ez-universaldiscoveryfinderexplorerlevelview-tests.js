@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
-    var renderTest, activeTest, searchResultChangeTest, navigateTest,
+    var renderTest, activeTest, searchResultChangeTest, navigateTest, scrollTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -315,12 +315,59 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         },
     });
 
+    scrollTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Finder Explorer scroll tests',
+
+        setUp: function () {
+            this.items = {};
+            this.parentLocationMock = new Mock();
+            this.locationId = 0;
+            Mock.expect(this.parentLocationMock, {
+                method: 'get',
+                args: ['locationId'],
+                returns: this.locationId,
+            });
+            this.view = new Y.eZ.UniversalDiscoveryFinderExplorerLevelView({
+                container: '.container',
+                items: this.items,
+                parentLocation: this.parentLocationMock
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should scroll to the level view": function () {
+            var container = this.view.get('container');
+
+            container.setStyle('margin-left', '2000px');
+            Assert.areSame(
+                0,
+                container.get('docScrollX'),
+                'Should not be scrolled to view'
+            );
+
+            this.view.displayLevelView();
+
+            setTimeout(function () {
+                Assert.areNotSame(
+                    0,
+                    container.get('docScrollX'),
+                    'Should have scrolled to view'
+                );
+            }, 100);
+
+        },
+    });
 
     Y.Test.Runner.setName("eZ Universal Discovery Finder Explorer Level View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(activeTest);
     Y.Test.Runner.add(navigateTest);
     Y.Test.Runner.add(searchResultChangeTest);
+    Y.Test.Runner.add(scrollTest);
 
 
-}, '', {requires: ['test', 'view', 'ez-universaldiscoveryfinderexplorerlevelview', 'node-event-simulate']});
+}, '', {requires: ['test', 'view', 'ez-universaldiscoveryfinderexplorerlevelview', 'node-screen', 'node-style', 'node-event-simulate']});

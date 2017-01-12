@@ -141,7 +141,6 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
         name: 'eZ Universal Discovery Finder Explorer active tests',
 
         setUp: function () {
-            this.levelViewRendered = false;
             Y.eZ.UniversalDiscoveryFinderExplorerLevelView = Y.Base.create('levelView', Y.View, [], {});
             this.levelViews = [new Y.eZ.UniversalDiscoveryFinderExplorerLevelView()];
             this.view = new Y.eZ.UniversalDiscoveryFinderExplorerView({
@@ -184,10 +183,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
         name: 'eZ Universal Discovery Finder Explorer navigate tests',
 
         setUp: function () {
-
-
             this.childCount = 0;
-            this.levelViewRendered = false;
             this.location = new Mock();
             Mock.expect(this.location, {
                 method: 'get',
@@ -199,6 +195,9 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
                     this.set('rendered', true);
                     return this;
                 },
+                displayLevelView: function () {
+                    this.set('scrolled', true);
+                }
             });
             this.levelView1 = new Y.eZ.UniversalDiscoveryFinderExplorerLevelView();
             this.levelView2 = new Y.eZ.UniversalDiscoveryFinderExplorerLevelView();
@@ -245,6 +244,10 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
             Assert.isTrue(
                 this.view.get('levelViews')[this.view.get('levelViews').length - 1].get('rendered'),
                 "The new levelView should be rendered"
+            );
+            Assert.isTrue(
+                this.view.get('levelViews')[this.view.get('levelViews').length - 1].get('scrolled'),
+                "Should have scrolled to the new level view"
             );
         },
 

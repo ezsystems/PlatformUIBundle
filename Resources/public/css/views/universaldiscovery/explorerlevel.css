@@ -1,3 +1,8 @@
 .ez-view-universaldiscoveryfinderexplorerlevelview {
     margin: 1em 1em 1em 1em;
 }
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-ud-finder-explorerlevel-anchor {
+    float: right;
+    visibility: hidden;
+}

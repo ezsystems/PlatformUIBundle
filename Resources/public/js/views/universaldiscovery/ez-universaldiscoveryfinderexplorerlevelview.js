@@ -60,6 +60,15 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
         },
 
         /**
+         * Scrolls to fully display the levelView.
+         *
+         * @method displayLevelView
+         */
+        displayLevelView: function () {
+            this.get('container').one('.ez-ud-finder-explorerlevel-anchor').scrollIntoView({behavior: "smooth"});
+        },
+        
+        /**
          * Fires the `locationSearch` event to fetch the result list of the search.
          *
          * @method _fireLocationSearch
