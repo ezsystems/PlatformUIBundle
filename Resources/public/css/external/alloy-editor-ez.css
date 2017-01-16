@@ -214,7 +214,7 @@
  * stay on the same level in the hierarchy.
  */
 
-.ae-placeholder:empty:not(:focus):before {
+.ae-placeholder:not(:focus):before {
   content: attr(data-placeholder);
 }
 
@@ -262,7 +262,7 @@
 .ae-ui [class^=ae-toolbar-] keygen,
 .ae-ui [class^=ae-toolbar-] select,
 .ae-ui [class^=ae-toolbar-] button {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .ae-ui .ae-toolbar.ae-toolbar-transition,
@@ -477,7 +477,7 @@
 .ae-ui [class^=ae-container-] .ae-button,
 .ae-ui [class^=ae-container-] .ae-toolbar-element,
 .ae-ui [class^=ae-container-] label {
-  font-size: 16px;
+  font-size: 15px;
   margin: 0;
   position: relative;
 }
@@ -542,6 +542,11 @@
 
 .ae-ui .ae-container-input.small {
   width: 60px;
+}
+
+.ae-ui .ae-container-input.flexible {
+  width: auto;
+  flex-grow: 1;
 }
 
 .ae-ui .ae-container-input input,
