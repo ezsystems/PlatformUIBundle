@@ -81,7 +81,10 @@ class HandleBarsFileVisitor implements FileVisitorInterface
         $messages = [];
         if ($translateFound) {
             foreach ($translateParameters as $translateParameter) {
-                $messages[] = $this->extractParameters($translateParameter[1], $catalogue);
+                $message = $this->extractParameters($translateParameter[1], $catalogue);
+                if ($message !== null) {
+                    $messages[] = $message;
+                }
             }
         }
 
@@ -90,7 +93,7 @@ class HandleBarsFileVisitor implements FileVisitorInterface
 
     /**
      * @param string $parametersString
-     * @return Message
+     * @return Message|null
      */
     protected function extractParameters($parametersString)
     {
@@ -106,6 +109,8 @@ class HandleBarsFileVisitor implements FileVisitorInterface
         if ($matchedTranslate && count($parametersResult[0]) === 5) {
             return new Message(trim($parametersResult[0][2]), $parametersResult[0][4]);
         }
+
+        return null;
     }
 
     /**
