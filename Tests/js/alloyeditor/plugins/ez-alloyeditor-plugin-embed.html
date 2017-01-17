@@ -36,6 +36,14 @@
     </div>
 </div>
 
+<div class="container-move">
+    <p id="before">Before</p>
+    <div id="moving" data-ezelement="ezembed" data-href="ezcontent://57" data-ezview="embed">
+        Taylor Hawkins and The Coattail Riders - Not Bad Luck
+    </div>
+    <p id="after">After</p>
+</div>
+
 <script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
@@ -62,7 +70,11 @@
                 fullpath: "../../../../Resources/public/js/alloyeditor/plugins/embed.js",
             },
             "ez-alloyeditor-plugin-addcontent": {
+                requires: ['ez-alloyeditor-plugin-caret'],
                 fullpath: "../../../../Resources/public/js/alloyeditor/plugins/addcontent.js",
+            },
+            "ez-alloyeditor-plugin-caret": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/caret.js",
             },
         }
     }).use('ez-alloyeditor-plugin-embed-tests', function (Y) {

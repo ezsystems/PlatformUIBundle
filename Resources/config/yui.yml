@@ -42,12 +42,18 @@ system:
                 ez-alloyeditor-toolbar-config-image:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/image.js"
-                ez-alloyeditor-plugin-addcontent:
+                ez-alloyeditor-plugin-caret:
                     requires: ['ez-alloyeditor']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/caret.js"
+                ez-alloyeditor-plugin-addcontent:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-caret']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/addcontent.js"
                 ez-alloyeditor-plugin-removeblock:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-caret']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/removeblock.js"
+                ez-alloyeditor-plugin-moveelement:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-caret']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/moveelement.js"
                 ez-alloyeditor-plugin-yui3:
                     requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/yui3.js"
@@ -60,6 +66,12 @@ system:
                 ez-alloyeditor-plugin-paste:
                     requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/paste.js"
+                ez-alloyeditor-button-moveup:
+                    requires: ['ez-alloyeditor', 'ez-translator']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/moveup.js"
+                ez-alloyeditor-button-movedown:
+                    requires: ['ez-alloyeditor', 'ez-translator']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/movedown.js"
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js"
@@ -877,6 +889,7 @@ system:
                         - 'ez-alloyeditor-plugin-embed'
                         - 'ez-alloyeditor-plugin-addcontent'
                         - 'ez-alloyeditor-plugin-removeblock'
+                        - 'ez-alloyeditor-plugin-moveelement'
                         - 'ez-alloyeditor-plugin-focusblock'
                         - 'ez-alloyeditor-plugin-paste'
                         - 'ez-alloyeditor-plugin-yui3'
@@ -888,6 +901,8 @@ system:
                         - 'ez-alloyeditor-toolbar-config-paragraph'
                         - 'ez-alloyeditor-toolbar-config-embed'
                         - 'ez-alloyeditor-toolbar-config-image'
+                        - 'ez-alloyeditor-button-moveup'
+                        - 'ez-alloyeditor-button-movedown'
                         - 'ez-alloyeditor-button-heading'
                         - 'ez-alloyeditor-button-paragraph'
                         - 'ez-alloyeditor-button-list'

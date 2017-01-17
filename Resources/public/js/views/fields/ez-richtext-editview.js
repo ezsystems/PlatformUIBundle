@@ -155,7 +155,7 @@ YUI.add('ez-richtext-editview', function (Y) {
             var editor, nativeEd, valid, setEditorFocused, unsetEditorFocused,
                 extraPlugins = [
                     'ezaddcontent', 'widget', 'ezembed', 'ezremoveblock',
-                    'ezfocusblock', 'yui3', 'ezpaste',
+                    'ezfocusblock', 'yui3', 'ezpaste', 'ezmoveelement',
                 ];
 
             this._registerExternalCKEditorPlugin('widget', 'widget/');

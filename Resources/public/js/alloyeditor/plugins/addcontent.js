@@ -22,13 +22,6 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
         return element;
     }
 
-    function moveCaretToElement(editor, element) {
-        var range = editor.createRange();
-
-        range.moveToPosition(element, CKEDITOR.POSITION_AFTER_START);
-        editor.getSelection().selectRanges([range]);
-    }
-
     /**
      * Fires the `editorInteraction` event this is done to make sure the
      * AlloyEditor's UI remains visible
@@ -89,7 +82,7 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
             if ( data.focusElement ) {
                 focusElement = element.findOne(data.focusElement);
             }
-            moveCaretToElement(editor, focusElement);
+            editor.eZ.moveCaretToElement(editor, focusElement);
             fireEditorInteractionEvent(editor, focusElement);
         },
     };
@@ -105,8 +98,10 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
      * @constructor
      */
     CKEDITOR.plugins.add('ezaddcontent', {
+        requires: ['ezcaret'],
+
         init: function (editor) {
-            editor.eZ = {};
+            editor.eZ = editor.eZ || {};
             editor.eZ.appendElement = Y.bind(appendElement, editor, editor);
             editor.addCommand('eZAddContent', addContentCommand);
         },

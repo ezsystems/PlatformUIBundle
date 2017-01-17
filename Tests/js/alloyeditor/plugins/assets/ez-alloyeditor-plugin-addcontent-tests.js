@@ -52,6 +52,19 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
                 "The `eZ` property should have been defined"
             );
         },
+
+        "Should handle an existing `eZ` namespace": function () {
+            var plugin = CKEDITOR.plugins.get('ezaddcontent'),
+                eZ = {};
+
+            this.editor.eZ = eZ;
+            plugin.init(this.editor);
+            Assert.areSame(
+                eZ,
+                this.editor.eZ,
+                "The `eZ` namespace should have been kept"
+            );
+        },
     });
 
     commandTest = new Y.Test.Case({

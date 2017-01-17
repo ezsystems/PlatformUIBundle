@@ -25,6 +25,8 @@ YUI.add('ez-alloyeditor-toolbar-config-embed', function (Y) {
     Y.eZ.AlloyEditorToolbarConfig.Embed = {
         name: 'embed',
         buttons: [
+            'ezmoveup',
+            'ezmovedown',
             'ezembedhref',
             'ezembedleft',
             'ezembedcenter',

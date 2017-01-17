@@ -35,6 +35,8 @@ YUI.add('ez-alloyeditor-toolbar-config-paragraph', function (Y) {
     ParagraphConfig = function () {
         this.name = name;
         this.buttons = [
+            'ezmoveup',
+            'ezmovedown',
             getStyles(),
             'ezblocktextalignleft',
             'ezblocktextaligncenter',

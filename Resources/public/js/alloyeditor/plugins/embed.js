@@ -251,6 +251,32 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                 },
 
                 /**
+                 * Moves the widget after the given element. It also fires the
+                 * `editorInteraction` event so that the UI can respond to that
+                 * change.
+                 *
+                 * @method moveAfter
+                 * @param {CKEDITOR.dom.element} element
+                 */
+                moveAfter: function (element) {
+                    this.wrapper.insertAfter(element);
+                    this._fireEditorInteraction('moveAfter');
+                },
+
+                /**
+                 * Moves the widget before the given element. It also fires the
+                 * `editorInteraction` event so that the UI can respond to that
+                 * change.
+                 *
+                 * @method moveAfter
+                 * @param {CKEDITOR.dom.element} element
+                 */
+                moveBefore: function (element) {
+                    this.wrapper.insertBefore(element);
+                    this._fireEditorInteraction('moveBefore');
+                },
+
+                /**
                  * Sets a config value under the `key` for the embed.
                  *
                  * @method setConfig

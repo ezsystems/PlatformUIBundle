@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-12-06T15:20:44Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-01-11T15:52:30Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -91,6 +91,18 @@
         <target>List</target>
         <note>key: list</note>
         <jms:reference-file>./Resources/public/js/alloyeditor/buttons/list.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="568ae6cf926fffd4ef996af48a51dee3830bd96b" resname="move.down">
+        <source>Move downward</source>
+        <target>Move downward</target>
+        <note>key: move.down</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/movedown.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="68dec644b0986ba6a27e8e7e8ffcd5e1f22cd3fc" resname="move.up">
+        <source>Move upward</source>
+        <target>Move upward</target>
+        <note>key: move.up</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/moveup.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="f416747c2f302b11d2360559f101e49353e88038" resname="paragraph">
         <source>Paragraph</source>

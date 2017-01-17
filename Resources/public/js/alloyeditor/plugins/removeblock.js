@@ -22,11 +22,9 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
          * @param {CKEDITOR.dom.element} element
          */
         _moveCaretToElement: function (editor, element) {
-            var range = editor.createRange(),
-                caretElement = this._findCaretElement(element);
+            var caretElement = editor.eZ.findCaretElement(element);
 
-            range.moveToPosition(caretElement, CKEDITOR.POSITION_AFTER_START);
-            editor.getSelection().selectRanges([range]);
+            editor.eZ.moveCaretToElement(editor, caretElement);
             this._fireEditorInteraction(editor, caretElement);
         },
 
@@ -36,6 +34,7 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
          * the first element that can be filled by the user.
          *
          * @method _findCaretElement
+         * @deprecated
          * @protected
          * @param {CKEDITOR.dom.element} element
          * @return {CKEDITOR.dom.element}
@@ -43,6 +42,9 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
         _findCaretElement: function (element) {
             var child = element.getChild(0);
 
+            console.log('[DEPRECATED] _findCaretElement method is deprecated');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
+            console.log('[DEPRECATED] use editor.eZ.findCaretElement provided by ezcaret plugin instead');
             if ( child.type !== CKEDITOR.NODE_TEXT ) {
                 return this._findCaretElement(child);
             }
@@ -127,7 +129,7 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
      * @constructor
      */
     CKEDITOR.plugins.add('ezremoveblock', {
-        requires: 'widget',
+        requires: 'widget,ezcaret',
 
         init: function (editor) {
             editor.addCommand('eZRemoveBlock', removeBlockCommand);

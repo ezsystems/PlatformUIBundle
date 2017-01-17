@@ -2,30 +2,23 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>eZ AlloyEditor addcontent plugin tests</title>
+<title>eZ AlloyEditor caret plugin tests</title>
 </head>
 <body>
 
 <div class="container">
-    <p class="listening">Listening to Metallica - Fuel</p>
+    <h1>Music!</h1>
+    <p>Listening to Taylor Hawkins and The Coattail Riders</p>
     <ul>
-        <li>Metallica</li>
-        <li>Led Zeppelin</li>
-    </ul>
-</div>
-
-<div class="container-appendelement">
-    <p class="listening">Listening to Metallica - Fuel</p>
-    <ul>
-        <li>Metallica</li>
-        <li>Led Zeppelin</li>
+        <li>Not bad luck</li>
+        <li>Way down</li>
     </ul>
 </div>
 
 <script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
-<script type="text/javascript" src="./assets/ez-alloyeditor-plugin-addcontent-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-alloyeditor-plugin-caret-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -40,18 +33,14 @@
     }
 
     YUI({
-        coverage: ['ez-alloyeditor-plugin-addcontent'],
+        coverage: ['ez-alloyeditor-plugin-caret'],
         filter: loaderFilter,
         modules: {
-            "ez-alloyeditor-plugin-addcontent": {
-                requires: ['ez-alloyeditor-plugin-caret'],
-                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/addcontent.js",
-            },
             "ez-alloyeditor-plugin-caret": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/plugins/caret.js",
             },
         }
-    }).use('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
+    }).use('ez-alloyeditor-plugin-caret-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>

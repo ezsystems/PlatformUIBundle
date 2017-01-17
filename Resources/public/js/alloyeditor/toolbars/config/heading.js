@@ -36,6 +36,8 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
     HeadingConfig = function () {
         this.name = name;
         this.buttons = [
+            'ezmoveup',
+            'ezmovedown',
             getStyles(),
             'ezblocktextalignleft',
             'ezblocktextaligncenter',

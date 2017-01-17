@@ -63,6 +63,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     CKEDITOR.plugins.add('ezfocusblock', {});
     CKEDITOR.plugins.add('yui3', {});
     CKEDITOR.plugins.add('ezpaste', {});
+    CKEDITOR.plugins.add('ezmoveelement', {});
 
     renderTest = new Y.Test.Case({
         name: "eZ RichText View render test",
@@ -573,6 +574,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
         "Should add the ezpaste plugin": function () {
             this._testExtraPlugins('ezpaste');
+        },
+
+        "Should add the ezmoveelement plugin": function () {
+            this._testExtraPlugins('ezmoveelement');
         },
 
         "Should blacklist ae_embed plugin": function () {
