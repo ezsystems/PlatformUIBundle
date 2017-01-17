@@ -63,7 +63,7 @@ class HandleBarsFileVisitorTest extends \PHPUnit_Framework_TestCase
             array("{{ translate \"new key\" \"domain\" variable='var' foo=\"bar\" }}", array('new key' => 'domain')),
 
             //variable as translation string
-            array("{{ translate fieldGroupName 'ezplatform_fields_groups' }}", array())
+            array("{{ translate fieldGroupName 'ezplatform_fields_groups' }}", array()),
         );
     }
 
