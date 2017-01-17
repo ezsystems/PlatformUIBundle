@@ -13,7 +13,11 @@
     <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">retry</button>
     <ul>
         {{#each items}}
-        <li class="ez-explorer-level-item ez-font-icon {{#if selectedLocationId}} is-selected{{/if}}{{#if location.childCount}} is-parent-location{{/if}}" data-location-id="{{location.locationId}}">
+        <li class="ez-explorer-level-item ez-font-icon
+            {{#if selectedLocationId}} is-selected{{/if}}
+            {{#if location.childCount}} is-parent-location{{/if}}
+            {{#if ../ownSelectedItem}} has-selected-item{{/if}}"
+            data-location-id="{{location.locationId}}">
             <a>{{location.locationId}}</a>
         </li>
         {{/each}}

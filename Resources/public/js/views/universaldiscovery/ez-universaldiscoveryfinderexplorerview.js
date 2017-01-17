@@ -33,7 +33,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
         },
 
         /**
-         * Custom reset implementation to explicitely reset the explorer level views.
+         * Custom reset implementation to explicitly reset the explorer level views.
          *
          * @method reset
          */
@@ -72,7 +72,11 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
                 var count = this.get('levelViews').length - depth;
                 this._removeLevels(count);
             }
+            if (this.get('levelViews').length > 1) {
+                this.get('levelViews')[this.get('levelViews').length - 2].removeHighlighting();
+            }
             this._renderLevelView(this.get('levelViews')[this.get('levelViews').length - 1]);
+
             if (location.get('childCount')) {
                 this._addLevel(location);
             }
@@ -124,7 +128,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
 
         /**
          * Creates and add an explorer level view to the levelViews.
-         * Then renders, activates and scroll to it.
+         * Then renders, activates and display it.
          *
          * @method _addLevel
          * @param {Y.eZ.Location} location the parent location

@@ -6,12 +6,9 @@
     border-radius: 10px;
 }
 
-.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item.is-parent-location:after {
-    content: "\E605";
-}
-
 .ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-parent-location:after {
     content: "\E605";
+    color: #7A7A7A;
 }
 
 .ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list {
@@ -31,7 +28,7 @@
     white-space: nowrap;
     width: 80%;
     display: inline-block;
-    padding-left: 1.5em;
+    padding-left: 1em;
     color: #7A7A7A;
 }
 
@@ -39,10 +36,19 @@
     background: #f0f0f0;
 }
 
-.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-selected,
-.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item.is-selected {
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item:hover {
+    cursor: pointer;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-selected {
     color: white;
     background: #7AAABE;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-selected.has-selected-item,
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item.is-selected.has-selected-item {
+    color: white;
+    background: pink;
 }
 
 .ez-view-universaldiscoveryfinderexplorerlevelview.is-loading .ez-ud-finder-explorerlevel-loading:after {

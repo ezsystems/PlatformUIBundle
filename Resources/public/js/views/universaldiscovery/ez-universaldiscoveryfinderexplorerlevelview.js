@@ -54,7 +54,8 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
             container.setHTML(this.template({
                 items: itemsJSONified,
                 loading: this.get('loading'),
-                loadingError: this.get('loadingError')
+                loadingError: this.get('loadingError'),
+                ownSelectedItem: this.get('ownSelectedItem'),
             }));
             return this;
         },
@@ -66,6 +67,16 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
          */
         displayLevelView: function () {
             this.get('container').one('.ez-ud-finder-explorerlevel-anchor').scrollIntoView({behavior: "smooth"});
+        },
+
+        /**
+         * Removes the highlighting of the previously selected item.
+         *
+         * @method removeHighlighting
+         */
+        removeHighlighting: function () {
+            this.set('ownSelectedItem', false);
+            this.render();
         },
         
         /**
@@ -144,9 +155,11 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
         _fireExplorerNavigate: function (e) {
             var nodeLocationId = e.target.getData('location-id'),
                 item = this._findLocationInItems(nodeLocationId);
-            
-            if ( this.get('selectLocationId') !== nodeLocationId && item) {
+
+            if ((this.get('selectLocationId') != nodeLocationId || !this.get('ownSelectedItem')) && item) {
                 this.set('selectLocationId', nodeLocationId);
+                this.set('ownSelectedItem', true);
+                
                 /**
                  * Navigates to the given item's location in the explorer.
                  *
@@ -174,6 +187,14 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
             items: {
                 value: []
             },
+
+            /**
+             * Defines if the level view own the current selected item
+             *
+             * @attribute ownSelecteditem
+             * @type Boolean
+             */
+            ownSelectedItem: {},
 
             /**
              * The search result list containing the result of the locationSearch

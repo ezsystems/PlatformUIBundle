@@ -8,7 +8,11 @@
     {{else}}
         <ul class="ez-explorer-level-list">
             {{#each items}}
-                <li class="ez-explorer-level-list-item ez-font-icon {{#if location.childCount}} is-parent-location{{/if}}{{#if selectedLocationId}} is-selected{{/if}}">
+                <li class="ez-explorer-level-list-item ez-font-icon
+                    {{#if location.childCount}} is-parent-location{{/if}}
+                    {{#if selectedLocationId}} is-selected{{/if}}
+                    {{#if ../ownSelectedItem}} has-selected-item{{/if}}"
+                >
                     <a class="ez-explorer-level-item ez-font-icon{{#if selectedLocationId}} is-selected{{/if}}"
                        data-location-id="{{location.locationId}}"> {{ contentInfo.name }}</a>
                 </li>

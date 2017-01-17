@@ -1,1 +1,4 @@
-<div class="ez-ud-finder-explorerlevel"></div>
+<div class="ez-ud-finder-explorer2">
+    <h2 class="ez-ud-pane-title">{{ translate 'universaldiscovery.selected.item' 'universaldiscovery' }}</h2>
+    <div class="ez-ud-finder-explorerlevel"></div>
+</div>

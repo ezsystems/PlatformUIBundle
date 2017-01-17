@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
-    var renderTest, activeTest, searchResultChangeTest, navigateTest, scrollTest,
+    var renderTest, activeTest, searchResultChangeTest, navigateTest, scrollTest, removeHighlightTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -112,7 +112,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 3 variables");
+                Y.Assert.areEqual(4, Y.Object.keys(variables).length, "The template should receive 4 variables");
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
@@ -149,52 +149,57 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         },
     });
 
+    var _fullLevelViewSetup = function (context) {
+        context.contentInfo = new Mock();
+        context.location = new Mock();
+        context.contentType = new Mock();
+        context.content = new Mock();
+        context.locationId = 2;
+        context.contentJson = {};
+        context.locationJson = {locationId: context.locationId};
+        context.contentInfoJson = {};
+        context.contentTypeJson = {};
+        Mock.expect(context.location, {
+            method: 'get',
+            args: [Y.Mock.Value.String],
+            run: Y.bind(function (arg) {
+                if (arg === 'contentInfo') {
+                    return context.contentInfo;
+                } else if (arg === 'locationId') {
+                    return context.locationId;
+                }
+            }, context)
+        });
+        Mock.expect(context.location, {
+            method: 'toJSON',
+            returns: context.locationJson,
+        });
+        Mock.expect(context.content, {
+            method: 'toJSON',
+            returns: context.contentJson,
+        });
+        Mock.expect(context.contentType, {
+            method: 'toJSON',
+            returns: context.contentTypeJson,
+        });
+        Mock.expect(context.contentInfo, {
+            method: 'toJSON',
+            returns: context.contentInfoJson,
+        });
+        context.result = {location: context.location, contentType: context.contentType, content: context.content};
+        context.searchResult = [context.result];
+        context.view = new Y.eZ.UniversalDiscoveryFinderExplorerLevelView({
+            container: '.container',
+            depth: 999,
+        });
+
+    };
+
     navigateTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Finder Explorer navigate tests',
 
         setUp: function () {
-            this.contentInfo = new Mock();
-            this.location = new Mock();
-            this.contentType = new Mock();
-            this.content = new Mock();
-            this.locationId = 02;
-            this.contentJson = {};
-            this.locationJson = {locationId: this.locationId};
-            this.contentInfoJson = {};
-            this.contentTypeJson = {};
-            Mock.expect(this.location, {
-                method: 'get',
-                args: [Y.Mock.Value.String],
-                run: Y.bind(function (arg) {
-                    if (arg === 'contentInfo') {
-                        return this.contentInfo;
-                    } else if (arg === 'locationId') {
-                        return this.locationId;
-                    }
-                }, this)
-            });
-            Mock.expect(this.location, {
-                method: 'toJSON',
-                returns: this.locationJson,
-            });
-            Mock.expect(this.content, {
-                method: 'toJSON',
-                returns: this.contentJson,
-            });
-            Mock.expect(this.contentType, {
-                method: 'toJSON',
-                returns: this.contentTypeJson,
-            });
-            Mock.expect(this.contentInfo, {
-                method: 'toJSON',
-                returns: this.contentInfoJson,
-            });
-            this.result = {location: this.location, contentType: this.contentType, content: this.content};
-            this.searchResult = [this.result];
-            this.view = new Y.eZ.UniversalDiscoveryFinderExplorerLevelView({
-                container: '.container',
-                depth: 999,
-            });
+            _fullLevelViewSetup(this);
         },
 
         tearDown: function () {
@@ -205,6 +210,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         "Should fire explorerNavigate on tap on an explorer level item": function () {
             var locationFound = false;
 
+            this.view.set('ownSelectedItem', true);
             this.view.set('searchResultList', this.searchResult);
             this.view.on('explorerNavigate', this.next(function (e) {
                 Y.Array.each(this.view.get('items'), function (item) {
@@ -225,6 +231,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             var fireExplorerNavigate = false;
 
             this.locationId = 86;
+            this.view.set('ownSelectedItem', false);
             this.view.set('searchResultList', this.searchResult);
             this.view.on('explorerNavigate', function (e) {
                 fireExplorerNavigate = true;
@@ -237,67 +244,47 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             this.wait();
         },
 
-        "Should NOT fire explorerNavigate on tap on an explorer level item if it is already selected": function () {
+        "Should NOT fire explorerNavigate on tap on an explorer level item if it is already selected and owns the selected item": function () {
             var fireExplorerNavigate = false;
 
-            this["Should fire explorerNavigate on tap on an explorer level item"]();
-
+            this.view.set('selectLocationId', this.location.get('locationId'));
+            this.view.set('ownSelectedItem', true);
             this.view.set('searchResultList', this.searchResult);
-            this.view.on('explorerNavigate', function (e) {
+            this.view.on('explorerNavigate', function () {
                 fireExplorerNavigate = true;
             }, this);
-            this.view.get('container').one('.ez-explorer-level-item').simulateGesture('tap', Y.bind(function () {
+            this.view.get('container').one('.ez-explorer-level-item').simulateGesture('tap', Y.bind(function (e) {
                 this.resume(function () {
                     Assert.isFalse(fireExplorerNavigate, "Should not fire explorer navigate");
                 });
             }, this));
             this.wait();
         },
+
+        "Should fire explorerNavigate on tap on an explorer level item if it is already selected but does NOT own the selected item": function () {
+            var fireExplorerNavigate = false;
+
+            this.view.set('selectLocationId', this.location.get('locationId'));
+            this.view.set('ownSelectedItem', false);
+            this.view.set('searchResultList', this.searchResult);
+            this.view.on('explorerNavigate', function () {
+                fireExplorerNavigate = true;
+            }, this);
+            this.view.get('container').one('.ez-explorer-level-item').simulateGesture('tap', Y.bind(function () {
+                this.resume(function () {
+                    Assert.isTrue(fireExplorerNavigate, "Should not fire explorer navigate");
+                });
+            }, this));
+            this.wait();
+        },
+
     });
     
     searchResultChangeTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Finder Explorer search result change tests',
 
         setUp: function () {
-            this.contentInfo = new Mock();
-            this.location = new Mock();
-            this.contentType = new Mock();
-            this.content = new Mock();
-            this.locationId = 0;
-            this.contentJson = {};
-            this.locationJson = {};
-            this.contentInfoJson = {};
-            this.contentTypeJson = {};
-            Mock.expect(this.location, {
-                method: 'get',
-                args: [Y.Mock.Value.String],
-                run: Y.bind(function (arg) {
-                    if (arg === 'contentInfo') {
-                        return this.contentInfo;
-                    } else if (arg === 'locationId') {
-                        return this.locationId;
-                    }
-                }, this)
-            });
-            Mock.expect(this.location, {
-                method: 'toJSON',
-                returns: this.locationJson,
-            });
-            Mock.expect(this.content, {
-                method: 'toJSON',
-                returns: this.contentJson,
-            });
-            Mock.expect(this.contentType, {
-                method: 'toJSON',
-                returns: this.contentTypeJson,
-            });
-            Mock.expect(this.contentInfo, {
-                method: 'toJSON',
-                returns: this.contentInfoJson,
-            });
-            this.result = {location: this.location, contentType: this.contentType, content: this.content};
-            this.searchResult = [this.result];
-            this.view = new Y.eZ.UniversalDiscoveryFinderExplorerLevelView();
+            _fullLevelViewSetup(this);
         },
 
         tearDown: function () {
@@ -362,12 +349,45 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         },
     });
 
+    removeHighlightTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Finder Explorer highlight tests',
+
+        setUp: function () {
+            _fullLevelViewSetup(this);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should remove has-selected-item class": function () {
+            var container = this.view.get('container');
+
+            this.view.set('ownSelectedItem', true);
+            this.view.set('searchResultList', this.searchResult);
+
+            Assert.isTrue(
+                container.one('.ez-explorer-level-item').hasClass('has-selected-item'),
+                'levelItem should have has-selected-item class'
+            );
+
+            this.view.removeHighlighting();
+
+            Assert.isFalse(
+                container.one('.ez-explorer-level-item').hasClass('has-selected-item'),
+                'levelItem should NOT have has-selected-item class'
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Finder Explorer Level View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(activeTest);
     Y.Test.Runner.add(navigateTest);
     Y.Test.Runner.add(searchResultChangeTest);
     Y.Test.Runner.add(scrollTest);
+    Y.Test.Runner.add(removeHighlightTest);
 
 
 }, '', {requires: ['test', 'view', 'ez-universaldiscoveryfinderexplorerlevelview', 'node-screen', 'node-style', 'node-event-simulate']});
