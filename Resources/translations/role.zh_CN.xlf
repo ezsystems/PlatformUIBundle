@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns:jms="urn:jms:translation" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="zh-CN" datatype="plaintext" original="not.available">
+    <header>
+      <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
+      <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
+    </header>
+    <body>
+      <trans-unit id="e9e10ddeb169d59d94b54912d0422481a0a0b140" resname="role.edit_title">
+        <source><![CDATA[Edit <%roleName%>]]></source>
+        <target xml:lang="zh-CN" state="needs-translation"><![CDATA[ <%roleName%>]]></target>
+        <note>key: role.edit_title</note>
+        <jms:reference-file line="7">/../../../../.././Resources/views/Role/update_role.html.twig</jms:reference-file>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
