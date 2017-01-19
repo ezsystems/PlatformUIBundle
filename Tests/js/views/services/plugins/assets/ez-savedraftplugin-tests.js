@@ -439,7 +439,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
             });
 
             this.service.once('savedDraft', function (e) {
-               eventFired = true;
+                eventFired = true;
                 Assert.areSame(
                     that.service.get('content'), e.content,
                     "savedDraft event should store the service location"
@@ -749,7 +749,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
             delete this.contentType;
         },
     }));
-    
+
     customNotificationTextTest = new Y.Test.Case({
         name: "eZ Save Draft Plugin custom notification text tests",
 
