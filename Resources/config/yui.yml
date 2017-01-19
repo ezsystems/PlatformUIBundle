@@ -556,8 +556,8 @@ system:
                         - 'ez-tabs'
                         - 'ez-templatebasedview'
                         - 'universaldiscoveryview-ez-template'
-                        - 'ez-universaldiscoverybrowseview'
                         - 'ez-universaldiscoverysearchview'
+                        - 'ez-universaldiscoveryfinderview'
                         - 'ez-universaldiscoveryconfirmedlistview'
                         - 'array-extras'
                         - 'event-tap'
@@ -595,6 +595,15 @@ system:
                 universaldiscoverysearchview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/universaldiscovery/search.hbt"
+                ez-universaldiscoveryfinderview:
+                    requires:
+                        - 'ez-universaldiscoverymethodbaseview'
+                        - 'universaldiscoveryfinderview-ez-template'
+                        - 'ez-universaldiscoveryselectedview'
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryfinderview.js"
+                universaldiscoveryfinderview-ez-template:
+                    type: 'template'
+                    path: "%ez_platformui.public_dir%/templates/universaldiscovery/finder.hbt"
                 ez-universaldiscoveryselectedview:
                     requires: ['event-tap', 'ez-templatebasedview', 'universaldiscoveryselectedview-ez-template', 'ez-asynchronousview', 'array-extras']
                     path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryselectedview.js"
