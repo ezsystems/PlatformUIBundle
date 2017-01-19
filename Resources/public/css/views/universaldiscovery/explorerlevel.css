@@ -1,5 +1,9 @@
 .ez-view-universaldiscoveryfinderexplorerlevelview {
-    margin: 1em 0.5em 1em 0.5em;
+    margin: 0 0.6em 1em 0.6em;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 200px;
+    min-width: 200px;
 }
 
 .ez-view-universaldiscoveryfinderexplorerlevelview .ez-ud-finder-explorerlevel-anchor {

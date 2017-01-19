@@ -198,9 +198,6 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
                 displayLevelView: function () {
                     this.set('scrolled', true);
                 },
-                removeHighlighting: function () {
-                    this.set('highlightRemoved', true);
-                },
             });
             this.levelView1 = new Y.eZ.UniversalDiscoveryFinderExplorerLevelView();
             this.levelView2 = new Y.eZ.UniversalDiscoveryFinderExplorerLevelView();
@@ -252,9 +249,9 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
                 this.view.get('levelViews')[this.view.get('levelViews').length - 1].get('scrolled'),
                 "Should have scrolled to the new level view"
             );
-            Assert.isTrue(
-                this.view.get('levelViews')[this.view.get('levelViews').length - 3].get('highlightRemoved'),
-                "Should have removed highlight meaning it has the selected item to the previous level view"
+            Assert.isFalse(
+                this.view.get('levelViews')[this.view.get('levelViews').length - 3].get('ownSelectedItem'),
+                "The previous level view should not have the selected item anymore"
             );
         },
 

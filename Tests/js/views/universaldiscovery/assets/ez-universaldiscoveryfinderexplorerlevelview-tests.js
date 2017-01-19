@@ -112,7 +112,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(4, Y.Object.keys(variables).length, "The template should receive 4 variables");
+                Y.Assert.areEqual(2, Y.Object.keys(variables).length, "The template should receive 2 variables");
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
@@ -361,18 +361,16 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             delete this.view;
         },
 
-        "Should remove has-selected-item class": function () {
+        "Should add and remove has-selected-item class": function () {
             var container = this.view.get('container');
 
             this.view.set('ownSelectedItem', true);
-            this.view.set('searchResultList', this.searchResult);
-
             Assert.isTrue(
-                container.one('.ez-explorer-level-item').hasClass('has-selected-item'),
+                container.hasClass('has-selected-item'),
                 'levelItem should have has-selected-item class'
             );
 
-            this.view.removeHighlighting();
+            this.view.set('ownSelectedItem', false);
 
             Assert.isFalse(
                 container.one('.ez-explorer-level-item').hasClass('has-selected-item'),

@@ -28,7 +28,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
                 }
             });
             this.on('*:explorerNavigate', function(e) {
-                this._handleLevelViews(e.depth, e.location);
+                this._handleLevelViews(e.target, e.depth, e.location);
             });
         },
 
@@ -38,8 +38,10 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
          * @method reset
          */
         reset: function (name) {
+            var count;
+            
             if (name == 'levelViews') {
-                var count = this.get('levelViews').length - 1;
+                count = this.get('levelViews').length - 1;
 
                 this._removeLevels(count);
                 this.get('levelViews')[0].reset();
@@ -63,19 +65,23 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
          * explorerNavigates event handler. Handles the levelViews by removing and/or adding levels if necessary
          *
          * @method _handleLevelViews
+         * @param {Y.eZ.UniversalDiscoveryFinderExplorerLevelView} levelView
          * @param {Number} depth
          * @param {eZ.Location} location
          * @protected
          */
-        _handleLevelViews: function (depth, location) {
+        _handleLevelViews: function (levelView, depth, location) {
+            var count;
+            
             if (depth < this.get('levelViews').length) {
-                var count = this.get('levelViews').length - depth;
+                count = this.get('levelViews').length - depth;
                 this._removeLevels(count);
             }
             if (this.get('levelViews').length > 1) {
-                this.get('levelViews')[this.get('levelViews').length - 2].removeHighlighting();
+                this.get('levelViews')[this.get('levelViews').length - 2].set('ownSelectedItem', false);
             }
-            this._renderLevelView(this.get('levelViews')[this.get('levelViews').length - 1]);
+            levelView.set('ownSelectedItem', true);
+            this._renderLevelView(levelView);
 
             if (location.get('childCount')) {
                 this._addLevel(location);

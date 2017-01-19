@@ -10,11 +10,12 @@
             {{#each items}}
                 <li class="ez-explorer-level-list-item ez-font-icon
                     {{#if location.childCount}} is-parent-location{{/if}}
-                    {{#if selectedLocationId}} is-selected{{/if}}
-                    {{#if ../ownSelectedItem}} has-selected-item{{/if}}"
+                    {{#if selectedLocationId}} is-selected{{/if}}"
                 >
                     <a class="ez-explorer-level-item ez-font-icon{{#if selectedLocationId}} is-selected{{/if}}"
-                       data-location-id="{{location.locationId}}"> {{ contentInfo.name }}</a>
+                       data-location-id="{{location.locationId}}" title="{{ contentInfo.name }}">
+                        {{ contentInfo.name }}
+                    </a>
                 </li>
 
             {{/each}}

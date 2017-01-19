@@ -17,6 +17,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
             }
         },
         viewName = 'universalDiscoveryFinderExplorerLevelView',
+        HAS_SELECTED_ITEM = 'has-selected-item',
         IS_LOADING = 'is-loading';
 
     /**
@@ -27,7 +28,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.UniversalDiscoveryFinderExplorerLevelView = Y.Base.create( viewName, Y.eZ.TemplateBasedView, [Y.eZ.AsynchronousView], {
+    Y.eZ.UniversalDiscoveryFinderExplorerLevelView = Y.Base.create(viewName, Y.eZ.TemplateBasedView, [Y.eZ.AsynchronousView], {
         initializer: function () {
             this._fireMethod = this._fireLocationSearch;
             this._watchAttribute = 'items';
@@ -36,6 +37,13 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
             this.after('searchResultListChange', this._setItems);
             this.on('itemsChange', function () {
                 this.get('container').removeClass(IS_LOADING);
+            });
+            this.after('ownSelectedItemChange', function () {
+                if (!this.get('ownSelectedItem')) {
+                    this.get('container').removeClass(HAS_SELECTED_ITEM);
+                } else {
+                    this.get('container').addClass(HAS_SELECTED_ITEM);
+                }
             });
             this._addDOMEventHandlers(events);
         },
@@ -53,9 +61,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
             }, this);
             container.setHTML(this.template({
                 items: itemsJSONified,
-                loading: this.get('loading'),
                 loadingError: this.get('loadingError'),
-                ownSelectedItem: this.get('ownSelectedItem'),
             }));
             return this;
         },
@@ -69,16 +75,6 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
             this.get('container').one('.ez-ud-finder-explorerlevel-anchor').scrollIntoView({behavior: "smooth"});
         },
 
-        /**
-         * Removes the highlighting of the previously selected item.
-         *
-         * @method removeHighlighting
-         */
-        removeHighlighting: function () {
-            this.set('ownSelectedItem', false);
-            this.render();
-        },
-        
         /**
          * Fires the `locationSearch` event to fetch the result list of the search.
          *
@@ -130,12 +126,12 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
         /**
          * Finds location in item by a given locationId and returns the item.
          *
-         * @method _findLocationInItems
+         * @method _findItemByLocationId
          * @param {Number} locationId
          * @protected
          * @return {Object} Returns an item containing a location.
          */
-        _findLocationInItems: function (locationId) {
+        _findItemByLocationId: function (locationId) {
             var item;
 
             Y.Array.each(this.get('items'), function (hit) {
@@ -154,11 +150,9 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
          */
         _fireExplorerNavigate: function (e) {
             var nodeLocationId = e.target.getData('location-id'),
-                item = this._findLocationInItems(nodeLocationId);
-
+                item = this._findItemByLocationId(nodeLocationId);
             if ((this.get('selectLocationId') != nodeLocationId || !this.get('ownSelectedItem')) && item) {
                 this.set('selectLocationId', nodeLocationId);
-                this.set('ownSelectedItem', true);
                 
                 /**
                  * Navigates to the given item's location in the explorer.
@@ -194,7 +188,9 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
              * @attribute ownSelecteditem
              * @type Boolean
              */
-            ownSelectedItem: {},
+            ownSelectedItem: {
+                value: false
+            },
 
             /**
              * The search result list containing the result of the locationSearch

@@ -1,14 +1,12 @@
 .ez-view-universaldiscoveryfinderexplorerlevelview {
     background-color: #FFFFFF;
-    overflow: auto;
-    width: 25%;
-    min-width: 25%;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-parent-location:after {
     content: "\E605";
     color: #7A7A7A;
+    font-size: 140%;
 }
 
 .ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list {
@@ -40,15 +38,19 @@
     cursor: pointer;
 }
 
-.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-selected {
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-selected,
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item.is-selected,
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-selected.is-parent-location:after {
     color: white;
     background: #7AAABE;
 }
 
-.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-selected.has-selected-item,
-.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item.is-selected.has-selected-item {
+.ez-view-universaldiscoveryfinderexplorerlevelview.has-selected-item .ez-explorer-level-list-item.is-selected,
+.ez-view-universaldiscoveryfinderexplorerlevelview.has-selected-item .ez-explorer-level-item.is-selected,
+.ez-view-universaldiscoveryfinderexplorerlevelview.has-selected-item .ez-explorer-level-list-item.is-selected.is-parent-location:after {
     color: white;
-    background: pink;
+    background: #2B84B1;
+    font-weight: bold;
 }
 
 .ez-view-universaldiscoveryfinderexplorerlevelview.is-loading .ez-ud-finder-explorerlevel-loading:after {

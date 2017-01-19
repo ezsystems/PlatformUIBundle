@@ -131,7 +131,6 @@ system:
                 - 'bundles/ezplatformui/css/theme/views/universaldiscovery/search.css'
                 - 'bundles/ezplatformui/css/theme/views/universaldiscovery/selected.css'
                 - 'bundles/ezplatformui/css/theme/views/universaldiscovery/finder.css'
-                - 'bundles/ezplatformui/css/theme/views/universaldiscovery/explorer.css'
                 - 'bundles/ezplatformui/css/theme/views/universaldiscovery/explorerlevel.css'
                 - 'bundles/ezplatformui/css/theme/views/universaldiscovery/confirmedlist.css'
                 - 'bundles/ezplatformui/css/theme/views/tree.css'

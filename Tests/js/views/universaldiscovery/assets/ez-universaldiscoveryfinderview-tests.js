@@ -250,30 +250,6 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             delete this.finderExplorerView;
         },
 
-        "Should fire the selectContent with a null selection": function () {
-            var selectContent = false;
-
-            Mock.expect(this.selectedView, {
-                method: 'set',
-                args: ['contentStruct', null],
-            });
-            this.view.on('selectContent', function (e) {
-                selectContent = true;
-                Assert.isNull(
-                    e.selection,
-                    "The selectContent event facade should contain a null selection"
-                );
-            });
-
-            this.view.set('visible', false);
-            Assert.isTrue(
-                selectContent,
-                "The selectContent event should have been fired"
-            );
-            Mock.verify(this.selectedView);
-        },
-
-
         "Should wake up finder explorer view when view get visible ": function () {
             Mock.expect(this.finderExplorerView, {
                 method: 'wakeUp',

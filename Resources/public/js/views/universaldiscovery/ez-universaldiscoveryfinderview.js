@@ -104,8 +104,6 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
             if (this.get('visible')) {
                 this.get('finderExplorerView').wakeUp();
             }
-            this._fireSelectContent(null);
-            this.get('selectedView').set('contentStruct', null);
         },
 
         /**
