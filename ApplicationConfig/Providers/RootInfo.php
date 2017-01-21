@@ -13,8 +13,10 @@ class RootInfo implements Provider
     /** @var \Symfony\Component\HttpFoundation\RequestStack */
     private $requestStack;
 
-    /** @var \Symfony\Component\Templating\Asset\PackageInterface */
+    /** @var \Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper */
     private $assetsHelper;
+
+    private $externalAssetsDirectory;
 
     public function __construct(RequestStack $requestStack, AssetsHelper $assetsHelper, $externalAssetsDirectory)
     {
