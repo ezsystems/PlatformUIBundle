@@ -15,6 +15,7 @@
         "zetacomponents/system-information": "^1.1"
     },
     "require-dev": {
+        "symfony/symfony": "~2.8.0",
         "phpunit/phpunit": "~4.7",
         "matthiasnoback/symfony-dependency-injection-test": "0.*"
     },
