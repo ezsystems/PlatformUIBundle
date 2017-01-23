@@ -7,6 +7,6 @@ ez_platformui_ui_config "twig" function
 --DATA--
 return array('YUIConf' => 'YUI.GlobalConfig')
 --EXPECT--
-YUI.GlobalConfig = {"filter":"min","modules":[]};
-myObj = {"filter":"min","modules":[]};
-{"filter":"min","modules":[]};
+YUI.GlobalConfig = {"filter":"min","modules":[],"root":"","comboBase":"yui_combo_loader?"};
+myObj = {"filter":"min","modules":[],"root":"","comboBase":"yui_combo_loader?"};
+{"filter":"min","modules":[],"root":"","comboBase":"yui_combo_loader?"};
