@@ -31,14 +31,48 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 )
             );
 
-        $router = $this->getMock('\Symfony\Component\Routing\RouterInterface');
-
-        return [new TwigYuiExtension($configResolver, $router)];
+        return [new TwigYuiExtension($configResolver, $this->getRouterMock())];
     }
 
     protected function getFixturesDir()
     {
         return __DIR__ . '/Fixtures/';
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getRouterMock()
+    {
+        $routerMock = $this->getMock('\Symfony\Component\Routing\RouterInterface');
+        $routerMock
+            ->expects($this->any())
+            ->method('generate')
+            ->with(
+                $this->callback(
+                    function ($params) {
+                        return in_array($params, ['template_yui_module', 'yui_combo_loader']);
+                    }
+                ),
+                $this->callback(
+                    function ($params) {
+                        return is_array($params);
+                    }
+                )
+            )
+            ->will(
+                $this->returnCallback(
+                    function ($name, $params) {
+                        if (isset($params['module'])) {
+                            return $name . '/' . $params['module'];
+                        }
+
+                        return $name;
+                    }
+                )
+            );
+
+        return $routerMock;
     }
 
     /**
@@ -87,27 +121,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
             ->method('getParameter')
             ->will($this->returnValueMap($getParameterValueMap));
 
-        $router = $this->getMock('\Symfony\Component\Routing\RouterInterface');
-        $router
-            ->expects($this->any())
-            ->method('generate')
-            ->with(
-                $this->equalTo('template_yui_module'),
-                $this->callback(
-                    function ($params) {
-                        return is_array($params) && isset($params['module']);
-                    }
-                )
-            )
-            ->will(
-                $this->returnCallback(
-                    function ($name, $params) {
-                        return $name . '/' . $params['module'];
-                    }
-                )
-            );
-
-        $extension = new TwigYuiExtension($configResolverMock, $router);
+        $extension = new TwigYuiExtension($configResolverMock, $this->getRouterMock());
 
         // we need to call the twig function that way as a callback is in use there to handle the environment injection
         $callable = $extension->getFunctions()[0]->getCallable();
@@ -143,7 +157,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
             [
                 [],
                 'min',
-                '{"filter":"min","modules":[]};',
+                '{"filter":"min","modules":[],"root":"","comboBase":"yui_combo_loader?"};',
             ],
             [
                 [
@@ -163,7 +177,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 '"ez-test":{"requires":[],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
                 '"ez-test2":{"requires":[],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"},' .
                 '"ez-template":{"requires":["template","handlebars"],"fullpath":"template_yui_module/ez-template"}' .
-                '}};',
+                '},"root":"","comboBase":"yui_combo_loader?"};',
             ],
             [
                 [
@@ -180,7 +194,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 '{"filter":"raw","modules":{' .
                 '"ez-test":{"requires":["foo","bar"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
                 '"ez-test2":{"requires":["ez-test"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
-                '}};',
+                '},"root":"","comboBase":"yui_combo_loader?"};',
             ],
             [
                 [
@@ -198,7 +212,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 '{"filter":"raw","modules":{' .
                 '"ez-test":{"requires":["foo","bar","ez-test2"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
                 '"ez-test2":{"requires":["baz"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
-                '}};',
+                '},"root":"","comboBase":"yui_combo_loader?"};',
             ],
             [
                 [
@@ -221,7 +235,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 '"ez-test":{"requires":["ez-test2","another-module"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
                 '"ez-test2":{"requires":["baz"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"},' .
                 '"another-module":{"requires":["ez-test2","michaeljackson","is","from","venus"],"fullpath":"' . self::PREFIX . '/js/fork_me_im_famous.js"}' .
-                '}};',
+                '},"root":"","comboBase":"yui_combo_loader?"};',
             ],
             [
                 [
@@ -238,7 +252,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 '{"filter":"min","modules":{' .
                 '"ez-test":{"requires":["ez-test2"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
                 '"ez-test2":{"requires":["baz"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
-                '}};',
+                '},"root":"","comboBase":"yui_combo_loader?"};',
             ],
         ];
     }
