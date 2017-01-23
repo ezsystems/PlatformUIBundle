@@ -10,8 +10,11 @@
     <p>It seems that perfection is attained not when there is nothing more to add, but when there is nothing more to remove. <a href="https://en.wikipedia.org/wiki/Antoine_de_Saint_Exup%C3%A9ry" id="onlyhref">Antoine de Saint Exupéry</a></p>
     <p class="no-link">We cannot solve our problems with the same thinking we used when we created them. <span>Albert Einstein</span></p>
     <p class="create-link">We cannot solve our problems with the same thinking we used when we created them. <span>Albert<span> <span>Einstein</span></p>
+    <p class="create-link-keyboard">We cannot solve our problems with the same thinking we used when we created them. <span>Albert<span> <span>Einstein</span></p>
     <p class="update-link">We cannot solve our problems with the same thinking we used when we created them. <a href="whatever">Albert Einstein</a></p>
     <p class="remove-link">We cannot solve our problems with the same thinking we used when we created them. <a href="whatever">Albert Einstein</a></p>
+    <p class="udw-link">We cannot solve our problems with the same thinking we used when we created them. <span>Albert<span> <span>Einstein</span></p>
+    <p class="udw-contentdiscovered-link">We cannot solve our problems with the same thinking we used when we created them. <span>Albert<span> <span>Einstein</span></p>
 </div>
 
 <div class="container"></div>
@@ -40,7 +43,10 @@
         modules: {
             "ez-alloyeditor-button-linkedit": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/buttons/linkedit.js",
-                requires: ['ez-alloyeditor', 'ez-translator'],
+                requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-caret', 'ez-translator'],
+            },
+            "ez-alloyeditor-plugin-caret": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/caret.js",
             },
             "ez-alloyeditor": {
                 fullpath: "../../../../Resources/public/js/external/ez-alloyeditor.js",

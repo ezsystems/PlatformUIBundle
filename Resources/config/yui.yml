@@ -73,7 +73,7 @@ system:
                     requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/movedown.js"
                 ez-alloyeditor-button-linkedit:
-                    requires: ['ez-alloyeditor', 'ez-translator']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-caret', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/linkedit.js"
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor', 'ez-translator']

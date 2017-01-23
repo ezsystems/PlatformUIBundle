@@ -26,22 +26,14 @@ YUI.add('ez-alloyeditor-button-linkedit-tests', function (Y) {
         name: "eZ AlloyEditor linkEdit button edit link test",
 
         "async:init": function () {
-            var startTest = this.callback(),
-                defaultCreate = CKEDITOR.Link.prototype.create;
-
-            CKEDITOR.Link.prototype.create = function (href, attrs, modifySelection) {
-                // That's a workaround for PhantomJS which seems to not be able
-                // to "advance the selection" so this is skipping
-                // `modifySelection`
-                defaultCreate.call(this, href, attrs);
-            };
+            var startTest = this.callback();
 
             CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
             CKEDITOR.plugins.addExternal('widget', '../../../widget/');
             this.editorContainer = Y.one('.editor-container').getDOMNode();
             this.editor = AlloyEditor.editable(
                 this.editorContainer, {
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value,
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezcaret',
                 }
             );
             this.native = this.editor.get('nativeEditor');
@@ -152,7 +144,7 @@ YUI.add('ez-alloyeditor-button-linkedit-tests', function (Y) {
 
             this.native.getSelection().selectElement(span);
             button = ReactDOM.render(
-                <Y.eZ.AlloyEditorButton.ButtonLinkEdit editor={this.editor} />,
+                <Y.eZ.AlloyEditorButton.ButtonLinkEdit editor={this.editor} cancelExclusive={function () {}} />,
                 this.container
             );
 
@@ -195,7 +187,7 @@ YUI.add('ez-alloyeditor-button-linkedit-tests', function (Y) {
             this.native.getSelection().selectElement(span);
 
             button = ReactDOM.render(
-                <Y.eZ.AlloyEditorButton.ButtonLinkEdit editor={this.editor} />,
+                <Y.eZ.AlloyEditorButton.ButtonLinkEdit editor={this.editor} cancelExclusive={function () {}} />,
                 this.container
             );
 
@@ -209,9 +201,9 @@ YUI.add('ez-alloyeditor-button-linkedit-tests', function (Y) {
             );
         },
 
-        _createLink: function (triggerFn) {
+        _createLink: function (paragraphClass, triggerFn) {
             var button,
-                span = this.native.element.findOne('.create-link span'),
+                span = this.native.element.findOne('.' + paragraphClass + ' span'),
                 link,
                 cancelled = false,
                 cancel = function () {
@@ -224,6 +216,12 @@ YUI.add('ez-alloyeditor-button-linkedit-tests', function (Y) {
                 <Y.eZ.AlloyEditorButton.ButtonLinkEdit editor={this.editor} cancelExclusive={cancel} />,
                 this.container
             );
+            link = this.editorContainer.querySelector('.' + paragraphClass + ' a');
+
+            Assert.isTrue(
+                link.hasAttribute('data-ez-temporary-link'),
+                "The link should be temporary before validation"
+            );
 
             this._changeInput(this._getHrefElement(), 'https://fr.wikipedia.org/wiki/Albert_Einstein');
             this._changeInput(this._getTitleElement(), 'Albert');
@@ -232,8 +230,10 @@ YUI.add('ez-alloyeditor-button-linkedit-tests', function (Y) {
 
             triggerFn.call(this);
 
-            link = this.editorContainer.querySelector('.create-link a');
-
+            Assert.isFalse(
+                link.hasAttribute('data-ez-temporary-link'),
+                "The link should not be temporary"
+            );
             Assert.areEqual(
                 this._getTitleValue(), link.title,
                 "The link should get the title"
@@ -253,13 +253,13 @@ YUI.add('ez-alloyeditor-button-linkedit-tests', function (Y) {
         },
 
         "Should create a link": function () {
-            this._createLink(function () {
+            this._createLink('create-link', function () {
                 Y.one(this.container.querySelector('.ez-ae-save-link')).simulate('click');
             });
         },
 
         "Should create a link by using enter": function () {
-            this._createLink(function () {
+            this._createLink('create-link-keyboard', function () {
                 var input = this._getHrefElement();
 
                 input.focus();
@@ -290,9 +290,10 @@ YUI.add('ez-alloyeditor-button-linkedit-tests', function (Y) {
             href.focus();
             Y.one(href).simulate('keydown', {keyCode: 13});
 
-            Assert.isNull(
-                this.native.element.findOne('.no-link a'),
-                "no link should have been created"
+            Assert.areEqual(
+                "true",
+                this.native.element.findOne('.no-link a').getAttribute('data-ez-temporary-link'),
+                "The link should still be temporary"
             );
         },
 
@@ -384,9 +385,118 @@ YUI.add('ez-alloyeditor-button-linkedit-tests', function (Y) {
                 "The cancelExclusive callback should have been called"
             );
         },
+
+        "Should run the universal discovery widget": function () {
+            var button,
+                span = this.native.element.findOne('.udw-link span'),
+                cancel = function () {},
+                discovering = false;
+
+            this.native.getSelection().selectElement(span);
+
+            button = ReactDOM.render(
+                <Y.eZ.AlloyEditorButton.ButtonLinkEdit editor={this.editor} cancelExclusive={cancel} />,
+                this.container
+            );
+
+            this.native.on('contentDiscover', function (e) {
+                discovering = true;
+
+                Assert.isFalse(
+                    e.data.config.multiple,
+                    "The UDW should be configued with multiple set to false"
+                );
+                Assert.areEqual(
+                    "select.a.content.to.link.to domain=onlineeditor",
+                    e.data.config.title,
+                    "The title should be set"
+                );
+            });
+
+            Y.one(this.container.querySelector('.ez-ae-button-discover')).simulate('click');
+
+            Assert.isTrue(
+                discovering,
+                "The UDW should have been launched"
+            );
+            ReactDOM.unmountComponentAtNode(this.container);
+
+            Assert.areEqual(
+                "true",
+                this.native.element.findOne('.udw-link a').getAttribute('data-ez-temporary-link'),
+                "The temporary link should be kept after unmouting the component"
+            );
+        },
+
+        "Should update the link after picking a Content item with the UDW": function () {
+            var button,
+                span = this.native.element.findOne('.udw-contentdiscovered-link span'),
+                link,
+                cancel = function () {},
+                location = new Y.Base(),
+                locationId = 42,
+                selection = this.native.getSelection();
+
+            location.set('locationId', locationId);
+
+            this.native.getSelection().selectElement(span);
+
+            button = ReactDOM.render(
+                <Y.eZ.AlloyEditorButton.ButtonLinkEdit editor={this.editor} cancelExclusive={cancel} />,
+                this.container
+            );
+
+            this.native.on('contentDiscover', function (e) {
+                e.data.config.contentDiscoveredHandler.call(this, {
+                    selection: {
+                        location: location,
+                    },
+                });
+            });
+
+            Y.one(this.container.querySelector('.ez-ae-button-discover')).simulate('click');
+
+            link = this.native.element.findOne('.udw-contentdiscovered-link a');
+            Assert.areEqual(
+                "ezlocation://" + locationId,
+                link.getAttribute('href'),
+                "The link should have been updated"
+            );
+            Assert.areSame(
+                link.$, selection.getStartElement().$,
+                "The link should be focused"
+            );
+        },
+
+        "Should give the focus to the link after cancelling the UDW": function () {
+            var button,
+                span = this.native.element.findOne('.udw-contentdiscovered-link span'),
+                link,
+                cancel = function () {},
+                selection = this.native.getSelection();
+
+            this.native.getSelection().selectElement(span);
+
+            button = ReactDOM.render(
+                <Y.eZ.AlloyEditorButton.ButtonLinkEdit editor={this.editor} cancelExclusive={cancel} />,
+                this.container
+            );
+
+            this.native.on('contentDiscover', function (e) {
+                e.data.config.cancelDiscoverHandler.call(this);
+            });
+
+            Y.one(this.container.querySelector('.ez-ae-button-discover')).simulate('click');
+
+            link = this.native.element.findOne('.udw-contentdiscovered-link a');
+            Assert.areSame(
+                link.$, selection.getStartElement().$,
+                "The link should be focused"
+            );
+        },
     });
 
     Y.Test.Runner.setName("eZ AlloyEditor linkedit button tests");
     Y.Test.Runner.add(defineTest);
     Y.Test.Runner.add(editLinkTest);
-}, '', {requires: ['test', 'node', 'node-event-simulate', 'ez-alloyeditor-button-linkedit']});
+}, '', {requires: ['test', 'base', 'node', 'node-event-simulate', 'ez-alloyeditor-button-linkedit']});
