@@ -72,6 +72,9 @@ system:
                 ez-alloyeditor-button-movedown:
                     requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/movedown.js"
+                ez-alloyeditor-button-linkedit:
+                    requires: ['ez-alloyeditor', 'ez-translator']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/linkedit.js"
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js"
@@ -903,6 +906,7 @@ system:
                         - 'ez-alloyeditor-toolbar-config-image'
                         - 'ez-alloyeditor-button-moveup'
                         - 'ez-alloyeditor-button-movedown'
+                        - 'ez-alloyeditor-button-linkedit'
                         - 'ez-alloyeditor-button-heading'
                         - 'ez-alloyeditor-button-paragraph'
                         - 'ez-alloyeditor-button-list'

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-01-11T15:52:30Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-01-16T17:21:29Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -86,6 +86,24 @@
         <jms:reference-file>./Resources/public/js/alloyeditor/buttons/blocktextalignleft.js</jms:reference-file>
         <jms:reference-file>./Resources/public/js/alloyeditor/buttons/embedleft.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="f1b97751d7808745ad7eb7c9edcae87482aa9852" resname="link.remove">
+        <source>Remove</source>
+        <target>Remove</target>
+        <note>key: link.remove</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/linkedit.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="df924f3511438d4ef5588e1680b084b2a665da56" resname="link.save">
+        <source>Save</source>
+        <target>Save</target>
+        <note>key: link.save</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/linkedit.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="9dda4a5c146e73bc34c431f92055186a9e5a45c9" resname="link.to">
+        <source>Link to:</source>
+        <target>Link to:</target>
+        <note>key: link.to</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/linkedit.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="38b62be4bddaa5661c7d6b8e36e28159314df5c7" resname="list">
         <source>List</source>
         <target>List</target>
@@ -103,6 +121,18 @@
         <target>Move upward</target>
         <note>key: move.up</note>
         <jms:reference-file>./Resources/public/js/alloyeditor/buttons/moveup.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="24178d4b489565d2890ffe1c7a81d353cfaeda34" resname="new.tab">
+        <source>New tab</source>
+        <target>New tab</target>
+        <note>key: new.tab</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/linkedit.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="d4fcd0ab161cf2389caeb1b3318ac72eb1437810" resname="open.in">
+        <source>Open in:</source>
+        <target>Open in:</target>
+        <note>key: open.in</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/linkedit.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="f416747c2f302b11d2360559f101e49353e88038" resname="paragraph">
         <source>Paragraph</source>
@@ -124,6 +154,12 @@
         <note>key: right</note>
         <jms:reference-file>./Resources/public/js/alloyeditor/buttons/blocktextalignright.js</jms:reference-file>
         <jms:reference-file>./Resources/public/js/alloyeditor/buttons/embedright.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4cdec5ce343b49799b87d7c0adbe47dd2e67ed7f" resname="same.tab">
+        <source>Same tab</source>
+        <target>Same tab</target>
+        <note>key: same.tab</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/linkedit.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="66e4d5a581b0460c2a07236f815ada78bfa75a68" resname="select.a.content.to.embed">
         <source>Select a content to embed</source>
@@ -150,6 +186,18 @@
         <target>Select another image</target>
         <note>key: select.another.image</note>
         <jms:reference-file>./Resources/public/js/alloyeditor/buttons/imagehref.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3c6de1b7dd91465d437ef415f94f36afc1fbc8a8" resname="title">
+        <source>Title</source>
+        <target>Title</target>
+        <note>key: title</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/linkedit.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5703353ad23aceb493d616c7eb3ef4c65ed5b888" resname="type.or.paste.link">
+        <source>Type or paste link here</source>
+        <target>Type or paste link here</target>
+        <note>key: type.or.paste.link</note>
+        <jms:reference-file>./Resources/public/js/alloyeditor/buttons/linkedit.js</jms:reference-file>
       </trans-unit>
     </body>
   </file>
