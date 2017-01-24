@@ -18,12 +18,53 @@
     background: #FAFAFA;
 }
 
+/* Hide marker on Safari and chrome */
+.ez-view-serversideview .ez-contenttype-view .ez-contenttype-summary::-webkit-details-marker {
+    display: none;
+}
+
+.ez-view-serversideview .ez-contenttype-view .ez-contenttype-title {
+    font-size: 1.8em;
+}
+
+.ez-view-serversideview .ez-contenttype-view .ez-contenttype-subtitle {
+    font-size: 1.17em;
+}
+
+.ez-view-serversideview .ez-contenttype-view .ez-field-definition-info {
+    margin-left: 1em;
+}
+
+.ez-view-serversideview .ez-contenttype-view .ez-field-definition-info-title {
+    color: #2b84b1;
+    cursor: pointer;
+    outline: none;
+    margin-bottom: 1em;
+}
+
 .ez-view-serversideview .ez-contenttype-view .ez-contenttype-title,
 .ez-view-serversideview .ez-contenttype-view .ez-contenttype-subtitle {
     background: transparent;
     color: #2b84b1;
     border: none;
+    outline: none;
+    cursor: pointer;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
     border-bottom: 1px solid #2b84b1;
+
+    /* Hide marker on Firefox */
+    list-style-type: none;
+}
+
+.ez-view-serversideview .ez-contenttype-view summary::after {
+     content: '\e605';
+     vertical-align: bottom;
+}
+
+.ez-view-serversideview .ez-contenttype-view details[open] > summary::after {
+     content: '\e602';
+     vertical-align: bottom;
 }
 
 .ez-view-serversideview .ez-contenttype-view .ez-contenttype-metadata {
