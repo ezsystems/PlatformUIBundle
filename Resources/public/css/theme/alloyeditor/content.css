@@ -17,3 +17,9 @@
     margin: 4px 0;
     list-style-position: inside;
 }
+
+.ez-richtext-editable a[data-ez-temporary-link] {
+    background: #869CAD;
+    color: #fff;
+    text-shadow: none;
+}
