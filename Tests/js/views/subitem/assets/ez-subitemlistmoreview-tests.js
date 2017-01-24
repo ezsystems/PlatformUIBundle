@@ -6,6 +6,7 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
     var renderTest, itemSetterTest, loadSubitemsTest, listItemTest,
         loadingStateTest, paginationUpdateTest, loadMoreTest, errorHandlingTest,
         lockPriorityEditTest, refreshTest, updatePriorityTest,
+        toggleSortingTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
    function _configureSubitemsMock(priority) {
@@ -89,6 +90,11 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
                     col.name,
                     "The name should come from the propertyNames attribute"
                 );
+                Assert.areEqual(
+                    this.view.get('availableProperties')[col.identifier].sortable,
+                    col.sortable,
+                    "The sortable should come from the availableProperties attribute"
+                );
             }, this);
         },
 
@@ -129,7 +135,7 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({
-                childCount: 5,                          
+                childCount: 5,
             });
             Y.eZ.SubitemListItemView = Y.View;
             this.view = new Y.eZ.SubitemListMoreView({
@@ -148,7 +154,11 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
         name: "eZ Subitem ListMore View load subitems test",
 
         setUp: function () {
-            this.location = new Y.Model({locationId: 42});
+            this.location = new Y.Model({
+                locationId: 42,
+                sortField: 'MODIFIED',
+                sortOrder: 'DESC',
+            });
             this.view = new Y.eZ.SubitemListMoreView({
                 location: this.location,
                 loadingError: true,
@@ -167,7 +177,7 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({
-                childCount: 5,                          
+                childCount: 5,
             });
             Y.eZ.SubitemListItemView = Y.Base.create('listItemView', Y.View, [Y.View.NodeMap], {});
             this.ItemView = Y.eZ.SubitemListItemView;
@@ -276,6 +286,8 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
             this.location = new Mock(new Y.Model({
                 locationId: this.locationId,
                 childCount: this.childCount,
+                sortField: 'MODIFIED',
+                sortOrder: 'DESC',
             }));
             this.priority = 24;
             this.locationJSON = {};
@@ -349,13 +361,12 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
             this.location = new Y.Model({
                 locationId: 42,
                 sortOrder: 'ASC',
-                sortField: 'SECTION',
+                sortField: 'PRIORITY',
             });
             ItemView = Y.Base.create('itemView', Y.View, [], {});
             this.view = new Y.eZ.SubitemListMoreView({
                 container: '.container',
                 location: this.location,
-                items: [],
                 itemViewConstructor: ItemView,
             });
             this.location.set('childCount', this.view.get('limit') * 2 + 1);
@@ -417,7 +428,7 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
         },
 
         "Should ignore priority update": function () {
-            this.location.set('sortField', 'NAME');
+            this.location.set('sortField', 'MODIFIED');
             this.view.set('items', this.subitems.slice(10));
             this.itemView.fire('updatePriority', {
                 location: this.itemView.get('location'),
@@ -467,6 +478,113 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
         },
     });
 
+    toggleSortingTest = new Y.Test.Case({
+        name: "eZ Subitem ListMore View toggleSorting test",
+
+        setUp: function () {
+            this.location = new Mock(new Y.Model());
+            this.locationJSON = {};
+
+            Mock.expect(this.location, {
+                method: 'toJSON',
+                returns: this.locationJSON,
+            });
+            this.view = new Y.eZ.SubitemListMoreView({
+                location: this.location,
+                container: '.container',
+            });
+
+            this.modifiedColumnClass = '.ez-subitem-lastModificationDate-column';
+            this.descClass = 'ez-subitem-column-sortable-desc';
+            this.ascClass = 'ez-subitem-column-sortable-asc';
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        _assertClick: function (columnClass, expectedClass, expectedField, expectedOrder) {
+            var column = this.view.get('container').one(columnClass);
+
+            column.simulateGesture('tap', this.next(function () {
+                Assert.isTrue(
+                    column.hasClass(expectedClass),
+                    "The asc sorting class should have been applied"
+                );
+                Assert.areSame(
+                    expectedField,
+                    this.view.get('sortCondition').sortField,
+                    "SortCondition should have been updated"
+                );
+                Assert.areSame(
+                    expectedOrder,
+                    this.view.get('sortCondition').sortOrder,
+                    "SortCondition should have been updated"
+                );
+            }, this));
+            this.wait();
+        },
+
+        "Should set asc class when a sortable column is clicked": function () {
+            this.view.render();
+
+            this._assertClick(
+                this.modifiedColumnClass,
+                this.ascClass,
+                'MODIFIED',
+                'ASC'
+            );
+        },
+
+        "Should set desc class when a sortable column is clicked and already sorted asc": function () {
+            this.view.render();
+
+            this.view.get('container').one(this.modifiedColumnClass).addClass(this.ascClass);
+
+            this._assertClick(
+                this.modifiedColumnClass,
+                this.descClass,
+                'MODIFIED',
+                'DESC'
+            );
+        },
+
+        "Should set asc class when a sortable column is clicked and already sorted desc": function () {
+            this.view.render();
+
+            this.view.get('container').one(this.modifiedColumnClass).addClass(this.descClass);
+
+            this._assertClick(
+                this.modifiedColumnClass,
+                this.ascClass,
+                'MODIFIED',
+                'ASC'
+            );
+        },
+
+        "Should remove class when a another sortable column is clicked": function () {
+            var modifiedColumn;
+            this.view.render();
+
+            modifiedColumn = this.view.get('container').one(this.modifiedColumnClass);
+
+            modifiedColumn.addClass(this.ascClass);
+
+
+            this._assertClick(
+                '.ez-subitem-priority-column',
+                this.ascClass,
+                'PRIORITY',
+                'ASC'
+            );
+
+            Assert.isFalse(
+                modifiedColumn.hasClass(this.ascClass),
+                "The sort class should have been removed from the modified column"
+            );
+        },
+    });
+
 
     Y.Test.Runner.setName("eZ Subitem ListMore View tests");
     Y.Test.Runner.add(renderTest);
@@ -480,6 +598,7 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
     Y.Test.Runner.add(lockPriorityEditTest);
     Y.Test.Runner.add(updatePriorityTest);
     Y.Test.Runner.add(refreshTest);
+    Y.Test.Runner.add(toggleSortingTest);
 }, '', {
     requires: [
         'test', 'base', 'view', 'view-node-map', 'model', 'node-event-simulate',

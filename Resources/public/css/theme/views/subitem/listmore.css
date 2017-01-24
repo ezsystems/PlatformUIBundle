@@ -10,3 +10,22 @@
 .ez-view-subitemlistmoreview .ez-subitemlist-no-sub-items {
     font-style: italic;
 }
+
+.ez-view-subitemlistmoreview .ez-subitem-column-sortable {
+    cursor: pointer;
+}
+
+.ez-view-subitemlistmoreview .ez-subitem-column-sortable:hover:after {
+    content: "\E926";
+    vertical-align: bottom;
+}
+
+.ez-view-subitemlistmoreview .ez-subitem-column-sortable-desc:after {
+    content: "\E602";
+    vertical-align: bottom;
+}
+
+.ez-view-subitemlistmoreview .ez-subitem-column-sortable-asc:after {
+    content: "\E603";
+    vertical-align: bottom;
+}
