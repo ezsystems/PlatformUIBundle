@@ -123,10 +123,12 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
 
             this._resetSortOrderClass();
 
-            if (sortCondition.sortOrder === 'ASC') {
-                column.addClass(COLUMN_SORT_ASC_CLASS);
-            } else {
-                column.addClass(COLUMN_SORT_DESC_CLASS);
+            if (column) {
+                if (sortCondition.sortOrder === 'ASC') {
+                    column.addClass(COLUMN_SORT_ASC_CLASS);
+                } else {
+                    column.addClass(COLUMN_SORT_DESC_CLASS);
+                }
             }
         },
 
