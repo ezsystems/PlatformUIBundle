@@ -6,6 +6,8 @@ namespace EzSystems\PlatformUIBundle\Tests\ApplicationConfig\Providers;
 
 use EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo;
 use PHPUnit_Framework_TestCase;
+use Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -16,7 +18,7 @@ class RootInfoTest extends PHPUnit_Framework_TestCase
 
     public function testGetConfig()
     {
-        $provider = new RootInfo($this->createRequestStack(), $this->getAssetsHelperMock(), self::ASSETS_DIR);
+        $provider = new RootInfo($this->createRequestStack(), $this->getAssetsHelper(), self::ASSETS_DIR);
         self::assertEquals(
             ['root' => self::URI, 'assetRoot' => '/', 'ckeditorPluginPath' => '/' . self::ASSETS_DIR . '/vendors/', 'apiRoot' => '/'],
             $provider->getConfig()
@@ -24,17 +26,27 @@ class RootInfoTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return \Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper
+     */
+    protected function getAssetsHelper()
+    {
+        return new AssetsHelper(
+            $this->getAssetsPackagesMock()
+        );
+    }
+
+    /**
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getAssetsHelperMock()
+    protected function getAssetsPackagesMock()
     {
         $assetsHelper = $this
-            ->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper')
+            ->getMockBuilder(Packages::class)
             ->disableOriginalConstructor()
             ->getMock();
         $assetsHelper->expects($this->any())->method('getUrl')->willReturnMap([
-            ['/', null, null, '/'],
-            [self::ASSETS_DIR, null, null, '/' . self::ASSETS_DIR],
+            ['/', null, '/'],
+            [self::ASSETS_DIR, null, '/' . self::ASSETS_DIR],
         ]);
 
         return $assetsHelper;
