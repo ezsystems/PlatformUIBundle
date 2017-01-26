@@ -132,7 +132,13 @@ YUI.add('ez-image-editview', function (Y) {
                 container.one('.ez-image-properties-size').setContent(image.size);
                 container.one('.ez-image-properties-type').setContent(image.type);
                 container.one('.ez-image-view-original').setAttribute('href', image.originalUri);
-                removeButton.set('disabled', false);
+
+                if (this.get('isNotTranslatable')) {
+                    removeButton.set('disabled', true);
+                } else {
+                    removeButton.set('disabled', false);
+                }
+
                 if ( image.displayUri ) {
                     imgNode.setAttribute('src', image.displayUri);
                     this._removeImageBeingUpdatedClass();

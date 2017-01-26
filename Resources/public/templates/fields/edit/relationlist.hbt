@@ -4,6 +4,7 @@
             <p class="ez-fielddefinition-name">
                 {{ translate_property fieldDefinition.names }}{{#if isRequired}}*{{/if}}:
             </p>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
             <p class="ez-editfield-error-message">&nbsp;</p>
             <p class="ez-field-description is-showing-description">
                 {{ translate_property fieldDefinition.descriptions }}
@@ -35,7 +36,7 @@
                                     <td class="ez-relation-property">{{ publishedDate }}</td>
                                     <td class="ez-relation-property">{{ lastModificationDate }}</td>
                                     <td class="ez-relation-remove-content">
-                                        <button data-content-id="{{id}}" class=" ez-button ez-button-delete ez-font-icon pure-button">
+                                        <button data-content-id="{{id}}" class=" ez-button ez-button-delete ez-font-icon pure-button" {{#if ../isNotTranslatable}}disabled="disabled"{{/if}}>
                                             {{translate "relationlist.remove" "fieldedit"}}
                                         </button>
                                     </td>
@@ -59,7 +60,7 @@
                 {{/if}}
             {{/if}}
             <p class="ez-relation-tools">
-                <button class="ez-relation-discover ez-button ez-button-height ez-button-tree ez-font-icon pure-button">
+                <button class="ez-relation-discover ez-button ez-button-height ez-button-tree ez-font-icon pure-button" {{#if isNotTranslatable}}disabled="disabled"{{/if}}>
                     {{translate "relationlist.select" "fieldedit"}}
                 </button>
             </p>

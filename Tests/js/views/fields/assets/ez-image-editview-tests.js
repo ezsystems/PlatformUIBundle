@@ -86,7 +86,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
         Y.merge(Y.eZ.Test.BinaryBaseViewTest, {
             name: "eZ Image View test",
             ViewConstructor: Y.eZ.ImageEditView,
-            templateVariablesCount: 8,
+            templateVariablesCount: 9,
             fileTemplateVariable: "image",
             _additionalVariableAssertions: function (variables) {
                 Assert.areSame(
@@ -537,7 +537,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
                 }, this)));
                 this.wait();
             },
-            
+
             "Should refuse a non image file": function () {
                 var fileReader = this._configureFileReader(),
                     eventFacade = this._configureEventFacade("file.ogv", "video/ogg");
@@ -848,6 +848,29 @@ YUI.add('ez-image-editview-tests', function (Y) {
                 Assert.isFalse(
                     c.hasClass('is-image-being-updated'),
                     "The container should not have the is-image-being-updated class"
+                );
+            },
+
+            "Should disable the remove button when translating": function () {
+                this.field = {fieldValue: {name: "file.jpg"}};
+
+                this.view = new this.ViewConstructor({
+                    container: '.container',
+                    field: this.field,
+                    fieldDefinition: this.fieldDefinition,
+                    version: this.version,
+                    content: this.content,
+                    contentType: this.contentType,
+                    translating: true
+                });
+
+                this.view.render();
+
+                this.view._set('file',  {name: "file.jpg", uri: "path/to/file.jpg"});
+
+                Assert.isTrue(
+                    this.view.get('container').one('.ez-button-delete').get('disabled'),
+                    "The remove button should be disabled"
                 );
             },
         })

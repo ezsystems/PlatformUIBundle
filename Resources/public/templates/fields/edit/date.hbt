@@ -18,13 +18,16 @@
             class="ez-validated-input ez-date-input"
             id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
             {{#if isRequired}} required{{/if}}
+            {{#if isNotTranslatable}} readonly{{/if}}
             >
             {{#unless supportsDateInput}}
                 <button class="ez-date-cancel-button ez-font-icon"></button>
                 <button class="ez-date-calendar-button ez-button ez-button-calendar ez-font-icon pure-button">{{translate "date.calendar" "fieldedit"}}</button>
                 <div class="ez-yui-calendar-container" ></div>
             {{/unless}}
-            </div></div>
+            </div>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
+        </div>
         {{> ez_fielddescription_tooltip }}
         </div>
     </div>

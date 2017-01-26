@@ -39,8 +39,8 @@ YUI.add('ez-user-editview-tests', function (Y) {
             origTpl = this.view.template;
             this.view.template = function (vars) {
                 Assert.areEqual(
-                    9, Y.Object.size(vars),
-                    "The template should receive 9 variables"
+                    10, Y.Object.size(vars),
+                    "The template should receive 10 variables"
                 );
                 templateCalled = true;
                 return origTpl.apply(this, arguments);

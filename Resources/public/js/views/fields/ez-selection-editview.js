@@ -246,6 +246,10 @@ YUI.add('ez-selection-editview', function (Y) {
          * @protected
          */
         _removeValue: function (e) {
+            if (this.get('isNotTranslatable')) {
+                return;
+            }
+
             this._removeSelection(e.target.getAttribute('data-text'), e.target);
         },
 
@@ -265,6 +269,10 @@ YUI.add('ez-selection-editview', function (Y) {
          * @protected
          */
         _toggleShowSelectionUI: function (e) {
+            if (this.get('isNotTranslatable')) {
+                return;
+            }
+
             if ( !e.target || !e.target.hasClass('ez-selection-value') ) {
                 this.set('showSelectionUI', !this.get('showSelectionUI'));
             }

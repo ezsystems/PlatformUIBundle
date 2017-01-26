@@ -33,3 +33,7 @@
     font-weight: normal;
     margin-bottom: 1em;
 }
+
+.ez-view-relationeditview.is-not-translatable .ez-relation-content {
+    opacity: 0.3;
+}

@@ -5,6 +5,7 @@
                 {{ translate_property fieldDefinition.names }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
             <p class="ez-field-description is-showing-description">
                 {{ translate_property fieldDefinition.descriptions }}
             </p>
@@ -49,7 +50,8 @@
                         <input type="text"
                             class="ez-image-alt-text-input"
                             value="{{ alternativeText }}"
-                            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                            {{#if isNotTranslatable}} readonly{{/if}}>
                     </div>
                 </div>
             </div>
@@ -59,7 +61,7 @@
                     <a href="#" class="ez-binarybase-warning-hide ez-font-icon"></a>
                     <p class="ez-binarybase-warning-text ez-font-icon"></p>
                 </div>
-                <button class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
+                <button {{#if isNotTranslatable}}disabled="disabled" {{/if}} class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
                     <span class="ez-binarybase-upload-new">{{translate "image.upload" "fieldedit"}}</span>
                     <span class="ez-binarybase-upload-replace">{{translate "image.replace" "fieldedit"}}</span>
                 </button>

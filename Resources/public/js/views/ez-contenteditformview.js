@@ -71,10 +71,13 @@ YUI.add('ez-contenteditformview', function (Y) {
 
             Y.Object.each(fieldDefinitions, function (def) {
                 var EditView, view,
-                    field = version.getField(def.identifier, languageCode);
+                    field = version.getField(def.identifier, languageCode),
+                    translating;
 
                 if (field) {
                     try {
+                        translating = content.get('mainLanguageCode') !== '' && languageCode !== content.get('mainLanguageCode');
+
                         EditView = Y.eZ.FieldEditView.getFieldEditView(def.fieldType);
 
                         view = new EditView({
@@ -85,6 +88,7 @@ YUI.add('ez-contenteditformview', function (Y) {
                             field: field,
                             config: config,
                             languageCode: languageCode,
+                            translating: translating,
                             user: user,
                         });
                         that._fieldEditViewsByDefinitionId[def.id] = view;
