@@ -2,33 +2,29 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-YUI.add('ez-universaldiscoverybrowseview', function (Y) {
+YUI.add('ez-universaldiscoveryfinderview', function (Y) {
     "use strict";
     /**
-     * Provides the universal discovery browse method
+     * Provides the universal discovery finder method
      *
-     * @module ez-universaldiscoverybrowseview
+     * @module ez-universaldiscoveryfinderview
      */
     Y.namespace('eZ');
 
-    console.log('[DEPRECRATED] eZ.UniversalDiscoveryBrowseView is deprecated');
-    console.log('[DEPRECRATED] it will be removed from PlatformUI 2.0');
-    console.log('[DEPRECRATED] use eZ.UniversalDiscoveryFinderView instead');
-
     /**
-     * The universal discovery browse method view. It allows the user to pick a
-     * content in the repository by browsing using a tree.
+     * The universal discovery finder method view. It allows the user to pick a
+     * content in the repository with the explorer.
      *
      * @namespace eZ
-     * @class UniversalDiscoveryBrowseView
+     * @class UniversalDiscoveryFinderView
      * @constructor
      * @extends eZ.UniversalDiscoveryMethodBaseView
      */
-    Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create('universalDiscoveryBrowseView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {
+    Y.eZ.UniversalDiscoveryFinderView = Y.Base.create('universalDiscoveryFinderView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {
         initializer: function () {
-            this.on('*:treeNavigate', this._uiSelectContent);
             this.after(['multipleChange', 'isSelectableChange'], this._setSelectedViewAttrs);
             this.after('visibleChange', this._unselectContent);
+            this.on('*:explorerNavigate', this.selectContent);
         },
 
         /**
@@ -38,12 +34,12 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
          * @param {String} [name]
          */
         reset: function (name) {
-            if ( name === 'treeView' ) {
-                this.get('treeView').reset();
-                return;
-            }
             if ( name === 'selectedView' ) {
                 this.get('selectedView').reset();
+                return;
+            }
+            if ( name === 'finderExplorerView' ) {
+                this.get('finderExplorerView').reset();
                 return;
             }
             this.constructor.superclass.reset.apply(this, arguments);
@@ -53,11 +49,11 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
             var container = this.get('container');
 
             container.setHTML(this.template());
-            container.one('.ez-ud-browse-tree').append(
-                this.get('treeView').render().get('container')
-            );
-            container.one('.ez-ud-browse-selected').append(
+            container.one('.ez-ud-finder-selected').append(
                 this.get('selectedView').render().get('container')
+            );
+            container.one('.ez-ud-finder-explorer').append(
+                this.get('finderExplorerView').render().get('container')
             );
             return this;
         },
@@ -86,53 +82,28 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
         },
 
         /**
-         * `treeNavigate` event handler. It will select the node in the tree
-         * and call _selectContent that will set the content structure in the selected view
-         * @method _selectContent
-         * @protected
-         * @param {EventFacade} e
-         */
-        _uiSelectContent: function (e) {
-            var node = e.tree.getNodeById(e.nodeId);
-
-            e.preventDefault();
-            node.select();
-            this._selectContent(node.data);
-        },
-
-        /**
          * Public method to select a content
          *
          * @method selectContent
-         * @param {Object} struct the node data
+         * @param {eventFacade} e
+         * @param {eventFacade} e.data the node data
          */
-        selectContent: function (struct) {
-            this._selectContent(struct);
-        },
-
-        /**
-         * Fire the selectcontent event and set the content structure on the selected view so that it is
-         * displayed.
-         *
-         * @method _selectContent
-         * @protected
-         * @param {Object} struct the node data
-         */
-        _selectContent: function (struct) {
-            this._fireSelectContent(struct);
-            this.get('selectedView').set('contentStruct', struct);
+        selectContent: function (e) {
+            this._fireSelectContent(e.data);
+            this.get('selectedView').set('contentStruct', e.data);
         },
 
         /**
          * `visibleChange` event handler. It makes to reset the current
-         * selection when the browse method is hidden/showed
+         * selection when the explorer method is hidden/showed
          *
          * @method _unselectContent
          * @protected
          */
         _unselectContent: function () {
-            this._fireSelectContent(null);
-            this.get('selectedView').set('contentStruct', null);
+            if (this.get('visible')) {
+                this.get('finderExplorerView').wakeUp();
+            }
         },
 
         /**
@@ -165,31 +136,32 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
              * @default 'Browse'
              */
             title: {
-                valueFn: function () {
-                    return Y.eZ.trans('browse', {}, 'universaldiscovery');
-                },
+                value: 'Browse',
                 readOnly: true,
             },
 
             /**
              * @attribute identifier
-             * @default 'browse'
+             * @default 'finder'
              */
             identifier: {
-                value: 'browse',
+                value: 'finder',
                 readOnly: true,
             },
 
             /**
-             * Holds the tree view
+             * Holds the virtual root location
              *
-             * @attribute treeView
-             * @type {eZ.TreeView}
+             * @attribute virtualRootLocation
+             * @type {eZ.Location}
              */
-            treeView: {
+            virtualRootLocation: {
                 valueFn: function () {
-                    return new Y.eZ.TreeView({
-                        bubbleTargets: this,
+                    return new Y.eZ.Location({
+                        id: '/api/ezp/v2/content/locations/1',
+                        locationId: 1,
+                        sortField: 'SECTION',
+                        sortOrder: 'ASC',
                     });
                 },
             },
@@ -207,6 +179,21 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
                         bubbleTargets: this,
                         addConfirmButton: this.get('multiple'),
                         isAlreadySelected: this.get('isAlreadySelected'),
+                    });
+                },
+            },
+
+            /**
+             * Holds the finder explorer view that allows the user to explore contents
+             *
+             * @attribute finderExplorerView
+             * @type {eZ.UniversalDiscoveryFinderExplorerView}
+             */
+            finderExplorerView: {
+                valueFn: function () {
+                    return new Y.eZ.UniversalDiscoveryFinderExplorerView({
+                        bubbleTargets: this,
+                        startingLocation: this.get('virtualRootLocation'),
                     });
                 },
             },

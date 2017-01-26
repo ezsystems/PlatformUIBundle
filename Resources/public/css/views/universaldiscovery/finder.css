@@ -1,0 +1,28 @@
+.ez-view-universaldiscoveryfinderview,
+.ez-view-universaldiscoveryfinderview .ez-ud-finder-selected {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.ez-view-universaldiscoveryfinderview .ez-ud-finder-explorer,
+.ez-view-universaldiscoveryfinderview .ez-ud-finder-selected {
+    flex: 1 1 auto;
+}
+
+.ez-view-universaldiscoveryfinderview .ez-ud-finder-selected {
+    max-width: 20%;
+    margin-left: 1em;
+}
+
+.ez-view-universaldiscoveryfinderview .ez-ud-browse-selected {
+    margin-left: 1em;
+}
+
+.ez-view-universaldiscoveryfinderview .ez-ud-finder-explorer {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    white-space: nowrap;
+}

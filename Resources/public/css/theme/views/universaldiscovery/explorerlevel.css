@@ -1,0 +1,70 @@
+.ez-view-universaldiscoveryfinderexplorerlevelview {
+    background-color: #FFFFFF;
+    border-radius: 5px;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-parent-location:after {
+    content: "\E605";
+    color: #7A7A7A;
+    font-size: 140%;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list {
+    list-style-type: none;
+    width: 100%;
+    padding-left: 0em;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item {
+    padding: 0.2em 0 0.2em 0;
+    display: block;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 80%;
+    display: inline-block;
+    padding-left: 1em;
+    color: #7A7A7A;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item:hover {
+    background: #f0f0f0;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item:hover {
+    cursor: pointer;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-selected,
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item.is-selected,
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-selected.is-parent-location:after {
+    color: white;
+    background: #7AAABE;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview.has-selected-item .ez-explorer-level-list-item.is-selected,
+.ez-view-universaldiscoveryfinderexplorerlevelview.has-selected-item .ez-explorer-level-item.is-selected,
+.ez-view-universaldiscoveryfinderexplorerlevelview.has-selected-item .ez-explorer-level-list-item.is-selected.is-parent-location:after {
+    color: white;
+    background: #2B84B1;
+    font-weight: bold;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview.is-loading .ez-ud-finder-explorerlevel-loading:after {
+    color: #999;
+    font-size: 2em;
+    content: '\e61c';
+    animation: spin .7s infinite linear;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-ud-finder-explorerlevel-loading:after {
+    display: block;
+    text-align: center;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview.is-loading .ez-ud-finder-explorerlevel-loading:after {
+    padding: 0.2em;
+}
