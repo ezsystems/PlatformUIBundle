@@ -30,19 +30,23 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
      */
     Y.eZ.UniversalDiscoveryFinderExplorerLevelView = Y.Base.create(viewName, Y.eZ.TemplateBasedView, [Y.eZ.AsynchronousView], {
         initializer: function () {
+            var container = this.get('container');
             this._fireMethod = this._fireLocationSearch;
             this._watchAttribute = 'items';
-            this.get('container').addClass(IS_LOADING);
+            container.addClass(IS_LOADING);
 
             this.after('searchResultListChange', this._setItems);
             this.on('itemsChange', function () {
-                this.get('container').removeClass(IS_LOADING);
+                this.set('scroll', true);
+                container.removeClass(IS_LOADING);
             });
+            container.on('scroll', this._handleScroll, this);
+
             this.after('ownSelectedItemChange', function () {
                 if (!this.get('ownSelectedItem')) {
-                    this.get('container').removeClass(HAS_SELECTED_ITEM);
+                    container.removeClass(HAS_SELECTED_ITEM);
                 } else {
-                    this.get('container').addClass(HAS_SELECTED_ITEM);
+                    container.addClass(HAS_SELECTED_ITEM);
                 }
             });
             this._addDOMEventHandlers(events);
@@ -76,6 +80,25 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
         },
 
         /**
+         * Handles user scrolling to determine if it needs to load more items.
+         *
+         * @method _handleScroll
+         * @protected
+         */
+        _handleScroll: function (e) {
+            var isScrolledEnough = e.target._node.scrollHeight - e.target._node.scrollTop <= 2 * e.target._node.offsetHeight,
+                offset = this.get('offset'),
+                limit = this.get('limit');
+            
+            if (isScrolledEnough && limit + offset < this.get('searchResultCount') && this.get('scroll')) {
+                this.get('container').addClass(IS_LOADING);
+                this.set('scroll', false);
+                this.set('offset', offset + limit);
+                this._fireLocationSearch();
+            }
+        },
+
+        /**
          * Fires the `locationSearch` event to fetch the result list of the search.
          *
          * @method _fireLocationSearch
@@ -85,6 +108,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
             this.fire('locationSearch', {
                 viewName: 'udwexplorerlevel-',
                 resultAttribute: 'searchResultList',
+                resultTotalCountAttribute: 'searchResultCount',
                 loadContent: true,
                 loadContentType: true,
                 search: {
@@ -92,8 +116,8 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
                         "ParentLocationIdCriterion": this.get('parentLocation').get('locationId'),
                     },
                     sortLocation: this.get('parentLocation'),
-                    offset: 0,
-                    limit: 50,
+                    offset: this.get('offset'),
+                    limit: this.get('limit'),
                 },
             });
         },
@@ -120,9 +144,13 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
 
                 items.push(data);
             }, this);
-            this.set('items', items);
+            if (this.get('items').length) {
+                this.set('items', this.get('items').concat(items));
+            } else {
+                this.set('items', items);
+            }
         },
-
+        
         /**
          * Finds location in item by a given locationId and returns the item.
          *
@@ -220,6 +248,48 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
              * @type Number
              */
             depth: {},
+
+            /**
+             * The offset to start the locationSearch to
+             *
+             * @attribute offset
+             * @type Number
+             */
+            offset: {
+                value: 0
+            },
+
+            /**
+             * The limit of the results
+             *
+             * @attribute limit
+             * @type Number
+             */
+            limit: {
+                value: 50
+            },
+
+            /**
+             * Flag to stop the scroll event handler
+             *
+             * @attribute scroll
+             * @type Boolean
+             */
+            scroll: {
+                value: true
+            },
+
+            /**
+             * The number of total search results. -1 means we are waiting for
+             * the results.
+             *
+             * @attribute searchResultCount
+             * @default -1
+             * @type Number
+             */
+            searchResultCount: {
+                value: -1,
+            },
         },
     });
 });
