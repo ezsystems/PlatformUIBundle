@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-01-31T10:50:08Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -10,25 +10,25 @@
         <source>Available content types</source>
         <target>Available content types</target>
         <note>key: contenttypeselector.available.content.type</note>
-        <jms:reference-file>./Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
+        <jms:reference-file>Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="3fc804a965ff2e460abe746886d45fd7d40e9d3b" resname="contenttypeselector.choose.content.type">
         <source>Choose a content type</source>
         <target>Choose a content type</target>
         <note>key: contenttypeselector.choose.content.type</note>
-        <jms:reference-file>./Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
+        <jms:reference-file>Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="2f48fb3d3a4a4b1347c8f9019a2e9fa1cc78a674" resname="contenttypeselector.filter.group">
         <source>Filter by group</source>
         <target>Filter by group</target>
         <note>key: contenttypeselector.filter.group</note>
-        <jms:reference-file>./Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
+        <jms:reference-file>Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="e1d6420dd5ff75aabc939563cb4e874c0f9cbb00" resname="contenttypeselector.start.typing">
         <source>start typing to refine the list</source>
         <target>start typing to refine the list</target>
         <note>key: contenttypeselector.start.typing</note>
-        <jms:reference-file>./Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
+        <jms:reference-file>Resources/public/templates/contenttypeselector.hbt</jms:reference-file>
       </trans-unit>
     </body>
   </file>

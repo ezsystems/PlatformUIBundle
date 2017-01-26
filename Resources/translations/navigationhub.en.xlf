@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-01-31T10:50:08Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -10,103 +10,103 @@
         <source>Failed to load root locations</source>
         <target>Failed to load root locations</target>
         <note>key: failed.to.load.root.locations</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="55525e1b3dfd8787fd202aed45fb04494e3242d0" resname="logout">
         <source>Logout</source>
         <target>Logout</target>
         <note>key: logout</note>
-        <jms:reference-file>./Resources/public/js/views/ez-usermenuview.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/ez-usermenuview.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="2338455ec2fdf1d720446cbf9103ea5e44c772d2" resname="navigationhub.content.structure">
         <source>Content structure</source>
         <target>Content structure</target>
         <note>key: navigationhub.content.structure</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="404d24ec036d0f0f7590d7d63fa9ba64d19116e7" resname="navigationhub.content_type.dashboard_title">
         <source>Content types</source>
         <target>Content types</target>
         <note>key: navigationhub.content_type.dashboard_title</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="7937b453cfa9e72eadf1e64ca4cfbee7ba443014" resname="navigationhub.dashboard.title">
         <source>Admin dashboard</source>
         <target>Admin dashboard</target>
         <note>key: navigationhub.dashboard.title</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="6a7e8372aebbd558cab8c19c5caecc1deee66024" resname="navigationhub.language.list">
         <source>Languages</source>
         <target>Languages</target>
         <note>key: navigationhub.language.list</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="b3ae3658840e3e375d5c88eb4abc96f3efe0ade8" resname="navigationhub.logo.ez">
         <source>Logo eZ</source>
         <target>Logo eZ</target>
         <note>key: navigationhub.logo.ez</note>
-        <jms:reference-file>./Resources/public/templates/navigationhub.hbt</jms:reference-file>
+        <jms:reference-file>Resources/public/templates/navigationhub.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="7bd6ca1c2f35a3578ca48a6ef671f4b370a4f93a" resname="navigationhub.media.library">
         <source>Media library</source>
         <target>Media library</target>
         <note>key: navigationhub.media.library</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="4f5a9c342a40becc3f806f44fdda706f513cea4d" resname="navigationhub.more">
         <source>More</source>
         <target>More</target>
         <note>key: navigationhub.more</note>
-        <jms:reference-file>./Resources/public/templates/navigationhub.hbt</jms:reference-file>
+        <jms:reference-file>Resources/public/templates/navigationhub.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="cb156e3f0e5acefaace3ae69a36edcfdd4335035" resname="navigationhub.role.list">
         <source>Roles</source>
         <target>Roles</target>
         <note>key: navigationhub.role.list</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="05bd808967aac1311d193cc98d15b0f736c8343d" resname="navigationhub.section.list">
         <source>Sections</source>
         <target>Sections</target>
         <note>key: navigationhub.section.list</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="2ee246e2cc6a385e5ae2d5cbc7b5611e2de3a799" resname="navigationhub.system.information">
         <source>System information</source>
         <target>System information</target>
         <note>key: navigationhub.system.information</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="5bf12850a3a99f7bbd51deb7c695c07e39bcbf0e" resname="navigationhub.user.list">
         <source>Users</source>
         <target>Users</target>
         <note>key: navigationhub.user.list</note>
-        <jms:reference-file>./Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="9dad31674a58b4c29df317da824ecd407e79d708" resname="navigationhub.zone.admin">
         <source>Admin Panel</source>
         <target>Admin Panel</target>
         <note>key: navigationhub.zone.admin</note>
-        <jms:reference-file>./Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="f32918f2df2d2ecd3aa263a188187635d45c3d49" resname="navigationhub.zone.platform">
         <source>Content</source>
         <target>Content</target>
         <note>key: navigationhub.zone.platform</note>
-        <jms:reference-file>./Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="e296e7a38799c79dee11c3e18ac42150c9f02673" resname="navigationhub.zone.studio">
         <source>Page</source>
         <target>Page</target>
         <note>key: navigationhub.zone.studio</note>
-        <jms:reference-file>./Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="6ab1d96fc11727d94958674d980864844202f89a" resname="navigationhub.zone.studioplus">
         <source>Performance</source>
         <target>Performance</target>
         <note>key: navigationhub.zone.studioplus</note>
-        <jms:reference-file>./Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
       </trans-unit>
     </body>
   </file>
