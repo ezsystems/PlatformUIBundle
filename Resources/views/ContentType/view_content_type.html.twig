@@ -33,8 +33,11 @@
                 }}
             </p>
 
-            <section>
-                <h2 class="ez-contenttype-title">{{ 'content_type.metadata.title'|trans|desc("Global properties")}}</h2>
+            <details open="open">
+                <summary class="ez-contenttype-title ez-contenttype-summary ez-font-icon">
+                    {{ 'content_type.metadata.title'|trans|desc("Global properties")}}
+                </summary>
+
                 <div class="ez-contenttype-metadata">
                     <div class="ez-contenttype-metadata-name">{{ "content_type.name"|trans|desc("Name") }}</div>
                     <div class="ez-contenttype-metadata-value">{{ content_type_name }}</div>
@@ -76,14 +79,20 @@
                     </div>
                     <div class="ez-contenttype-metadata-value">{{ 'content_type.default_availability.value'|transchoice(content_type.defaultAlwaysAvailable)|desc("{0} Not available|{1} Available") }}</div>
                 </div>
-            </section>
+            </details>
 
-            <section>
-                <h2 class="ez-contenttype-title">{{ 'content_type.content.title'|trans|desc('Content field definitions') }}</h2>
+            <details open="open">
+                <summary class="ez-contenttype-title ez-contenttype-summary ez-font-icon">
+                    {{ 'content_type.content.title'|trans|desc('Content field definitions') }}
+                </summary>
 
                 {% for group, field_definitions in fielddefinitions_by_group %}
-                    <section class="ez-field-definition-group">
-                        <h3 class="ez-contenttype-subtitle">{{ group|trans([], 'ezplatform_fields_groups') }}</h3>
+
+                    <details class="ez-field-definition-group" open="open">
+                        <summary class="ez-contenttype-subtitle ez-contenttype-summary ez-font-icon">
+                            {{ group|trans([], 'ezplatform_fields_groups') }}
+                        </summary>
+
                         <table class="ez-field-definitions">
                             <thead>
                                 <tr>
@@ -103,34 +112,40 @@
                                 </tr>
                                 <tr>
                                     <td colspan="4">
-                                        <ul class="ez-field-definition-properties">
-                                            <li class="ez-field-definition-property">
-                                                <div class="ez-field-definition-property-name">{{ 'field_definition.description'|trans|desc("Description") }}</div>
-                                                <div class="ez-field-definition-property-value">{#{ field_definition.description(language_code) }#}</div>
-                                            </li>
-                                            <li class="ez-field-definition-property">
-                                                <div class="ez-field-definition-property-name">{{ 'field_definition.required'|trans|desc("Required") }}</div>
-                                                <div class="ez-field-definition-property-value">{{ 'yes_no'|transchoice(field_definition.isRequired)|desc("{0} No|{1} Yes") }}</div>
-                                            </li>
-                                            <li class="ez-field-definition-property">
-                                                <div class="ez-field-definition-property-name">{{ 'field_definition.searchable'|trans|desc("Searchable") }}</div>
-                                                <div class="ez-field-definition-property-value">{{ 'yes_no'|transchoice(field_definition.isSearchable)|desc("{0} No|{1} Yes") }}</div>
-                                            </li>
-                                            <li class="ez-field-definition-property">
-                                                <div class="ez-field-definition-property-name">{{ 'field_definition.translatable'|trans|desc("Translatable") }}</div>
-                                                <div class="ez-field-definition-property-value">{{ 'yes_no'|transchoice(field_definition.isTranslatable)|desc("{0} No|{1} Yes") }}</div>
-                                            </li>
-                                        </ul>
+                                        <details class="ez-field-definition-info">
+                                            <summary class="ez-field-definition-info-title ez-contenttype-summary ez-font-icon">
+                                                {{ "field_definition.info"|trans|desc("Additional Information") }}
+                                            </summary>
+                                            <ul class="ez-field-definition-properties">
+                                                <li class="ez-field-definition-property">
+                                                    <div class="ez-field-definition-property-name">{{ 'field_definition.description'|trans|desc("Description") }}</div>
+                                                    <div class="ez-field-definition-property-value">{#{ field_definition.description(language_code) }#}</div>
+                                                </li>
+                                                <li class="ez-field-definition-property">
+                                                    <div class="ez-field-definition-property-name">{{ 'field_definition.required'|trans|desc("Required") }}</div>
+                                                    <div class="ez-field-definition-property-value">{{ 'yes_no'|transchoice(field_definition.isRequired)|desc("{0} No|{1} Yes") }}</div>
+                                                </li>
+                                                <li class="ez-field-definition-property">
+                                                    <div class="ez-field-definition-property-name">{{ 'field_definition.searchable'|trans|desc("Searchable") }}</div>
+                                                    <div class="ez-field-definition-property-value">{{ 'yes_no'|transchoice(field_definition.isSearchable)|desc("{0} No|{1} Yes") }}</div>
+                                                </li>
+                                                <li class="ez-field-definition-property">
+                                                    <div class="ez-field-definition-property-name">{{ 'field_definition.translatable'|trans|desc("Translatable") }}</div>
+                                                    <div class="ez-field-definition-property-value">{{ 'yes_no'|transchoice(field_definition.isTranslatable)|desc("{0} No|{1} Yes") }}</div>
+                                                </li>
+                                            </ul>
 
-                                        {{ ez_render_fielddefinition_settings(field_definition) }}
+                                            {{ ez_render_fielddefinition_settings(field_definition) }}
+
+                                        </details>
                                     </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
-                    </section>
+                    </details>
                 {% endfor %}
-            </section>
+            </details>
 
             <div class="ez-toolbar">
             {% if can_edit %}
