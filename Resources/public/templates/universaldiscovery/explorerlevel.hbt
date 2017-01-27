@@ -1,6 +1,5 @@
 <a class="ez-ud-finder-explorerlevel-anchor">.</a>
 <div class="ez-ud-finder-explorerlevel-content ez-asynchronousview">
-    <div class="ez-ud-finder-explorerlevel-loading ez-font-icon"></div>
     {{#if loadingError}}
         <p class="ez-asynchronousview-error ez-font-icon">
             <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button"></button>
@@ -20,6 +19,7 @@
             {{/each}}
         </ul>
     {{/if}}
+    <div class="ez-ud-finder-explorerlevel-loading ez-font-icon"></div>
 </div>
 
 

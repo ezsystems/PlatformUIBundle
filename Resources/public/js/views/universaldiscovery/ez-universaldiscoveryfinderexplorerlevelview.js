@@ -30,19 +30,46 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
      */
     Y.eZ.UniversalDiscoveryFinderExplorerLevelView = Y.Base.create(viewName, Y.eZ.TemplateBasedView, [Y.eZ.AsynchronousView], {
         initializer: function () {
+            var container = this.get('container');
+
+            /**
+             * FLag to indicate if we are currently watching the scroll and trying to load items.
+             *
+             * @property _watchingScroll
+             * @type Boolean
+             * @protected
+             */
+            this._watchingScroll = true;
             this._fireMethod = this._fireLocationSearch;
             this._watchAttribute = 'items';
-            this.get('container').addClass(IS_LOADING);
+            container.addClass(IS_LOADING);
 
-            this.after('searchResultListChange', this._setItems);
-            this.on('itemsChange', function () {
-                this.get('container').removeClass(IS_LOADING);
+            this.after('activeChange', function () {
+                if (!this.get('active')) {
+                    this.get('container').addClass(IS_LOADING);
+                }
             });
+            this.on('itemsChange', function () {
+                if (this.get('items')) {
+                    this.get('container').addClass(IS_LOADING);
+                } else {
+                    this._watchingScroll = true;
+                    container.removeClass(IS_LOADING);
+                }
+            });
+            this.after('offsetChange', function () {
+                this._watchingScroll = false;
+                this.get('container').addClass(IS_LOADING);
+                this._fireLocationSearch();
+            });
+            container.plug(Y.Plugin.ScrollInfo);
+            container.scrollInfo.on('scrollDown', this._handleScroll, this);
+
             this.after('ownSelectedItemChange', function () {
                 if (!this.get('ownSelectedItem')) {
-                    this.get('container').removeClass(HAS_SELECTED_ITEM);
+                    container.removeClass(HAS_SELECTED_ITEM);
                 } else {
-                    this.get('container').addClass(HAS_SELECTED_ITEM);
+                    container.addClass(HAS_SELECTED_ITEM);
                 }
             });
             this._addDOMEventHandlers(events);
@@ -67,12 +94,52 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
         },
 
         /**
+         * Custom reset implementation to explicitly reset the items.
+         *
+         * @method reset
+         */
+        reset: function (name) {
+            if (name == 'items') {
+                this.set('items', null);
+            } else {
+                this.constructor.superclass.reset.apply(this, arguments);
+            }
+        },
+
+        /**
          * Scrolls to fully display the levelView.
          *
          * @method displayLevelView
          */
         displayLevelView: function () {
             this.get('container').one('.ez-ud-finder-explorerlevel-anchor').scrollIntoView({behavior: "smooth"});
+        },
+
+        /**
+         * Handles user scrolling to determine if it needs to load more items.
+         *
+         * @method _handleScroll
+         * @protected
+         */
+        _handleScroll: function () {
+            var offset = this.get('offset'),
+                limit = this.get('limit');
+
+            if (this._watchingScroll && this._hasScrolledEnough() && limit + offset < this.get('childCount')) {
+                this.set('offset', offset + limit);
+            }
+        },
+
+        /**
+         * Determines if user has scrolled enough to try to load other items.
+         *
+         * @method _hasScrolledEnough
+         * @protected
+         */
+        _hasScrolledEnough: function () {
+            var container = this.get('container');
+
+            return container.get('scrollHeight') - container.get('scrollTop') <= 2 * container.get('offsetHeight');
         },
 
         /**
@@ -84,7 +151,8 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
         _fireLocationSearch: function () {
             this.fire('locationSearch', {
                 viewName: 'udwexplorerlevel-',
-                resultAttribute: 'searchResultList',
+                resultAttribute: 'items',
+                resultTotalCountAttribute: 'childCount',
                 loadContent: true,
                 loadContentType: true,
                 search: {
@@ -92,22 +160,23 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
                         "ParentLocationIdCriterion": this.get('parentLocation').get('locationId'),
                     },
                     sortLocation: this.get('parentLocation'),
-                    offset: 0,
-                    limit: 50,
+                    offset: this.get('offset'),
+                    limit: this.get('limit'),
                 },
             });
         },
 
         /**
-         * `searchResultListChange` event handler. It sets items attribute with the results.
+         * items attribute setter. It sets items attribute with the results.
          *
          * @method _setItems
+         * @param {Array} newItems
          * @protected
          */
-        _setItems: function () {
+        _setItems: function (newItems) {
             var items = [];
 
-            Y.Array.each(this.get('searchResultList'), function (hit) {
+            Y.Array.each(newItems, function (hit) {
                 var location = hit.location,
                     contentType = hit.contentType,
                     content = hit.content,
@@ -120,7 +189,11 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
 
                 items.push(data);
             }, this);
-            this.set('items', items);
+            if (this.get('items')) {
+                return  this.get('items').concat(items);
+            } else {
+                return items;
+            }
         },
 
         /**
@@ -136,7 +209,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
 
             Y.Array.each(this.get('items'), function (hit) {
                 if (hit.location.get('locationId') == locationId) {
-                  item = hit;
+                    item = hit;
                 }
             }, this);
             return item;
@@ -153,7 +226,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
                 item = this._findItemByLocationId(nodeLocationId);
             if ((this.get('selectLocationId') != nodeLocationId || !this.get('ownSelectedItem')) && item) {
                 this.set('selectLocationId', nodeLocationId);
-                
+
                 /**
                  * Navigates to the given item's location in the explorer.
                  *
@@ -179,7 +252,11 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
              * @type Array
              */
             items: {
-                value: []
+                setter: function (resultList) {
+                    if (resultList !== null) {
+                        return this._setItems(resultList);
+                    }
+                }
             },
 
             /**
@@ -190,16 +267,6 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
              */
             ownSelectedItem: {
                 value: false
-            },
-
-            /**
-             * The search result list containing the result of the locationSearch
-             *
-             * @attribute searchResultList
-             * @type Array
-             */
-            searchResultList: {
-                value: []
             },
 
             /**
@@ -220,6 +287,34 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
              * @type Number
              */
             depth: {},
+
+            /**
+             * The offset to start the locationSearch to
+             *
+             * @attribute offset
+             * @type Number
+             */
+            offset: {
+                value: 0
+            },
+
+            /**
+             * The limit of the results
+             *
+             * @attribute limit
+             * @type Number
+             */
+            limit: {
+                value: 50
+            },
+
+            /**
+             * The number of total child the parent location has.
+             *
+             * @attribute childCount
+             * @type Number
+             */
+            childCount: {},
         },
     });
 });

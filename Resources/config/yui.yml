@@ -621,6 +621,7 @@ system:
                         - 'ez-asynchronousview'
                         - 'event-tap'
                         - 'universaldiscoveryfinderexplorerlevelview-ez-template'
+                        - 'node-scroll-info'
                     path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryfinderexplorerlevelview.js"
                 universaldiscoveryfinderexplorerlevelview-ez-template:
                     type: 'template'

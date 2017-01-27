@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
-    var renderTest, activeTest, searchResultChangeTest, navigateTest, scrollTest, removeHighlightTest,
+    var renderTest, activeTest, searchResultChangeTest, navigateTest, scrollTest, removeHighlightTest, loadMoreItemsTest, resetTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -19,8 +19,8 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
                 returns: this.locationId,
             });
             this.view = new Y.eZ.UniversalDiscoveryFinderExplorerLevelView({
-                container: '.container', 
-                items: this.items, 
+                container: '.container',
+                items: this.items,
                 parentLocation: this.parentLocationMock
             });
         },
@@ -95,7 +95,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             this.view.on('locationSearch', this.next(function () {
                 Assert.isNull(
                     this.view.get('items'),
-                    "The `items` attribute should be resetted to null"
+                    "The `items` attribute should be null"
                 );
                 Assert.isFalse(
                     this.view.get('loadingError'),
@@ -106,7 +106,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             this.view.get('container').one('.ez-asynchronousview-retry').simulateGesture('tap');
             this.wait();
         },
-        
+
         "Test available variables in the template": function () {
             var origTpl = this.view.template;
 
@@ -142,10 +142,10 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             var locationSearchFired = false;
 
             this.view.on('*:locationSearch', function () {
-               locationSearchFired = true;
+                locationSearchFired = true;
             });
             this.view.set('active', true);
-             Assert.isTrue(locationSearchFired, 'locationSearch should have been fired');
+            Assert.isTrue(locationSearchFired, 'locationSearch should have been fired');
         },
     });
 
@@ -154,11 +154,19 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         context.location = new Mock();
         context.contentType = new Mock();
         context.content = new Mock();
+        context.parentLocationMock = new Mock();
         context.locationId = 2;
         context.contentJson = {};
         context.locationJson = {locationId: context.locationId};
         context.contentInfoJson = {};
         context.contentTypeJson = {};
+        context.limit = 50;
+        context.offset = 0;
+        Mock.expect(context.parentLocationMock, {
+            method: 'get',
+            args: ['locationId'],
+            returns: context.locationId,
+        });
         Mock.expect(context.location, {
             method: 'get',
             args: [Y.Mock.Value.String],
@@ -188,11 +196,14 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         });
         context.result = {location: context.location, contentType: context.contentType, content: context.content};
         context.searchResult = [context.result];
+        context.searchResultLength = context.searchResult.length;
         context.view = new Y.eZ.UniversalDiscoveryFinderExplorerLevelView({
             container: '.container',
             depth: 999,
+            parentLocation: context.parentLocationMock,
+            offset: context.offset,
+            limit: context.limit,
         });
-
     };
 
     navigateTest = new Y.Test.Case({
@@ -211,7 +222,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             var locationFound = false;
 
             this.view.set('ownSelectedItem', true);
-            this.view.set('searchResultList', this.searchResult);
+            this.view.set('items', this.searchResult);
             this.view.on('explorerNavigate', this.next(function (e) {
                 Y.Array.each(this.view.get('items'), function (item) {
                     if (item.location.get('locationId') == this.locationId) {
@@ -232,7 +243,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
 
             this.locationId = 86;
             this.view.set('ownSelectedItem', false);
-            this.view.set('searchResultList', this.searchResult);
+            this.view.set('items', this.searchResult);
             this.view.on('explorerNavigate', function (e) {
                 fireExplorerNavigate = true;
             }, this);
@@ -249,7 +260,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
 
             this.view.set('selectLocationId', this.location.get('locationId'));
             this.view.set('ownSelectedItem', true);
-            this.view.set('searchResultList', this.searchResult);
+            this.view.set('items', this.searchResult);
             this.view.on('explorerNavigate', function () {
                 fireExplorerNavigate = true;
             }, this);
@@ -266,7 +277,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
 
             this.view.set('selectLocationId', this.location.get('locationId'));
             this.view.set('ownSelectedItem', false);
-            this.view.set('searchResultList', this.searchResult);
+            this.view.set('items', this.searchResult);
             this.view.on('explorerNavigate', function () {
                 fireExplorerNavigate = true;
             }, this);
@@ -279,7 +290,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         },
 
     });
-    
+
     searchResultChangeTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Finder Explorer search result change tests',
 
@@ -293,7 +304,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         },
 
         "Should update items": function () {
-           this.view.set('searchResultList', this.searchResult);
+            this.view.set('items', this.searchResult);
 
             Assert.areSame(this.view.get('items')[0].location, this.result.location, 'item should have a location');
             Assert.areSame(this.view.get('items')[0].content, this.result.content, 'item should have a location');
@@ -379,6 +390,87 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         },
     });
 
+    loadMoreItemsTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Finder Explorer load more items tests',
+
+        setUp: function () {
+            _fullLevelViewSetup(this);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should update offset and fire locationSearch when scolling to unload items ": function () {
+            var container = this.view.get('container'),
+                locationSearchFired = false,
+                offset = this.view.get('offset');
+
+            this.view.on('*:locationSearch', Y.bind(function () {
+                Assert.isTrue(container.hasClass('is-loading'), 'Should have the loading icon');
+                locationSearchFired = true;
+            }), this);
+
+            container.setStyle('margin-top', 5000);
+            this.view.set('childCount', 999);
+
+            container.scrollInfo.fire('scrollDown');
+
+            Assert.areSame(this.view.get('offset'), offset + this.view.get('limit'), 'offset should be updated');
+            Assert.isTrue(locationSearchFired, 'locationSearch should have been fired');
+        },
+
+        "Should concat the new loaded items": function () {
+            var itemsLength = 10,
+                itemsArray = [];
+
+            for (var i = 0; i < itemsLength; i++) {
+                itemsArray.push(this.result);
+            }
+            this.view.set('items', itemsArray);
+            this.view.set('items', this.searchResult);
+
+            Assert.areSame(
+                this.view.get('items').length,
+                this.searchResultLength + itemsLength,
+                "items attribute should be filled with new item"
+            );
+        },
+    });
+
+    resetTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Finder Explorer reset tests',
+
+        setUp: function () {
+            _fullLevelViewSetup(this);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should set items to null and add loading class on reset": function () {
+            var container = this.view.get('container');
+
+            this.view.set('items', this.searchResult);
+            this.view.reset();
+            Assert.isTrue(container.hasClass('is-loading'), 'Should have the loading icon');
+            Assert.isNull(this.view.get('items'), 'items attribute should be resetted');
+        },
+
+        "Should add loading class when setting items to null": function () {
+            var container = this.view.get('container');
+
+            this.view.set('items', this.searchResult);
+            Assert.isFalse(container.hasClass('is-loading'), 'Should NOT have the loading icon');
+            
+            this.view.set('items', null);
+            Assert.isTrue(container.hasClass('is-loading'), 'Should have the loading icon');
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Finder Explorer Level View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(activeTest);
@@ -386,6 +478,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
     Y.Test.Runner.add(searchResultChangeTest);
     Y.Test.Runner.add(scrollTest);
     Y.Test.Runner.add(removeHighlightTest);
-
+    Y.Test.Runner.add(loadMoreItemsTest);
+    Y.Test.Runner.add(resetTest);
 
 }, '', {requires: ['test', 'view', 'ez-universaldiscoveryfinderexplorerlevelview', 'node-screen', 'node-style', 'node-event-simulate']});
