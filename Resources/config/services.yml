@@ -106,7 +106,7 @@ services:
         class: "%ezsystems.platformui.application_config.provider.root_info.class%"
         arguments:
             - "@request_stack"
-            - "@templating.helper.assets"
+            - "@assets.packages"
             - "%ez_platformui.external_assets_public_dir%"
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'rootInfo'}

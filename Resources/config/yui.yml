@@ -235,7 +235,7 @@ system:
                         - 'ez-translateproperty'
                         - 'ez-searchviewservice'
                         - 'ez-searchview'
-                    path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
+                    path: "%ez_platformui.public_dir%/js/apps/ez-platformuiapp.js"
                 ez-viewservice:
                     requires: ['base', 'parallel']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-viewservice.js"

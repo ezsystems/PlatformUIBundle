@@ -6,7 +6,6 @@ namespace EzSystems\PlatformUIBundle\Tests\ApplicationConfig\Providers;
 
 use EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo;
 use PHPUnit_Framework_TestCase;
-use Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -18,20 +17,10 @@ class RootInfoTest extends PHPUnit_Framework_TestCase
 
     public function testGetConfig()
     {
-        $provider = new RootInfo($this->createRequestStack(), $this->getAssetsHelper(), self::ASSETS_DIR);
+        $provider = new RootInfo($this->createRequestStack(), $this->getAssetsPackagesMock(), self::ASSETS_DIR);
         self::assertEquals(
             ['root' => self::URI, 'assetRoot' => '/', 'ckeditorPluginPath' => '/' . self::ASSETS_DIR . '/vendors/', 'apiRoot' => '/'],
             $provider->getConfig()
-        );
-    }
-
-    /**
-     * @return \Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper
-     */
-    protected function getAssetsHelper()
-    {
-        return new AssetsHelper(
-            $this->getAssetsPackagesMock()
         );
     }
 
