@@ -775,13 +775,13 @@
 /** TOOLBAR **/
 
 .ae-editable ::-moz-selection {
-  background: #c0cbd4 !important;
+  background: #869CAD !important;
   color: #fff;
   text-shadow: none;
 }
 
 .ae-editable ::selection {
-  background: #c0cbd4 !important;
+  background: #869CAD !important;
   color: #fff;
   text-shadow: none;
 }

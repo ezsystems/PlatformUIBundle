@@ -168,6 +168,12 @@
         <jms:reference-file>Resources/public/js/alloyeditor/buttons/embed.js</jms:reference-file>
         <jms:reference-file>Resources/public/js/alloyeditor/buttons/embedhref.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="222b96ae048010b9610bf0bbe6cf6569b79c2a26" resname="select.a.content.to.link.to">
+        <source>Select a Content item to link</source>
+        <target>Select a Content item to link</target>
+        <note>key: select.a.content.to.link.to</note>
+        <jms:reference-file>Resources/public/js/alloyeditor/buttons/linkedit.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="180522f369f637cf58b08e8526b86bf4fe9f6e96" resname="select.an.image.to.embed">
         <source>Select an image to embed</source>
         <target>Select an image to embed</target>
@@ -186,6 +192,12 @@
         <target>Select another image</target>
         <note>key: select.another.image</note>
         <jms:reference-file>Resources/public/js/alloyeditor/buttons/imagehref.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="391b814dc27a7b6065e56676a1d6a3fc17bb7b95" resname="select.content">
+        <source>Select content</source>
+        <target>Select content</target>
+        <note>key: select.content</note>
+        <jms:reference-file>Resources/public/js/alloyeditor/buttons/linkedit.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="3c6de1b7dd91465d437ef415f94f36afc1fbc8a8" resname="title">
         <source>Title</source>

@@ -36,6 +36,12 @@
     margin-left: 1em;
 }
 
+.ez-ae-container-edit-link .ez-ae-edit-link-block-discover {
+    flex: 0;
+    white-space: nowrap;
+    margin-right: 1ex;
+}
+
 .ae-ui .ez-ae-container-edit-link .ez-ae-button {
     line-height: 2em;
     height: 2em;
@@ -61,6 +67,10 @@
 .ez-ae-container-edit-link .ez-ae-edit-label {
     display: block;
     padding-bottom: 0.3em;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-block-discover .ez-ae-edit-label {
+    visibility: hidden;
 }
 
 .ez-ae-container-edit-link .ez-ae-edit-link-target-choice {
