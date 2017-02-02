@@ -86,7 +86,7 @@ YUI.add('ez-versionmodel', function (Y) {
 
             contentService.createContentDraft(options.contentId, function (error, response) {
                 if ( error ) {
-                    return callback(error);
+                    return callback(error, response);
                 }
                 version.setAttrs(version.parse(response));
                 version._updateVersion(options, callback);
@@ -121,7 +121,7 @@ YUI.add('ez-versionmodel', function (Y) {
                 version.publishVersion({api: options.api}, function (error, pubResponse) {
                     if ( error ) {
                         version.undo();
-                        return cb(error);
+                        return cb(error, pubResponse);
                     }
                     version.set('status', 'PUBLISHED');
                     cb();

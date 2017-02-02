@@ -15,7 +15,7 @@ echo '# Extract PlatformUIBundle';
   "$@"
 
 echo '# Clean file references';
-sed -i "s|/../../../../.././vendor/ezsystems/platform-ui-bundle/|/|g" ./vendor/ezsystems/platform-ui-bundle/Resources/translations/*.xlf
-sed -i "s|/vendor/ezsystems/platform-ui-bundle/|/|g" ./vendor/ezsystems/platform-ui-bundle/Resources/translations/*.xlf
+sed -i "s|>.*/platform-ui-bundle/|>|g" ./vendor/ezsystems/platform-ui-bundle/Resources/translations/*.xlf
 
+cd vendor/ezsystems/platform-ui-bundle;
 echo 'Translation extraction done';

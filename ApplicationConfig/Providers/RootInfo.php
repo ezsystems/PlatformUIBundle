@@ -5,7 +5,7 @@
 namespace EzSystems\PlatformUIBundle\ApplicationConfig\Providers;
 
 use EzSystems\PlatformUIBundle\ApplicationConfig\Provider;
-use Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class RootInfo implements Provider
@@ -13,13 +13,15 @@ class RootInfo implements Provider
     /** @var \Symfony\Component\HttpFoundation\RequestStack */
     private $requestStack;
 
-    /** @var \Symfony\Component\Templating\Asset\PackageInterface */
-    private $assetsHelper;
+    /** @var \Symfony\Component\Asset\Packages */
+    private $assetsPackages;
 
-    public function __construct(RequestStack $requestStack, AssetsHelper $assetsHelper, $externalAssetsDirectory)
+    private $externalAssetsDirectory;
+
+    public function __construct(RequestStack $requestStack, Packages $assetsPackages, $externalAssetsDirectory)
     {
         $this->requestStack = $requestStack;
-        $this->assetsHelper = $assetsHelper;
+        $this->assetsPackages = $assetsPackages;
         $this->externalAssetsDirectory = $externalAssetsDirectory;
     }
 
@@ -46,8 +48,8 @@ class RootInfo implements Provider
         return [
             'root' => $this->requestStack->getMasterRequest()->attributes->get('semanticPathinfo'),
             'apiRoot' => $this->getApiRoot(),
-            'assetRoot' => $this->assetsHelper->getUrl('/'),
-            'ckeditorPluginPath' => $this->assetsHelper->getUrl($this->externalAssetsDirectory) . '/vendors/',
+            'assetRoot' => $this->assetsPackages->getUrl('/'),
+            'ckeditorPluginPath' => $this->assetsPackages->getUrl($this->externalAssetsDirectory) . '/vendors/',
         ];
     }
 }

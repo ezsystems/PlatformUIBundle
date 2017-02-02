@@ -931,12 +931,33 @@ YUI.add('ez-searchplugin-tests', function (Y) {
         },
 
         "Should set the sort clause based on the given Location": function () {
-            var sortClauses = this.sortClauses,
-                location = new Mock();
+            var location = new Mock(),
+                sortField = 'PATH',
+                sortOrder = 'ASC';
 
             Mock.expect(location, {
-                method: 'getSortClause',
-                returns: sortClauses
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'sortField') {
+                        return sortField;
+                    } else if (attr === 'sortOrder') {
+                        return sortOrder;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for content mock");
+                    }
+                }
+            });
+
+            Mock.expect(this.query, {
+                method: 'setSortClauses',
+                args: [Mock.Value.Object],
+                run: function (sortClause) {
+                    Assert.areSame(
+                        'ascending',
+                        sortClause.LocationPath
+                    );
+                }
             });
 
             Mock.expect(this.contentService, {
@@ -953,6 +974,56 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 limit: this.limit,
             }, function () {});
 
+        },
+
+        _testSortCondition: function (sortField, sortOrder, expectProperty, expectOrder) {
+            var sortCondition = {
+                    sortField: sortField,
+                    sortOrder: sortOrder,
+                };
+
+            Mock.expect(this.query, {
+                method: 'setLimitAndOffset',
+                args: [this.limit, this.offset],
+            });
+
+            Mock.expect(this.query, {
+                method: 'setSortClauses',
+                args: [Mock.Value.Object],
+                run: function (sortClause) {
+                    Assert.areSame(
+                        expectOrder,
+                        sortClause[expectProperty]
+                    );
+                }
+            });
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: Y.bind(function () {
+                    Mock.verify(this.query);
+                }, this)
+            });
+
+            this._runSearch({
+                sortCondition: sortCondition,
+                offset: this.offset,
+                limit: this.limit,
+            }, function () {});
+        },
+
+        "Should set the sort clause based on the given sortCondition": function () {
+            this._testSortCondition('MODIFIED', 'ASC', 'DateModified', 'ascending');
+            this._testSortCondition('PUBLISHED', 'ASC', 'DatePublished', 'ascending');
+            this._testSortCondition('PATH', 'DESC', 'LocationPath', 'descending');
+            this._testSortCondition('SECTION', 'ASC', 'SectionIdentifier', 'ascending');
+            this._testSortCondition('DEPTH', 'ASC', 'LocationDepth', 'ascending');
+            this._testSortCondition('CLASS_NAME', 'ASC', 'LocationDepth', undefined);
+            this._testSortCondition('CLASS_IDENTIFIER', 'ASC', 'LocationDepth', undefined);
+            this._testSortCondition('PRIORITY', 'ASC', 'LocationPriority', 'ascending');
+            this._testSortCondition('NAME', 'ASC', 'ContentName', 'ascending');
+            this._testSortCondition('whatever', 'ASC', 'DateModified', 'ascending');
         },
 
         "Should handle the search error": function () {

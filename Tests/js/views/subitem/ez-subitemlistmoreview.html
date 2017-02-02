@@ -8,6 +8,19 @@
 
 <script type="text/x-handlebars-template" id="subitemlistmoreview-ez-template">
     <table>
+    <thead>
+    <tr class="ez-subitem-headline">
+        <th class="ez-subitem-column-head ez-subitem-lastModificationDate-column ez-subitem-column-sortable"
+            data-column-identifier="lastModificationDate">
+        </th>
+        <th class="ez-subitem-column-head ez-subitem-priority-column ez-subitem-column-sortable"
+            data-column-identifier="priority">
+        </th>
+        <th class="ez-subitem-column-head ez-subitem-translations-column"
+            data-column-identifier="translations">
+        </th>
+    </tr>
+    </thead>
         <tbody class="ez-loadmorepagination-content"></tbody>
     </table>
     display count: <strong class="ez-loadmorepagination-display-count"></strong>
@@ -39,7 +52,7 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemlistmoreview": {
-                requires: ['ez-asynchronoussubitemview', 'ez-translator'],
+                requires: ['ez-asynchronoussubitemview', 'ez-translator', 'event-tap'],
                 fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemlistmoreview.js"
             },
             "ez-asynchronoussubitemview": {

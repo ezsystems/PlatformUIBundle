@@ -45,11 +45,9 @@ YUI.add('ez-draftserversidevalidation-tests', function (Y) {
             Assert.isTrue(serverSideErrorCallbackCalled, "serverSideErrorCallback should have been called");
         },
 
-        // regression test for https://jira.ez.no/browse/EZP-26543
-        "Should handle error without details": function () {
+        _handleError: function () {
             var serverSideErrorCallbackCalled = false;
 
-            delete this.errorResponse.document.ErrorMessage.errorDetails;
             this.view.fire(this.action, {
                 formIsValid: true,
                 fields: [],
@@ -66,6 +64,18 @@ YUI.add('ez-draftserversidevalidation-tests', function (Y) {
                 },
             });
             Assert.isTrue(serverSideErrorCallbackCalled, "serverSideErrorCallback should have been called");
+        },
+        
+        // regression test for https://jira.ez.no/browse/EZP-26543
+        "Should handle error without details": function () {
+            delete this.errorResponse.document.ErrorMessage.errorDetails;
+            this._handleError();
+        },
+
+        // regression test for https://jira.ez.no/browse/EZP-26550
+        "Should handle error without a correct response": function () {
+            delete this.errorResponse.document;
+            this._handleError();
         },
     };
 }, '', {requires: ['test', 'ez-fielderrordetails']});

@@ -1,0 +1,86 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ae-ui .ez-ae-container-edit-link .ae-input {
+    border: 0;
+    border-radius: 3px;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-edit-link-clear {
+    color: #414141;
+    font-size: 1.8em;
+    opacity: 0;
+}
+
+.ae-ui .ez-ae-container-edit-link.is-linked .ez-ae-edit-link-clear {
+    opacity: 1;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-label {
+    font-weight: bold;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-target-choice input {
+    display: none;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-target-choice .ez-ae-edit-link-target-name {
+    background: #414141;
+    color: #5d5d5d;
+    cursor: pointer;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-target-choice:last-of-type .ez-ae-edit-link-target-name {
+    border-radius: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-target-choice input:checked + .ez-ae-edit-link-target-name {
+    background: #5d5d5d;
+    color: #fff;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-button {
+    border-radius: 3px;
+    border: 0;
+    line-height: 2em;
+    height: 2em;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-button:before {
+    font-family: 'alloyeditor-ez';
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-button[disabled] {
+    opacity: 0.5;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-save-link {
+    background: #2b84b1;
+    color: #fff;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-save-link:before {
+    content: "\";
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-button-discover,
+.ae-ui .ez-ae-container-edit-link .ez-ae-remove-link {
+    background: #9b9b9b;
+    color: #fff;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-remove-link:before {
+    content: "\";
+}

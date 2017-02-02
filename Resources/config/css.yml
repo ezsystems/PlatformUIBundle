@@ -116,6 +116,7 @@ system:
                 - 'bundles/ezplatformui/css/modules/loadmorepagination.css'
                 - 'bundles/ezplatformui/css/alloyeditor/general.css'
                 - 'bundles/ezplatformui/css/alloyeditor/buttons/labeled-button.css'
+                - 'bundles/ezplatformui/css/alloyeditor/buttons/linkedit.css'
             # theme stylesheets
                 - 'bundles/ezplatformui/css/theme/app.css'
                 - 'bundles/ezplatformui/css/theme/views/error.css'
@@ -210,6 +211,7 @@ system:
                 - 'bundles/ezplatformui/css/theme/alloyeditor/general.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/content.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/labeled-button.css'
+                - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/linkedit.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/blockremove.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/embedhref.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/embedalign.css'

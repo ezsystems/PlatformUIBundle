@@ -73,7 +73,7 @@ YUI.add('ez-contentinfo-base', function (Y) {
         _sortVersions: function(versions) {
             var versionsByStatus = {};
 
-            versions.forEach(function (version) {
+            Y.Array.each(versions, function (version) {
                 if ( !versionsByStatus[version.get('status')]) {
                     versionsByStatus[version.get('status')] = [];
                 }

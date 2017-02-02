@@ -307,7 +307,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                 method: 'createContentDraft',
                 args: [this.contentId, Y.Mock.Value.Function],
                 run: function (contentId, cb) {
-                    cb(capiError);
+                    cb(capiError, that.createDraftResponse);
                 }
             });
 
@@ -316,11 +316,16 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                 languageCode: this.languageCode,
                 fields: fields,
                 contentId: this.contentId
-            }, function (error) {
+            }, function (error, response) {
                 Y.Assert.areSame(
                     capiError,
                     error,
-                    "The error from the CAPI should passed to the callback"
+                    "The error from the CAPI should be passed to the callback"
+                );
+                Y.Assert.areSame(
+                    that.createDraftResponse,
+                    response,
+                    "The response should be passed to the callback"
                 );
                 Y.Assert.areEqual(
                     Y.JSON.stringify(origVersionJSON),
@@ -604,7 +609,8 @@ YUI.add('ez-versionmodel-tests', function (Y) {
 
         "Should handle the error when publishing": function () {
             var fields = [{}, {}],
-                publishError = {message: 'publish error'};
+                publishError = {message: 'publish error'},
+                pubResponse = {response: 'response'};
 
             Y.Mock.expect(this.contentService, {
                 method: 'updateContent',
@@ -625,7 +631,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                 method: 'publishVersion',
                 args: [this.saveResponse.Version._href, Y.Mock.Value.Function],
                 run: function (id, callback) {
-                    callback(publishError, {});
+                    callback(publishError, pubResponse);
                 }
             });
 
@@ -634,11 +640,16 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                 languageCode: this.languageCode,
                 fields: fields,
                 publish: true
-            }, function (error) {
+            }, function (error, response) {
                 Y.Assert.areSame(
                     publishError,
                     error,
                     "The updateContent error should be provided"
+                );
+                Y.Assert.areSame(
+                    pubResponse,
+                    response,
+                    "The updateContent response should be provided"
                 );
 
                 Y.Assert.areEqual(

@@ -5,6 +5,14 @@
     <title>eZ Platform UI</title>
     <meta name="viewport" content="width=device-width"/>
     <meta charset="utf-8"/>
+
+    {% if parameters.interfaceLanguages[0] == 'ach_UG' %}
+        <script type="text/javascript">
+            var _jipt = [];
+            _jipt.push(['project', 'ezplatform']);
+        </script>
+        <script type="text/javascript" src="//cdn.crowdin.com/jipt/jipt.js"></script>
+    {% endif %}
 {% stylesheets '$css.files;ez_platformui$' filter='cssrewrite' %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
 {% endstylesheets %}

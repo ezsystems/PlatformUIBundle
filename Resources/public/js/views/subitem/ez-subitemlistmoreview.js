@@ -11,6 +11,14 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var COLUMN_SORT_ASC_CLASS = 'ez-subitem-column-sortable-asc',
+        COLUMN_SORT_DESC_CLASS = 'ez-subitem-column-sortable-desc',
+        events = {
+            '.ez-subitem-column-sortable': {
+                'tap': '_toggleSorting',
+            },
+        };
+
     /**
      * The subitem list view paginated with a *Load More* button
      *
@@ -21,6 +29,7 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
      */
     Y.eZ.SubitemListMoreView = Y.Base.create('subitemListMoreView', Y.eZ.AsynchronousSubitemView, [], {
         initializer: function () {
+            this._addDOMEventHandlers(events);
             this._set('identifier', 'listmore');
             this._set('name', Y.eZ.trans('list.view', {}, 'subitem'));
 
@@ -44,6 +53,9 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
                     e.location.onceAfter('priorityChange', Y.bind(this._refresh, this));
                 }
             });
+
+            this.after('activeChange', this._addSortOrderClass);
+            this.after('sortConditionChange', this._addSortOrderClass);
         },
 
         /**
@@ -83,6 +95,87 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
             });
         },
 
+        /**
+         * Resets the selected status from columns
+         *
+         * @protected
+         * @method _resetSortOrderClass
+         */
+        _resetSortOrderClass: function() {
+            var columns = this.get('container').all('.ez-subitem-column-sortable');
+
+            columns.each( function (column) {
+                column.removeClass(COLUMN_SORT_ASC_CLASS);
+                column.removeClass(COLUMN_SORT_DESC_CLASS);
+            });
+        },
+
+        /**
+         * Adds the sort class according to the `sortCondition` attribute
+         *
+         * @protected
+         * @method _addSortOrderClass
+         */
+        _addSortOrderClass: function () {
+            var sortCondition = this.get('sortCondition'),
+                property = this._getPropertyBySortField(sortCondition.sortField),
+                column = this.get('container').one('.ez-subitem-' + property + '-column');
+
+            this._resetSortOrderClass();
+
+            if (column) {
+                if (sortCondition.sortOrder === 'ASC') {
+                    column.addClass(COLUMN_SORT_ASC_CLASS);
+                } else {
+                    column.addClass(COLUMN_SORT_DESC_CLASS);
+                }
+            }
+        },
+
+        /**
+         * Toggles the sorting of columns
+         * First click is asc, second click is desc.
+         *
+         * @protected
+         * @method _toggleSorting
+         * @param {EventFacade} e
+         */
+        _toggleSorting: function (e) {
+            var property = e.target.getAttribute("data-column-identifier"),
+                sortField = this.get('availableProperties')[property].sortField,
+                sortOrder = 'ASC';
+
+            if (e.target.hasClass(COLUMN_SORT_ASC_CLASS)) {
+                sortOrder = 'DESC';
+            }
+
+            this.set('sortCondition', {
+                sortField: sortField,
+                sortOrder: sortOrder,
+            });
+        },
+
+        /**
+         * Retrives the property for a given sortField
+         *
+         * @protected
+         * @method _getPropertyBySortField
+         * @param {String} sortField
+         * @return {String} property
+         */
+        _getPropertyBySortField: function (sortField) {
+            var property;
+
+            Y.Object.some(this.get('availableProperties'), function (propertyData, propertyName) {
+                if (propertyData.sortField == sortField) {
+                    property = propertyName;
+                    return true;
+                }
+            });
+
+            return property;
+        },
+
         render: function () {
             if ( !this.get('items') ) {
                 this.get('container').setHTML(this.template({
@@ -106,6 +199,7 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
                 return {
                     name: this.get('propertyNames')[identifier],
                     identifier: identifier,
+                    sortable: this.get('availableProperties')[identifier].sortable,
                 };
             }, this);
         },
@@ -119,6 +213,41 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
              */
             displayedProperties: {
                 value: ['name', 'lastModificationDate', 'contentType', 'priority', 'translations'],
+            },
+
+            /**
+             * Lists the available properties to display.
+             * Each entry in this object is an object with:
+             *
+             * * `sortable`: a boolean stating if the property can be sorted.
+             * * `sortField`: a string with the sortField corresponding to the property
+             *
+             * @attribute availableProperties
+             * @type Object
+             * @readOnly
+             */
+            availableProperties: {
+                readOnly: true,
+                value: {
+                    'name': {
+                        'sortable': true,
+                        'sortField': 'NAME',
+                    },
+                    'lastModificationDate': {
+                        'sortable': true,
+                        'sortField': 'MODIFIED',
+                    },
+                    'contentType': {
+                        'sortable': false,
+                    },
+                    'priority': {
+                        'sortable': true,
+                        'sortField': 'PRIORITY',
+                    },
+                    'translations': {
+                        'sortable': false,
+                    },
+                },
             },
 
             /**

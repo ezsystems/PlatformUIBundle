@@ -20,7 +20,9 @@ matrix:
           env: BEFORE="./bin/travis/prepare_behat.sh" TEST_CMD="./bin/travis/runbehat.sh" AFTER_SUCCESS='echo "After success"' RUN_INSTALL=1 COMPOSE_FILE="doc/docker-compose/base-prod.yml:doc/docker-compose/selenium.yml" SYMFONY_ENV=behat SYMFONY_DEBUG=0
         - env: BEFORE="./bin/travis/setupnode.sh" TEST_CMD="./bin/travis/runnode.sh" AFTER_SUCCESS="./bin/travis/generate_apidoc.sh"
         - php: 7.0
-          env: BEFORE="./bin/travis/setupphpunit.sh" TEST_CMD="./vendor/bin/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
+          env: BEFORE="./bin/travis/setupphpunit.sh" SYMFONY_VERSION="^2.8" TEST_CMD="./vendor/bin/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
+        - php: 7.1
+          env: BEFORE="./bin/travis/setupphpunit.sh" SYMFONY_VERSION="^3.2" TEST_CMD="./vendor/bin/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
         - php: 5.6
           env: BEFORE='./bin/travis/setupphpunit.sh' TEST_CMD="./vendor/bin/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
 

@@ -72,6 +72,9 @@ system:
                 ez-alloyeditor-button-movedown:
                     requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/movedown.js"
+                ez-alloyeditor-button-linkedit:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-caret', 'ez-translator']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/linkedit.js"
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js"
@@ -232,7 +235,7 @@ system:
                         - 'ez-translateproperty'
                         - 'ez-searchviewservice'
                         - 'ez-searchview'
-                    path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
+                    path: "%ez_platformui.public_dir%/js/apps/ez-platformuiapp.js"
                 ez-viewservice:
                     requires: ['base', 'parallel']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-viewservice.js"
@@ -463,6 +466,7 @@ system:
                         - 'ez-subitemlistitemview'
                         - 'subitemlistmoreview-ez-template'
                         - 'ez-translator'
+                        - 'event-tap'
                     path: "%ez_platformui.public_dir%/js/views/subitem/ez-subitemlistmoreview.js"
                 subitemlistmoreview-ez-template:
                     type: 'template'
@@ -934,6 +938,7 @@ system:
                         - 'ez-alloyeditor-toolbar-config-image'
                         - 'ez-alloyeditor-button-moveup'
                         - 'ez-alloyeditor-button-movedown'
+                        - 'ez-alloyeditor-button-linkedit'
                         - 'ez-alloyeditor-button-heading'
                         - 'ez-alloyeditor-button-paragraph'
                         - 'ez-alloyeditor-button-list'

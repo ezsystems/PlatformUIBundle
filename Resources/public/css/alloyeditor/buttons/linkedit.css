@@ -1,0 +1,89 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-ae-container-edit-link {
+    width: 35em;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-row {
+    display: flex;
+    margin: 0.5em 0.5em 1em 0.5em;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-row-buttons {
+    display: block;
+    text-align: right;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-block {
+    width: 100%;
+    flex: 1;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-edit-link-clear {
+    height: auto;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-block-url {
+    position: relative;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-block-target {
+    flex: 0;
+    white-space: nowrap;
+    margin-left: 1em;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-block-discover {
+    flex: 0;
+    white-space: nowrap;
+    margin-right: 1ex;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-button {
+    line-height: 2em;
+    height: 2em;
+}
+
+.ae-ui .ez-ae-container-edit-link .ae-icon-remove {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.ae-ui .ez-ae-container-edit-link .ae-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 0.3em;
+    height: 2em;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-link-href-input {
+    padding-right: 2.8em;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-label {
+    display: block;
+    padding-bottom: 0.3em;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-block-discover .ez-ae-edit-label {
+    visibility: hidden;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-target-choice {
+	display: inline-block;
+}
+
+.ez-ae-container-edit-link .ez-ae-edit-link-target-name {
+    display: inline-block;
+    height: 2em;
+    line-height: 2em;
+    padding: 0 0.5em;
+}
+
+.ae-ui .ez-ae-container-edit-link .ez-ae-remove-link {
+    margin-right: 1em;
+}

@@ -113,10 +113,12 @@ YUI.add('ez-contentcreateplugin', function (Y) {
          */
         _handleCreateContentAction: function (event) {
             var service = this.get('host'),
+                languageCode = event.languageCode ? event.languageCode : this.get('languageCode'),
                 app = service.get('app');
 
             this.setAttrs({
                 contentType: event.contentType,
+                languageCode: languageCode,
                 parentLocation: service.get('location'),
                 parentContent: service.get('content')
             });
