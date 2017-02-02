@@ -122,7 +122,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         /**
-         * Notifies the browse method views that a content is removed from the
+         * Notifies method views that a content is removed from the
          * selection.
          *
          * @method _notifyMethodsUnselectContent
@@ -557,7 +557,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             methods: {
                 valueFn: function () {
                     return [
-                        new Y.eZ.UniversalDiscoveryBrowseView({
+                        new Y.eZ.UniversalDiscoveryFinderView({
                             bubbleTargets: this,
                             priority: 100,
                             multiple: this.get('multiple'),
@@ -582,10 +582,10 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              *
              * @attribute visibleMethod
              * @type String
-             * @default 'browse'
+             * @default 'finder'
              */
             visibleMethod: {
-                value: 'browse',
+                value: 'finder',
             },
 
             /**

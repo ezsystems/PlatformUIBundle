@@ -48,6 +48,12 @@
         <note>key: universaldiscovery.confirmed.items</note>
         <jms:reference-file>Resources/public/templates/universaldiscovery/confirmedlist.hbt</jms:reference-file>
       </trans-unit>
+      <trans-unit id="73538954b18fddadb8404e15e4a5bdb3630d14fb" resname="universaldiscovery.content.browser">
+        <source>Content browser</source>
+        <target>Content browser</target>
+        <note>key: universaldiscovery.content.browser</note>
+        <jms:reference-file>./Resources/public/templates/universaldiscovery/explorer.hbt</jms:reference-file>
+      </trans-unit>
       <trans-unit id="572fdb94d49b6e58d297fd7491cf28c77d60e241" resname="universaldiscovery.content.tree">
         <source>Content tree</source>
         <target>Content tree</target>

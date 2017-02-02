@@ -31,6 +31,8 @@
 .ez-view-universaldiscoveryselectedview .ez-ud-pane-content {
     padding-left: 0.5em;
     padding-right: 0.5em;
+    margin: 0 1em 1em 0;
+    border-radius: 5px;
 }
 
 .ez-view-universaldiscoveryselectedview .ez-asynchronousview-error {
