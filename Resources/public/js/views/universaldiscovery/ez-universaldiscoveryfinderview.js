@@ -44,7 +44,7 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
             }
             this.constructor.superclass.reset.apply(this, arguments);
         },
-
+        
         render: function () {
             var container = this.get('container');
 
@@ -167,6 +167,16 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
             },
 
             /**
+             *
+             */
+            startingLocation: {
+                setter: function (startingLoc) {
+                    this.get('finderExplorerView').set('startingLocation', startingLoc);
+                    return startingLoc;
+                }
+            },
+
+            /**
              * Holds the selected view that displays the currently selected
              * content (if any)
              *
@@ -193,7 +203,7 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
                 valueFn: function () {
                     return new Y.eZ.UniversalDiscoveryFinderExplorerView({
                         bubbleTargets: this,
-                        startingLocation: this.get('virtualRootLocation'),
+                        startingLocation: this.get('startingLocation'),
                     });
                 },
             },

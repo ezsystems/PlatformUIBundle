@@ -23,12 +23,26 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
     Y.eZ.UniversalDiscoveryFinderExplorerView = Y.Base.create('universalDiscoveryFinderExplorerView', Y.eZ.TemplateBasedView, [], {
         initializer: function () {
             this.after('activeChange', function () {
-                if (this.get('active')) {
+                console.log('aaaaaa', this.get('startingLocation').get('path'))
+                if (this.get('active') && this.get('startingLocation') ) {
+
                     this.wakeUp();
                 }
             });
             this.on('*:explorerNavigate', function(e) {
                 this._handleLevelViews(e.target, e.depth, e.location);
+            });
+            this.on('startingLocationChange', function(e) {
+                var LevelView = this.get('levelViewConstructor'),
+                    levelView = new LevelView({
+                        parentLocation: this.get('startingLocation'),
+                        depth: 1,
+                    });
+                levelView.addTarget(this);
+                this._renderLevelView(levelView);
+                this._activateLevelView(levelView);
+                levelView.displayLevelView();
+                this.get('levelViews').push(levelView);
             });
         },
 
@@ -96,6 +110,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
          * @protected
          */
         _activateLevelView: function (levelView) {
+
             levelView.set('active', this.get('active'));
         },
 
@@ -112,11 +127,16 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
 
         render: function () {
             var container = this.get('container');
-
             container.setHTML(this.template());
-            Y.Array.each(this.get('levelViews'), function (levelView) {
-                this._renderLevelView(levelView);
-            }, this);
+           
+            if (this.get('startingLocation')) {
+                Y.Array.each(this.get('levelViews'), function (levelView) {
+                    this._renderLevelView(levelView);
+                }, this);
+            } else {
+
+            }
+
             return this;
         },
 
@@ -177,11 +197,14 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
              */
             levelViews: {
                 valueFn: function () {
-                    return [new Y.eZ.UniversalDiscoveryFinderExplorerLevelView({
-                        parentLocation: this.get('startingLocation'),
-                        depth:  1,
-                        bubbleTargets: this,
-                    })];
+                    
+                    // this.
+                    // console.log(this.get('startingLocation'), 'aaa')
+                    // return [new Y.eZ.UniversalDiscoveryFinderExplorerLevelView({
+                    //     parentLocation: this.get('startingLocation'),
+                    //     depth:  1,
+                    //     bubbleTargets: this,
+                    // })];
                 }
             },
         },
