@@ -196,12 +196,12 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
              *
              * @event createContent
              * @param {eZ.ContentType} contentType
-             * @param {String} languageCode (always set to "eng-GB"). This
-             *        parameter is deprecated and will be removed in PlatformUI 2.0
+             * @param {String} [languageCode] If none provided the content creation default language of the app is used.
+             *      Example: languageCode: 'eng-GB',
+             *        
              */
             this.fire('createContent', {
                 contentType: type,
-                languageCode: 'eng-GB',
             });
         },
 

@@ -33,7 +33,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 }
             });
             this.type = new Mock();
-            this.names = {'eng-GB': "Song", 'fre-FR': "Chanson"};
+            this.names = {'eng-GB': "Song", 'fre-FR': "Chanson", 'pol-PL': "piosenka"};
             this.fieldDefinitions = {
                 "title": {
                     "fieldDefinitionIdentifier": "title",
@@ -133,7 +133,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 "The fields of the version and the content should be the same"
             );
             Assert.isTrue(
-                content.get('name').indexOf(that.names['eng-GB']) !== -1,
+                content.get('name').indexOf(that.names[service.get('languageCode')]) !== -1,
                 "The name of the content should contain the name of the type" + content.get('name')
             );
             Assert.areEqual(
