@@ -85,7 +85,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
          * @since 1.1
          */
         _setFields: function (fields) {
-            this.get('version').setFieldsIn(fields, this.get('app').get('contentCreationDefaultLanguageCode'));
+            this.get('version').setFieldsIn(fields, this.get('languageCode'));
         },
 
         /**
@@ -120,13 +120,12 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
          * @protected
          */
         _getNewContentName: function() {
-            var app = this.get('app'),
-                type = this.get('contentType'),
+            var type = this.get('contentType'),
                 contentTypeNames,
                 contentTypeName;
 
             contentTypeNames = type.get('names');
-            contentTypeName = contentTypeNames[app.get('contentCreationDefaultLanguageCode')]
+            contentTypeName = contentTypeNames[this.get('languageCode')]
                 || contentTypeNames[Object.keys(contentTypeNames)[0]];
 
             return Y.eZ.trans('name.new.content.of.type', {contentTypeName: contentTypeName}, 'contentedit');
