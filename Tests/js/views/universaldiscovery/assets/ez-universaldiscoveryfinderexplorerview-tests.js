@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
-    var resetTest, defaultSubViewTest, renderTest, activeTest, navigateTest,
+    var resetTest, renderTest, activeTest, navigateTest,
+        startingLocationChangeTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     resetTest = new Y.Test.Case({
@@ -14,7 +15,14 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
             this.levelView2 = new Mock();
             this.levelViews = [this.levelView1, this.levelView2];
             Mock.expect(this.levelView1, {
-                method: 'reset',
+                method: 'destroy',
+                args: [Mock.Value.Object],
+                run: function (arg) {
+                    Assert.isTrue(
+                        arg.remove,
+                        "destroy method should be called with remove to true"
+                    );
+                }
             });
             Mock.expect(this.levelView2, {
                 method: 'destroy',
@@ -22,7 +30,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
                 run: function (arg) {
                     Assert.isTrue(
                         arg.remove,
-                    "destroy method should be called with remove to true"
+                        "destroy method should be called with remove to true"
                     );
                 }
             });
@@ -39,72 +47,40 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
             delete this.levelView2;
         },
 
-        "Should keep the first levelViews and destroy the others": function () {
+        "Should keep destroy the level views": function () {
             this.view.reset();
             Mock.verify(this.levelView1);
+            Mock.verify(this.levelView2);
             Assert.areSame(
                 this.view.get('levelViews').length,
-                1,
-                "There should remain only one levelView"
+                0,
+                "The levelViews attribute should be empty"
             );
         },
-    });
-
-    defaultSubViewTest = new Y.Test.Case({
-        name: 'eZ Universal Discovery Finder Explorer default sub views tests',
-
-        setUp: function () {
-            Y.eZ.UniversalDiscoveryFinderExplorerLevelView = Y.Base.create('ExplorerLevelView', Y.View, [], {});
-            this.view = new Y.eZ.UniversalDiscoveryFinderExplorerView();
-        },
-
-        tearDown: function () {
-            this.view.destroy();
-            delete this.view;
-            delete Y.eZ.UniversalDiscoveryFinderExplorerLevelView;
-        },
-
-        "levelView should have an instance of eZ.UniversalDiscoveryFinderExplorerLevelView": function () {
-            Y.Array.each(this.view.get('levelViews'), function (levelView) {
-                Assert.isInstanceOf(
-                    Y.eZ.UniversalDiscoveryFinderExplorerLevelView, levelView,
-                    "The levelViews attribute value should have an instance of eZ.UniversalDiscoveryFinderExplorerLevelView"
-                );
-            });
-        },
-
-        "Should be a bubble target of the levelViews": function () {
-            var bubble = false;
-
-            this.view.on('*:whatever', function () {
-                bubble = true;
-            });
-            this.view.get('levelViews')[0].fire('whatever');
-            Assert.isTrue(bubble, "The event should bubble to the finder explorer view");
-        },
-
     });
 
     renderTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Finder Explorer render tests',
 
         setUp: function () {
-            var that = this;
+            var that = this,
+                LevelView;
 
             this.levelViewRendered = false;
-            Y.eZ.UniversalDiscoveryFinderExplorerLevelView = Y.Base.create('levelView', Y.View, [], {
+            LevelView = Y.Base.create('levelView', Y.View, [], {
                 render: function () {
                     that.levelViewRendered = true;
                     return this;
                 },
             });
-            this.view = new Y.eZ.UniversalDiscoveryFinderExplorerView();
+            this.view = new Y.eZ.UniversalDiscoveryFinderExplorerView({
+                levelViews: [new LevelView()],
+            });
         },
 
         tearDown: function () {
             this.view.destroy();
             delete this.view;
-            delete Y.eZ.UniversalDiscoveryFinderExplorerLevelView;
         },
 
         "Should use the template": function () {
@@ -156,7 +132,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
 
         "Should activate the levelViews when the explorer view get active": function () {
             this.view.set('active', true);
-            
+
             Y.Array.each(this.levelViews, function (levelView) {
                 Assert.isTrue(
                     levelView.get('active'),
@@ -270,11 +246,212 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
         },
     });
 
+    startingLocationChangeTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Finder Explorer startingLocationChange tests',
+
+        setUp: function () {
+            var LevelView;
+
+            LevelView = Y.Base.create('levelView', Y.View, [], {
+                displayLevelView: function () {
+                },
+            });
+            this.initialLevelView = new Mock(new Y.View());
+            this.virtualRootLocation = new Y.Base();
+            this.virtualRootLocation.set('childCount', 4);
+            Mock.expect(this.initialLevelView, {
+                method: 'destroy',
+                args: [Mock.Value.Object],
+                run: function (option) {
+                    Assert.isTrue(
+                        option.remove,
+                        "The remove option should be set to true"
+                    );
+                }
+            });
+            this.view = new Y.eZ.UniversalDiscoveryFinderExplorerView({
+                levelViews: [this.initialLevelView],
+                virtualRootLocation: this.virtualRootLocation,
+                levelViewConstructor: LevelView,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should destroy existing level views": function () {
+            this.view.set('startingLocation', false);
+
+            Mock.verify(this.initialLevelView);
+        },
+
+        "Should create a level view for the virtualRoot children": function () {
+            var levelView;
+
+            this.view.set('startingLocation', false);
+
+            Assert.areEqual(
+                1, this.view.get('levelViews').length,
+                "A level views should have been added"
+            );
+            levelView = this.view.get('levelViews')[0];
+            Assert.areNotSame(
+                this.initialLevelView, levelView,
+                "A new level view should have been created"
+            );
+            Assert.areSame(
+                this.virtualRootLocation, levelView.get('parentLocation'),
+                "The parent Location of the level view should be the virtual root"
+            );
+            Assert.isUndefined(
+                levelView.get('selectLocationId'),
+                "The selected Location id should be undefined"
+            );
+        },
+
+        _getStartingLocation: function (locationId, childCount, path) {
+            var location = new Y.Base();
+
+            location.set('locationId', locationId);
+            location.set('childCount', childCount);
+            location.set('path', path);
+
+            return location;
+        },
+
+        "Should create a levelView for the virtualRoot and select the starting Location": function () {
+            var levelView,
+                locationId = 42;
+
+            this.view.set('startingLocation', this._getStartingLocation(locationId, 0, []));
+
+            Assert.areEqual(
+                1, this.view.get('levelViews').length,
+                "A level views should have been added"
+            );
+            levelView = this.view.get('levelViews')[0];
+            Assert.areNotSame(
+                this.initialLevelView, levelView,
+                "A new level view should have been created"
+            );
+            Assert.areSame(
+                this.virtualRootLocation, levelView.get('parentLocation'),
+                "The parent Location of the level view should be the virtual root"
+            );
+            Assert.areEqual(
+                locationId,
+                levelView.get('selectLocationId'),
+                "The selected Location id should be the starting Location id"
+            );
+        },
+
+        "Should create 2 level views": function () {
+            var rootLevelView,
+                locationLevelView,
+                locationId = 42,
+                location = this._getStartingLocation(locationId, 1, []);
+
+            this.view.set('startingLocation', location);
+
+            Assert.areEqual(
+                2, this.view.get('levelViews').length,
+                "2 level views should have been created"
+            );
+            rootLevelView = this.view.get('levelViews')[0];
+            locationLevelView = this.view.get('levelViews')[1];
+            Assert.areSame(
+                this.virtualRootLocation, rootLevelView.get('parentLocation'),
+                "The parent Location should be the virtual root"
+            );
+            Assert.areEqual(
+                locationId,
+                rootLevelView.get('selectLocationId'),
+                "The selected Location id should be the id of the startingLocationId"
+            );
+            Assert.areSame(
+                location, locationLevelView.get('parentLocation'),
+                "The parent Location should be the starting Location"
+            );
+            Assert.isUndefined(
+                locationLevelView.get('selectLocationId'),
+                "The selected Location id should be undefined"
+            );
+        },
+
+        "Should create 3 level views": function () {
+            var rootLevelView,
+                pathLevelView,
+                locationLevelView,
+                locationId = 42,
+                pathLocationId = 43,
+                pathLocation = this._getStartingLocation(pathLocationId, 1, []),
+                location = this._getStartingLocation(locationId, 1, [pathLocation]);
+
+            this.view.set('startingLocation', location);
+
+            Assert.areEqual(
+                3, this.view.get('levelViews').length,
+                "3 level views should have been created"
+            );
+            rootLevelView = this.view.get('levelViews')[0];
+            pathLevelView = this.view.get('levelViews')[1];
+            locationLevelView = this.view.get('levelViews')[2];
+            Assert.areSame(
+                this.virtualRootLocation, rootLevelView.get('parentLocation'),
+                "The parent Location should be the virtual root"
+            );
+            Assert.areEqual(
+                pathLocationId,
+                rootLevelView.get('selectLocationId'),
+                "The selected Location id should be the id of the location in the path"
+            );
+            Assert.areSame(
+                pathLocation, pathLevelView.get('parentLocation'),
+                "The parent Location should be the path Location"
+            );
+            Assert.areEqual(
+                locationId, pathLevelView.get('selectLocationId'),
+                "The selected Location id should the id of the starting Location"
+            );
+            Assert.areSame(
+                location, locationLevelView.get('parentLocation'),
+                "The parent Location should be the starting Location"
+            );
+            Assert.isUndefined(
+                locationLevelView.get('selectLocationId'),
+                "The selected Location id should be undefined"
+            );
+        },
+
+        "Should prevent rebuilding the same level views": function () {
+            var rootLevelView,
+                locationLevelView,
+                locationId = 42,
+                location = this._getStartingLocation(locationId, 1, []);
+
+            this.view.set('startingLocation', location);
+            rootLevelView = this.view.get('levelViews')[0];
+            locationLevelView = this.view.get('levelViews')[1];
+            this.view.set('startingLocation', location);
+
+            Assert.areSame(
+                rootLevelView, this.view.get('levelViews')[0],
+                "The level views should have been kept"
+            );
+            Assert.areSame(
+                locationLevelView, this.view.get('levelViews')[1],
+                "The level views should have been kept"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Finder Explorer View tests");
     Y.Test.Runner.add(resetTest);
-    Y.Test.Runner.add(defaultSubViewTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(activeTest);
     Y.Test.Runner.add(navigateTest);
-    
-}, '', {requires: ['test', 'view', 'ez-universaldiscoveryfinderexplorerview']});
+    Y.Test.Runner.add(startingLocationChangeTest);
+}, '', {requires: ['test', 'base', 'view', 'ez-universaldiscoveryfinderexplorerview']});

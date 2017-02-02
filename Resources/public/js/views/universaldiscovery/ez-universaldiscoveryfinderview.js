@@ -150,20 +150,32 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
             },
 
             /**
-             * Holds the virtual root location
+             * The starting Location if the UDW is configured with one. It is
+             * directly set on the finder explorer view.
+             *
+             * @attribute startingLocation
+             * @type {eZ.Location|false}
+             */
+            startingLocation: {
+                setter: function (startingLocation) {
+                    this.get('finderExplorerView').set('startingLocation', startingLocation);
+                    return startingLocation;
+                }
+            },
+
+            /**
+             * The virtual root Location object. It is directly set on the
+             * finder explorer view.
              *
              * @attribute virtualRootLocation
              * @type {eZ.Location}
+             * @required
              */
             virtualRootLocation: {
-                valueFn: function () {
-                    return new Y.eZ.Location({
-                        id: '/api/ezp/v2/content/locations/1',
-                        locationId: 1,
-                        sortField: 'SECTION',
-                        sortOrder: 'ASC',
-                    });
-                },
+                setter: function (virtualRootLocation) {
+                    this.get('finderExplorerView').set('virtualRootLocation', virtualRootLocation);
+                    return virtualRootLocation;
+                }
             },
 
             /**
@@ -193,7 +205,6 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
                 valueFn: function () {
                     return new Y.eZ.UniversalDiscoveryFinderExplorerView({
                         bubbleTargets: this,
-                        startingLocation: this.get('virtualRootLocation'),
                     });
                 },
             },

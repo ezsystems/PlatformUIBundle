@@ -108,6 +108,23 @@ YUI.add('ez-universaldiscoverymethodbaseview', function (Y) {
             },
 
             /**
+             * The starting Location model if the UDW is configured with one.
+             *
+             * @attribute startingLocation
+             * @type {eZ.Location|false}
+             */
+            startingLocation: {},
+
+            /**
+             * The virtual root Location object.
+             *
+             * @attribute virtualRootLocation
+             * @type {eZ.Location}
+             * @required
+             */
+            virtualRootLocation: {},
+
+            /**
              * Flag indicating whether the Content should be provided in the
              * selection.
              *

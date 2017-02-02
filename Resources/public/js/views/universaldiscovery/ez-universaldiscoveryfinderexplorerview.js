@@ -23,13 +23,55 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
     Y.eZ.UniversalDiscoveryFinderExplorerView = Y.Base.create('universalDiscoveryFinderExplorerView', Y.eZ.TemplateBasedView, [], {
         initializer: function () {
             this.after('activeChange', function () {
-                if (this.get('active')) {
+                if ( this.get('active') ) {
                     this.wakeUp();
                 }
             });
             this.on('*:explorerNavigate', function(e) {
                 this._handleLevelViews(e.target, e.depth, e.location);
             });
+            this.after('startingLocationChange', function (e) {
+                if ( e.newVal === e.prevVal ) {
+                    // This is to avoid rebuilding the level views when a
+                    // starting location is set and when switching to another
+                    // method and getting back to the finder. In that, case
+                    // `startingLocationChange` is fired even if the very same
+                    // Location object is set...
+                    return;
+                }
+                this._removeLevels();
+                this._getLevelViewPath().forEach(function (location, index, path) {
+                    var next = path[index + 1];
+
+                    if ( next ) {
+                        this._addLevel(location, next.get('locationId'));
+                    } else if ( location.get('childCount') !== 0 ) {
+                        this._addLevel(location);
+                    }
+                }, this);
+            });
+        },
+
+        /**
+         * Returns a Location array representing the path to display. This path
+         * includes the virtual root Location, the starting Location path and
+         * the starting Location (if there's a starting Location).
+         *
+         * @method _getLevelViewPath
+         * @protected
+         * @return {Array} of Location.
+         */
+        _getLevelViewPath: function () {
+            var startingLocation = this.get('startingLocation'),
+                path = [];
+
+            if ( startingLocation ) {
+                path = startingLocation.get('path').concat();
+                path.push(startingLocation);
+            }
+
+            path.unshift(this.get('virtualRootLocation'));
+            return path;
         },
 
         /**
@@ -38,13 +80,8 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
          * @method reset
          */
         reset: function (name) {
-            var count;
-            
             if (name == 'levelViews') {
-                count = this.get('levelViews').length - 1;
-
-                this._removeLevels(count);
-                this.get('levelViews')[0].reset();
+                this._removeLevels();
             } else  {
                 this.constructor.superclass.reset.apply(this, arguments);
             }
@@ -72,7 +109,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
          */
         _handleLevelViews: function (levelView, depth, location) {
             var count;
-            
+
             if (depth < this.get('levelViews').length) {
                 count = this.get('levelViews').length - depth;
                 this._removeLevels(count);
@@ -121,12 +158,15 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
         },
 
         /**
-         * Removes and destroy the last level views from the levelViews attribute.
+         * Removes and destroy level views.
          *
          * @method _removeLevels
-         * @param {Number} count the number of levelviews to remove.
+         * @param {Number} [count] the number of level views to remove. If
+         * omitted, the complete list is removed.
+         * @protected
          */
         _removeLevels: function (count) {
+            count = count || this.get('levelViews').length;
             for (var i=0; i < count; i++) {
                 this.get('levelViews').pop().destroy({remove: true});
             }
@@ -138,11 +178,15 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
          *
          * @method _addLevel
          * @param {Y.eZ.Location} location the parent location
+         * @param {Number} selectedLocationId the location id that should be
+         * selected in the level view
+         * @protected
          */
-        _addLevel: function (location) {
+        _addLevel: function (location, selectedLocationId) {
             var LevelView = this.get('levelViewConstructor'),
                 levelView = new LevelView({
                     parentLocation: location,
+                    selectLocationId: selectedLocationId,
                     depth: this.get('levelViews').length + 1,
                 });
 
@@ -170,19 +214,33 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
             },
 
             /**
+             * The starting Location if the UDW is configured with one.
+             *
+             * @attribute startingLocation
+             * @type {eZ.Location|false|Null}
+             * @default {Null}
+             */
+            startingLocation: {
+                value: null,
+            },
+
+            /**
+             * The virtual root Location object
+             *
+             * @attribute virtualRootLocation
+             * @type {eZ.Location}
+             * @required
+             */
+            virtualRootLocation: {},
+
+            /**
              * The tab containing the universalDiscoveryFinderExplorerLevelViews to explore.
              *
              * @attribute levelViews
              * @type Array
              */
             levelViews: {
-                valueFn: function () {
-                    return [new Y.eZ.UniversalDiscoveryFinderExplorerLevelView({
-                        parentLocation: this.get('startingLocation'),
-                        depth:  1,
-                        bubbleTargets: this,
-                    })];
-                }
+                value: [],
             },
         },
     });
