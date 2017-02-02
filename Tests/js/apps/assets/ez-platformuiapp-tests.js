@@ -8,6 +8,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         showSideViewTest, hideSideViewTest, enablingRoutingTest, hashChangeTest,
         handleMainViewTest, titleTest, configRouteTest,
         dispatchConfigTest, getLanguageNameTest, refreshViewTest,
+        navigateToTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     appTest = new Y.Test.Case({
@@ -2381,6 +2382,47 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    navigateToTest = new Y.Test.Case({
+        name: "eZ Platform UI App navigateTo test",
+
+        setUp: function () {
+            this.app = new Y.eZ.PlatformUIApp();
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should navigate to the given route": function () {
+            var navigate = false,
+                routeName = 'viewLocation',
+                routeParams = {
+                    id: 42,
+                    languageCode: 'eng-GB',
+                };
+
+            this.app.on('navigate', function (e) {
+                e.halt(true);
+
+                navigate = true;
+                Assert.isTrue(
+                    e.url.indexOf(this.routeUri(routeName, routeParams).replace('#', '')) !== -1,
+                    "The app should navigate to the given route"
+                );
+            });
+
+            this.app.fire('whatever:navigateTo', {
+                route: {
+                    name: routeName,
+                    params: routeParams,
+                }
+            });
+
+            Assert.isTrue(navigate, "The navigate event should have been fired");
+        },
+    });
+
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(appTest);
     Y.Test.Runner.add(titleTest);
@@ -2400,4 +2442,5 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(refreshViewTest);
     Y.Test.Runner.add(enablingRoutingTest);
     Y.Test.Runner.add(hashChangeTest);
+    Y.Test.Runner.add(navigateToTest);
 }, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin', 'history-hash']});

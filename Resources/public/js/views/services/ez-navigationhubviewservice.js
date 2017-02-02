@@ -22,7 +22,6 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
     Y.eZ.NavigationHubViewService = Y.Base.create('navigationHubViewService', Y.eZ.ViewService, [Y.eZ.SideViewService], {
         initializer: function () {
             this.on('*:logOut', this._logOut);
-            this.after('*:navigateTo', this._navigateTo);
             this.after('*:activeNavigationChange', this._navigateToFirstItemRoute);
         },
 
@@ -31,11 +30,14 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
          *
          * @method _navigateTo
          * @protected
+         * @deprecated
          * @param {EventFacade} e
          */
         _navigateTo: function (e) {
             var route = e.route;
 
+            console.log('[DEPRECATED] _navigateTo is deprecated');
+            console.log('[DEPRECATED] this method will be removed from PlatformUI 2.0');
             this.get('app').navigateTo(route.name, route.params);
         },
 

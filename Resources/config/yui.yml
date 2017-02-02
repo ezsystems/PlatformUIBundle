@@ -177,6 +177,9 @@ system:
                 ez-richtext-resolveimage:
                     requires: ['ez-richtext-resolveembed', 'node']
                     path: "%ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveimage.js"
+                ez-richtext-locationlink:
+                    requires: ['node']
+                    path: "%ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-locationlink.js"
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -1106,11 +1109,13 @@ system:
                     path: "%ez_platformui.public_dir%/templates/fields/edit/relationlist.hbt"
                 ez-richtext-view:
                     requires:
+                        - 'event-tap'
                         - 'ez-fieldview'
                         - 'ez-processable'
                         - 'ez-richtext-embedcontainer'
                         - 'ez-richtext-resolveembed'
                         - 'ez-richtext-resolveimage'
+                        - 'ez-richtext-locationlink'
                         - 'richtextview-ez-template'
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-richtext-view.js"
                 richtextview-ez-template:

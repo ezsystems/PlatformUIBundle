@@ -21,6 +21,12 @@ YUI.add('ez-richtext-view', function (Y) {
      * @uses eZ.Processable
      */
     Y.eZ.RichTextView = Y.Base.create('richtextView', Y.eZ.FieldView, [Y.eZ.Processable], {
+        events: {
+            '[href^="ezlocation://"]': {
+                'tap': '_navigateTo',
+            }
+        },
+
         initializer: function () {
             /**
              * Stores the parsed document from the xhtml5edit version of the
@@ -32,6 +38,49 @@ YUI.add('ez-richtext-view', function (Y) {
              */
             this._document =  this._getDOMDocument();
             this._processEvent = 'activeChange';
+        },
+
+
+        /**
+         * Checks if the internal link is valid ie it has the REST Location id
+         * and the main language code in data attributes.
+         *
+         * @method _isValidInternalLink
+         * @private
+         * @param {Node} link
+         * @return {Boolean}
+         */
+        _isValidInternalLink: function (link) {
+            return (
+                link.hasAttribute('data-ez-rest-location-id')
+                && link.hasAttribute('data-ez-main-language-code')
+            );
+        },
+
+        /**
+         * tap event handler on internal link (`ezlocation://`). If the link is
+         * valid, it fires `navigateTo` event so that the application navigates
+         * to the corresponding Location.
+         *
+         * @method _navigateTo
+         * @protected
+         * @param {EventFacade} e
+         */
+        _navigateTo: function (e) {
+            var link = e.target;
+
+            e.preventDefault();
+            if ( this._isValidInternalLink(link) ) {
+                this.fire('navigateTo', {
+                    route: {
+                        name: 'viewLocation',
+                        params: {
+                            id: link.getAttribute('data-ez-rest-location-id'),
+                            languageCode: link.getAttribute('data-ez-main-language-code'),
+                        },
+                    },
+                });
+            }
         },
 
         _getFieldValue: function () {
@@ -109,6 +158,9 @@ YUI.add('ez-richtext-view', function (Y) {
                     }, {
                         processor: new Y.eZ.RichTextResolveEmbed(),
                         priority: 50,
+                    }, {
+                        processor: new Y.eZ.RichTextLocationLink(),
+                        priority: 10,
                     }];
                 },
             },
