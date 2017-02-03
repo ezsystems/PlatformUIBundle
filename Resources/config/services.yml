@@ -3,6 +3,7 @@ parameters:
     ezsystems.platformui.controller.base.class: EzSystems\PlatformUIBundle\Controller\Controller
     ezsystems.platformui.controller.class: EzSystems\PlatformUIBundle\Controller\PlatformUIController
     ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
+    ezsystems.platformui.controller.proto.class: EzSystems\PlatformUIBundle\Controller\ProtoController
     ezsystems.platformui.helper.systeminfo.class: EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
     ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
     ezsystems.platformui.controller.language.class: EzSystems\PlatformUIBundle\Controller\LanguageController
@@ -140,6 +141,10 @@ services:
 
     ezsystems.platformui.controller.dashboard:
         class: "%ezsystems.platformui.controller.dashboard.class%"
+        parent: ezsystems.platformui.controller.base
+
+    ezsystems.platformui.controller.proto:
+        class: "%ezsystems.platformui.controller.proto.class%"
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.helper.systeminfo:

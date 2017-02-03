@@ -1,0 +1,15 @@
+proto_dashboard:
+    path: /dashboard
+    defaults:
+        _controller: ezsystems.platformui.controller.proto:dashboardAction
+    methods: [GET]
+
+proto_viewLocation:
+    # could/should we reuse the Location's nice URL, so that to browse we could
+    # have /proto/My-Nice-URL/To/A/Location ?
+    path: /location/view/{locationId}
+    defaults:
+        _controller: ezsystems.platformui.controller.proto:locationViewAction
+    methods: [GET]
+    requirements:
+        locationId: \d+

@@ -15,6 +15,10 @@ ez_pjax:
     resource: "@eZPlatformUIBundle/Resources/config/routing_pjax.yml"
     prefix:   /pjax
 
+v2proto:
+    resource: "@eZPlatformUIBundle/Resources/config/routing_proto.yml"
+    prefix:   /proto
+
 yui_combo_loader:
     path: /_ezcombo
     defaults:

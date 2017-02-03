@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width">
+    <meta charset="utf-8">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        a, a:visited {
+            color: #009;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+        nav {
+            border: 2px solid green;
+            flex: 0 0 8em;
+        }
+        main {
+            border: 2px solid red;
+            min-height: calc(100vh - 8em);
+            flex: 1 0;
+            display: flex;
+        }
+        aside {
+            border: 2px solid blue;
+            flex: 0 0 230px;
+        }
+        menu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        menu li {
+            line-height: 3;
+            border: 1px solid purple;
+        }
+        ez-expandable-tree:after {
+            content: " (" attr(selected-location-id) ")";
+        }
+        .ez-main-content {
+            flex: 1 1;
+        }
+
+        ez-subitem {
+            border: 1px solid purple;
+        }
+    </style>
+
+    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-subitem.html' ) }}">
+
+</head>
+<body>
+    <nav>
+        I'm the navigation hub
+        <ul>
+            <li><a href="{{ path( 'proto_dashboard' ) }}">Dashboard</a></li>
+            <li><a href="{{ path( 'proto_viewLocation', {locationId: 2} ) }}">Content structure</a></li>
+            <li><a href="{{ path( 'proto_viewLocation', {locationId: 43} ) }}">Media library</a></li>
+        </ul>
+    </nav>
+    <main>
+        <aside>
+            <menu>
+            {% for component in actionBarComponents %}
+                <li id="{{ component.id }}">{{ component.html|raw }}</li>
+            {% endfor %}
+            </menu>
+        </aside>
+        <div class="ez-main-content">
+            {{ content|raw }}
+        </div>
+    </main>
+    <script>
+    (function () {
+        function fetchUpdate(updateUrl) {
+            var headers;
+
+            headers = new Headers({
+                'X-AJAX-Update': '1',
+            });
+            return fetch(updateUrl, {
+                credentials: 'same-origin',
+                headers: headers,
+            }).then(function (response) {
+                return response.json();
+            }).then(function (struct) {
+                struct.url = updateUrl;
+
+                return struct;
+            });
+        }
+
+        function updatePage(struct) {
+            document.title = struct.title;
+            document.querySelector('.ez-main-content').innerHTML = struct.content;
+
+            struct.actionBarComponents.forEach(function (componentUpdate) {
+                var container = document.getElementById(componentUpdate.id);
+
+                if ( typeof componentUpdate.update === "string" ) {
+                    container.innerHTML = componentUpdate.update;
+                } else if ( componentUpdate.update ) {
+                    Object.keys(componentUpdate.update).forEach(function (selector) {
+                        var element = container.querySelector(selector),
+                            attributes = componentUpdate.update[selector];
+
+                        Object.keys(componentUpdate.update[selector]).forEach(function (attributeName) {
+                            // TODO we should handle setting the content as well
+                            element.setAttribute(attributeName, attributes[attributeName]);
+                        });
+                    });
+                }
+            });
+
+            return struct;
+        }
+
+        function replaceHistory(struct) {
+            history.pushState({url: struct.url}, struct.title, struct.url);
+
+            return struct;
+        }
+
+        document.body.addEventListener('click', function (e) {
+            var updateUrl;
+
+            if ( e.target.nodeName === 'A' ) {
+                updateUrl = e.target.href;
+                e.preventDefault();
+
+                fetchUpdate(updateUrl)
+                    .then(updatePage)
+                    .then(replaceHistory);
+            }
+        });
+        window.addEventListener('popstate', function (e) {
+            if ( e.state && e.state.url ) {
+                fetchUpdate(e.state.url)
+                    .then(updatePage)
+                    .then(replaceHistory);
+            }
+        });
+    })();
+    </script>
+</body>
+</html>
