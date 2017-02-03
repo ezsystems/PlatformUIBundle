@@ -36,11 +36,12 @@ YUI.add('ez-locationviewviewtabview', function (Y) {
              *
              * @attribute title
              * @type {String}
-             * @default "View"
              * @readOnly
              */
             title: {
-                value: "View",
+                valueFn: function () {
+                    return Y.eZ.trans('tab.view', {}, 'locationview');
+                },
                 readOnly: true,
             },
 

@@ -12,6 +12,7 @@
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-locationviewviewtabview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -30,7 +31,7 @@
         filter: loaderFilter,
         modules: {
             "ez-locationviewviewtabview": {
-                requires: ['ez-locationviewtabview'],
+                requires: ['ez-locationviewtabview', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/tabs/ez-locationviewviewtabview.js"
             },
             "ez-locationviewtabview": {

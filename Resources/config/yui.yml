@@ -498,7 +498,7 @@ system:
                     requires: ['ez-templatebasedview']
                     path: "%ez_platformui.public_dir%/js/views/ez-locationviewtabview.js"
                 ez-locationviewviewtabview:
-                    requires: ['ez-locationviewtabview', 'ez-rawcontentview', 'locationviewviewtabview-ez-template']
+                    requires: ['ez-locationviewtabview', 'ez-rawcontentview', 'ez-translator', 'locationviewviewtabview-ez-template']
                     path: "%ez_platformui.public_dir%/js/views/tabs/ez-locationviewviewtabview.js"
                 locationviewviewtabview-ez-template:
                     type: 'template'
@@ -510,19 +510,19 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/tabs/details.hbt"
                 ez-locationviewrelationstabview:
-                    requires: ['ez-locationviewtabview', 'locationviewrelationstabview-ez-template']
+                    requires: ['ez-locationviewtabview', 'ez-translator', 'locationviewrelationstabview-ez-template']
                     path: "%ez_platformui.public_dir%/js/views/tabs/ez-locationviewrelationstabview.js"
                 locationviewrelationstabview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/tabs/relations.hbt"
                 ez-locationviewlocationstabview:
-                    requires: ['ez-locationviewtabview', 'locationviewlocationstabview-ez-template', 'array-extras']
+                    requires: ['ez-locationviewtabview', 'ez-translator', 'locationviewlocationstabview-ez-template', 'array-extras']
                     path: "%ez_platformui.public_dir%/js/views/tabs/ez-locationviewlocationstabview.js"
                 locationviewlocationstabview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/tabs/locations.hbt"
                 ez-locationviewversionstabview:
-                    requires: ['ez-locationviewtabview', 'locationviewversionstabview-ez-template', 'array-extras']
+                    requires: ['ez-locationviewtabview', 'ez-translator', 'locationviewversionstabview-ez-template', 'array-extras']
                     path: "%ez_platformui.public_dir%/js/views/tabs/ez-locationviewversionstabview.js"
                 locationviewversionstabview-ez-template:
                     type: 'template'

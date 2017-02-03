@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-02-03T12:03:13Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -613,6 +613,36 @@
         <target>Swaping location for "%name%"</target>
         <note>key: swapping.location.for</note>
         <jms:reference-file>./Resources/public/js/views/services/plugins/ez-locationswapplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="4de030e5fc78006e68749536dd9725ae58efc2a3" resname="tab.details">
+        <source>Details</source>
+        <target>Details</target>
+        <note>key: tab.details</note>
+        <jms:reference-file>Resources/public/js/views/tabs/ez-locationviewdetailstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="eb9d8fcea3c517851502006e163eb0725ec183f0" resname="tab.locations">
+        <source>Locations</source>
+        <target>Locations</target>
+        <note>key: tab.locations</note>
+        <jms:reference-file>Resources/public/js/views/tabs/ez-locationviewlocationstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="20043ee647633fb1c639869bce609c568c195de1" resname="tab.related.content">
+        <source>Related content</source>
+        <target>Related content</target>
+        <note>key: tab.related.content</note>
+        <jms:reference-file>Resources/public/js/views/tabs/ez-locationviewrelationstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5d768a9bb2d1a42f98c5af3016c1019497d8ac62" resname="tab.versions">
+        <source>Versions</source>
+        <target>Versions</target>
+        <note>key: tab.versions</note>
+        <jms:reference-file>Resources/public/js/views/tabs/ez-locationviewversionstabview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="946cdac35638dc1a2cda2d50e1e8af3ee27f2545" resname="tab.view">
+        <source>View</source>
+        <target>View</target>
+        <note>key: tab.view</note>
+        <jms:reference-file>Resources/public/js/views/tabs/ez-locationviewviewtabview.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="5cf5c23d5f73b6493879db84d39bf6a05940242f" resname="updated.sort.method">
         <source>The sub-items sort method has been correctly updated</source>
