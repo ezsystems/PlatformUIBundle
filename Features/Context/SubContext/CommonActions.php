@@ -278,11 +278,11 @@ trait CommonActions
      */
     public function selectFromUniversalDiscovery($path)
     {
-        // wait wihile UDW is hidden...
+        // wait while UDW is hidden...
         $this->waitWhileLoading('.is-universaldiscovery-hidden');
         $node = $this->findWithWait('.ez-view-universaldiscoveryview');
-        $node = $this->findWithWait('.ez-view-universaldiscoverybrowseview .ez-ud-browse-tree', $node);
-        $this->openTreePath($path, $node);
+        $node = $this->findWithWait('.ez-view-universaldiscoveryfinderview .ez-ud-finder-explorerlevel', $node);
+        $this->openFinderExplorerPath($path, $node);
     }
 
     /**

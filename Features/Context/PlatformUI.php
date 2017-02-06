@@ -384,6 +384,41 @@ class PlatformUI extends Context
     }
 
     /**
+     * Clicks a content browser node based on the root of the browser or a given node.
+     *
+     * @param   string          $text   The text of the node that is going to be clicked
+     * @param   NodeElement     $parentNode       The base node to expand from, if null defaults to the content browser root
+     * @throws  \Exception                  When not found
+     */
+    protected function openFinderExplorerNode($text, $parentNode)
+    {
+        $this->waitWhileLoading('.ez-ud-finder-explorerlevel-loading');
+
+        $parentNode = $this->findWithWait('.ez-view-universaldiscoveryfinderexplorerlevelview:last-child', $parentNode);
+
+        $element = $this->getElementByText($text, '.ez-explorer-level-list-item', '.ez-explorer-level-item', $parentNode);
+        if (!$element) {
+            throw new \Exception("The browser node '$text' was not found");
+        }
+
+        $element->click();
+    }
+
+    /**
+     * Explores the content browser expanding it.
+     *
+     * @param   string       $path    The content browser path such as 'Content1/Content2/ContentIWantToClick'
+     * @param   NodeElement  $node    The base node to expand from
+     */
+    public function openFinderExplorerPath($path, $node)
+    {
+        $path = explode('/', $path);
+        foreach ($path as $nodeName) {
+            $this->openFinderExplorerNode($nodeName, $node);
+        }
+    }
+
+    /**
      * Close the "Confirm" modal dialog, if it is visible.
      */
     protected function closeConfirmBox()
