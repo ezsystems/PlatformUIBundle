@@ -230,11 +230,18 @@ YUI.add('ez-alloyeditor-plugin-paste-tests', function (Y) {
             this._testPaste(code, expected, "The div should be transformed into paragraph");
         },
 
-        "Should transform table into paragraphs": function () {
+        "Should keep the table": function () {
             var code = '<table><tr><td>Led Zeppelin</td></tr><tr><td>Over the hill and far away</td></tr></table>',
-                expected = '<p>Led Zeppelin</p><p>Over the hill and far away</p>';
+                expected = '<table><tbody><tr><td>Led Zeppelin</td></tr><tr><td>Over the hill and far away</td></tr></tbody></table>';
 
-            this._testPaste(code, expected, "The table should be transformed into paragraphs");
+            this._testPaste(code, expected, "The table should have been kept");
+        },
+
+        "Should keep the border attribute on table": function () {
+            var code = '<table border="1"><tr><td>Led Zeppelin</td></tr></table>',
+                expected = '<table border="1"><tbody><tr><td>Led Zeppelin</td></tr></tbody></table>';
+
+            this._testPaste(code, expected, "The table border attribute should have been kept");
         },
 
         "Should apply the paste filter after pastefromword cleanup": function () {
