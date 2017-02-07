@@ -5,6 +5,7 @@
 </head>
 <body>
 
+<div class="container"></div>
 <script type="text/x-handlebars-template" id="richtextview-ez-template">{{{ value }}}</script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -28,7 +29,7 @@
         filter: loaderFilter,
         modules: {
             "ez-richtext-view": {
-                requires: ['ez-fieldview', 'ez-processable'],
+                requires: ['event-tap', 'ez-fieldview', 'ez-processable'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-richtext-view.js"
             },
             "ez-processable": {

@@ -198,6 +198,12 @@ YUI.add('ez-platformuiapp', function (Y) {
                     oldService.setNextViewServiceParameters(newService);
                 }
             });
+
+            this.after('*:navigateTo', function (e) {
+                var route = e.route;
+
+                this.navigateTo(route.name, route.params);
+            });
         },
 
         /**
