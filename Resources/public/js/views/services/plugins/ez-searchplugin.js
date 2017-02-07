@@ -311,7 +311,8 @@ YUI.add('ez-searchplugin', function (Y) {
          * generate the sort clauses
          * @param {Integer} e.search.offset the offset for the search result
          * @param {Integer} e.search.limit number of records returned
-         * @param {String} e.resultAttribute the name of attribute that will by updated with search results
+         * @param {Function} [e.callback] callback to call when search is done
+         * @param {String} [e.resultAttribute] the name of attribute that will by updated with search results
          * @param {String} [e.resultTotalCountAttribute] the name of attribute that will be updated with total
          * number of records matching search criteria
          * @param {Bool} [e.loadContent] the flag indicating whether the eZ.Content should be loaded for all
@@ -324,21 +325,26 @@ YUI.add('ez-searchplugin', function (Y) {
         _doLocationSearch: function (e) {
             var search = Y.merge(e.search),
                 listView = e.target,
-                attrs = {'loadingError': false};
+                attrs = {'loadingError': false},
+                callback = function (error, result, resultCount) {
+                    attrs.loadingError = error ? true : false;
+                    if ( !error ) {
+                        attrs[e.resultAttribute] = result;
+                        if ( e.resultTotalCountAttribute ) {
+                            attrs[e.resultTotalCountAttribute] = resultCount;
+                        }
+                    }
+                    listView.setAttrs(attrs);
+                };
+
+            if ( e.callback ) {
+                callback = e.callback;
+            }
 
             search.viewName = e.viewName;
             search.loadContent = e.loadContent;
             search.loadContentType = e.loadContentType;
-            this.findLocations(search, function (error, result, resultCount) {
-                attrs.loadingError = error ? true : false;
-                if ( !error ) {
-                    attrs[e.resultAttribute] = result;
-                    if ( e.resultTotalCountAttribute ) {
-                        attrs[e.resultTotalCountAttribute] = resultCount;
-                    }
-                }
-                listView.setAttrs(attrs);
-            });
+            this.findLocations(search, callback);
         },
 
         /**

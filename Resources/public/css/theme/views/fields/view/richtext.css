@@ -7,3 +7,13 @@
     font-style: italic;
     color: #BF3E33;
 }
+
+.ez-fieldview-ezrichtext .ez-richtext-content a[href^="ezlocation://"] {
+    color: inherit;
+    cursor: text;
+}
+
+.ez-fieldview-ezrichtext .ez-richtext-content a[href^="ezlocation://"][data-ez-rest-location-id] {
+    color: #009;
+    cursor: pointer;
+}

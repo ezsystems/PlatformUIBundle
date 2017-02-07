@@ -195,40 +195,6 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         },
     });
 
-    navigateToTest = new Y.Test.Case({
-        name: "eZ Navigation Hub View Service navigateTo event test",
-
-        setUp: function () {
-            this.routeName = 'samplanet';
-            this.routeParams = {};
-            this.app = new Y.Mock();
-            Y.Mock.expect(this.app, {
-                method: 'navigateTo',
-                args: [this.routeName, this.routeParams]
-            });
-
-            this.service = new Y.eZ.NavigationHubViewService({
-                app: this.app,
-                rootLocation: {},
-                rootMediaLocation: {},
-            });
-        },
-
-        tearDown: function () {
-            this.service.destroy();
-            delete this.service;
-            delete this.app;
-        },
-
-        "Should handle the navigateTo event": function () {
-            this.service.fire('whatever:navigateTo', {
-                route: {name: this.routeName, params: this.routeParams}
-            });
-            Y.Mock.verify(this.app);
-        },
-    });
-
-
     defaultNavigationItemsTest = new Y.Test.Case({
         name: "eZ Navigation Hub View Service default navigation items",
 

@@ -1423,6 +1423,90 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 "0 should be set as the number of result"
             );
         },
+
+        "Should call the callback": function () {
+            var response = {
+                    document: {
+                        View: {
+                            Result: {
+                                count: 2,
+                                searchHits: {
+                                    searchHit: [{
+                                        value: {
+                                            Location: {}
+                                        },
+                                    }, {
+                                        value: {
+                                            Location: {}
+                                        }
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                },
+                callbackCalled = false;
+
+            this.LocationModelConstructor.prototype.loadFromHash = function (hash) {
+                this.hash = hash;
+            };
+
+            this.service.set('locationModelConstructor', this.LocationModelConstructor);
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    cb(false, response);
+                }
+            });
+
+            this.view.fire('locationSearch', {
+                viewName: this.viewName,
+                search: {
+                    offset: this.offset,
+                    limit: this.limit,
+                },
+                callback: Y.bind(function (error, result, count) {
+                    callbackCalled = true;
+                    Assert.isFalse(
+                        error,
+                        "The error should be false"
+                    );
+                    Assert.isArray(
+                        result,
+                        "The result should be an array"
+                    );
+
+                    Y.Array.each(result, function (value, i) {
+                        Assert.isObject(value, "The result value should be an object");
+                        Assert.isInstanceOf(
+                            this.LocationModelConstructor,
+                            value.location,
+                            "The result value should contain location field which should be an instance of the model"
+                        );
+                        Assert.areSame(
+                            response.document.View.Result.searchHits.searchHit[i].value.Location,
+                            value.location.hash,
+                            "The location from the value should be created from the hash"
+                        );
+                    }, this);
+
+                    Assert.isNumber(
+                        count,
+                        "The count should be a number"
+                    );
+                    Assert.areEqual(
+                        response.document.View.Result.count,
+                        count,
+                        "The count should be equal to the number of search hits"
+                    );
+                }, this),
+            });
+
+            Assert.isTrue(callbackCalled, "The callback should have been called");
+
+        },
+
     });
 
     loadResourcesTests = new Y.Test.Case({
