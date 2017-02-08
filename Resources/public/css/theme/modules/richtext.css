@@ -1,0 +1,11 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-richtext-content table:not([border]),
+.ez-richtext-content table:not([border]) tr,
+.ez-richtext-content table:not([border]) td,
+.ez-richtext-content table:not([border]) th {
+    border: 1px dotted #888;
+}
