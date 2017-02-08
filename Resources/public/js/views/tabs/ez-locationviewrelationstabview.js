@@ -146,11 +146,12 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
              *
              * @attribute title
              * @type {String}
-             * @default "Related content"
              * @readOnly
              */
             title: {
-                value: "Related content",
+                valueFn: function () {
+                    return Y.eZ.trans('tab.related.content', {}, 'locationview');
+                },
                 readOnly: true,
             },
 

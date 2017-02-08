@@ -382,11 +382,12 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
              *
              * @attribute title
              * @type {String}
-             * @default "Versions"
              * @readOnly
              */
             title: {
-                value: "Versions",
+                valueFn: function () {
+                    return Y.eZ.trans('tab.versions', {}, 'locationview');
+                },
                 readOnly: true,
             },
 

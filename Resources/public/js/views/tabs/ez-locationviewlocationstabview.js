@@ -289,11 +289,12 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
              *
              * @attribute title
              * @type {String}
-             * @default "Locations"
              * @readOnly
              */
             title: {
-                value: "Locations",
+                valueFn: function () {
+                    return Y.eZ.trans('tab.locations', {}, 'locationview');
+                },
                 readOnly: true,
             },
 
