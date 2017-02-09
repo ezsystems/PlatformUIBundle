@@ -7,8 +7,8 @@
     </header>
     <body>
       <trans-unit id="38a48d5b27331f27a6a51e3bb9be3e6340fc1ccb" resname="content_type.edit_title">
-        <source>__content_type.edit_title</source>
-        <target>__content_type.edit_title</target>
+        <source>Edit &lt;%contentTypeName%&gt;</source>
+        <target>Edit &lt;%contentTypeName%&gt;</target>
         <note>key: content_type.edit_title</note>
         <jms:reference-file line="6">/../../../../.././Resources/views/ContentType/update_content_type.html.twig</jms:reference-file>
       </trans-unit>
