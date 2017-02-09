@@ -9,7 +9,10 @@
 </div>
 <div class="ez-ud-pane-search-result">
     <div class="ez-ud-pane-search-result-list">
-        <h2 class="ez-ud-pane-title">Result list{{#if searchResultList}} ({{searchResultCount}}){{/if}}</h2>
+        <h2 class="ez-ud-pane-title">
+            {{ translate 'result.list' 'universaldiscovery' }}
+            {{#if searchResultList}}({{searchResultCount}}){{/if}}
+        </h2>
         <div class="ez-searchresult-content">
         {{#if searchResultList}}
             {{#if hasPages}}
