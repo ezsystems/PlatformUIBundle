@@ -81,7 +81,7 @@
         in
         <select class="ez-subitems-sorting-order">
             <option {{#if isAscendingOrder}}selected{{/if}} value="ASC">{{ translate 'locationview.details.ascending' 'locationview' }}</option>
-            <option {{#unless isAscendingOrder}}selected{{/unless}} value="DESC">{{ translate 'locationview.details.desceding' 'locationview' }}</option>
+            <option {{#unless isAscendingOrder}}selected{{/unless}} value="DESC">{{ translate 'locationview.details.descending' 'locationview' }}</option>
         </select>
     </p>
 </div>
