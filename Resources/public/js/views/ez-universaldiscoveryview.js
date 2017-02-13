@@ -268,8 +268,8 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
          */
         _updateMethods: function () {
             var visibleMethod = this.get('visibleMethod'),
-                startingLocationId = this.get('startingLocationId');
-
+                startingLocationId = this.get('startingLocationId'),
+                startingLocation = this.get('startingLocation');
             /**
              * Stores a reference to the visible method view
              *
@@ -285,6 +285,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     'multiple': this.get('multiple'),
                     'loadContent': true,
                     'startingLocationId': startingLocationId,
+                    'startingLocation': startingLocation,
                     'visible': visible,
                     'isSelectable': Y.bind(this.get('isSelectable'), this),
                     'active': this.get('active'),
@@ -502,13 +503,24 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             },
 
             /**
-             * The location id that the UDW tree will select on start
+             * The location id that the UDW explorer will select on start
              * @attribute startingLocationId
              * @type {String}
              * @default false if there is no starting location
              *
              */
             startingLocationId: {
+                value: false,
+            },
+
+            /**
+             * The location that the UDW will select on start on.
+             * @attribute startingLocation
+             * @type {String}
+             * @default false if there is no starting location
+             *
+             */
+            startingLocation: {
                 value: false,
             },
 
@@ -563,7 +575,8 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             multiple: this.get('multiple'),
                             loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
-                            startingLocationId: this.get('startingLocationId')
+                            startingLocationId: this.get('startingLocationId'),
+                            startingLocation: this.get('startingLocation'),
                         }),
                         new Y.eZ.UniversalDiscoverySearchView({
                             bubbleTargets: this,
@@ -571,7 +584,8 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             multiple: this.get('multiple'),
                             loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
-                            startingLocationId: this.get('startingLocationId')
+                            startingLocationId: this.get('startingLocationId'),
+                            startingLocation: this.get('startingLocation'),
                         }),
                     ];
                 },
