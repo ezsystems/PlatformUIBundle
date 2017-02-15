@@ -537,7 +537,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
             Y.Assert.areEqual(2, eventFired, "The 'navigationModeChange' event should be been fire twice");
         },
-
+        
         "Should fire the heightChange event when getting fixed": function () {
             var heightChange = false;
 
