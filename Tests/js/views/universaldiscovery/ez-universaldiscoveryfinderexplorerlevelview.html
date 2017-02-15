@@ -10,13 +10,12 @@
 <script type="text/x-handlebars-template" id="universaldiscoveryfinderexplorerlevelview-ez-template">
     <a class="ez-ud-finder-explorerlevel-anchor">.</a>
     <div class="ez-ud-finder-explorerlevel-content"></div>
-    <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">retry</button>
+    <button class="ez-asynchronousview-retry">retry</button>
     <ul>
         {{#each items}}
-        <li class="ez-explorer-level-item ez-font-icon
+        <li class="ez-explorer-level-item
             {{#if selectedLocationId}} is-selected{{/if}}
-            {{#if location.childCount}} is-parent-location{{/if}}
-            {{#if ../ownSelectedItem}} has-selected-item{{/if}}"
+            {{#if location.childCount}} is-parent-location{{/if}}"
             data-location-id="{{location.locationId}}">
             <a>{{location.locationId}}</a>
         </li>

@@ -149,7 +149,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         },
     });
 
-    var _fullLevelViewSetup = function (context) {
+    var _fullLevelViewSetup = function (context, ownSelectedItem) {
         context.contentInfo = new Mock();
         context.location = new Mock();
         context.contentType = new Mock();
@@ -203,6 +203,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             parentLocation: context.parentLocationMock,
             offset: context.offset,
             limit: context.limit,
+            ownSelectedItem: !!ownSelectedItem,
         });
     };
 
@@ -364,7 +365,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         name: 'eZ Universal Discovery Finder Explorer highlight tests',
 
         setUp: function () {
-            _fullLevelViewSetup(this);
+            _fullLevelViewSetup(this, true);
         },
 
         tearDown: function () {
@@ -372,20 +373,30 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             delete this.view;
         },
 
-        "Should add and remove has-selected-item class": function () {
+        "Should directly add the has selected item class": function () {
+            Assert.isTrue(
+                this.view.get('container').hasClass('has-selected-item'),
+                'The container should have the has selected item class'
+            );
+        },
+
+        "Should remove the has selected item class": function () {
             var container = this.view.get('container');
+
+            this.view.set('ownSelectedItem', false);
+            Assert.isFalse(
+                container.hasClass('has-selected-item'),
+                'The has selected item class should have been removed'
+            );
+        },
+
+        "Should add the has selected item class": function () {
+            this["Should remove the has selected item class"]();
 
             this.view.set('ownSelectedItem', true);
             Assert.isTrue(
-                container.hasClass('has-selected-item'),
-                'levelItem should have has-selected-item class'
-            );
-
-            this.view.set('ownSelectedItem', false);
-
-            Assert.isFalse(
-                container.one('.ez-explorer-level-item').hasClass('has-selected-item'),
-                'levelItem should NOT have has-selected-item class'
+                this.view.get('container').hasClass('has-selected-item'),
+                'The has selected item class should have been added'
             );
         },
     });
@@ -465,7 +476,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
 
             this.view.set('items', this.searchResult);
             Assert.isFalse(container.hasClass('is-loading'), 'Should NOT have the loading icon');
-            
+
             this.view.set('items', null);
             Assert.isTrue(container.hasClass('is-loading'), 'Should have the loading icon');
         },

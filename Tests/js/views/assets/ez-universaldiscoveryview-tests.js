@@ -514,6 +514,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.method2._set("identifier", "method2");
 
             this.confirmedList = new Y.View();
+            this.startingLocation = {};
+            this.startingLocationId = '42';
+            this.virtualRootLocation = {};
 
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
@@ -563,6 +566,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             var method2 = this.method2,
                 method1 = this.method1;
 
+            this.view.set('startingLocation', this.startingLocation);
+            this.view.set('startingLocationId', this.startingLocationId);
+            this.view.set('virtualRootLocation', this.virtualRootLocation);
+
             this.view.set('active', true);
             this.view.set('visibleMethod', 'method2');
 
@@ -572,15 +579,31 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             );
             Assert.isFalse(
                 method1.get('visible'),
-                "The method2 should not be visible"
+                "The method1 should not be visible"
             );
+
+            Assert.areSame(
+                method2.get('startingLocation'), this.startingLocation,
+                "method should have been updated with startingLocation"
+            );
+
+            Assert.areSame(
+                method2.get('startingLocationId'), this.startingLocationId,
+                "method should have been updated with startingLocationId"
+            );
+
+            Assert.areSame(
+                method2.get('virtualRootLocation'), this.virtualRootLocation,
+                "method should have been updated with virtualRootLocation"
+            );
+
             Assert.isTrue(
                 method2.get('multiple'),
-                "The method2 mutiple flag should be true"
+                "The method2 multiple flag should be true"
             );
             Assert.isTrue(
                 method1.get('multiple'),
-                "The method1 mutiple flag should be true"
+                "The method1 multiple flag should be true"
             );
         },
 
@@ -619,6 +642,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.config = {};
             this.multiple = true;
             this.startingLocationId = 'l/o/c/a/t/i/o/n/i/d';
+            this.startingLocation = {};
+            this.virtualRootLocation = {};
 
             Y.eZ.UniversalDiscoveryFinderView = Y.Base.create(
                 'testFinderView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
@@ -630,7 +655,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.view = new Y.eZ.UniversalDiscoveryView({
                 multiple: this.multiple,
                 confirmedListView: this.confirmedList,
-                startingLocationId: this.startingLocationId
+                startingLocationId: this.startingLocationId,
+                startingLocation: this.startingLocation,
+                virtualRootLocation: this.virtualRootLocation,
             });
         },
 
@@ -668,6 +695,51 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Assert.areSame(
                 this.startingLocationId, methods[0].get('startingLocationId'),
                 "The startingLocationId should be passed to the method views"
+            );
+            Assert.areSame(
+                this.startingLocation, methods[0].get('startingLocation'),
+                "The startingLocation should be passed to the method views"
+            );
+            Assert.areSame(
+                this.virtualRootLocation, methods[0].get('virtualRootLocation'),
+                "The virtualRootLocation should be passed to the method views"
+            );
+        },
+
+        "Should instantiate the search method": function () {
+            var methods = this.view.get('methods');
+
+            Assert.isArray(
+                methods,
+                "The method list should be an array"
+            );
+            Assert.areEqual(
+                2, methods.length,
+                "The default method list should contain 2 elements"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.UniversalDiscoverySearchView, methods[1],
+                "The first element should be an instance of the search method"
+            );
+            Assert.areSame(
+                this.multiple, methods[1].get('multiple'),
+                "The selection mode should be passed to the method views"
+            );
+            Assert.isFunction(
+                methods[1].get('isAlreadySelected'),
+                "The isAlreadySelected function should be passed to the method views"
+            );
+            Assert.areSame(
+                this.startingLocationId, methods[1].get('startingLocationId'),
+                "The startingLocationId should be passed to the method views"
+            );
+            Assert.areSame(
+                this.startingLocation, methods[1].get('startingLocation'),
+                "The startingLocation should be passed to the method views"
+            );
+            Assert.areSame(
+                this.virtualRootLocation, methods[1].get('virtualRootLocation'),
+                "The virtualRootLocation should be passed to the method views"
             );
         },
 

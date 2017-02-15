@@ -65,14 +65,26 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
             container.plug(Y.Plugin.ScrollInfo);
             container.scrollInfo.on('scrollDown', this._handleScroll, this);
 
-            this.after('ownSelectedItemChange', function () {
-                if (!this.get('ownSelectedItem')) {
-                    container.removeClass(HAS_SELECTED_ITEM);
-                } else {
-                    container.addClass(HAS_SELECTED_ITEM);
-                }
-            });
+            this.after('ownSelectedItemChange', this._uiOwnSelectedItem);
+            this._uiOwnSelectedItem();
             this._addDOMEventHandlers(events);
+        },
+
+        /**
+         * Adds or removes the has selected item class on the container
+         * depending on the `ownSelectedItem` attribute value.
+         *
+         * @method _uiOwnSelectedItem
+         * @protected
+         */
+        _uiOwnSelectedItem: function () {
+            var container = this.get('container');
+
+            if (!this.get('ownSelectedItem')) {
+                container.removeClass(HAS_SELECTED_ITEM);
+            } else {
+                container.addClass(HAS_SELECTED_ITEM);
+            }
         },
 
         render: function () {

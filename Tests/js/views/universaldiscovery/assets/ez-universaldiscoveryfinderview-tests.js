@@ -5,20 +5,17 @@
 YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
     var resetTest, defaultSubViewTest, renderTest, unselectTest,
         multipleUpdateTest, onUnselectContentTest, selectContentTest,
+        settersTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     resetTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Finder reset tests',
 
         setUp: function () {
-            this.selectedView = new Mock();
-            this.finderExplorerView = new Mock();
+            this.selectedView = new Mock(new Y.View());
+            this.finderExplorerView = new Mock(new Y.View());
             Mock.expect(this.selectedView, {
                 method: 'reset',
-            });
-            Mock.expect(this.selectedView, {
-                method: 'setAttrs',
-                args: [Mock.Value.Object]
             });
             Mock.expect(this.finderExplorerView, {
                 method: 'reset',
@@ -26,7 +23,6 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             this.view = new Y.eZ.UniversalDiscoveryFinderView({
                 selectedView: this.selectedView,
                 finderExplorerView: this.finderExplorerView,
-                virtualRootLocation: {}
             });
         },
 
@@ -79,7 +75,6 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
         setUp: function () {
             Y.eZ.UniversalDiscoverySelectedView = Y.Base.create('selectedView', Y.View, [], {});
             Y.eZ.UniversalDiscoveryFinderExplorerView = Y.Base.create('finderExplorerView', Y.View, [], {});
-            Y.eZ.Location = Y.Base.create('locationModel', Y.Model, [], {});
             this.view = new Y.eZ.UniversalDiscoveryFinderView();
         },
 
@@ -101,13 +96,6 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             Assert.isInstanceOf(
                 Y.eZ.UniversalDiscoveryFinderExplorerView, this.view.get('finderExplorerView'),
                 "The finderExplorerView attribute value should an instance of eZ.UniversalDiscoveryFinderExplorerView"
-            );
-        },
-
-        "finderExplorerView's startingLocation should be an instance of eZ.Location": function () {
-            Assert.isInstanceOf(
-                Y.eZ.Location, this.view.get('finderExplorerView').get('startingLocation'),
-                "The finderExplorerView's startingLocation attribute value should an instance of eZ.Location"
             );
         },
 
@@ -135,14 +123,6 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             Assert.isFalse(
                 this.view.get('selectedView').get('addConfirmButton'),
                 "The selectedView's addConfirmButton flag should be false"
-            );
-        },
-
-        "Should set the finderExplorerView's startingLocation": function () {
-            Assert.areSame(
-                this.view.get('finderExplorerView').get('startingLocation'),
-                this.view.get('virtualRootLocation'),
-                "The finderExplorerView's startingLocation should be set"
             );
         },
     });
@@ -442,6 +422,50 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
         },
     });
 
+    settersTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Finder startingLocation and virtualRootLocation setter tests',
+
+        setUp: function () {
+            this.selectedView = new Y.View();
+            this.finderExplorerView = new Y.View();
+            this.view = new Y.eZ.UniversalDiscoveryFinderView({
+                selectedView: this.selectedView,
+                finderExplorerView: this.finderExplorerView,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.selectedView.destroy();
+            this.finderExplorerView.destroy();
+            delete this.view;
+            delete this.selectedView;
+            delete this.finderExplorerView;
+        },
+
+        "Should forward the virtualRootLocation to the finder explorer": function () {
+            var location = {};
+
+            this.view.set('virtualRootLocation', location);
+
+            Assert.areSame(
+                location, this.finderExplorerView.get('virtualRootLocation'),
+                "The virtualRootLocation should be set on the finder explorer"
+            );
+        },
+
+        "Should forward the startingLocation to the finder explorer": function () {
+            var location = {};
+
+            this.view.set('startingLocation', location);
+
+            Assert.areSame(
+                location, this.finderExplorerView.get('startingLocation'),
+                "The startingLocation should be set on the finder explorer"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Finder View tests");
     Y.Test.Runner.add(resetTest);
     Y.Test.Runner.add(defaultSubViewTest);
@@ -450,4 +474,5 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
     Y.Test.Runner.add(multipleUpdateTest);
     Y.Test.Runner.add(selectContentTest);
     Y.Test.Runner.add(onUnselectContentTest);
-}, '', {requires: ['test', 'view', 'model', 'ez-universaldiscoveryfinderview']});
+    Y.Test.Runner.add(settersTest);
+}, '', {requires: ['test', 'view', 'ez-universaldiscoveryfinderview']});

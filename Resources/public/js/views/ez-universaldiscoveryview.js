@@ -268,7 +268,9 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
          */
         _updateMethods: function () {
             var visibleMethod = this.get('visibleMethod'),
-                startingLocationId = this.get('startingLocationId');
+                startingLocationId = this.get('startingLocationId'),
+                startingLocation = this.get('startingLocation'),
+                virtualRootLocation = this.get('virtualRootLocation');
 
             /**
              * Stores a reference to the visible method view
@@ -282,9 +284,11 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 var visible = (visibleMethod === method.get('identifier'));
 
                 method.setAttrs({
+                    'virtualRootLocation': virtualRootLocation,
                     'multiple': this.get('multiple'),
                     'loadContent': true,
                     'startingLocationId': startingLocationId,
+                    'startingLocation': startingLocation,
                     'visible': visible,
                     'isSelectable': Y.bind(this.get('isSelectable'), this),
                     'active': this.get('active'),
@@ -502,15 +506,35 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             },
 
             /**
-             * The location id that the UDW tree will select on start
+             * The id of a Location that should be considered as the starting
+             * point when discovering Content.
+             *
              * @attribute startingLocationId
              * @type {String}
              * @default false if there is no starting location
-             *
              */
             startingLocationId: {
                 value: false,
             },
+
+            /**
+             * The Location that should be considered as the starting point when
+             * discovering Content.
+             *
+             * @attribute startingLocation
+             * @type {eZ.Location|false}
+             */
+            startingLocation: {
+                value: false,
+            },
+
+            /**
+             * The virtual root Location object.
+             *
+             * @attribute virtualRootLocation
+             * @type {eZ.Location}
+             */
+            virtualRootLocation: {},
 
             /**
              * Flag indicating whether the Content should be provided in the
@@ -563,7 +587,9 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             multiple: this.get('multiple'),
                             loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
-                            startingLocationId: this.get('startingLocationId')
+                            startingLocationId: this.get('startingLocationId'),
+                            startingLocation: this.get('startingLocation'),
+                            virtualRootLocation: this.get('virtualRootLocation'),
                         }),
                         new Y.eZ.UniversalDiscoverySearchView({
                             bubbleTargets: this,
@@ -571,7 +597,9 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             multiple: this.get('multiple'),
                             loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
-                            startingLocationId: this.get('startingLocationId')
+                            startingLocationId: this.get('startingLocationId'),
+                            startingLocation: this.get('startingLocation'),
+                            virtualRootLocation: this.get('virtualRootLocation'),
                         }),
                     ];
                 },
