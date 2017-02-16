@@ -223,8 +223,8 @@
         <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="2b72d1da8862e8f7f123df770f7733b294d765a3" resname="locationview.details.remoteid">
-        <source>Location remove Id</source>
-        <target>Location remove Id</target>
+        <source>Location remote Id</source>
+        <target>Location remote Id</target>
         <note>key: locationview.details.remoteid</note>
         <jms:reference-file>./Resources/public/templates/tabs/details.hbt</jms:reference-file>
       </trans-unit>
