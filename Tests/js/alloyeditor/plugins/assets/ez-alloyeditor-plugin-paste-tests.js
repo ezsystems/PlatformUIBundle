@@ -244,6 +244,34 @@ YUI.add('ez-alloyeditor-plugin-paste-tests', function (Y) {
             this._testPaste(code, expected, "The table border attribute should have been kept");
         },
 
+        "Should keep colspan attribute on td": function () {
+            var code = '<table border="1"><tr><td colspan="2">Led Zeppelin</td></tr></table>',
+                expected = '<table border="1"><tbody><tr><td colspan="2">Led Zeppelin</td></tr></tbody></table>';
+
+            this._testPaste(code, expected, "The table border attribute should have been kept");
+        },
+
+        "Should keep colspan attribute on th": function () {
+            var code = '<table border="1"><tr><th colspan="2">Led Zeppelin</th></tr></table>',
+                expected = '<table border="1"><tbody><tr><th colspan="2">Led Zeppelin</th></tr></tbody></table>';
+
+            this._testPaste(code, expected, "The table border attribute should have been kept");
+        },
+
+        "Should keep rowspan attribute on td": function () {
+            var code = '<table border="1"><tr><td rowspan="2">Led Zeppelin</td></tr></table>',
+                expected = '<table border="1"><tbody><tr><td rowspan="2">Led Zeppelin</td></tr></tbody></table>';
+
+            this._testPaste(code, expected, "The table border attribute should have been kept");
+        },
+
+        "Should keep rowspan attribute on th": function () {
+            var code = '<table border="1"><tr><th rowspan="2">Led Zeppelin</th></tr></table>',
+                expected = '<table border="1"><tbody><tr><th rowspan="2">Led Zeppelin</th></tr></tbody></table>';
+
+            this._testPaste(code, expected, "The table border attribute should have been kept");
+        },
+
         "Should apply the paste filter after pastefromword cleanup": function () {
             var code = '<div>Led Zeppelin - <strong class="MsoNormal">Black mountain side</strong></div>',
                 expected = '<p>Led Zeppelin - <strong>Black mountain side</strong></p>';
