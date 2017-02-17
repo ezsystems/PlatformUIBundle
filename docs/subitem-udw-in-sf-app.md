@@ -5,7 +5,7 @@
 
 ## Idea
 
-Expose some YUI Based component in WebComponents. Relying on 1.x code would then
+Expose some YUI based component as WebComponents. Relying on 1.x code would then
 be a temporary solution and progressively we can get rid of YUI based code while
 still keeping the WebComponents. Other said, the custom element would become a
 public API to use those components.
@@ -73,17 +73,56 @@ https://github.com/ezsystems/PlatformUIBundle/pull/674)
 #### Interaction
 
 * when the selection is confirmed by the editor, this selection should be used
-  by a `confirmHandler` function.
+  by a `confirmHandler` function. In 1.x, the selection contains 4 objects:
+    1. the Location model
+    1. the ContentInfo model
+    1. the Content model
+    1. the Content Type model
 * if the editor cancels the *UDW session*, a `cancelHandler` function is
   supposed to be executed as well.
 
 #### API
 
-TODO
+##### Calling the UDW
 
-#### Example
+When designed as a Web Component, the UDW could be triggered in several ways:
 
-TODO
+1. As the 1.x version, UDW could be available in the page and it could listen
+   for a custom event which would provide the configuration the UDW session and
+   the `confirmHandler` and `cancelHandler` functions.
+1. Alternatively, another component in the page (the app ?) could be responsible
+   for dynamically create a UDW tag in the DOM under certain conditions (an
+   event or by calling a public method) which could do something like:
+   ```js
+    let udw = document.createElement('ez-universaldiscoverywidget');
+
+    udw.multiple = false;
+    udw.startingLocationId = 42;
+    udw.onconfirm = function (selection) {
+        aConfirmHandleFunction.call(this, selection);
+        udw.parentNode.remove(udw);
+    };
+    udw.oncancel = function () {
+        aCancelHandlerFunction.apply(udw);
+        udw.parentNode.remove(udw);
+    };
+    document.body.appendChild(udw);
+    ```
+
+The second strategy has the benefit of better defining the responsibility, it
+would also ease the ability to have several stacked UDW running at the same
+time. On the other hand, it's very different strategy compared to the 1.x UDW so
+it might be challenging to adopt such approach.
+
+##### UDW Selection
+
+The UDW selection is provided to the confirm handler when the user confirms the
+selection. In 1.x, a selection is an object containing 4 model objects. Those
+objects are build based on a YUI model class so they can not be kept in the
+process of getting rid of YUI. As a result, somewhere in the black boxing, those
+model object will have to be transformed to a YUI free representation. This
+representation could be a port of the Public API Value Object which would have
+the benefit of the consistency with the PHP Public API.
 
 ### TreeActonView
 
