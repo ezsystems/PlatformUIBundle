@@ -19,8 +19,8 @@ public API to use those components.
 <!-- ... -->
 
 {# Here I want to render the subitem of the current Location #}
-{# I just generate a ez-subitem-list with some attributes tag like any other HTML tag #}
-<ez-subitem-list
+{# I just generate a ez-subitem with some attributes tag like any other HTML tag #}
+<ez-subitem
     parent-location-id="{{ path( 'ezpublish_rest_loadLocation', location ) }}"
     ></ez-subitem-list>
 ```
@@ -37,13 +37,12 @@ public API to use those components.
 
 ## Components
 
-### SubitemList
+### Subitem
 
 #### Features
 
 * asynchronously load and display the subitems :)
 * navigation (click on a Location to view it)
-* display of thumbnails
 * edit priority
 
 #### Interactions
@@ -52,11 +51,43 @@ public API to use those components.
 
 #### API
 
-TODO
+##### Markup
 
-#### Example
+This component is mostly declarative. It only needs the parent Location id of
+the subitem to render.
 
-TODO
+Since PlatformUI 1.x is based on the REST API, it only handles REST id ie
+resource URL in the REST API for a given domain object. So in the easiest
+solution would be to pass the *REST Location id* to the component, like:
+
+```xml
+<ez-subitem
+    parent-location-id="/api/ezp/v2/content/locations/1/43/51/59/73/74"
+    ></ez-subitem-list>
+```
+
+This URI can be easily generated with the Twig `path` template function.
+
+If we find an easy and efficient way of doing that internally in the component,
+the markup could become:
+
+```xml
+<ez-subitem parent-location-id="74"></ez-subitem-list>
+```
+
+##### Public API
+
+The subitem list is supposed to be refreshed if the Location sort field and/or
+sort order are changed. If this is happening without a full page refresh, the
+`ez-subitem` has to provide a `refresh` public method for that, which could be
+used in the following way:
+
+```js
+// Location sort order has just been updated with the REST API for instance
+const subitem = document.querySelector('ez-subitem'); // or any other way to retrieve it
+
+subitem.refresh();
+```
 
 ### Universal Discovery Widget (UDW)
 
