@@ -159,6 +159,12 @@ the benefit of the consistency with the PHP Public API.
 
 ### Where's the app object ?
 
+The goal of this project is to extract some components (UDW, Subitem, ...) from
+a larger system to make them act as if they were independant. But internally,
+those components will still use the whole system ie the `eZ.PlatformUIApp` and
+its dependencies. This brings the question of how the components exposed as
+WebComponent will access the app.
+
 Internally, we might need a *fake* app object to provide at least the JavaScript
 REST Client instance and most likely others things ? Maybe, we also need to
 replicate others types of components (View Services or even top level view).
