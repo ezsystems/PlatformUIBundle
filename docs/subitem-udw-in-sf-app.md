@@ -124,29 +124,6 @@ model object will have to be transformed to a YUI free representation. This
 representation could be a port of the Public API Value Object which would have
 the benefit of the consistency with the PHP Public API.
 
-### TreeActonView
-
-#### Features
-
-* display a Tree when clicked
-* the Tree itself allows to navigate
-
-#### Interaction
-
-* at the moment, when a operation might change the tree structure (content
-  removed, created, updated, moved, ...), the internal treee structure is
-  completely discarded so that a new Tree is build and displayed.
-
-Note: this is only needed if the page is not refreshed after the operation.
-
-#### API
-
-TODO
-
-#### Example
-
-TODO
-
 ## Technical considerations
 
 ### Where's the app object ?
