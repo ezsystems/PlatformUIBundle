@@ -1,0 +1,11 @@
+webcomponent_subitem:
+    path: /ez-subitem.html
+    defaults:
+        _controller: ezsystems.platformui.controller.webcomponent:subitemComponentAction
+    methods: [GET]
+
+webcomponent_yui_app:
+    path: /ez-yui-app.html
+    defaults:
+        _controller: ezsystems.platformui.controller.webcomponent:yuiAppComponentAction
+    methods: [GET]
