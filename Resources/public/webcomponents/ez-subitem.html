@@ -1,0 +1,38 @@
+<link rel="import" href="../vendors/polymer/polymer-element.html">
+
+<style>
+ez-subitem {
+    display: block;
+    width: 100%;
+    margin: 1em 0;
+}
+</style>
+
+<script>
+class eZSubitem extends Polymer.Element {
+    static get is() {
+        return 'ez-subitem';
+    }
+
+    static get config() {
+        return {};
+    }
+
+    constructor() {
+        super();
+        console.log('ez-subitem constructor', arguments, this);
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        console.log('ez-subitem connectedCallback', arguments, this);
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        console.log('ez-subitem disconnectedCallback', arguments, this);
+    }
+}
+
+customElements.define(eZSubitem.is, eZSubitem);
+</script>
