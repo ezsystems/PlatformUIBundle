@@ -403,6 +403,17 @@ YUI.add('ez-platformuiapp', function (Y) {
             this.navigate(this.routeUri(routeName, params));
         },
 
+        internalNavigateTo: function (routeName, params) {
+            var uri = this.routeUri(routeName, params),
+                req, res;
+
+            req = this._getRequest('internalNavigate');
+            req.path = uri.replace('#', '');
+            req.url = this._upgradeURL(Y.getLocation().origin + uri);
+            res = this._getResponse(req);
+            this._dispatch(req, res);
+        },
+
         /**
          * Logs in a user using the provided credentials. If the credentials
          * are wrong, the callback is called with the error and response from
