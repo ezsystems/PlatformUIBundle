@@ -11,6 +11,9 @@ YUI.add('ez-contenttreeplugin', function (Y) {
      */
     Y.namespace('eZ.Plugin');
 
+    console.log('[DEPRECRATED] eZ.Plugin.ContentTree is deprecated');
+    console.log('[DEPRECRATED] it will be removed from PlatformUI 2.0');
+    
     /**
      * Base Content Tree Plugin. This class provides the methods to handle a
      * lazy loaded content tree and is meant to be extended.

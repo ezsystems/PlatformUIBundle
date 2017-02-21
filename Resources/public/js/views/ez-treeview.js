@@ -11,6 +11,9 @@ YUI.add('ez-treeview', function (Y) {
      */
     Y.namespace('eZ');
 
+    console.log('[DEPRECRATED] eZ.TreeView is deprecated');
+    console.log('[DEPRECRATED] it will be removed from PlatformUI 2.0');
+
     var IS_TREE_NODE_LOADING = "is-tree-node-loading",
         IS_TREE_NODE_SELECTED = "is-tree-node-selected",
         IS_TREE_NODE_CLOSE = "is-tree-node-close",
