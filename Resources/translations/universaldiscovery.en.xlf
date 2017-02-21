@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-02-03T14:20:33Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-03-15T10:23:01Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -46,7 +46,7 @@
         <source>Confirm selection</source>
         <target>Confirm selection</target>
         <note>key: universaldiscovery.confirm.selection</note>
-        <jms:reference-file>Resources/public/templates/universaldiscovery.hbt</jms:reference-file>
+        <jms:reference-file>Resources/public/js/views/ez-universaldiscoveryview.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="c951ce12db4e892a7cdb5a44b399e21d689a44ed" resname="universaldiscovery.confirmed.items">
         <source>Confirmed items</source>
@@ -58,7 +58,7 @@
         <source>Content browser</source>
         <target>Content browser</target>
         <note>key: universaldiscovery.content.browser</note>
-        <jms:reference-file>./Resources/public/templates/universaldiscovery/explorer.hbt</jms:reference-file>
+        <jms:reference-file>Resources/public/templates/universaldiscovery/explorer.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="572fdb94d49b6e58d297fd7491cf28c77d60e241" resname="universaldiscovery.content.tree">
         <source>Content tree</source>

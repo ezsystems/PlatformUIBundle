@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-01-31T10:50:08Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-03-15T10:23:01Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -60,6 +60,12 @@
         <note>key: content.being.copied.under</note>
         <jms:reference-file>Resources/public/js/views/services/plugins/ez-copycontentplugin.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="2be07d7fa67c4111b55ff1ae95aa7bb38df17774" resname="content.browser.title">
+        <source>Content browser</source>
+        <target>Content browser</target>
+        <note>key: content.browser.title</note>
+        <jms:reference-file>Resources/public/js/views/services/ez-discoverybarviewservice.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="a45dde06d9f58df76767d6fdaa8da714979b737d" resname="content.copied.under">
         <source>'%contentName%' has been successfully copied under '%parentContentName%'</source>
         <target>'%contentName%' has been successfully copied under '%parentContentName%'</target>
@@ -84,11 +90,16 @@
         <note>key: creating.new.location.for.failed</note>
         <jms:reference-file>Resources/public/js/views/services/plugins/ez-locationcreateplugin.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="4f1d1e873e2acd3ffa920e7ee8fa339b43ffe384" resname="discoverybar.browse">
+        <source>Content browse</source>
+        <target>Content browse</target>
+        <note>key: discoverybar.browse</note>
+        <jms:reference-file>Resources/public/js/views/ez-discoverybarview.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="7eaf9281f3e62d4f3acf5dac5b34060808c363b9" resname="discoverybar.contenttree">
         <source>Content tree</source>
         <target>Content tree</target>
         <note>key: discoverybar.contenttree</note>
-        <jms:reference-file>Resources/public/js/views/ez-discoverybarview.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="69eda63e3b6ba8e8eb35db12ef1995c5dba42c17" resname="discoverybar.minimize">
         <source>Minimize</source>
@@ -209,6 +220,12 @@
         <target>+ New Translation</target>
         <note>key: translateaction.new.translation</note>
         <jms:reference-file>Resources/public/templates/translateaction.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="0141ea1c4b92b9abdd164fdc4a7a824350d856f7" resname="view.content.label">
+        <source>View this content</source>
+        <target>View this content</target>
+        <note>key: view.content.label</note>
+        <jms:reference-file>Resources/public/js/views/services/ez-discoverybarviewservice.js</jms:reference-file>
       </trans-unit>
     </body>
   </file>
