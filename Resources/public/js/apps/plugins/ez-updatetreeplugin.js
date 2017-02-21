@@ -11,6 +11,9 @@ YUI.add('ez-updatetreeplugin', function (Y) {
      */
     Y.namespace('eZ.Plugin');
 
+    console.log('[DEPRECRATED] eZ.Plugin.UpdateTree is deprecated');
+    console.log('[DEPRECRATED] it will be removed from PlatformUI 2.0');
+    
     /**
      * The update tree plugin for the application. It will update the discoveryBar tree
      * after catching an associated event. Events can be send by actions like DELETE/MOVE/COPY/EDIT/CREATE

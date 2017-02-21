@@ -306,9 +306,9 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
                 this.virtualRootLocation, levelView.get('parentLocation'),
                 "The parent Location of the level view should be the virtual root"
             );
-            Assert.isUndefined(
+            Assert.isNull(
                 levelView.get('selectLocationId'),
-                "The selected Location id should be undefined"
+                "The selected Location id should be null"
             );
         },
 
@@ -375,27 +375,33 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
                 location, locationLevelView.get('parentLocation'),
                 "The parent Location should be the starting Location"
             );
-            Assert.isUndefined(
+            Assert.isNull(
                 locationLevelView.get('selectLocationId'),
-                "The selected Location id should be undefined"
+                "The selected Location id should be null"
             );
+        },
+
+        _configureThreeLevelViewsSetup: function () {
+            this.locationId = 42;
+            this.pathLocationId = 43;
+            this.pathLocation = this._getStartingLocation(this.pathLocationId, 1, []);
+            this.location = this._getStartingLocation(this.locationId, 1, [this.pathLocation]);
         },
 
         "Should create 3 level views": function () {
             var rootLevelView,
                 pathLevelView,
-                locationLevelView,
-                locationId = 42,
-                pathLocationId = 43,
-                pathLocation = this._getStartingLocation(pathLocationId, 1, []),
-                location = this._getStartingLocation(locationId, 1, [pathLocation]);
+                locationLevelView;
 
-            this.view.set('startingLocation', location);
+            this._configureThreeLevelViewsSetup();
+
+            this.view.set('startingLocation', this.location);
 
             Assert.areEqual(
                 3, this.view.get('levelViews').length,
                 "3 level views should have been created"
             );
+
             rootLevelView = this.view.get('levelViews')[0];
             pathLevelView = this.view.get('levelViews')[1];
             locationLevelView = this.view.get('levelViews')[2];
@@ -404,25 +410,75 @@ YUI.add('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
                 "The parent Location should be the virtual root"
             );
             Assert.areEqual(
-                pathLocationId,
+                this.pathLocationId,
                 rootLevelView.get('selectLocationId'),
                 "The selected Location id should be the id of the location in the path"
             );
             Assert.areSame(
-                pathLocation, pathLevelView.get('parentLocation'),
+                this.pathLocation, pathLevelView.get('parentLocation'),
                 "The parent Location should be the path Location"
             );
             Assert.areEqual(
-                locationId, pathLevelView.get('selectLocationId'),
+                this.locationId, pathLevelView.get('selectLocationId'),
                 "The selected Location id should the id of the starting Location"
             );
             Assert.areSame(
-                location, locationLevelView.get('parentLocation'),
+                this.location, locationLevelView.get('parentLocation'),
                 "The parent Location should be the starting Location"
             );
-            Assert.isUndefined(
+            Assert.isNull(
                 locationLevelView.get('selectLocationId'),
-                "The selected Location id should be undefined"
+                "The selected Location id should be null"
+            );
+        },
+
+        "Should disable the first level view if discoverRootDepth is one": function () {
+            var rootLevelView;
+
+            this._configureThreeLevelViewsSetup();
+
+            this.view.set('minDiscoverDepth', 1);
+            this.view.set('startingLocation', this.location);
+
+
+            Assert.areEqual(
+                3, this.view.get('levelViews').length,
+                "3 level views should have been created"
+            );
+
+            rootLevelView = this.view.get('levelViews')[0];
+
+            Assert.isTrue(
+                rootLevelView.get('disabled'),
+                'The root level view should be disabled'
+            );
+        },
+
+        "Should disable the first level view if discoverRootDepth is two": function () {
+            var rootLevelView,
+                pathLevelView;
+
+            this._configureThreeLevelViewsSetup();
+
+            this.view.set('minDiscoverDepth', 2);
+            this.view.set('startingLocation', this.location);
+
+
+            Assert.areEqual(
+                3, this.view.get('levelViews').length,
+                "3 level views should have been created"
+            );
+
+            rootLevelView = this.view.get('levelViews')[0];
+            pathLevelView = this.view.get('levelViews')[1];
+
+            Assert.isTrue(
+                rootLevelView.get('disabled'),
+                'The root level view should be disabled'
+            );
+            Assert.isTrue(
+                pathLevelView.get('disabled'),
+                'The path level view should be disabled'
             );
         },
 

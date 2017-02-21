@@ -7,7 +7,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         tabTest, defaultMethodsTest, selectContentTest, confirmButtonStateTest,
         updateTitleTest, confirmSelectedContentTest, resetTest, selectionUpdateConfirmViewTest,
         defaultConfirmedListTest, multipleClassTest, animatedSelectionTest, unselectContentTest,
-        activeTest,
+        activeTest, updateConfirmLabelTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -26,6 +26,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             });
 
             this.title = 'Universal discovery view title';
+            this.confirmLabel = 'Sure!';
             this.multiple = true;
             this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
             this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
@@ -33,6 +34,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
                 title: this.title,
+                confirmLabel: this.confirmLabel,
                 multiple: this.multiple,
                 methods: [this.method1, this.method2],
                 confirmedListView: this.confirmedList,
@@ -103,10 +105,14 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Assert.isObject(variables, "The template should receive some variables");
-                Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 3 variables");
+                Assert.areEqual(4, Y.Object.keys(variables).length, "The template should receive 4 variables");
                 Assert.areSame(
                     that.title, variables.title,
                     "The title should be available in the template"
+                );
+                Assert.areSame(
+                    that.confirmLabel, variables.confirmLabel,
+                    "The confirm label should be available in the template"
                 );
                 Assert.areSame(
                     that.multiple, variables.multiple,
@@ -125,6 +131,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                     Assert.areEqual(
                         localMethod.title, method.get('title'),
                         "The method title should be available"
+                    );
+                    Assert.areEqual(
+                        localMethod.confirmLabel, method.get('confirmLabel'),
+                        "The method confirm label should be available"
                     );
                     Assert.areEqual(
                         localMethod.identifier, method.getHTMLIdentifier(),
@@ -319,9 +329,11 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
 
         _testReset: function (evt) {
-            var customTitle = "A custom title";
+            var customTitle = "A custom title",
+                customLabel = "Select";
 
             this.view.set('title', "A custom title");
+            this.view.set('confirmLabel', customLabel);
             this.view._set('selection', {});
             this.method.set('visible', true);
             this.method.set('multiple', true);
@@ -331,6 +343,11 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 customTitle,
                 this.view.get('title'),
                 "The title should resetted to its default value"
+            );
+            Assert.areNotEqual(
+                customLabel,
+                this.view.get('confirmLabel'),
+                "The confirm Label should resetted to its default value"
             );
             Assert.isNull(
                 this.view.get('selection'),
@@ -351,9 +368,11 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
 
         _testNotReset: function (evt) {
-            var customTitle = "A custom title";
+            var customTitle = "A custom title",
+                customLabel = "Select";
 
             this.view.set('title', "A custom title");
+            this.view.set('confirmLabel', customLabel);
             this.method.set('visible', true);
             this.method.set('multiple', true);
             this.view.on(evt, function (e) {
@@ -364,6 +383,11 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 customTitle,
                 this.view.get('title'),
                 "The title should be kept"
+            );
+            Assert.areEqual(
+                customLabel,
+                this.view.get('confirmLabel'),
+                "The confirm label should be kept"
             );
             Assert.isTrue(
                 this.method.get('visible'),
@@ -507,13 +531,16 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         setUp: function () {
             this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
             this.method1._set("title", "Method 1");
+            this.method1._set("confirmLabel", "label 1");
             this.method1._set("identifier", "method1");
 
             this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
             this.method2._set("title", "Method 2");
+            this.method2._set("confirmLabel", "label 2");
             this.method2._set("identifier", "method2");
 
             this.confirmedList = new Y.View();
+            this.minDiscoverDepth = 1;
             this.startingLocation = {};
             this.startingLocationId = '42';
             this.virtualRootLocation = {};
@@ -566,6 +593,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             var method2 = this.method2,
                 method1 = this.method1;
 
+            this.view.set('minDiscoverDepth', this.minDiscoverDepth);
             this.view.set('startingLocation', this.startingLocation);
             this.view.set('startingLocationId', this.startingLocationId);
             this.view.set('virtualRootLocation', this.virtualRootLocation);
@@ -580,6 +608,11 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Assert.isFalse(
                 method1.get('visible'),
                 "The method1 should not be visible"
+            );
+
+            Assert.areSame(
+                method2.get('minDiscoverDepth'), this.minDiscoverDepth,
+                "method should have been updated with minDiscoverDepth"
             );
 
             Assert.areSame(
@@ -641,6 +674,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.confirmedList = new Y.View();
             this.config = {};
             this.multiple = true;
+            this.minDiscoverDepth = 1;
             this.startingLocationId = 'l/o/c/a/t/i/o/n/i/d';
             this.startingLocation = {};
             this.virtualRootLocation = {};
@@ -655,6 +689,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.view = new Y.eZ.UniversalDiscoveryView({
                 multiple: this.multiple,
                 confirmedListView: this.confirmedList,
+                minDiscoverDepth: this.minDiscoverDepth,
                 startingLocationId: this.startingLocationId,
                 startingLocation: this.startingLocation,
                 virtualRootLocation: this.virtualRootLocation,
@@ -693,6 +728,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The isAlreadySelected function should be passed to the method views"
             );
             Assert.areSame(
+                this.minDiscoverDepth, methods[0].get('minDiscoverDepth'),
+                "The minDiscoverDepth should be passed to the method views"
+            );
+            Assert.areSame(
                 this.startingLocationId, methods[0].get('startingLocationId'),
                 "The startingLocationId should be passed to the method views"
             );
@@ -728,6 +767,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Assert.isFunction(
                 methods[1].get('isAlreadySelected'),
                 "The isAlreadySelected function should be passed to the method views"
+            );
+            Assert.areSame(
+                this.minDiscoverDepth, methods[0].get('minDiscoverDepth'),
+                "The minDiscoverDepth should be passed to the method views"
             );
             Assert.areSame(
                 this.startingLocationId, methods[1].get('startingLocationId'),
@@ -1063,6 +1106,45 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
     });
 
+    updateConfirmLabelTest= new Y.Test.Case({
+        name: "eZ Universal Discovery View update button label test",
+
+        setUp: function () {
+            this.method = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method._set('identifier', 'finder');
+            this.confirmedList = new Y.View();
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                container: '.container',
+                confirmLabel: "Go !",
+                methods: [this.method],
+                confirmedListView: this.confirmedList,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.method.destroy();
+            this.confirmedList.destroy();
+            delete this.view;
+            delete this.method;
+            delete this.confirmedList;
+        },
+
+        "Should update the confirm label when the view is getting active": function () {
+            var newConfirmLabel = 'Go Go !';
+
+            this.view.set('confirmLabel', newConfirmLabel);
+            this.view.set('active', true);
+
+            Assert.areEqual(
+                newConfirmLabel,
+                this.view.get('container').one('.ez-universaldiscovery-confirm').getContent(),
+                "The label of the button should have been updated"
+            );
+        },
+    });
+
     activeTest= new Y.Test.Case({
         name: "eZ Universal Discovery View active test",
 
@@ -1109,9 +1191,11 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         setUp: function () {
             this.initialTitle = 'Therapy?';
+            this.initialConfirmLabel = 'OK';
             this.confirmedList = new Mock();
             this.view = new Y.eZ.UniversalDiscoveryView({
                 title: this.initialTitle,
+                confirmLabel: this.initialConfirmLabel,
                 methods: [],
                 confirmedListView: this.confirmedList,
             });
@@ -1129,11 +1213,16 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 method: 'reset',
             });
             this.view.set('title', 'new title');
+            this.view.set('confirmLabel', 'new label');
             this.view.reset();
 
             Assert.areEqual(
                 this.initialTitle, this.view.get('title'),
                 "The view title should have been resetted to the initial title"
+            );
+            Assert.areEqual(
+                this.initialConfirmLabel, this.view.get('confirmLabel'),
+                "The view confirm label should have been resetted to the initial title"
             );
             Mock.verify(this.confirmedList);
         },
@@ -1422,4 +1511,5 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     Y.Test.Runner.add(multipleClassTest);
     Y.Test.Runner.add(animatedSelectionTest);
     Y.Test.Runner.add(unselectContentTest);
+    Y.Test.Runner.add(updateConfirmLabelTest);
 }, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'ez-universaldiscoveryview']});

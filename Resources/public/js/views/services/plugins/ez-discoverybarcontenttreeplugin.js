@@ -11,6 +11,9 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
      */
     Y.namespace('eZ.Plugin');
 
+    console.log('[DEPRECRATED] eZ.Plugin.DiscoveryBarContentTree is deprecated');
+    console.log('[DEPRECRATED] it will be removed from PlatformUI 2.0');
+    
     /**
      * Discovery Bar Content Tree Plugin. It enhances the discovery bar to
      * handle the content tree related events and fetching.

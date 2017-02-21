@@ -234,7 +234,6 @@ system:
                         - 'ez-languageselectionboxplugin'
                         - 'ez-notificationhubplugin'
                         - 'ez-positionplugin'
-                        - 'ez-updatetreeplugin'
                         - 'ez-translateproperty'
                         - 'ez-searchviewservice'
                         - 'ez-searchview'
@@ -320,10 +319,10 @@ system:
                         - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js"
                 ez-discoverybarviewservice:
-                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-discoverybarcontenttreeplugin']
+                    requires: ['ez-viewservice', 'ez-sideviewservice']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js"
                 ez-universaldiscoveryviewservice:
-                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-imagevariationloadplugin', 'ez-universaldiscoverycontenttreeplugin']
+                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-imagevariationloadplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js"
                 ez-contentpeekviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
@@ -730,7 +729,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/usermenuitemfireevent.hbt"
                 ez-discoverybarview:
-                    requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview', 'ez-translator']
+                    requires: ['ez-barview', 'ez-buttonactionview', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/ez-discoverybarview.js"
                 ez-actionbarview:
                     requires:

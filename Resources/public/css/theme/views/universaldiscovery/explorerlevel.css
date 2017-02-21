@@ -3,6 +3,10 @@
     border-radius: 5px;
 }
 
+.ez-view-universaldiscoveryfinderexplorerlevelview.is-disabled {
+    background-color: #f0f0f0;
+}
+
 .ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item.is-parent-location:after {
     content: "\E605";
     color: #7A7A7A;

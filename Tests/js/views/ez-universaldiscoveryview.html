@@ -34,6 +34,7 @@ method base view
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-universaldiscoveryview-tests.js"></script>
+<script type="text/javascript" src="../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -52,7 +53,7 @@ method base view
         filter: loaderFilter,
         modules: {
             "ez-universaldiscoveryview": {
-                requires: ['ez-templatebasedview', 'ez-universaldiscoverymethodbaseview', 'ez-tabs', 'array-extras', 'event-tap', 'node-screen'],
+                requires: ['ez-templatebasedview', 'ez-universaldiscoverymethodbaseview', 'ez-tabs', 'array-extras', 'event-tap', 'node-screen', 'ez-translator'],
                 fullpath: "../../../Resources/public/js/views/ez-universaldiscoveryview.js"
             },
             "ez-universaldiscoverymethodbaseview": {
