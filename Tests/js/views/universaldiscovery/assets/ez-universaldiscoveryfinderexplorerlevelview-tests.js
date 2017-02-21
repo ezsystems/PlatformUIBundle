@@ -312,6 +312,15 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             Assert.areSame(this.view.get('items')[0].contentType, this.result.contentType, 'item should have a location');
             Assert.areSame(this.view.get('items')[0].contentInfo, this.result.location.get('contentInfo'), 'item should have a location');
         },
+
+        "Should remove loading after updating items": function () {
+            var container = this.view.get('container');
+
+            container.addClass('is-loading');
+            this.view.set('items', this.searchResult);
+
+            Assert.isFalse(container.hasClass('is-loading'), 'Should have the loading icon');
+        },
     });
 
     scrollTest = new Y.Test.Case({
@@ -462,23 +471,10 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             delete this.view;
         },
 
-        "Should set items to null and add loading class on reset": function () {
-            var container = this.view.get('container');
-
+        "Should set items to null on reset": function () {
             this.view.set('items', this.searchResult);
             this.view.reset();
-            Assert.isTrue(container.hasClass('is-loading'), 'Should have the loading icon');
             Assert.isNull(this.view.get('items'), 'items attribute should be resetted');
-        },
-
-        "Should add loading class when setting items to null": function () {
-            var container = this.view.get('container');
-
-            this.view.set('items', this.searchResult);
-            Assert.isFalse(container.hasClass('is-loading'), 'Should NOT have the loading icon');
-
-            this.view.set('items', null);
-            Assert.isTrue(container.hasClass('is-loading'), 'Should have the loading icon');
         },
     });
 

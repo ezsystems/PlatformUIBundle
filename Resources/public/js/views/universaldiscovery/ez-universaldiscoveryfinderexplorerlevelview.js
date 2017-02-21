@@ -50,12 +50,8 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
                 }
             });
             this.on('itemsChange', function () {
-                if (this.get('items')) {
-                    this.get('container').addClass(IS_LOADING);
-                } else {
-                    this._watchingScroll = true;
-                    container.removeClass(IS_LOADING);
-                }
+                this._watchingScroll = true;
+                container.removeClass(IS_LOADING);
             });
             this.after('offsetChange', function () {
                 this._watchingScroll = false;
