@@ -134,7 +134,7 @@
         document.body.addEventListener('click', function (e) {
             var updateUrl;
 
-            if ( e.target.nodeName === 'A' ) {
+            if ( e.target.nodeName === 'A' && e.target.href && e.target.getAttribute('href').indexOf('#') !== 0 ) {
                 updateUrl = e.target.href;
                 e.preventDefault();
 
