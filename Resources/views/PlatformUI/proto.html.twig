@@ -4,6 +4,11 @@
     <title>{{ title }}</title>
     <meta name="viewport" content="width=device-width">
     <meta charset="utf-8">
+
+{% stylesheets '$css.files;ez_platformui$' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+{% endstylesheets %}
+
     <style>
         * {
             box-sizing: border-box;
