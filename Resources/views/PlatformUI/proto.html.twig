@@ -57,6 +57,7 @@
     </style>
 
     <link rel="import" href="{{ path( 'webcomponent_subitem' ) }}">
+    <link rel="import" href="{{ path( 'webcomponent_universaldiscoverywidget' ) }}">
 
 </head>
 <body>
@@ -157,6 +158,26 @@
             fetchUpdate(viewLocationRoute.replace('{locationId}', e.detail.location.locationId))
                 .then(updatePage)
                 .then(replaceHistory);
+        });
+        document.body.addEventListener('contentDiscover', function (e) {
+            const udw = document.createElement('ez-universaldiscoverywidget');
+
+            udw.multiple = e.detail.multiple;
+            udw.onconfirm = function (selection) {
+                e.detail.onconfirm.call(udw, selection);
+                // removing the UDW is a bit brutal as this prevents
+                // any kind of animation when hiding the UDW.
+                udw.remove(true);
+            }
+            udw.oncancel = function (selection) {
+                if ( e.detail.oncancel ) {
+                    e.detail.oncancel.call(udw, selection);
+                }
+                udw.remove(true);
+            }
+            udw.isSelectable = e.detail.isSelectable ? e.detail.isSelectable : undefined;
+            udw.startingLocationId = e.detail.startingLocationId;
+            document.body.appendChild(udw);
         });
         window.addEventListener('popstate', function (e) {
             if ( e.state && e.state.url ) {

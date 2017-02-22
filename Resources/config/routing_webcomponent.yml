@@ -1,3 +1,9 @@
+webcomponent_universaldiscoverywidget:
+    path: /ez-universaldiscoverywidget.html
+    defaults:
+        _controller: ezsystems.platformui.controller.webcomponent:universalDiscoveryWidgetComponentAction
+    methods: [GET]
+
 webcomponent_subitem:
     path: /ez-subitem.html
     defaults:

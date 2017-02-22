@@ -451,6 +451,39 @@ YUI.add('ez-platformuiapp', function (Y) {
             });
         },
 
+        renderSideView: function (ViewConstructor, ServiceConstructor, params, done) {
+            var req, res,
+                view, viewService;
+
+            req = this._getRequest('renderComponent');
+            res = this._getResponse(req);
+
+            viewService = new ServiceConstructor({
+                app: this,
+                capi: this.get('capi'),
+                plugins: Y.eZ.PluginRegistry.getPlugins(ServiceConstructor.NAME),
+                config: this.get('config'),
+                bubbleTargets: this,
+            });
+
+            viewService.once('error', function (e) {
+                done(new Error(e.message));
+            });
+
+            viewService.setAttrs({
+                'parameters': params,
+                'request': req,
+                'response': res,
+            });
+            view = new ViewConstructor({bubbleTargets: viewService});
+            viewService.load(function () {
+                view.setAttrs(viewService.getViewParameters());
+                view.render();
+                view.addTarget(viewService);
+                done(false, viewService, view);
+            });
+        },
+
         /**
          * Logs in a user using the provided credentials. If the credentials
          * are wrong, the callback is called with the error and response from

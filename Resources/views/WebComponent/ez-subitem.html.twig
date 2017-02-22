@@ -49,47 +49,6 @@ class eZSubitem extends Polymer.Element {
             id: this.parentLocationId,
             languageCode: 'eng-GB'
         };
-        const done = function (err, viewService, view) {
-            this.innerHTML = '';
-            if ( err ) {
-                this.innerHTML = 'An error occurred';
-                return;
-            }
-            view.get('container').delegate('click', function (e) {
-                e.halt(true);
-            }, 'a');
-            view.on('*:navigateTo', function (e) {
-                let event, view = e.target;
-
-                e.halt();
-                if ( e.route.name === 'viewLocation' && e.item ) {
-                    event = new CustomEvent('browseToContent', {
-                        detail: {
-                            // getting a YUI free representation but it's most likely
-                            // still to tight to YUI Model/REST API
-                            // when using the UDW, we'll have the same problem,
-                            // at some point we'll have to add a proper conversion
-                            // from Models to ValueObject
-                            location: e.item.location.toJSON(),
-                            content: e.item.content.toJSON(),
-                        },
-                        bubbles: true,
-                    });
-                    this.dispatchEvent(event);
-                } else {
-                    console.warn('Got a navigateTo event but no data to transform it', e);
-                }
-            }.bind(this));
-            this.appendChild(view.get('container').getDOMNode());
-            view.set('active', true);
-
-            // using the shadow DOM is another option. It allows to somehow
-            // hide the internal of the component but on the other hand
-            // it makes styling harder as we have to add the CSS in the component
-            // itself.
-            //let shadowRoot = this.attachShadow({mode: 'open'});
-            //shadowRoot.appendChild(view.get('container').getDOMNode());
-        }.bind(this);
 
         app.renderView(
             Y.eZ.SubitemBoxView,
@@ -101,8 +60,54 @@ class eZSubitem extends Polymer.Element {
             // view service would have to load the Location by this id.
             Y.eZ.LocationViewViewService,
             params,
-            done
+            this._attachView.bind(this)
         );
+    }
+
+    _attachView(err, viewService, view) {
+        this.innerHTML = '';
+        if ( err ) {
+            this.innerHTML = 'An error occurred';
+            return;
+        }
+        this._blockClick(view);
+        view.on('*:navigateTo', function (e) {
+            let event, view = e.target;
+
+            e.halt();
+            if ( e.route.name === 'viewLocation' && e.item ) {
+                event = new CustomEvent('browseToContent', {
+                    detail: {
+                        // getting a YUI free representation but it's most likely
+                        // still to tight to YUI Model/REST API
+                        // when using the UDW, we'll have the same problem,
+                        // at some point we'll have to add a proper conversion
+                        // from Models to ValueObject
+                        location: e.item.location.toJSON(),
+                        content: e.item.content.toJSON(),
+                    },
+                    bubbles: true,
+                });
+                this.dispatchEvent(event);
+            } else {
+                console.warn('Got a navigateTo event but no data to transform it', e);
+            }
+        }.bind(this));
+        this.appendChild(view.get('container').getDOMNode());
+        view.set('active', true);
+
+        // using the shadow DOM is another option. It allows to somehow
+        // hide the internal of the component but on the other hand
+        // it makes styling harder as we have to add the CSS in the component
+        // itself.
+        //let shadowRoot = this.attachShadow({mode: 'open'});
+        //shadowRoot.appendChild(view.get('container').getDOMNode());
+    }
+
+    _blockClick(view) {
+        view.get('container').delegate('click', function (e) {
+            e.halt(true);
+        }, 'a');
     }
 
     disconnectedCallback() {

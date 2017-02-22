@@ -32,4 +32,9 @@ class WebComponentController extends Controller
     {
         return $this->render('eZPlatformUIBundle:WebComponent:ez-subitem.html.twig');
     }
+
+    public function universalDiscoveryWidgetComponentAction()
+    {
+        return $this->render('eZPlatformUIBundle:WebComponent:ez-universaldiscoverywidget.html.twig');
+    }
 }
