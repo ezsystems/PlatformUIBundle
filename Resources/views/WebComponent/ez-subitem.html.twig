@@ -55,6 +55,9 @@ class eZSubitem extends Polymer.Element {
                 this.innerHTML = 'An error occurred';
                 return;
             }
+            view.get('container').delegate('click', function (e) {
+                e.halt(true);
+            }, 'a');
             view.on('*:navigateTo', function (e) {
                 let event, view = e.target;
 
