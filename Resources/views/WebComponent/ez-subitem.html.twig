@@ -45,29 +45,36 @@ class eZSubitem extends Polymer.Element {
     _createSubitemComponent() {
         const app = eZ.YUI.app;
         const Y = eZ.YUI.Y;
-
-        // this should probably be done in a custom plugin for the app
-        // or directly in the app itself
-        // this would also avoid exposing the Y object
-        app.views.subitemBoxView = {type: Y.eZ.SubitemBoxView};
-        app.route({
-            name: 'subitemList',
-            path: '/subitem/:id/:languageCode',
-            service: Y.eZ.LocationViewViewService,
-            view: 'subitemBoxView',
-            callbacks: ['handleMainView']
-        });
-        app.set('transitions', false);
-        app.onceAfter('activeViewChange', function () {
-            let shadowRoot = this.attachShadow({mode: 'closed'});
-            shadowRoot.appendChild(app.get('activeView').get('container').getDOMNode());
-            //this.innerHTML = '';
-            //this.appendChild(app.get('activeView').get('container').getDOMNode());
-        }.bind(this));
-        app.internalNavigateTo('subitemList', {
+        const params = {
             id: this.parentLocationId,
             languageCode: 'eng-GB'
-        });
+        };
+        const done = function (err, viewService, view) {
+            this.innerHTML = '';
+            if ( err ) {
+                this.innerHTML = 'An error occurred';
+                return;
+            }
+            this.appendChild(view.get('container').getDOMNode());
+            view.set('active', true);
+
+            // using the shadow DOM is another option. It allows to somehow
+            // hide the internal of the component but on the other hand
+            // it makes styling harder as we have to add the CSS in the component
+            // itself.
+            //let shadowRoot = this.attachShadow({mode: 'open'});
+            //shadowRoot.appendChild(view.get('container').getDOMNode());
+        }.bind(this);
+
+        app.renderView(
+            Y.eZ.SubitemBoxView,
+            // LocationViewViewService works for SubitemBoxView but it does too
+            // many things for it, mainly it loads the path of the Location
+            // while it's not actually needed.
+            Y.eZ.LocationViewViewService,
+            params,
+            done
+        );
     }
 
     disconnectedCallback() {

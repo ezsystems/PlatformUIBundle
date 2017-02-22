@@ -403,15 +403,52 @@ YUI.add('ez-platformuiapp', function (Y) {
             this.navigate(this.routeUri(routeName, params));
         },
 
-        internalNavigateTo: function (routeName, params) {
-            var uri = this.routeUri(routeName, params),
-                req, res;
+        /**
+         * Instantiates and renders a view with the given `ViewConstructor` and
+         * `ServiceConstructor`. It does pretty much the same thing as what
+         * happens when navigating in the app but it skips the routing phase.
+         * When done, the `done` callback is called with the view and view
+         * service instances as parameter.
+         *
+         * @method renderView
+         * @param {Function} ViewConstructor
+         * @param {Function} ServiceConstructor
+         * @param {Object} requestParams the request parameters expected by the
+         * view service.
+         * @param {Function} done
+         * @param {false|Error} done.error
+         * @param {eZ.ViewService} done.viewService
+         * @param {eZ.View} done.view
+         */
+        renderView: function (ViewConstructor, ServiceConstructor, requestParams, done) {
+            var req, res,
+                view, viewService;
 
-            req = this._getRequest('internalNavigate');
-            req.path = uri.replace('#', '');
-            req.url = this._upgradeURL(Y.getLocation().origin + uri);
+            req = this._getRequest('renderComponent');
+            req.params = requestParams;
             res = this._getResponse(req);
-            this._dispatch(req, res);
+
+            viewService = new ServiceConstructor({
+                app: this,
+                capi: this.get('capi'),
+                request: req,
+                response: res,
+                plugins: Y.eZ.PluginRegistry.getPlugins(ServiceConstructor.NAME),
+                config: this.get('config'),
+                bubbleTargets: this,
+            });
+
+            viewService.set('request', req);
+            viewService.set('response', res);
+            viewService.once('error', function (e) {
+                done(new Error(e.message));
+            });
+            viewService.load(function () {
+                view = new ViewConstructor(viewService.getViewParameters());
+                view.render();
+                view.addTarget(viewService);
+                done(false, viewService, view);
+            });
         },
 
         /**
