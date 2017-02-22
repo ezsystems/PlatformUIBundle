@@ -55,6 +55,28 @@ class eZSubitem extends Polymer.Element {
                 this.innerHTML = 'An error occurred';
                 return;
             }
+            view.on('*:navigateTo', function (e) {
+                let event, view = e.target;
+
+                e.halt();
+                if ( e.route.name === 'viewLocation' && e.item ) {
+                    event = new CustomEvent('browseToContent', {
+                        detail: {
+                            // getting a YUI free representation but it's most likely
+                            // still to tight to YUI Model/REST API
+                            // when using the UDW, we'll have the same problem,
+                            // at some point we'll have to add a proper conversion
+                            // from Models to ValueObject
+                            location: e.item.location.toJSON(),
+                            content: e.item.content.toJSON(),
+                        },
+                        bubbles: true,
+                    });
+                    this.dispatchEvent(event);
+                } else {
+                    console.warn('Got a navigateTo event but no data to transform it', e);
+                }
+            }.bind(this));
             this.appendChild(view.get('container').getDOMNode());
             view.set('active', true);
 

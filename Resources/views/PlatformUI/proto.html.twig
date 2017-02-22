@@ -82,6 +82,11 @@
     </main>
     <script>
     (function () {
+        // this is totally hackish, we should probably use something like
+        // FOSJsRoutingBundle to properly expose routes and allow to generate
+        // proper URI from JavaScript
+        const viewLocationRoute = "{{ path( 'proto_viewLocation', {locationId: 99999} )|replace({'99999': '{locationId}'}) }}";
+
         function fetchUpdate(updateUrl) {
             var headers;
 
@@ -132,9 +137,21 @@
         }
 
         document.body.addEventListener('click', function (e) {
-            var updateUrl;
+            var updateUrl,
+                hrefAttr = e.target.getAttribute('href');
 
-            if ( e.target.nodeName === 'A' && e.target.href && e.target.getAttribute('href').indexOf('#') !== 0 ) {
+            function isNavigationLink(element) {
+                return e.target.nodeName === 'A' && e.target.href && e.target.getAttribute('href').indexOf('#') !== 0
+            }
+
+            function isYUI3Generated(element) {
+                return e.target.id.indexOf('yui_3') === 0
+            }
+
+            if ( isNavigationLink(e.target) && !isYUI3Generated(e.target) ) {
+                // YUI3 generated links are considered irrelevant here
+                // we should probably block 'click' event somewhere else
+                // to not add such knowledge here
                 updateUrl = e.target.href;
                 e.preventDefault();
 
@@ -142,6 +159,11 @@
                     .then(updatePage)
                     .then(replaceHistory);
             }
+        });
+        document.body.addEventListener('browseToContent', function (e) {
+            fetchUpdate(viewLocationRoute.replace('{locationId}', e.detail.location.locationId))
+                .then(updatePage)
+                .then(replaceHistory);
         });
         window.addEventListener('popstate', function (e) {
             if ( e.state && e.state.url ) {

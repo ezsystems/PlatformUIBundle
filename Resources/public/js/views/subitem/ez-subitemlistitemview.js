@@ -40,6 +40,24 @@ YUI.add('ez-subitemlistitemview', function (Y) {
             '.ez-subitem-priority-form': {
                 'submit': '_setPriority'
             },
+            '.ez-subitemlistitem-name a': {
+                'tap': function (e) {
+                    e.preventDefault();
+                    this.fire('navigateTo', {
+                        route: {
+                            name: 'viewLocation',
+                            params: {
+                                id: this.get('location').get('id'),
+                                languageCode: this.get('content').get('mainLanguageCode'),
+                            },
+                        },
+                        item: {
+                            location: this.get('location'),
+                            content: this.get('content'),
+                        },
+                    });
+                },
+            },
         },
 
         initializer: function () {
