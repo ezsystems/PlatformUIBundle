@@ -199,19 +199,24 @@
                 const button = e.target;
                 const event = new CustomEvent('contentDiscover', {
                     detail: {
+                        multiple: true,
                         oncancel: function () {
                             console.log('CANCEL');
                         },
-                        onconfirm: function (selection) {
-                            const result = document.createElement('p');
+                        onconfirm: function (items) {
+                            var list = document.createElement('ul');
+                            items.forEach(function (selection) {
+                                const result = document.createElement('li');
 
-                            result.innerHTML = `${selection.location.contentInfo.name}
-                                (Content id #${selection.content.contentId}) in Location
-                                #${selection.location.locationId}
-                                (${selection.location.pathString}) was
-                                chosen (Type ${selection.contentType.names['eng-GB']})`;
+                                result.innerHTML = `${selection.location.contentInfo.name}
+                                    (Content id #${selection.content.contentId}) in Location
+                                    #${selection.location.locationId}
+                                    (${selection.location.pathString}) was
+                                    chosen (Type ${selection.contentType.names['eng-GB']})`;
 
-                            button.parentNode.insertBefore(result, button);
+                                list.appendChild(result);
+                            });
+                            button.parentNode.insertBefore(list, button);
                         },
                         isSelectable: function (item) {
                             return item.contentType.isContainer;

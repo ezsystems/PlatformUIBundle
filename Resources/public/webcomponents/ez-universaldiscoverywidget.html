@@ -54,12 +54,19 @@ class eZUniversalDiscoveryWidget extends Polymer.Element {
         document.addEventListener('ez:yui-app:ready', this._createUDWComponent.bind(this));
     }
 
-    _convertSelection(selection) {
+    _convertItem(item) {
         return {
-            content: selection.content.toJSON(),
-            location: selection.location.toJSON(),
-            contentType: selection.contentType.toJSON(),
+            content: item.content.toJSON(),
+            location: item.location.toJSON(),
+            contentType: item.contentType.toJSON(),
+        };
+    }
+
+    _convertSelection(selection) {
+        if ( this.multiple ) {
+            return selection.map(this._convertItem);
         }
+        return this._convertItem(selection);
     }
 
     _createUDWComponent() {
@@ -76,7 +83,7 @@ class eZUniversalDiscoveryWidget extends Polymer.Element {
 
         if ( this.isSelectable ) {
             params.isSelectable = function (item) {
-                return this.isSelectable.call(this, this._convertSelection(item));
+                return this.isSelectable.call(this, this._convertItem(item));
             }.bind(this);
         }
 
