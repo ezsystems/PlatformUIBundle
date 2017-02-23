@@ -1,14 +1,5 @@
 webcomponent_yui_app:
-    # this requires an exception to be added in the rewrite rules so this URL
-    # interpreted by app.php. But this allows the others web components to be
-    # defined in static HTML document.
-    #
-    # for Apache
-    #
-    # RewriteRule ^/bundles/ezplatformui/webcomponents/ez-yui-app.html$ /app.php [L]
-    # RewriteRule ^/bundles/ - [L]
-    #
-    path: /bundles/ezplatformui/webcomponents/ez-yui-app.html
+    path: /webcomponents/ez-yui-app.html
     defaults:
         _controller: ezsystems.platformui.controller.webcomponent:yuiAppComponentAction
     methods: [GET]
