@@ -10,6 +10,9 @@ class eZUniversalDiscoveryWidget extends Polymer.Element {
     static get config() {
         return {
             properties: {
+                "title": {
+                    type: String,
+                },
                 "multiple": {
                     type: Boolean,
                     value: false,
@@ -73,6 +76,7 @@ class eZUniversalDiscoveryWidget extends Polymer.Element {
         const app = eZ.YUI.app;
         const Y = eZ.YUI.Y;
         const params = {
+            title: this.title,
             multiple: this.multiple,
             contentDiscoveredHandler: function (e) {
                 this.onconfirm.call(this, this._convertSelection(e.selection));

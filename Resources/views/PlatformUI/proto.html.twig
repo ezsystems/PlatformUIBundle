@@ -163,6 +163,7 @@
         document.body.addEventListener('contentDiscover', function (e) {
             const udw = document.createElement('ez-universaldiscoverywidget');
 
+            udw.title = e.detail.title;
             udw.multiple = e.detail.multiple;
             udw.onconfirm = function (selection) {
                 e.detail.onconfirm.call(udw, selection);
@@ -199,6 +200,7 @@
                 const button = e.target;
                 const event = new CustomEvent('contentDiscover', {
                     detail: {
+                        title: "UDW tests (multiple, allow only container)",
                         multiple: true,
                         oncancel: function () {
                             console.log('CANCEL');

@@ -47,6 +47,7 @@ class eZBrowse extends Polymer.Element {
     _discoverContent() {
         const event = new CustomEvent('contentDiscover', {
             detail: {
+                title: "Browse",
                 oncancel: function () {
                     console.log('CANCEL');
                 },
