@@ -210,22 +210,19 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
 
         tearDown: function () {
-            
             this.app.destroy();
             delete this.app;
         },
 
         "Should scroll to top and left of the window when showing main view": function () {
-            var that = this;
-
             window.scroll(800, 800);
             
-            this.app.showView('view', {}, function () {
-                that.resume(function () {
+            this.app.showView('view', {}, Y.bind(function () {
+                this.resume(function () {
                     Assert.areSame(window.pageXOffset, 0 ,"window should be scrolled to left");
                     Assert.areSame(window.pageYOffset, 0 ,"window should be scrolled to top");
                 });
-            });
+            }, this));
             this.wait();
         },
     });

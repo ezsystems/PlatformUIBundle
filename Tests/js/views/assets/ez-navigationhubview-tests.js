@@ -537,7 +537,17 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
             Y.Assert.areEqual(2, eventFired, "The 'navigationModeChange' event should be been fire twice");
         },
-        
+
+        "Should set navigationFixed to false on navigationChange": function () {
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
+
+            Y.Assert.isFalse(
+                this.view.get('navigationFixed'),
+                "navigationFixed attribute should be false"
+            );
+        },
+
         "Should fire the heightChange event when getting fixed": function () {
             var heightChange = false;
 
