@@ -8,6 +8,8 @@ class Browse implements Component, \JsonSerializable
 {
     protected $locationId = false;
 
+    protected $locationRestId = false;
+
     // passing the router is needed because at the moment the UDW only supports
     // a REST Location id as the starting Location id, so this id is build there
     public function __construct($request, RouterInterface $router)
