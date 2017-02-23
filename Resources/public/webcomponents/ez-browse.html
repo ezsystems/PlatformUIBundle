@@ -1,0 +1,79 @@
+<link rel="import" href="../vendors/polymer/polymer-element.html">
+
+<style>
+ez-browse {
+    display: block;
+    cursor: pointer;
+}
+</style>
+
+<script>
+// Such web component is maybe a tad overkill solution. We could perfectly have
+// a button convention recognized by the app to run the UDW to browse to a Location.
+// Something like:
+//
+// <button class="ez-run-udw-to-browse" data-startinglocationid="blabla">
+//    Browse
+// </button>
+//
+// but the point of this component is also experiment a way to have really rich
+// component.
+class eZBrowse extends Polymer.Element {
+    static get is() {
+        return 'ez-browse';
+    }
+
+    static get config() {
+        return {
+            properties: {
+                "selectedLocationId": {
+                    type: String,
+                },
+                "locationId": { // for now this one is just here for demo/display
+                    type: Number,
+                },
+            },
+        };
+    }
+
+    constructor() {
+        super();
+        this.addEventListener('click', function (e) {
+            e.stopImmediatePropagation();
+            this._discoverContent();
+        });
+    }
+
+    _discoverContent() {
+        const event = new CustomEvent('contentDiscover', {
+            detail: {
+                oncancel: function () {
+                    console.log('CANCEL');
+                },
+                onconfirm: this._browseToSelection.bind(this),
+                startingLocationId: this.selectedLocationId,
+            },
+            bubbles: true,
+        });
+        this.dispatchEvent(event);
+    }
+
+    _browseToSelection(selection) {
+        const event = new CustomEvent('browseToContent', {
+            detail: selection,
+            bubbles: true,
+        });
+        this.dispatchEvent(event);
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+    }
+}
+
+customElements.define(eZBrowse.is, eZBrowse);
+</script>

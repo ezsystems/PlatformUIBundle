@@ -44,8 +44,8 @@
             line-height: 3;
             border: 1px solid purple;
         }
-        ez-expandable-tree:after {
-            content: " (" attr(selected-location-id) ")";
+        ez-browse:after {
+            content: " (" attr(location-id) ")";
         }
         .ez-main-content {
             flex: 1 1;
@@ -58,6 +58,7 @@
 
     <link rel="import" href="{{ path( 'webcomponent_subitem' ) }}">
     <link rel="import" href="{{ path( 'webcomponent_universaldiscoverywidget' ) }}">
+    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-browse.html' ) }}">
 
 </head>
 <body>

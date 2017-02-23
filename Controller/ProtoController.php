@@ -10,7 +10,7 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use EzSystems\PlatformUIBundle\Components\Tree;
+use EzSystems\PlatformUIBundle\Components\Browse;
 use EzSystems\PlatformUIBundle\Components\Search;
 use EzSystems\PlatformUIBundle\Components\Trash;
 use eZ\Publish\API\Repository\Values\Content\Location;
@@ -24,7 +24,7 @@ class ProtoController extends Controller
         // representing the discovery bar.
         $actionBarComponents = [
             new Search(),
-            new Tree($request),
+            new Browse($request, $this->container->get('router')),
             new Trash(),
         ];
         $parameters = [
@@ -45,7 +45,7 @@ class ProtoController extends Controller
     {
         $actionBarComponents = [
             new Search(),
-            new Tree($request),
+            new Browse($request, $this->container->get('router')),
             new Trash(),
         ];
         $parameters = [
