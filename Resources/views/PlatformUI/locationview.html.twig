@@ -1,10 +1,11 @@
 <h1>{{ location.contentInfo.name }} (Location #{{ location.id }})</h1>
 
 <div>
-    <button class="run-udw">Run UDW</button>
+    <button class="run-udw">Run UDW (Allows only container to be picked)</button>
     <script>
 (function () {
     const button = document.querySelector('.run-udw');
+
     button.addEventListener('click', function (e) {
         const event = new CustomEvent('contentDiscover', {
             detail: {
@@ -14,9 +15,16 @@
                 onconfirm: function (selection) {
                     const result = document.createElement('p');
 
-                    result.innerHTML = `${selection.location.contentInfo.name} was chosen (${selection.contentType.names['eng-GB']})`;
+                    result.innerHTML = `${selection.location.contentInfo.name}
+                        (Content id #${selection.content.contentId}) in Location
+                        #${selection.location.locationId}
+                        (${selection.location.pathString}) was
+                        chosen (Type ${selection.contentType.names['eng-GB']})`;
 
                     button.parentNode.insertBefore(result, button);
+                },
+                isSelectable: function (item) {
+                    return item.contentType.isContainer;
                 },
             },
             bubbles: true,
