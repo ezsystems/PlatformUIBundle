@@ -27,14 +27,4 @@ class WebComponentController extends Controller
             ['parameters' => $this->configAggregator->getConfig()]
         );
     }
-
-    public function subitemComponentAction()
-    {
-        return $this->render('eZPlatformUIBundle:WebComponent:ez-subitem.html.twig');
-    }
-
-    public function universalDiscoveryWidgetComponentAction()
-    {
-        return $this->render('eZPlatformUIBundle:WebComponent:ez-universaldiscoverywidget.html.twig');
-    }
 }

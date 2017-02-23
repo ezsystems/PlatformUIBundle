@@ -1,17 +1,14 @@
-webcomponent_universaldiscoverywidget:
-    path: /ez-universaldiscoverywidget.html
-    defaults:
-        _controller: ezsystems.platformui.controller.webcomponent:universalDiscoveryWidgetComponentAction
-    methods: [GET]
-
-webcomponent_subitem:
-    path: /ez-subitem.html
-    defaults:
-        _controller: ezsystems.platformui.controller.webcomponent:subitemComponentAction
-    methods: [GET]
-
 webcomponent_yui_app:
-    path: /ez-yui-app.html
+    # this requires an exception to be added in the rewrite rules so this URL
+    # interpreted by app.php. But this allows the others web components to be
+    # defined in static HTML document.
+    #
+    # for Apache
+    #
+    # RewriteRule ^/bundles/ezplatformui/webcomponents/ez-yui-app.html$ /app.php [L]
+    # RewriteRule ^/bundles/ - [L]
+    #
+    path: /bundles/ezplatformui/webcomponents/ez-yui-app.html
     defaults:
         _controller: ezsystems.platformui.controller.webcomponent:yuiAppComponentAction
     methods: [GET]
