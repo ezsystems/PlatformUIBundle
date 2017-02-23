@@ -178,6 +178,8 @@
             }
             udw.isSelectable = e.detail.isSelectable ? e.detail.isSelectable : undefined;
             udw.startingLocationId = e.detail.startingLocationId;
+            // that way existing PlatformUI stylesheets work out of the box
+            udw.classList.add('ez-universaldiscovery-container');
             document.body.appendChild(udw);
         });
         window.addEventListener('popstate', function (e) {
