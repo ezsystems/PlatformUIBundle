@@ -451,6 +451,21 @@ YUI.add('ez-platformuiapp', function (Y) {
             });
         },
 
+        /**
+         * Instantiates and renders a side view with the given `ViewConstructor` and
+         * `ServiceConstructor`. It does pretty much the same thing as what
+         * happens when the app is creating a side view.
+         *
+         * @method renderSideView
+         * @param {Function} ViewConstructor
+         * @param {Function} ServiceConstructor
+         * @param {Object} params the parameters expected by the side view
+         * service
+         * @param {Function} done
+         * @param {false|Error} done.error
+         * @param {eZ.ViewService} done.viewService
+         * @param {eZ.View} done.view
+         */
         renderSideView: function (ViewConstructor, ServiceConstructor, params, done) {
             var req, res,
                 view, viewService;
