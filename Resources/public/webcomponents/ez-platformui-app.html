@@ -1,0 +1,204 @@
+<link rel="import" href="../vendors/polymer/polymer-element.html">
+
+<script>
+(function () {
+    function fetchUpdate(updateUrl) {
+        var headers;
+
+        headers = new Headers({
+            'X-AJAX-Update': '1',
+        });
+        return fetch(updateUrl, {
+            credentials: 'same-origin',
+            headers: headers,
+        }).then(function (response) {
+            return response.json();
+        }).then(function (struct) {
+            struct.url = updateUrl;
+
+            return struct;
+        });
+    }
+
+    function updatePage(struct) {
+        document.title = struct.title;
+        document.querySelector('.ez-main-content').innerHTML = struct.content;
+
+        struct.actionBarComponents.forEach(function (componentUpdate) {
+            var container = document.getElementById(componentUpdate.id);
+
+            if ( typeof componentUpdate.update === "string" ) {
+                container.innerHTML = componentUpdate.update;
+            } else if ( componentUpdate.update ) {
+                Object.keys(componentUpdate.update).forEach(function (selector) {
+                    var element = container.querySelector(selector),
+                        attributes = componentUpdate.update[selector];
+
+                    Object.keys(componentUpdate.update[selector]).forEach(function (attributeName) {
+                        // TODO we should handle setting the content as well
+                        element.setAttribute(attributeName, attributes[attributeName]);
+                    });
+                });
+            }
+        });
+
+        return struct;
+    }
+
+    function replaceHistory(struct) {
+        history.pushState({url: struct.url}, struct.title, struct.url);
+
+        return struct;
+    }
+
+
+    document.addEventListener('click', function (e) {
+        if ( e.target.classList.contains('run-udw') ) {
+            const button = e.target;
+            const event = new CustomEvent('contentDiscover', {
+                detail: {
+                    title: "UDW tests (multiple, allow only container)",
+                    multiple: true,
+                    oncancel: function () {
+                        console.log('CANCEL');
+                    },
+                    onconfirm: function (items) {
+                        var list = document.createElement('ul');
+                        items.forEach(function (selection) {
+                            const result = document.createElement('li');
+
+                            result.innerHTML = `${selection.location.contentInfo.name}
+                                (Content id #${selection.content.contentId}) in Location
+                                #${selection.location.locationId}
+                                (${selection.location.pathString}) was
+                                chosen (Type ${selection.contentType.names['eng-GB']})`;
+
+                            list.appendChild(result);
+                        });
+                        button.parentNode.insertBefore(list, button);
+                    },
+                    isSelectable: function (item) {
+                        return item.contentType.isContainer;
+                    },
+                },
+                bubbles: true,
+            });
+            button.dispatchEvent(event);
+        }
+    });
+
+    class PlatformUIApp extends Polymer.Element {
+        static get is() {
+            return 'ez-platformui-app';
+        }
+
+        static get config() {
+            return {
+                properties: {
+                    updating: {
+                        type: Boolean,
+                        reflectToAttribute: true,
+                        value: false,
+                    }
+                }
+            };
+        }
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+            this._enhanceNavigation();
+            this._listenToBrowseToContent();
+            this._listenToContentDiscover();
+        }
+
+        disconnectedCallback() {
+            super.disconnectedCallback();
+        }
+
+        /*
+        attributeChangedCallback(name, oldValue, newValue) {
+            console.log("attributeChangedCallback", arguments);
+        }
+        */
+
+        _update(updateUrl) {
+            this.updating = true;
+
+            fetchUpdate(updateUrl)
+                .then(updatePage)
+                .then(replaceHistory)
+                .then(function (struct) {
+                    this.updating = false;
+
+                    return struct;
+                }.bind(this));
+        }
+
+        _enhanceNavigation() {
+            this.addEventListener('click', function (e) {
+                var updateUrl;
+
+                function isNavigationLink(element) {
+                    // we should probably further check the URI (same origin ?)
+                    // we should also allow to opt out from that with a class
+                    return element.nodeName === 'A' && element.href && element.getAttribute('href').indexOf('#') !== 0
+                }
+
+                if ( isNavigationLink(e.target) ) {
+                    updateUrl = e.target.href;
+                    e.preventDefault();
+                    this._update(e.target.href);
+                }
+            }.bind(this));
+            window.addEventListener('popstate', function (e) {
+                if ( e.state && e.state.url ) {
+                    this._update(e.state.url);
+                }
+            }.bind(this));
+        }
+
+        _listenToBrowseToContent() {
+            this.addEventListener('browseToContent', function (e) {
+                const uri = Routing.generate(
+                    'proto_viewLocation',
+                    {"locationId": e.detail.location.locationId}
+                );
+
+                this._update(uri);
+            }.bind(this));
+        }
+
+        _listenToContentDiscover() {
+            this.addEventListener('contentDiscover', function (e) {
+                const udw = document.createElement('ez-universaldiscoverywidget');
+
+                udw.title = e.detail.title;
+                udw.multiple = e.detail.multiple;
+                udw.onconfirm = function (selection) {
+                    e.detail.onconfirm.call(udw, selection);
+                    // removing the UDW is a bit brutal as this prevents
+                    // any kind of animation when hiding the UDW.
+                    udw.remove(true);
+                }
+                udw.oncancel = function (selection) {
+                    if ( e.detail.oncancel ) {
+                        e.detail.oncancel.call(udw, selection);
+                    }
+                    udw.remove(true);
+                }
+                udw.isSelectable = e.detail.isSelectable ? e.detail.isSelectable : undefined;
+                udw.startingLocationId = e.detail.startingLocationId;
+                // that way existing PlatformUI stylesheets work out of the box
+                udw.classList.add('ez-universaldiscovery-container');
+                this.appendChild(udw);
+            }.bind(this));
+        }
+    }
+
+    customElements.define(PlatformUIApp.is, PlatformUIApp);
+})();
+</script>

@@ -13,3 +13,5 @@ proto_viewLocation:
     methods: [GET]
     requirements:
         locationId: \d+
+    options:
+        expose: true
