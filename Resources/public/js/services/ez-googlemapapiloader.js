@@ -14,7 +14,7 @@ YUI.add('ez-googlemapapiloader', function (Y) {
 
     var EVENT_MAP_API_READY = 'mapAPIReady',
         EVENT_MAP_API_FAILED = 'mapAPIFailed',
-        GMAP_JSONP_URI = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}';
+        GMAP_JSONP_URI = 'https://maps.googleapis.com/maps/api/js?callback={callback}';
 
     /**
      * Google Maps API loader. It fires the `mapAPIReady` event when the Google
@@ -69,8 +69,9 @@ YUI.add('ez-googlemapapiloader', function (Y) {
          * `mapAPIReady` or `mapAPIFailed` depending on results
          *
          * @method load
+         * @param String [key] to use for api calls, can be omitted but then map might not work
          */
-        load: function () {
+        load: function (key) {
             var request;
 
             if (this._isLoading) {
@@ -82,7 +83,7 @@ YUI.add('ez-googlemapapiloader', function (Y) {
                 this.fire(EVENT_MAP_API_READY);
             } else {
                 this._isLoading = true;
-                request = new this._JSONPRequest(GMAP_JSONP_URI, {
+                request = new this._JSONPRequest(GMAP_JSONP_URI + (key ? '&key=' + key: ''), {
                     on: {
                         success: Y.bind(this._mapReady, this),
                         failure: Y.bind(this._mapFailed, this)

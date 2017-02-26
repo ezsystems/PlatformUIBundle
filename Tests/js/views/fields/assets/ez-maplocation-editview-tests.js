@@ -43,8 +43,15 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         returns: jsonContentType
     });
 
-    mapLoaderLoadingSuccess = function () {
+    mapLoaderLoadingSuccess = function (key) {
         var that = this;
+
+        Y.Assert.areSame(
+            '',
+            key,
+            "Expected API key to be empty string (as it has not been configured)"
+        );
+
         // setTimeout (even with 0 value) will be needed here because we are
         // going to use a node, which is not yet in the DOM
         setTimeout(function () {
@@ -992,6 +999,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 Y.eZ.services.mapAPILoader = new Y.Mock();
                 Y.Mock.expect(Y.eZ.services.mapAPILoader, {
                     method: 'load',
+                    args: ['']
                 });
                 Y.Mock.expect(Y.eZ.services.mapAPILoader, {
                     method: 'on',
