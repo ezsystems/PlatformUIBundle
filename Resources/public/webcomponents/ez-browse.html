@@ -41,7 +41,7 @@ class eZBrowse extends Polymer.Element {
         this.addEventListener('click', function (e) {
             e.stopImmediatePropagation();
             this._discoverContent();
-        });
+        }.bind(this));
     }
 
     _discoverContent() {

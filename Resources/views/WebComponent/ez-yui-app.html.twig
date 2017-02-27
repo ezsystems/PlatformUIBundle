@@ -43,10 +43,8 @@
                 plugins: Y.eZ.PluginRegistry.getPlugins(Y.eZ.PlatformUIApp.NAME),
             });
 
-        app.on('ready', function () {
-            eZ.YUI = {Y: Y, app: app};
-            document.dispatchEvent(new CustomEvent('ez:yui-app:ready'));
-        });
+        eZ.YUI = {Y: Y, app: app};
+        document.dispatchEvent(new CustomEvent('ez:yui-app:ready'));
         HandlebarsIntl.registerWith(Y.Handlebars);
     });
 </script>

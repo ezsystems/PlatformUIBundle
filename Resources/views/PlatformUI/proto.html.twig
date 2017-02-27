@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html class=""><!-- empty class is needed for webcomponents polyfill with ez-yui-app.html import (?!) -->
 <head>
     <title>{{ title }}</title>
     <meta name="viewport" content="width=device-width">
@@ -55,6 +55,8 @@
             border: 1px solid aqua;
         }
     </style>
+
+    <script src="{{ asset('bundles/ezplatformui/vendors/webcomponentsjs/webcomponents-lite.js') }}"></script>
 
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-subitem.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-universaldiscoverywidget.html' ) }}">
