@@ -8,7 +8,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         showSideViewTest, hideSideViewTest, enablingRoutingTest, hashChangeTest,
         handleMainViewTest, titleTest, configRouteTest,
         dispatchConfigTest, getLanguageNameTest, refreshViewTest,
-        navigateToTest,
+        navigateToTest, scrollTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     appTest = new Y.Test.Case({
@@ -195,6 +195,34 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     );
                 });
             });
+            this.wait();
+        },
+    });
+
+    scrollTest = new Y.Test.Case({
+        name: "Scroll tests",
+
+        setUp: function () {
+            this.app = new Y.eZ.PlatformUIApp({
+                container: '.app',
+                viewContainer: '.view-container'
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should scroll to top and left of the window when showing main view": function () {
+            window.scroll(800, 800);
+            
+            this.app.showView('view', {}, Y.bind(function () {
+                this.resume(function () {
+                    Assert.areSame(window.pageXOffset, 0 ,"window should be scrolled to left");
+                    Assert.areSame(window.pageYOffset, 0 ,"window should be scrolled to top");
+                });
+            }, this));
             this.wait();
         },
     });
@@ -2443,4 +2471,5 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(enablingRoutingTest);
     Y.Test.Runner.add(hashChangeTest);
     Y.Test.Runner.add(navigateToTest);
+    Y.Test.Runner.add(scrollTest);
 }, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin', 'history-hash']});
