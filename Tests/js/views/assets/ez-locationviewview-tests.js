@@ -1093,7 +1093,6 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         },
     });
 
-
     Y.Test.Runner.setName("eZ Location View view tests");
     Y.Test.Runner.add(test);
     Y.Test.Runner.add(tabsTest);

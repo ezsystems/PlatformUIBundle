@@ -736,6 +736,16 @@ YUI.add('ez-platformuiapp', function (Y) {
                         update: true,
                         render: true
                     });
+
+                    if (app.get('scrollToTop')) {
+                        // Scroll to the top of the page. The timeout ensures that the
+                        // scroll happens after navigation begins, so that the current
+                        // scroll position will be restored if the user clicks the back
+                        // button.
+                        setTimeout(function () {
+                            window.scroll(0, 0);
+                        }, 1);
+                    }
                 };
 
             if ( this.get('activeView') ) {
