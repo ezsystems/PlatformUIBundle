@@ -1,30 +1,16 @@
 <?php
 
-
 namespace EzSystems\PlatformUIBundle\Components;
 
-class Search implements Component, \JsonSerializable
+class Search extends Component
 {
-    public function getId()
+    public function __toString()
     {
-        return 'search';
-    }
-
-    public function getHtml()
-    {
-        return 'Dumb thing, never updated';
-    }
-
-    public function getUpdateStruct()
-    {
-        return false; // never updated
+        return '<div>Dumb thing, never updated</div>';
     }
 
     public function jsonSerialize()
     {
-        return [
-            'id' => $this->getId(),
-            'update' => $this->getUpdateStruct(),
-        ];
+        return false;
     }
 }

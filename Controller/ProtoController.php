@@ -10,26 +10,23 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use EzSystems\PlatformUIBundle\Components\Browse;
-use EzSystems\PlatformUIBundle\Components\Search;
-use EzSystems\PlatformUIBundle\Components\Trash;
+use EzSystems\PlatformUIBundle\Components\Component;
 use eZ\Publish\API\Repository\Values\Content\Location;
 
 class ProtoController extends Controller
 {
+    protected $discoveryBar;
+
+    public function __construct(Component $discoveryBar)
+    {
+        $this->discoveryBar = $discoveryBar;
+    }
+
     public function dashboardAction(Request $request)
     {
-        // should be injected or retrieved using a service
-        // actionBarComponents should probably be replaced by an object/service
-        // representing the discovery bar.
-        $actionBarComponents = [
-            new Search(),
-            new Browse($request, $this->container->get('router')),
-            new Trash(),
-        ];
         $parameters = [
             'title' => 'Dashboard',
-            'actionBarComponents' => $actionBarComponents,
+            'discoveryBar' => $this->discoveryBar,
             'content' => $this->renderView(
                 'eZPlatformUIBundle:PlatformUI:dashboard.html.twig'
             ),
@@ -43,14 +40,9 @@ class ProtoController extends Controller
 
     public function locationViewAction(Request $request, Location $location)
     {
-        $actionBarComponents = [
-            new Search(),
-            new Browse($request, $this->container->get('router')),
-            new Trash(),
-        ];
         $parameters = [
             'title' => $location->contentInfo->name,
-            'actionBarComponents' => $actionBarComponents,
+            'discoveryBar' => $this->discoveryBar,
             'content' => $this->renderView(
                 'eZPlatformUIBundle:PlatformUI:locationview.html.twig',
                 ['location' => $location]

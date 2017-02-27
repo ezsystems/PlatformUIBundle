@@ -52,7 +52,7 @@ class eZBrowse extends Polymer.Element {
                     console.log('CANCEL');
                 },
                 onconfirm: this._browseToSelection.bind(this),
-                startingLocationId: this.selectedLocationId,
+                startingLocationId: this.selectedLocationId !== "false" ? this.selectedLocationId : undefined,
             },
             bubbles: true,
         });

@@ -2,55 +2,60 @@
 
 namespace EzSystems\PlatformUIBundle\Components;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
-class Browse implements Component, \JsonSerializable
+class Browse extends Component
 {
-    protected $locationId = false;
+    protected $router;
 
-    protected $locationRestId = false;
+    protected $request;
 
     // passing the router is needed because at the moment the UDW only supports
     // a REST Location id as the starting Location id, so this id is build there
-    public function __construct($request, RouterInterface $router)
+    public function __construct(RequestStack $stack, RouterInterface $router)
     {
-        if ($request->attributes->get('location')) {
-            $this->locationId = $request->attributes->get('location')->id;
-            $this->locationRestId = $router->generate(
+        $this->request = $stack->getMasterRequest();
+        $this->router = $router;
+    }
+
+    protected function getLocationId()
+    {
+        if ($this->request->attributes->get('location')) {
+            return $this->request->attributes->get('location')->id;
+        }
+        return "false";
+    }
+
+    protected function getLocationRestId()
+    {
+        if ($this->request->attributes->get('location')) {
+            return $this->router->generate(
                 'ezpublish_rest_loadLocation',
-                ['locationPath' => trim($request->attributes->get('location')->pathString, '/')]
+                ['locationPath' => trim($this->request->attributes->get('location')->pathString, '/')]
             );
         }
+        return "false";
     }
 
-    public function getId()
+    public function __toString()
     {
-        return 'tree';
-    }
-
-    public function getHtml()
-    {
-        $selected = $this->locationRestId ? $this->locationRestId : 'false';
-        $id = $this->locationId ? $this->locationId : 'false';
+        $selected = $this->getLocationRestId();
+        $id = $this->getLocationId();
         // could be rendered with a twig template
         return '<ez-browse selected-location-id="' . $selected . '" location-id="' . $id . '">Browse</ez-browse>';
-    }
-
-    public function getUpdateStruct()
-    {
-        return [
-            'ez-browse' => [
-                'selected-location-id' => $this->locationRestId,
-                'location-id' => $this->locationId,
-            ]
-        ];
     }
 
     public function jsonSerialize()
     {
         return [
-            'id' => $this->getId(),
-            'update' => $this->getUpdateStruct(),
+            'selector' => 'ez-browse',
+            'update' => [
+                'attributes' => [
+                    'selected-location-id' => $this->getLocationRestId(),
+                    'location-id' => $this->getLocationId(),
+                ],
+            ],
         ];
     }
 }

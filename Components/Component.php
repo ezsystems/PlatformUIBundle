@@ -2,11 +2,6 @@
 
 namespace EzSystems\PlatformUIBundle\Components;
 
-interface Component
+abstract class Component implements \JsonSerializable
 {
-    public function getHtml();
-
-    public function getUpdateStruct();
-
-    public function getId();
 }

@@ -31,16 +31,12 @@
             flex: 1 0;
             display: flex;
         }
-        aside {
+        ez-discovery-bar {
             border: 2px solid blue;
             flex: 0 0 230px;
         }
-        menu {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        menu li {
+
+        ez-discovery-bar > * {
             line-height: 3;
             border: 1px solid purple;
         }
@@ -60,12 +56,10 @@
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
-
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-platformui-app.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-subitem.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-universaldiscoverywidget.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-browse.html' ) }}">
-
 </head>
 <body class="ez-platformui-app is-app-open">
     <ez-platformui-app>
@@ -78,13 +72,7 @@
             </ul>
         </nav>
         <main>
-            <aside>
-                <menu>
-                {% for component in actionBarComponents %}
-                    <li id="{{ component.id }}">{{ component.html|raw }}</li>
-                {% endfor %}
-                </menu>
-            </aside>
+            {{ discoveryBar|raw }}
             <div class="ez-main-content">
                 {{ content|raw }}
             </div>

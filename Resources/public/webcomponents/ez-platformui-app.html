@@ -20,31 +20,6 @@
         });
     }
 
-    function updatePage(struct) {
-        document.title = struct.title;
-        document.querySelector('.ez-main-content').innerHTML = struct.content;
-
-        struct.actionBarComponents.forEach(function (componentUpdate) {
-            var container = document.getElementById(componentUpdate.id);
-
-            if ( typeof componentUpdate.update === "string" ) {
-                container.innerHTML = componentUpdate.update;
-            } else if ( componentUpdate.update ) {
-                Object.keys(componentUpdate.update).forEach(function (selector) {
-                    var element = container.querySelector(selector),
-                        attributes = componentUpdate.update[selector];
-
-                    Object.keys(componentUpdate.update[selector]).forEach(function (attributeName) {
-                        // TODO we should handle setting the content as well
-                        element.setAttribute(attributeName, attributes[attributeName]);
-                    });
-                });
-            }
-        });
-
-        return struct;
-    }
-
     function replaceHistory(struct) {
         history.pushState({url: struct.url}, struct.title, struct.url);
 
@@ -129,13 +104,42 @@
             this.updating = true;
 
             fetchUpdate(updateUrl)
-                .then(updatePage)
+                .then(this._updatePage.bind(this))
                 .then(replaceHistory)
                 .then(function (struct) {
                     this.updating = false;
 
                     return struct;
                 }.bind(this));
+        }
+
+        _updatePage(struct) {
+            const discoveryStruct = struct.discoveryBar;
+
+            this.ownerDocument.title = struct.title;
+            this.querySelector('.ez-main-content').innerHTML = struct.content;
+
+            this._updateComponent(this, discoveryStruct.selector, discoveryStruct.update);
+
+            return struct;
+        }
+
+        _updateComponent(ref, selector, update) {
+            const component = ref.querySelector(selector);
+
+            if ( typeof update === "string" ) {
+                component.outerHTML = update;
+            } else if ( update ) {
+                let attributes = update.attributes || {},
+                    children = update.children || [];
+
+                Object.keys(attributes).forEach(function (attributeName) {
+                    component.setAttribute(attributeName, attributes[attributeName]);
+                });
+                children.forEach(function (childUpdate) {
+                    this._updateComponent(ref, childUpdate.selector, childUpdate.update);
+                }, this);
+            }
         }
 
         _enhanceNavigation() {
