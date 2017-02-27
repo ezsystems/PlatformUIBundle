@@ -1,0 +1,125 @@
+<link rel="import" href="../vendors/polymer/polymer-element.html">
+<link rel="import" href="../../../webcomponents/ez-yui-app.html">
+
+<script>
+class eZUniversalDiscoveryWidget extends Polymer.Element {
+    static get is() {
+        return 'ez-universaldiscoverywidget';
+    }
+
+    static get config() {
+        return {
+            properties: {
+                "title": {
+                    type: String,
+                },
+                "multiple": {
+                    type: Boolean,
+                    value: false,
+                },
+                "onconfirm": {
+                    type: Function,
+                    value: function () {},
+                },
+                "oncancel": {
+                    type: Function,
+                    value: function () {},
+                },
+                "is-selectable": {
+                    type: Function,
+                    value: () => true,
+                },
+                "starting-location-id": {
+                    type: String,
+                },
+                // is-selectable is a bad name coming from 1.x. Also, onconfirm and
+                // oncancel are a bit misleading because this suggests there are
+                // confirm` and `cancel` events behind the scene while there's none.
+                // So maybe, the UDW should actually triggers real events
+                // (confirm, cancel, select) instead of exposing such attributes.
+            },
+        };
+    }
+
+    constructor() {
+        super();
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        this._trackYUIAppReady();
+    }
+
+    _trackYUIAppReady() {
+        if ( eZ.YUI ) {
+            return this._createUDWComponent();
+        }
+        document.addEventListener('ez:yui-app:ready', this._createUDWComponent.bind(this));
+    }
+
+    _convertItem(item) {
+        return {
+            content: item.content.toJSON(),
+            location: item.location.toJSON(),
+            contentType: item.contentType.toJSON(),
+        };
+    }
+
+    _convertSelection(selection) {
+        if ( this.multiple ) {
+            return selection.map(this._convertItem);
+        }
+        return this._convertItem(selection);
+    }
+
+    _createUDWComponent() {
+        const app = eZ.YUI.app;
+        const Y = eZ.YUI.Y;
+        const params = {
+            title: this.title,
+            multiple: this.multiple,
+            contentDiscoveredHandler: function (e) {
+                this.onconfirm.call(this, this._convertSelection(e.selection));
+            }.bind(this),
+            cancelDiscoverHandler: this.oncancel,
+            startingLocationId: this.startingLocationId,
+        };
+
+        if ( this.isSelectable ) {
+            params.isSelectable = function (item) {
+                return this.isSelectable.call(this, this._convertItem(item));
+            }.bind(this);
+        }
+
+        app.renderSideView(
+            Y.eZ.UniversalDiscoveryView,
+            Y.eZ.UniversalDiscoveryViewService,
+            params,
+            this._attachView.bind(this)
+        );
+    }
+
+    _attachView(err, viewService, view) {
+        this.innerHTML = '';
+        if ( err ) {
+            this.innerHTML = 'An error occurred';
+            return;
+        }
+        this.appendChild(view.get('container').getDOMNode());
+        view.set('active', true);
+
+        // using the shadow DOM is another option. It allows to somehow
+        // hide the internal of the component but on the other hand
+        // it makes styling harder as we have to add the CSS in the component
+        // itself.
+        //let shadowRoot = this.attachShadow({mode: 'open'});
+        //shadowRoot.appendChild(view.get('container').getDOMNode());
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+    }
+}
+
+customElements.define(eZUniversalDiscoveryWidget.is, eZUniversalDiscoveryWidget);
+</script>

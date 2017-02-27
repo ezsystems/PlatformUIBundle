@@ -1,0 +1,119 @@
+<link rel="import" href="../vendors/polymer/polymer-element.html">
+<link rel="import" href="../../../webcomponents/ez-yui-app.html">
+
+<style>
+ez-subitem {
+    display: block;
+    width: 100%;
+    margin: 1em 0;
+}
+</style>
+
+<script>
+class eZSubitem extends Polymer.Element {
+    static get is() {
+        return 'ez-subitem';
+    }
+
+    static get config() {
+        return {
+            properties: {
+                "parentLocationId": {
+                    type: String,
+                },
+            },
+        };
+    }
+
+    constructor() {
+        super();
+        console.log('ez-subitem constructor', arguments, this);
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        this._trackYUIAppReady();
+    }
+
+    _trackYUIAppReady() {
+        if ( eZ.YUI ) {
+            return this._createSubitemComponent();
+        }
+        document.addEventListener('ez:yui-app:ready', this._createSubitemComponent.bind(this));
+    }
+
+    _createSubitemComponent() {
+        const app = eZ.YUI.app;
+        const Y = eZ.YUI.Y;
+        const params = {
+            id: this.parentLocationId,
+            languageCode: 'eng-GB'
+        };
+
+        app.renderView(
+            Y.eZ.SubitemBoxView,
+            // LocationViewViewService works for SubitemBoxView but it does too
+            // many things for it, mainly it loads the path of the Location
+            // while it's not actually needed.
+            // Another reason to have an another view service would be to change
+            // the component to receive a Location id (not the REST id), so the
+            // view service would have to load the Location by this id.
+            Y.eZ.LocationViewViewService,
+            params,
+            this._attachView.bind(this)
+        );
+    }
+
+    _attachView(err, viewService, view) {
+        this.innerHTML = '';
+        if ( err ) {
+            this.innerHTML = 'An error occurred';
+            return;
+        }
+        this._blockClick(view);
+        view.on('*:navigateTo', function (e) {
+            let event, view = e.target;
+
+            e.halt();
+            if ( e.route.name === 'viewLocation' && e.item ) {
+                event = new CustomEvent('browseToContent', {
+                    detail: {
+                        // getting a YUI free representation but it's most likely
+                        // still to tight to YUI Model/REST API
+                        // when using the UDW, we'll have the same problem,
+                        // at some point we'll have to add a proper conversion
+                        // from Models to ValueObject
+                        location: e.item.location.toJSON(),
+                        content: e.item.content.toJSON(),
+                    },
+                    bubbles: true,
+                });
+                this.dispatchEvent(event);
+            } else {
+                console.warn('Got a navigateTo event but no data to transform it', e);
+            }
+        }.bind(this));
+        this.appendChild(view.get('container').getDOMNode());
+        view.set('active', true);
+
+        // using the shadow DOM is another option. It allows to somehow
+        // hide the internal of the component but on the other hand
+        // it makes styling harder as we have to add the CSS in the component
+        // itself.
+        //let shadowRoot = this.attachShadow({mode: 'open'});
+        //shadowRoot.appendChild(view.get('container').getDOMNode());
+    }
+
+    _blockClick(view) {
+        view.get('container').delegate('click', function (e) {
+            e.halt(true);
+        }, 'a');
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+    }
+}
+
+customElements.define(eZSubitem.is, eZSubitem);
+</script>

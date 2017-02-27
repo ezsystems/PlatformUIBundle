@@ -404,6 +404,102 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         /**
+         * Instantiates and renders a view with the given `ViewConstructor` and
+         * `ServiceConstructor`. It does pretty much the same thing as what
+         * happens when navigating in the app but it skips the routing phase.
+         * When done, the `done` callback is called with the view and view
+         * service instances as parameter.
+         *
+         * @method renderView
+         * @param {Function} ViewConstructor
+         * @param {Function} ServiceConstructor
+         * @param {Object} requestParams the request parameters expected by the
+         * view service.
+         * @param {Function} done
+         * @param {false|Error} done.error
+         * @param {eZ.ViewService} done.viewService
+         * @param {eZ.View} done.view
+         */
+        renderView: function (ViewConstructor, ServiceConstructor, requestParams, done) {
+            var req, res,
+                view, viewService;
+
+            req = this._getRequest('renderComponent');
+            req.params = requestParams;
+            res = this._getResponse(req);
+
+            viewService = new ServiceConstructor({
+                app: this,
+                capi: this.get('capi'),
+                request: req,
+                response: res,
+                plugins: Y.eZ.PluginRegistry.getPlugins(ServiceConstructor.NAME),
+                config: this.get('config'),
+                bubbleTargets: this,
+            });
+
+            viewService.set('request', req);
+            viewService.set('response', res);
+            viewService.once('error', function (e) {
+                done(new Error(e.message));
+            });
+            viewService.load(function () {
+                view = new ViewConstructor(viewService.getViewParameters());
+                view.render();
+                view.addTarget(viewService);
+                done(false, viewService, view);
+            });
+        },
+
+        /**
+         * Instantiates and renders a side view with the given `ViewConstructor` and
+         * `ServiceConstructor`. It does pretty much the same thing as what
+         * happens when the app is creating a side view.
+         *
+         * @method renderSideView
+         * @param {Function} ViewConstructor
+         * @param {Function} ServiceConstructor
+         * @param {Object} params the parameters expected by the side view
+         * service
+         * @param {Function} done
+         * @param {false|Error} done.error
+         * @param {eZ.ViewService} done.viewService
+         * @param {eZ.View} done.view
+         */
+        renderSideView: function (ViewConstructor, ServiceConstructor, params, done) {
+            var req, res,
+                view, viewService;
+
+            req = this._getRequest('renderComponent');
+            res = this._getResponse(req);
+
+            viewService = new ServiceConstructor({
+                app: this,
+                capi: this.get('capi'),
+                plugins: Y.eZ.PluginRegistry.getPlugins(ServiceConstructor.NAME),
+                config: this.get('config'),
+                bubbleTargets: this,
+            });
+
+            viewService.once('error', function (e) {
+                done(new Error(e.message));
+            });
+
+            viewService.setAttrs({
+                'parameters': params,
+                'request': req,
+                'response': res,
+            });
+            view = new ViewConstructor({bubbleTargets: viewService});
+            viewService.load(function () {
+                view.setAttrs(viewService.getViewParameters());
+                view.render();
+                view.addTarget(viewService);
+                done(false, viewService, view);
+            });
+        },
+
+        /**
          * Logs in a user using the provided credentials. If the credentials
          * are wrong, the callback is called with the error and response from
          * CAPI.logIn. If the credentials are correct, the error and response

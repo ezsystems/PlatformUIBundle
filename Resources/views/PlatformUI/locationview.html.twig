@@ -1,5 +1,14 @@
 <h1>{{ location.contentInfo.name }} (Location #{{ location.id }})</h1>
 
-<ez-subitem parent-location-id="{{ location.id }}">
-    eZ Subitem here!
+<div>
+    <button class="run-udw">Run UDW (Allows only container to be picked)</button>
+</div>
+
+{# using the REST id Location for now to not have to find a cheap and easy way
+ # to get the REST id for the regular Location id, but at the some point, this will
+ # have to be changed. This involves developping a new view service.
+ # see app.renderView() call in WebComponent/ez-subitem.html.twig
+ #}
+<ez-subitem parent-location-id="{{ path( 'ezpublish_rest_loadLocation', {'locationPath': location.pathString|trim('/')} ) }}">
+    Loading subitems...
 </ez-subitem>

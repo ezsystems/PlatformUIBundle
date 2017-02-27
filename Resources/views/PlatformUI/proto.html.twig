@@ -1,9 +1,14 @@
 <!doctype html>
-<html>
+<html class=""><!-- empty class is needed for webcomponents polyfill with ez-yui-app.html import (?!) -->
 <head>
     <title>{{ title }}</title>
     <meta name="viewport" content="width=device-width">
     <meta charset="utf-8">
+
+{% stylesheets '$css.files;ez_platformui$' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+{% endstylesheets %}
+
     <style>
         * {
             box-sizing: border-box;
@@ -39,22 +44,26 @@
             line-height: 3;
             border: 1px solid purple;
         }
-        ez-expandable-tree:after {
-            content: " (" attr(selected-location-id) ")";
+        ez-browse:after {
+            content: " (" attr(location-id) ")";
         }
         .ez-main-content {
             flex: 1 1;
         }
 
         ez-subitem {
-            border: 1px solid purple;
+            border: 1px solid aqua;
         }
     </style>
 
+    <script src="{{ asset('bundles/ezplatformui/vendors/webcomponentsjs/webcomponents-lite.js') }}"></script>
+
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-subitem.html' ) }}">
+    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-universaldiscoverywidget.html' ) }}">
+    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-browse.html' ) }}">
 
 </head>
-<body>
+<body class="ez-platformui-app is-app-open">
     <nav>
         I'm the navigation hub
         <ul>
@@ -77,6 +86,11 @@
     </main>
     <script>
     (function () {
+        // this is totally hackish, we should probably use something like
+        // FOSJsRoutingBundle to properly expose routes and allow to generate
+        // proper URI from JavaScript
+        const viewLocationRoute = "{{ path( 'proto_viewLocation', {locationId: 99999} )|replace({'99999': '{locationId}'}) }}";
+
         function fetchUpdate(updateUrl) {
             var headers;
 
@@ -127,9 +141,14 @@
         }
 
         document.body.addEventListener('click', function (e) {
-            var updateUrl;
+            var updateUrl,
+                hrefAttr = e.target.getAttribute('href');
 
-            if ( e.target.nodeName === 'A' ) {
+            function isNavigationLink(element) {
+                return e.target.nodeName === 'A' && e.target.href && e.target.getAttribute('href').indexOf('#') !== 0
+            }
+
+            if ( isNavigationLink(e.target) ) {
                 updateUrl = e.target.href;
                 e.preventDefault();
 
@@ -137,6 +156,34 @@
                     .then(updatePage)
                     .then(replaceHistory);
             }
+        });
+        document.body.addEventListener('browseToContent', function (e) {
+            fetchUpdate(viewLocationRoute.replace('{locationId}', e.detail.location.locationId))
+                .then(updatePage)
+                .then(replaceHistory);
+        });
+        document.body.addEventListener('contentDiscover', function (e) {
+            const udw = document.createElement('ez-universaldiscoverywidget');
+
+            udw.title = e.detail.title;
+            udw.multiple = e.detail.multiple;
+            udw.onconfirm = function (selection) {
+                e.detail.onconfirm.call(udw, selection);
+                // removing the UDW is a bit brutal as this prevents
+                // any kind of animation when hiding the UDW.
+                udw.remove(true);
+            }
+            udw.oncancel = function (selection) {
+                if ( e.detail.oncancel ) {
+                    e.detail.oncancel.call(udw, selection);
+                }
+                udw.remove(true);
+            }
+            udw.isSelectable = e.detail.isSelectable ? e.detail.isSelectable : undefined;
+            udw.startingLocationId = e.detail.startingLocationId;
+            // that way existing PlatformUI stylesheets work out of the box
+            udw.classList.add('ez-universaldiscovery-container');
+            document.body.appendChild(udw);
         });
         window.addEventListener('popstate', function (e) {
             if ( e.state && e.state.url ) {
@@ -147,5 +194,45 @@
         });
     })();
     </script>
+
+    <script>
+    (function () {
+        document.addEventListener('click', function (e) {
+            if ( e.target.classList.contains('run-udw') ) {
+                const button = e.target;
+                const event = new CustomEvent('contentDiscover', {
+                    detail: {
+                        title: "UDW tests (multiple, allow only container)",
+                        multiple: true,
+                        oncancel: function () {
+                            console.log('CANCEL');
+                        },
+                        onconfirm: function (items) {
+                            var list = document.createElement('ul');
+                            items.forEach(function (selection) {
+                                const result = document.createElement('li');
+
+                                result.innerHTML = `${selection.location.contentInfo.name}
+                                    (Content id #${selection.content.contentId}) in Location
+                                    #${selection.location.locationId}
+                                    (${selection.location.pathString}) was
+                                    chosen (Type ${selection.contentType.names['eng-GB']})`;
+
+                                list.appendChild(result);
+                            });
+                            button.parentNode.insertBefore(list, button);
+                        },
+                        isSelectable: function (item) {
+                            return item.contentType.isContainer;
+                        },
+                    },
+                    bubbles: true,
+                });
+                button.dispatchEvent(event);
+            }
+        });
+    })();
+    </script>
+
 </body>
 </html>

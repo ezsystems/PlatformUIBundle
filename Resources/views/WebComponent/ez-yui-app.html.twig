@@ -1,0 +1,50 @@
+{# most of those come from shell.html.twig, it should probably be split in
+ # several templates so that we can just include the part we are interested in #}
+<div class="ez-platformui-app pure is-menu-hidden is-navigation-hidden is-universaldiscovery-hidden is-contentpeek-hidden is-confirmbox-hidden is-languageselectionbox-hidden">
+    <div class="ez-universaldiscovery-container"></div>
+    <div class="ez-contentpeek-container"></div>
+    <div class="ez-confirmbox-container"></div>
+    <div class="ez-languageselectionbox-container"></div>
+    <div class="ez-navigation-container"></div>
+    <div class="ez-mainviews pure-g">
+        <div class="ez-menu-container pure-u"></div>
+        <div class="ez-view-container pure-u"></div>
+    </div>
+    <div class="ez-notification-container"></div>
+</div>
+
+
+{% javascripts
+    'bundles/bazingajstranslation/js/translator.min.js'
+    'bundles/ezplatformuiassets/vendors/yui3/build/yui/yui-min.js'
+    'bundles/ezplatformuiassets/vendors/handlebars-helper-intl/dist/handlebars-intl.min.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% for domain in parameters.translationDomains %}
+    <script src="{{ url('bazinga_jstranslation_js', {'domain': domain}) }}?locales={{ parameters.interfaceLanguages|join(',') }}"></script>
+{% endfor %}
+
+
+<script>
+    {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
+
+    var CKEDITOR_BASEPATH = ALLOYEDITOR_BASEPATH = "{{ asset("bundles/ezplatformuiassets/vendors/alloy-editor/dist/alloy-editor/") }}",
+        importDoc = document.currentScript.ownerDocument;
+
+    window.eZ = window.eZ || {};
+
+    YUI().use('ez-platformuiapp', function (Y) {
+        var appContainer = Y.one(importDoc.querySelector('.ez-platformui-app')),
+            app = new Y.eZ.PlatformUIApp({
+                container: appContainer,
+                viewContainer: appContainer.one('.ez-view-container'),
+                config: {{ parameters|json_encode|raw }},
+                plugins: Y.eZ.PluginRegistry.getPlugins(Y.eZ.PlatformUIApp.NAME),
+            });
+
+        eZ.YUI = {Y: Y, app: app};
+        document.dispatchEvent(new CustomEvent('ez:yui-app:ready'));
+        HandlebarsIntl.registerWith(Y.Handlebars);
+    });
+</script>

@@ -1,0 +1,5 @@
+webcomponent_yui_app:
+    path: /webcomponents/ez-yui-app.html
+    defaults:
+        _controller: ezsystems.platformui.controller.webcomponent:yuiAppComponentAction
+    methods: [GET]

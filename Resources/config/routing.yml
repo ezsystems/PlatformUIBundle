@@ -19,6 +19,9 @@ v2proto:
     resource: "@eZPlatformUIBundle/Resources/config/routing_proto.yml"
     prefix:   /proto
 
+webcomponents:
+    resource: "@eZPlatformUIBundle/Resources/config/routing_webcomponent.yml"
+
 yui_combo_loader:
     path: /_ezcombo
     defaults:
