@@ -44,18 +44,21 @@ YUI.add('ez-discoverybarviewservice', function (Y) {
          * @protected
          */
         _fireContentDiscover: function () {
-            var startingLocationId;
+            var startingLocationId,
+                rootDepth;
 
             if (this._isLocationViewDisplayed()) {
                startingLocationId = this.get('app').get('activeView').get('location').get('id');
+               rootDepth = 1;
             }
 
             this.fire('contentDiscover', {
                 config: {
-                    title: 'Find location', //provisional
+                    title: Y.eZ.trans('universaldiscovery.content.browser', {}, 'universaldiscovery'),
                     multiple: false,
                     contentDiscoveredHandler: Y.bind(this._navigateToLocation, this),
                     startingLocationId: startingLocationId,
+                    minDiscoverDepth: rootDepth,
                 },
             });
         },

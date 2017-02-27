@@ -141,13 +141,18 @@ YUI.add('ez-discoverybarviewservice-tests', function (Y) {
                     e.config.startingLocationId, this.locationId,
                     "startingLocationId should have the id of the current location of the locationViewView"
                 );
+
+                Assert.areSame(
+                    e.config.minDiscoverDepth, 1,
+                    "minDiscoverDepth be br 1"
+                );
             }, this));
             this.service.fire('browseAction');
 
             Assert.isTrue(contentDiscoverFired, 'contentDiscover should be fired');
         },
 
-        "Should fire contentDiscover without starting location when current view is NOT a locationViewView": function () {
+        "Should fire contentDiscover without starting location and minimum discover depth when current view is NOT a locationViewView": function () {
             var contentDiscoverFired = false;
 
             this.activeView = new Y.Base();
@@ -163,6 +168,11 @@ YUI.add('ez-discoverybarviewservice-tests', function (Y) {
                 Assert.isUndefined(
                     e.config.startingLocationId,
                     "startingLocationId should be undefined"
+                );
+
+                Assert.isUndefined(
+                    e.config.minDiscoverDepth,
+                    "minDiscoverDepth should be undefined"
                 );
             }, this));
             this.service.fire('browseAction');

@@ -514,6 +514,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.method2._set("identifier", "method2");
 
             this.confirmedList = new Y.View();
+            this.minDiscoverDepth = 1;
             this.startingLocation = {};
             this.startingLocationId = '42';
             this.virtualRootLocation = {};
@@ -566,6 +567,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             var method2 = this.method2,
                 method1 = this.method1;
 
+            this.view.set('minDiscoverDepth', this.minDiscoverDepth);
             this.view.set('startingLocation', this.startingLocation);
             this.view.set('startingLocationId', this.startingLocationId);
             this.view.set('virtualRootLocation', this.virtualRootLocation);
@@ -580,6 +582,11 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Assert.isFalse(
                 method1.get('visible'),
                 "The method1 should not be visible"
+            );
+
+            Assert.areSame(
+                method2.get('minDiscoverDepth'), this.minDiscoverDepth,
+                "method should have been updated with minDiscoverDepth"
             );
 
             Assert.areSame(
@@ -641,6 +648,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.confirmedList = new Y.View();
             this.config = {};
             this.multiple = true;
+            this.minDiscoverDepth = 1;
             this.startingLocationId = 'l/o/c/a/t/i/o/n/i/d';
             this.startingLocation = {};
             this.virtualRootLocation = {};
@@ -655,6 +663,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.view = new Y.eZ.UniversalDiscoveryView({
                 multiple: this.multiple,
                 confirmedListView: this.confirmedList,
+                minDiscoverDepth: this.minDiscoverDepth,
                 startingLocationId: this.startingLocationId,
                 startingLocation: this.startingLocation,
                 virtualRootLocation: this.virtualRootLocation,
@@ -693,6 +702,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The isAlreadySelected function should be passed to the method views"
             );
             Assert.areSame(
+                this.minDiscoverDepth, methods[0].get('minDiscoverDepth'),
+                "The minDiscoverDepth should be passed to the method views"
+            );
+            Assert.areSame(
                 this.startingLocationId, methods[0].get('startingLocationId'),
                 "The startingLocationId should be passed to the method views"
             );
@@ -728,6 +741,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Assert.isFunction(
                 methods[1].get('isAlreadySelected'),
                 "The isAlreadySelected function should be passed to the method views"
+            );
+            Assert.areSame(
+                this.minDiscoverDepth, methods[0].get('minDiscoverDepth'),
+                "The minDiscoverDepth should be passed to the method views"
             );
             Assert.areSame(
                 this.startingLocationId, methods[1].get('startingLocationId'),
