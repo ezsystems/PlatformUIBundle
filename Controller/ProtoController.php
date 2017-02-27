@@ -15,18 +15,26 @@ use eZ\Publish\API\Repository\Values\Content\Location;
 
 class ProtoController extends Controller
 {
-    protected $discoveryBar;
+    protected $toolbars;
 
-    public function __construct(Component $discoveryBar)
+    public function __construct(array $toolbars)
     {
-        $this->discoveryBar = $discoveryBar;
+        $this->toolbars = $toolbars;
+    }
+
+    protected function setToolbarsVisibility($config)
+    {
+        foreach ($this->toolbars as $toolbar) {
+            $toolbar->setVisible((bool)$config[$toolbar->getId()]);
+        }
     }
 
     public function dashboardAction(Request $request)
     {
+        $this->setToolbarsVisibility($request->attributes->get('toolbars'));
         $parameters = [
             'title' => 'Dashboard',
-            'discoveryBar' => $this->discoveryBar,
+            'toolbars' => $this->toolbars,
             'content' => $this->renderView(
                 'eZPlatformUIBundle:PlatformUI:dashboard.html.twig'
             ),
@@ -40,9 +48,10 @@ class ProtoController extends Controller
 
     public function locationViewAction(Request $request, Location $location)
     {
+        $this->setToolbarsVisibility($request->attributes->get('toolbars'));
         $parameters = [
             'title' => $location->contentInfo->name,
-            'discoveryBar' => $this->discoveryBar,
+            'toolbars' => $this->toolbars,
             'content' => $this->renderView(
                 'eZPlatformUIBundle:PlatformUI:locationview.html.twig',
                 ['location' => $location]

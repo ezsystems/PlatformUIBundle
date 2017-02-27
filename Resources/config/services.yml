@@ -38,7 +38,7 @@ parameters:
     ezsystems.platformui.view_matcher.pjax_request.class: EzSystems\PlatformUIBundle\Matcher\PjaxRequest
 
     # prototype components
-    ezsystems.platformui.component.discoverybar.class: EzSystems\PlatformUIBundle\Components\DiscoveryBar
+    ezsystems.platformui.component.toolbar.class: EzSystems\PlatformUIBundle\Components\Toolbar
     ezsystems.platformui.component.search.class: EzSystems\PlatformUIBundle\Components\Search
     ezsystems.platformui.component.browse.class: EzSystems\PlatformUIBundle\Components\Browse
     ezsystems.platformui.component.trash.class: EzSystems\PlatformUIBundle\Components\Trash
@@ -151,8 +151,9 @@ services:
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.component.discoverybar:
-        class: "%ezsystems.platformui.component.discoverybar.class%"
+        class: "%ezsystems.platformui.component.toolbar.class%"
         arguments:
+            - "discovery"
             # todo tag those services with priority instead so that it's possible to new ones
             # from external bundles
             - [@ezsystems.platformui.component.search, @ezsystems.platformui.component.browse, @ezsystems.platformui.component.trash]
@@ -169,7 +170,10 @@ services:
 
     ezsystems.platformui.controller.proto:
         class: "%ezsystems.platformui.controller.proto.class%"
-        arguments: [@ezsystems.platformui.component.discoverybar]
+        arguments:
+            # todo tag those services so that it's possible to add new toolbars
+            # from external bundles
+            - [@ezsystems.platformui.component.discoverybar]
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.webcomponent:

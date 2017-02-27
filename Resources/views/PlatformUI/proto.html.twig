@@ -31,12 +31,11 @@
             flex: 1 0;
             display: flex;
         }
-        ez-discovery-bar {
+        ez-toolbar {
             border: 2px solid blue;
             flex: 0 0 230px;
         }
-
-        ez-discovery-bar > * {
+        ez-toolbar > * {
             line-height: 3;
             border: 1px solid purple;
         }
@@ -59,6 +58,7 @@
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-platformui-app.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-subitem.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-universaldiscoverywidget.html' ) }}">
+    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-toolbar.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-browse.html' ) }}">
 </head>
 <body class="ez-platformui-app is-app-open">
@@ -72,7 +72,9 @@
             </ul>
         </nav>
         <main>
-            {{ discoveryBar|raw }}
+            {% for toolbar in toolbars %}
+                {{ toolbar|raw }}
+            {% endfor %}
             <div class="ez-main-content">
                 {{ content|raw }}
             </div>
