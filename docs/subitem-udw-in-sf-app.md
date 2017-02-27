@@ -22,7 +22,7 @@ as a public api (hiding implementation details for those consuming them).
 {# I just generate a ez-subitem with some attributes tag like any other HTML tag #}
 <ez-subitem
     parent-location-id="{{ path( 'ezpublish_rest_loadLocation', location ) }}"
-    ></ez-subitem-list>
+    ></ez-subitem>
 ```
 
 ### Reasonning
@@ -63,7 +63,7 @@ solution would be to pass the *REST Location id* to the component, like:
 ```xml
 <ez-subitem
     parent-location-id="/api/ezp/v2/content/locations/1/43/51/59/73/74"
-    ></ez-subitem-list>
+    ></ez-subitem>
 ```
 
 This URI can be easily generated with the Twig `path` template function.
@@ -72,7 +72,7 @@ If we find an easy and efficient way of doing that internally in the component,
 the markup could become:
 
 ```xml
-<ez-subitem parent-location-id="74"></ez-subitem-list>
+<ez-subitem parent-location-id="74"></ez-subitem>
 ```
 
 ##### Public API
