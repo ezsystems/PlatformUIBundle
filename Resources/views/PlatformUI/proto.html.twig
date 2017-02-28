@@ -42,10 +42,9 @@
         ez-browse:after {
             content: " (" attr(location-id) ")";
         }
-        .ez-main-content {
+        ez-main-content {
             flex: 1 1;
         }
-
         ez-subitem {
             border: 1px solid aqua;
         }
@@ -56,11 +55,13 @@
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-platformui-app.html' ) }}">
-    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-subitem.html' ) }}">
-    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-universaldiscoverywidget.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-navigation-hub.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-toolbar.html' ) }}">
+    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-main-content.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-browse.html' ) }}">
+
+    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-subitem.html' ) }}">
+    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-universaldiscoverywidget.html' ) }}">
 </head>
 <body class="ez-platformui-app is-app-open">
     <ez-platformui-app>
@@ -69,9 +70,7 @@
             {% for toolbar in toolbars %}
                 {{ toolbar|raw }}
             {% endfor %}
-            <div class="ez-main-content">
-                {{ content|raw }}
-            </div>
+            {{ mainContent|raw }}
         </main>
     </ez-platformui-app>
 </body>

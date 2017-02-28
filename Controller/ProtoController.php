@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use EzSystems\PlatformUIBundle\Components\Component;
 use EzSystems\PlatformUIBundle\Components\NavigationHub;
+use EzSystems\PlatformUIBundle\Components\MainContent;
 use eZ\Publish\API\Repository\Values\Content\Location;
 
 class ProtoController extends Controller
@@ -20,8 +21,11 @@ class ProtoController extends Controller
 
     protected $navigationHub;
 
-    public function __construct(NavigationHub $navigationHub, array $toolbars)
+    protected $mainContent;
+
+    public function __construct(MainContent $content, NavigationHub $navigationHub, array $toolbars)
     {
+        $this->mainContent = $content;
         $this->navigationHub = $navigationHub;
         $this->toolbars = $toolbars;
     }
@@ -36,13 +40,14 @@ class ProtoController extends Controller
     public function dashboardAction(Request $request)
     {
         $this->setToolbarsVisibility($request->attributes->get('toolbars'));
+        $this->mainContent->setTemplate(
+            'eZPlatformUIBundle:PlatformUI:dashboard.html.twig'
+        );
         $parameters = [
             'title' => 'Dashboard',
             'navigationHub' => $this->navigationHub,
             'toolbars' => $this->toolbars,
-            'content' => $this->renderView(
-                'eZPlatformUIBundle:PlatformUI:dashboard.html.twig'
-            ),
+            'mainContent' => $this->mainContent,
         ];
         if ($request->headers->has('x-ajax-update')) {
             return JsonResponse::create($parameters);
@@ -54,14 +59,15 @@ class ProtoController extends Controller
     public function locationViewAction(Request $request, Location $location)
     {
         $this->setToolbarsVisibility($request->attributes->get('toolbars'));
+        $this->mainContent->setTemplate(
+            'eZPlatformUIBundle:PlatformUI:locationview.html.twig'
+        );
+        $this->mainContent->setParameters(['location' => $location]);
         $parameters = [
             'title' => $location->contentInfo->name,
             'navigationHub' => $this->navigationHub,
             'toolbars' => $this->toolbars,
-            'content' => $this->renderView(
-                'eZPlatformUIBundle:PlatformUI:locationview.html.twig',
-                ['location' => $location]
-            ),
+            'mainContent' => $this->mainContent,
         ];
         if ($request->headers->has('x-ajax-update')) {
             return JsonResponse::create($parameters);

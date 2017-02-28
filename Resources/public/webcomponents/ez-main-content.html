@@ -1,0 +1,36 @@
+<link rel="import" href="../vendors/polymer/polymer-element.html">
+
+<style>
+ez-main-content {
+    display: block;
+}
+</style>
+
+<script>
+(function () {
+    // this is where we could detect the markup structure to enhance it (tabs, selection table, ...)
+    class eZMainContent extends Polymer.Element {
+        static get is() {
+            return 'ez-main-content';
+        }
+
+        static get config() {
+            return {};
+        }
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+        }
+
+        disconnectedCallback() {
+            super.disconnectedCallback();
+        }
+    }
+
+    customElements.define(eZMainContent.is, eZMainContent);
+})();
+</script>

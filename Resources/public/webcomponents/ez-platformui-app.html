@@ -115,8 +115,8 @@
 
         _updatePage(struct) {
             this.ownerDocument.title = struct.title;
-            this.querySelector('.ez-main-content').innerHTML = struct.content;
 
+            this._updateComponent(this, struct.mainContent.selector, struct.mainContent.update);
             this._updateComponent(this, struct.navigationHub.selector, struct.navigationHub.update);
             struct.toolbars.forEach(function (toolbarUpdate) {
                 this._updateComponent(this, toolbarUpdate.selector, toolbarUpdate.update);
