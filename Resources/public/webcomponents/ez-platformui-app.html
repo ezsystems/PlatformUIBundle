@@ -20,6 +20,31 @@
         });
     }
 
+    function updateElement(element, updateStruct) {
+        if ( typeof updateStruct === "string" ) {
+            element.outerHTML = updateStruct;
+        } else if ( updateStruct ) {
+            let attributes = updateStruct.attributes || {},
+                children = updateStruct.children || [];
+
+            Object.keys(attributes).forEach(function (attributeName) {
+                element.setAttribute(attributeName, attributes[attributeName]);
+            });
+            children.forEach(function (childUpdate) {
+                if ( childUpdate ) {
+                    const child = element.querySelector(childUpdate.selector);
+
+                    if ( child ) {
+                        eZ.updateElement(child, childUpdate.update);
+                    } else {
+                        console.warn(`Unable to find ${childUpdate.selector} under`, element);
+                    }
+                }
+            }, element);
+        }
+        return updateStruct;
+    }
+
     function replaceHistory(struct) {
         history.pushState({url: struct.url}, struct.title, struct.url);
 
@@ -74,7 +99,12 @@
                         type: Boolean,
                         reflectToAttribute: true,
                         value: false,
-                    }
+                    },
+                    title: {
+                        type: String,
+                        reflectToAttribute: true,
+                        value: "",
+                    },
                 }
             };
         }
@@ -94,18 +124,19 @@
             super.disconnectedCallback();
         }
 
-        /*
         attributeChangedCallback(name, oldValue, newValue) {
-            console.log("attributeChangedCallback", arguments);
+            if ( name === "title" ) {
+                this.ownerDocument.title = newValue;
+            }
         }
-        */
 
         _update(updateUrl) {
             this.updating = true;
 
             fetchUpdate(updateUrl)
-                .then(this._updatePage.bind(this))
                 .then(replaceHistory)
+                .then(this._buildUpdateStruct.bind(this, updateUrl))
+                .then(updateElement.bind(null, this))
                 .then(function (struct) {
                     this.updating = false;
 
@@ -113,34 +144,20 @@
                 }.bind(this));
         }
 
-        _updatePage(struct) {
-            this.ownerDocument.title = struct.title;
+        _buildUpdateStruct(url, struct) {
+            var updateStruct = {};
 
-            this._updateComponent(this, struct.mainContent.selector, struct.mainContent.update);
-            this._updateComponent(this, struct.navigationHub.selector, struct.navigationHub.update);
-            struct.toolbars.forEach(function (toolbarUpdate) {
-                this._updateComponent(this, toolbarUpdate.selector, toolbarUpdate.update);
-            }, this);
+            // building an update struct to use updateElement()
+            // but the server should directly do that.
+            updateStruct.attributes = {
+                title: struct.title,
+            };
 
-            return struct;
-        }
+            updateStruct.children = struct.toolbars.concat();
+            updateStruct.children.push(struct.mainContent);
+            updateStruct.children.push(struct.navigationHub);
 
-        _updateComponent(ref, selector, update) {
-            const component = ref.querySelector(selector);
-
-            if ( typeof update === "string" ) {
-                component.outerHTML = update;
-            } else if ( update ) {
-                let attributes = update.attributes || {},
-                    children = update.children || [];
-
-                Object.keys(attributes).forEach(function (attributeName) {
-                    component.setAttribute(attributeName, attributes[attributeName]);
-                });
-                children.forEach(function (childUpdate) {
-                    this._updateComponent(ref, childUpdate.selector, childUpdate.update);
-                }, this);
-            }
+            return updateStruct;
         }
 
         _enhanceNavigation() {
