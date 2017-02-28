@@ -15,10 +15,13 @@ class NavigationHub extends Component
 
     public function __toString()
     {
-        return $this->templating->render(
-            'eZPlatformUIBundle:Components:navigationhub.html.twig',
-            ['tag' => self::TAG_NAME]
+        $str = '<' . self::TAG_NAME . '>';
+        $str .= $this->templating->render(
+            'eZPlatformUIBundle:Components:navigationhub.html.twig'
         );
+        $str .= '</' . self::TAG_NAME . '>';
+
+        return $str;
     }
 
     public function jsonSerialize()

@@ -1,8 +1,6 @@
-<{{ tag }}>
 I'm the navigation hub {{ "now"|date('H:i:s') }}
-    <ul>
-        <li><a href="{{ path( 'proto_dashboard' ) }}">Dashboard</a></li>
-        <li><a href="{{ path( 'proto_viewLocation', {locationId: 2} ) }}">Content structure</a></li>
-        <li><a href="{{ path( 'proto_viewLocation', {locationId: 43} ) }}">Media library</a></li>
-    </ul>
-</{{ tag }}>
+<ul>
+    <li><a href="{{ path( 'proto_dashboard' ) }}">Dashboard</a></li>
+    <li><a href="{{ path( 'proto_viewLocation', {locationId: 2} ) }}">Content structure</a></li>
+    <li><a href="{{ path( 'proto_viewLocation', {locationId: 43} ) }}">Media library</a></li>
+</ul>

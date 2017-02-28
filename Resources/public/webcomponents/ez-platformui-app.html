@@ -35,7 +35,7 @@
                     const child = element.querySelector(childUpdate.selector);
 
                     if ( child ) {
-                        eZ.updateElement(child, childUpdate.update);
+                        updateElement(child, childUpdate.update);
                     } else {
                         console.warn(`Unable to find ${childUpdate.selector} under`, element);
                     }
