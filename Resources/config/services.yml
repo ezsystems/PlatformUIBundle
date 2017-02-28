@@ -38,6 +38,7 @@ parameters:
     ezsystems.platformui.view_matcher.pjax_request.class: EzSystems\PlatformUIBundle\Matcher\PjaxRequest
 
     # prototype components
+    ezsystems.platformui.component.navigationhub.class: EzSystems\PlatformUIBundle\Components\NavigationHub
     ezsystems.platformui.component.toolbar.class: EzSystems\PlatformUIBundle\Components\Toolbar
     ezsystems.platformui.component.search.class: EzSystems\PlatformUIBundle\Components\Search
     ezsystems.platformui.component.browse.class: EzSystems\PlatformUIBundle\Components\Browse
@@ -150,6 +151,11 @@ services:
         class: "%ezsystems.platformui.controller.dashboard.class%"
         parent: ezsystems.platformui.controller.base
 
+    ezsystems.platformui.component.navigationhub:
+        class: "%ezsystems.platformui.component.navigationhub.class%"
+        arguments:
+            - @templating
+
     ezsystems.platformui.component.discoverybar:
         class: "%ezsystems.platformui.component.toolbar.class%"
         arguments:
@@ -171,6 +177,7 @@ services:
     ezsystems.platformui.controller.proto:
         class: "%ezsystems.platformui.controller.proto.class%"
         arguments:
+            - @ezsystems.platformui.component.navigationhub
             # todo tag those services so that it's possible to add new toolbars
             # from external bundles
             - [@ezsystems.platformui.component.discoverybar]

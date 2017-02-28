@@ -1,0 +1,35 @@
+<link rel="import" href="../vendors/polymer/polymer-element.html">
+
+<style>
+ez-navigation-hub {
+    display: block;
+}
+</style>
+
+<script>
+(function () {
+    class eZNavigationHub extends Polymer.Element {
+        static get is() {
+            return 'ez-navigation-hub';
+        }
+
+        static get config() {
+            return {};
+        }
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+        }
+
+        disconnectedCallback() {
+            super.disconnectedCallback();
+        }
+    }
+
+    customElements.define(eZNavigationHub.is, eZNavigationHub);
+})();
+</script>

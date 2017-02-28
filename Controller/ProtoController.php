@@ -11,14 +11,18 @@ namespace EzSystems\PlatformUIBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use EzSystems\PlatformUIBundle\Components\Component;
+use EzSystems\PlatformUIBundle\Components\NavigationHub;
 use eZ\Publish\API\Repository\Values\Content\Location;
 
 class ProtoController extends Controller
 {
     protected $toolbars;
 
-    public function __construct(array $toolbars)
+    protected $navigationHub;
+
+    public function __construct(NavigationHub $navigationHub, array $toolbars)
     {
+        $this->navigationHub = $navigationHub;
         $this->toolbars = $toolbars;
     }
 
@@ -34,6 +38,7 @@ class ProtoController extends Controller
         $this->setToolbarsVisibility($request->attributes->get('toolbars'));
         $parameters = [
             'title' => 'Dashboard',
+            'navigationHub' => $this->navigationHub,
             'toolbars' => $this->toolbars,
             'content' => $this->renderView(
                 'eZPlatformUIBundle:PlatformUI:dashboard.html.twig'
@@ -51,6 +56,7 @@ class ProtoController extends Controller
         $this->setToolbarsVisibility($request->attributes->get('toolbars'));
         $parameters = [
             'title' => $location->contentInfo->name,
+            'navigationHub' => $this->navigationHub,
             'toolbars' => $this->toolbars,
             'content' => $this->renderView(
                 'eZPlatformUIBundle:PlatformUI:locationview.html.twig',

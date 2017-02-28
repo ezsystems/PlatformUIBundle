@@ -21,7 +21,7 @@
             flex-direction: column;
             margin: 0;
         }
-        nav {
+        ez-navigation-hub {
             border: 2px solid green;
             flex: 0 0 8em;
         }
@@ -58,19 +58,13 @@
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-platformui-app.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-subitem.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-universaldiscoverywidget.html' ) }}">
+    <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-navigation-hub.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-toolbar.html' ) }}">
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-browse.html' ) }}">
 </head>
 <body class="ez-platformui-app is-app-open">
     <ez-platformui-app>
-        <nav>
-            I'm the navigation hub
-            <ul>
-                <li><a href="{{ path( 'proto_dashboard' ) }}">Dashboard</a></li>
-                <li><a href="{{ path( 'proto_viewLocation', {locationId: 2} ) }}">Content structure</a></li>
-                <li><a href="{{ path( 'proto_viewLocation', {locationId: 43} ) }}">Media library</a></li>
-            </ul>
-        </nav>
+        {{ navigationHub|raw }}
         <main>
             {% for toolbar in toolbars %}
                 {{ toolbar|raw }}
