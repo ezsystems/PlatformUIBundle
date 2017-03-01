@@ -43,6 +43,11 @@
                             </ul>
                             {{else}}
                             <span class="ez-trashview-info-message">{{translate 'trash.ancestors' 'trash'}}</span>
+                            <button
+                                data-trash-item-id="{{item.id}}"
+                                class="ez-trashitem-restore pure-button ez-button">
+                                {{translate 'trash.ancestors.button' 'trash'}}
+                            </button>
                             {{/if}}
                         </td>
                     </tr>

@@ -228,9 +228,10 @@ YUI.add('ez-trashviewservice', function (Y) {
          * @protected
          * @param {Object} e restoreItems event facade
          * @param {Array} e.trashItems  List of trashItems to be restored
+         * @param {String} e.destination (Optional)  locationId where items need to be restored
          */
         _restoreItems: function (e) {
-            var loadOptions = {api: this.get('capi')},
+            var loadOptions = {api: this.get('capi'), destination: e.destination},
                 tasks = new Y.Parallel(),
                 service = this,
                 notificationIdentifier = "restoreTrashItems",
