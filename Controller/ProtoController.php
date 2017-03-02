@@ -10,69 +10,42 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use EzSystems\PlatformUIBundle\Components\Component;
-use EzSystems\PlatformUIBundle\Components\NavigationHub;
-use EzSystems\PlatformUIBundle\Components\MainContent;
 use eZ\Publish\API\Repository\Values\Content\Location;
+use EzSystems\PlatformUIBundle\Components\App;
 
 class ProtoController extends Controller
 {
-    protected $toolbars;
+    protected $app;
 
-    protected $navigationHub;
-
-    protected $mainContent;
-
-    public function __construct(MainContent $content, NavigationHub $navigationHub, array $toolbars)
+    public function __construct(App $app)
     {
-        $this->mainContent = $content;
-        $this->navigationHub = $navigationHub;
-        $this->toolbars = $toolbars;
-    }
-
-    protected function setToolbarsVisibility($config)
-    {
-        foreach ($this->toolbars as $toolbar) {
-            $toolbar->setVisible((bool)$config[$toolbar->getId()]);
-        }
+        $this->app = $app;
     }
 
     public function dashboardAction(Request $request)
     {
-        $this->setToolbarsVisibility($request->attributes->get('toolbars'));
-        $this->mainContent->setTemplate(
-            'eZPlatformUIBundle:PlatformUI:dashboard.html.twig'
-        );
-        $parameters = [
-            'title' => 'Dashboard',
-            'navigationHub' => $this->navigationHub,
-            'toolbars' => $this->toolbars,
-            'mainContent' => $this->mainContent,
-        ];
+        $appConfig = $request->attributes->get('appConfig');
+        $appConfig['title'] = 'Dashboard';
+        $this->app->setConfig($appConfig);
+
         if ($request->headers->has('x-ajax-update')) {
-            return JsonResponse::create($parameters);
+            return JsonResponse::create($this->app);
         }
 
-        return $this->render('eZPlatformUIBundle:PlatformUI:proto.html.twig', $parameters);
+        return $this->render('eZPlatformUIBundle:PlatformUI:proto.html.twig', ['platformUIApp' => $this->app]);
     }
 
     public function locationViewAction(Request $request, Location $location)
     {
-        $this->setToolbarsVisibility($request->attributes->get('toolbars'));
-        $this->mainContent->setTemplate(
-            'eZPlatformUIBundle:PlatformUI:locationview.html.twig'
-        );
-        $this->mainContent->setParameters(['location' => $location]);
-        $parameters = [
-            'title' => $location->contentInfo->name,
-            'navigationHub' => $this->navigationHub,
-            'toolbars' => $this->toolbars,
-            'mainContent' => $this->mainContent,
-        ];
+        $appConfig = $request->attributes->get('appConfig');
+        $appConfig['title'] = $location->contentInfo->name;
+        $appConfig['mainContent']['parameters']['location'] = $location;
+        $this->app->setConfig($appConfig);
+
         if ($request->headers->has('x-ajax-update')) {
-            return JsonResponse::create($parameters);
+            return JsonResponse::create($this->app);
         }
 
-        return $this->render('eZPlatformUIBundle:PlatformUI:proto.html.twig', $parameters);
+        return $this->render('eZPlatformUIBundle:PlatformUI:proto.html.twig', ['platformUIApp' => $this->app]);
     }
 }

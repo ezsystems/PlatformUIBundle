@@ -1,7 +1,7 @@
 <!doctype html>
 <html class=""><!-- empty class is needed for webcomponents polyfill with ez-yui-app.html import (?!) -->
 <head>
-    <title>{{ title }}</title>
+    <title>{{ platformUIApp.title }}</title>
     <meta name="viewport" content="width=device-width">
     <meta charset="utf-8">
 
@@ -64,14 +64,6 @@
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-universaldiscoverywidget.html' ) }}">
 </head>
 <body class="ez-platformui-app is-app-open">
-    <ez-platformui-app>
-        {{ navigationHub|raw }}
-        <main>
-            {% for toolbar in toolbars %}
-                {{ toolbar|raw }}
-            {% endfor %}
-            {{ mainContent|raw }}
-        </main>
-    </ez-platformui-app>
+    {{ platformUIApp|raw }}
 </body>
 </html>

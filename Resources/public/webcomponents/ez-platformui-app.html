@@ -135,8 +135,7 @@
 
             fetchUpdate(updateUrl)
                 .then(replaceHistory)
-                .then(this._buildUpdateStruct.bind(this, updateUrl))
-                .then(updateElement.bind(null, this))
+                .then(this._updateApp.bind(this))
                 .then(function (struct) {
                     this.updating = false;
 
@@ -144,20 +143,8 @@
                 }.bind(this));
         }
 
-        _buildUpdateStruct(url, struct) {
-            var updateStruct = {};
-
-            // building an update struct to use updateElement()
-            // but the server should directly do that.
-            updateStruct.attributes = {
-                title: struct.title,
-            };
-
-            updateStruct.children = struct.toolbars.concat();
-            updateStruct.children.push(struct.mainContent);
-            updateStruct.children.push(struct.navigationHub);
-
-            return updateStruct;
+        _updateApp(updateStruct) {
+            updateElement.call(null, this, updateStruct.update);
         }
 
         _enhanceNavigation() {

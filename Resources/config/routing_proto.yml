@@ -2,9 +2,13 @@ proto_dashboard:
     path: /dashboard
     defaults:
         _controller: ezsystems.platformui.controller.proto:dashboardAction
-# by default toolbars are hidden, so the following is not really needed
-#        toolbars:
-#            discovery: 0
+        appConfig:
+            mainContent:
+                template: 'eZPlatformUIBundle:PlatformUI:dashboard.html.twig'
+                parameters: []
+            toolbars:
+            # by default toolbars are hidden, so the following is not really needed
+            #     discovery: 0
     methods: [GET]
 
 proto_viewLocation:
@@ -13,8 +17,12 @@ proto_viewLocation:
     path: /location/view/{locationId}
     defaults:
         _controller: ezsystems.platformui.controller.proto:locationViewAction
-        toolbars:
-            discovery: 1
+        appConfig:
+            toolbars:
+                discovery: 1
+            mainContent:
+                template: 'eZPlatformUIBundle:PlatformUI:locationview.html.twig'
+                parameters: []
     methods: [GET]
     requirements:
         locationId: \d+
