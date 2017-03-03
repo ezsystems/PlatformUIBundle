@@ -152,15 +152,18 @@
                 var updateUrl;
 
                 function isNavigationLink(element) {
+                    // TODO we need a Polyfill for Element#closest()
+                    var anchor = element.closest('a');
+
                     // we should probably further check the URI (same origin ?)
                     // we should also allow to opt out from that with a class
-                    return element.nodeName === 'A' && element.href && element.getAttribute('href').indexOf('#') !== 0
+                    return anchor && anchor.href && anchor.getAttribute('href').indexOf('#') !== 0
                 }
 
                 if ( isNavigationLink(e.target) ) {
-                    updateUrl = e.target.href;
+                    updateUrl = e.target.closest('a').href;
                     e.preventDefault();
-                    this._update(e.target.href);
+                    this._update(updateUrl);
                 }
             }.bind(this));
             window.addEventListener('popstate', function (e) {

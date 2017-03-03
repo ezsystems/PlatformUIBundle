@@ -1,6 +1,21 @@
-I'm the navigation hub {{ "now"|date('H:i:s') }}
-<ul>
-    <li><a href="{{ path( 'proto_dashboard' ) }}">Dashboard</a></li>
-    <li><a href="{{ path( 'proto_viewLocation', {locationId: 2} ) }}">Content structure</a></li>
-    <li><a href="{{ path( 'proto_viewLocation', {locationId: 43} ) }}">Media library</a></li>
-</ul>
+<{{ tag }}{% for name, value in attributes %} {{ name }}="{{ value }}"{% endfor %}>
+    <a href="{{ path( 'proto_dashboard' ) }}"><img src="{{ asset( 'bundles/ezplatformui/img/logo.png' ) }}" alt="eZ Platform logo"></a>
+    <ul class="ez-zone-list">
+    {% for zone in zones %}
+    <li{% if activeZone == zone.identifier %} class="{{ activeZoneClass }}"{% endif %} data-zone-identifier="{{ zone.identifier }}">
+        <a href="#">{{ zone.name }}</a>
+    </li>
+    {% endfor %}
+    </ul>
+    <nav>
+        <ul class="ez-navigation">
+        {% for link in links %}
+        <li data-zone="{{ link.zone }}"
+            {% if link.match(app.request) %}class="{{ matchedLinkClass }}"{% endif %}
+            {% if link.zone != activeZone %}style="display: none;"{% endif %}>
+            <a href="{{ link.url }}">{{ link.name }}</a>
+        </li>
+        {% endfor %}
+        </ul>
+    </nav>
+</{{ tag }}>
