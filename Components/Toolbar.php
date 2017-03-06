@@ -2,7 +2,7 @@
 
 namespace EzSystems\PlatformUIBundle\Components;
 
-class Toolbar extends Component
+class Toolbar implements Component
 {
     protected $children;
 

@@ -2,7 +2,7 @@
 
 namespace EzSystems\PlatformUIBundle\Components;
 
-class Trash extends Component
+class Trash implements Component
 {
     public function __toString()
     {

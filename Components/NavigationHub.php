@@ -4,7 +4,7 @@ namespace EzSystems\PlatformUIBundle\Components;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class NavigationHub extends Component
+class NavigationHub implements Component
 {
     const TAG_NAME = 'ez-navigation-hub';
 

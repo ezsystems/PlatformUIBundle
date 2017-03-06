@@ -2,6 +2,7 @@
 
 namespace EzSystems\PlatformUIBundle\Components;
 
-abstract class Component implements \JsonSerializable
+interface Component extends \JsonSerializable
 {
+    public function __toString();
 }

@@ -5,7 +5,7 @@ namespace EzSystems\PlatformUIBundle\Components;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 
-class Browse extends Component
+class Browse implements Component
 {
     protected $router;
 

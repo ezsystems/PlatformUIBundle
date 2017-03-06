@@ -3,7 +3,7 @@
 namespace EzSystems\PlatformUIBundle\Components;
 
 // TODO find a better name
-class MainContent extends Component
+class MainContent implements Component
 {
     const TAG_NAME = 'ez-main-content';
 

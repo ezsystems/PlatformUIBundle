@@ -7,7 +7,7 @@ use EzSystems\PlatformUIBundle\Components\Component;
 use EzSystems\PlatformUIBundle\Components\NavigationHub;
 use EzSystems\PlatformUIBundle\Components\MainContent;
 
-class App extends Component
+class App implements Component
 {
     const TAG_NAME = 'ez-platformui-app';
 

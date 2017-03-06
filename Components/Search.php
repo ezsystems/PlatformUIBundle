@@ -2,7 +2,7 @@
 
 namespace EzSystems\PlatformUIBundle\Components;
 
-class Search extends Component
+class Search implements Component
 {
     public function __toString()
     {
