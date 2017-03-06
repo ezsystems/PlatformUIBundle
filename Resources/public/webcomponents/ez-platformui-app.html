@@ -92,20 +92,18 @@
             return 'ez-platformui-app';
         }
 
-        static get config() {
+        static get properties() {
             return {
-                properties: {
-                    updating: {
-                        type: Boolean,
-                        reflectToAttribute: true,
-                        value: false,
-                    },
-                    title: {
-                        type: String,
-                        reflectToAttribute: true,
-                        value: "",
-                    },
-                }
+                updating: {
+                    type: Boolean,
+                    reflectToAttribute: true,
+                    value: false,
+                },
+                title: {
+                    type: String,
+                    reflectToAttribute: true,
+                    value: "",
+                },
             };
         }
 

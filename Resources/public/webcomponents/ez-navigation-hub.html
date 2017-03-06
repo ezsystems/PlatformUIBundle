@@ -38,23 +38,21 @@ ez-navigation-hub .ez-matched-link {
             return 'ez-navigation-hub';
         }
 
-        static get config() {
+        static get properties() {
             return {
-                properties: {
-                    "activeZoneClass": {
-                        type: String,
-                    },
-                    "matchedLinkClass": {
-                        type: String,
-                    },
-                    "activeZone": {
-                        type: String,
-                        observer: '_updateActiveZone',
-                    },
-                    "matchedLinkUrl": {
-                        type: String,
-                        observer: '_highlightLink',
-                    },
+                "activeZoneClass": {
+                    type: String,
+                },
+                "matchedLinkClass": {
+                    type: String,
+                },
+                "activeZone": {
+                    type: String,
+                    observer: '_updateActiveZone',
+                },
+                "matchedLinkUrl": {
+                    type: String,
+                    observer: '_highlightLink',
                 },
             };
         }
@@ -67,7 +65,7 @@ ez-navigation-hub .ez-matched-link {
                     e.preventDefault();
                     this.activeZone = e.target.parentNode.getAttribute('data-zone-identifier');
                 }
-            });
+            }.bind(this));
         }
 
         _updateActiveZone(newValue, oldValue) {

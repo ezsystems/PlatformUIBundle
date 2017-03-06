@@ -15,12 +15,10 @@ class eZSubitem extends Polymer.Element {
         return 'ez-subitem';
     }
 
-    static get config() {
+    static get properties() {
         return {
-            properties: {
-                "parentLocationId": {
-                    type: String,
-                },
+            "parentLocationId": {
+                type: String,
             },
         };
     }

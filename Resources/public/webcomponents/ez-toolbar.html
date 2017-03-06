@@ -19,16 +19,14 @@ ez-toolbar[visible="true"] {
             return 'ez-toolbar';
         }
 
-        static get config() {
+        static get properties() {
             return {
-                properties: {
-                    "visible": {
-                        // handled as a string to avoid inconsistencies, so with that will get
-                        // visible="false" or visible="true" but not visible alone in the markup
-                        type: String,
-                        reflectToAttribute: true,
-                        value: "false",
-                    },
+                "visible": {
+                    // handled as a string to avoid inconsistencies, so with that will get
+                    // visible="false" or visible="true" but not visible alone in the markup
+                    type: String,
+                    reflectToAttribute: true,
+                    value: "false",
                 },
             };
         }
