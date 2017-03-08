@@ -13,10 +13,28 @@
             headers: headers,
         }).then(function (response) {
             return response.json();
-        }).then(function (struct) {
-            struct.url = updateUrl;
+        });
+    }
 
-            return struct;
+    function fetchForm(form, forceUrl) {
+        var headers,
+            data = new FormData(form),
+            // forcing the same url for now, but the form should have
+            // a correct action attribute value instead...
+            url = forceUrl;
+
+        data.append(form.ownerDocument.activeElement.name, "button");
+
+        headers = new Headers({
+            'X-AJAX-Update': '1',
+        });
+        return fetch(url, {
+            credentials: 'same-origin',
+            headers: headers,
+            method: form.method,
+            body: data,
+        }).then(function (response) {
+            return response.json();
         });
     }
 
@@ -44,13 +62,6 @@
         }
         return updateStruct;
     }
-
-    function replaceHistory(struct) {
-        history.pushState({url: struct.url}, struct.title, struct.url);
-
-        return struct;
-    }
-
 
     document.addEventListener('click', function (e) {
         if ( e.target.classList.contains('run-udw') ) {
@@ -103,6 +114,13 @@
                     type: String,
                     reflectToAttribute: true,
                     value: "",
+                    observer: '_setPageTitle',
+                },
+                url: {
+                    type: String,
+                    reflectToAttribute: true,
+                    value: location.href,
+                    observer: '_replaceHistory',
                 },
             };
         }
@@ -122,8 +140,8 @@
             super.disconnectedCallback();
         }
 
-        attributeChangedCallback(name, oldValue, newValue) {
-            if ( name === "title" ) {
+        _setPageTitle(newValue, oldValue) {
+            if ( newValue ) {
                 this.ownerDocument.title = newValue;
             }
         }
@@ -132,13 +150,28 @@
             this.updating = true;
 
             fetchUpdate(updateUrl)
-                .then(replaceHistory)
                 .then(this._updateApp.bind(this))
                 .then(function (struct) {
                     this.updating = false;
 
                     return struct;
                 }.bind(this));
+        }
+
+        _updateForm(form) {
+            this.updating = true;
+
+            fetchForm(form, this.url)
+                .then(this._updateApp.bind(this))
+                .then(function (struct) {
+                    this.updating = false;
+
+                    return struct;
+                }.bind(this));
+        }
+
+        _replaceHistory() {
+            history.pushState({url: this.url}, this.title, this.url);
         }
 
         _updateApp(updateStruct) {
@@ -169,6 +202,12 @@
                     this._update(e.state.url);
                 }
             }.bind(this));
+
+            this.addEventListener('submit', function (e) {
+                e.preventDefault();
+                this._updateForm(e.target);
+            }.bind(this));
+
         }
 
         _listenToBrowseToContent() {

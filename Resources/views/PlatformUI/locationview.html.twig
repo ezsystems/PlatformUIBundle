@@ -1,8 +1,8 @@
 <h1>{{ location.contentInfo.name }} (Location #{{ location.id }})</h1>
 
-<div>
-    <button class="run-udw">Run UDW (Allows only container to be picked)</button>
-</div>
+<p>
+<a href="{{ path('proto_draft_create', {contentId: location.contentInfo.id}) }}">Edit this content</a>
+</p>
 
 {# using the REST id Location for now to not have to find a cheap and easy way
  # to get the REST id for the regular Location id, but at the some point, this will

@@ -28,3 +28,25 @@ proto_viewLocation:
         locationId: \d+
     options:
         expose: true
+
+proto_draft_create:
+    path: /content/create/draft/{contentId}
+    methods: [GET, POST]
+    defaults:
+        _controller: ezsystems.platformui.controller.proto:draftCreateAction
+        appConfig:
+            toolbars:
+                discovery: 1
+            mainContent:
+                parameters: []
+
+proto_content_edit:
+    path: /content/edit/{contentId}/{versionNo}/{language}
+    methods: [GET, POST]
+    defaults:
+        _controller: ezsystems.platformui.controller.proto:editContentDraftAction
+        appConfig:
+            toolbars:
+                discovery: 0
+            mainContent:
+                parameters: []

@@ -13,6 +13,8 @@ class MainContent implements Component
 
     protected $parameters = [];
 
+    protected $result = false;
+
     public function __construct($templating)
     {
         $this->templating = $templating;
@@ -28,10 +30,17 @@ class MainContent implements Component
         $this->parameters = $parameters;
     }
 
+    public function setResult($result)
+    {
+        $this->result = $result;
+    }
+
     public function __toString()
     {
         $str = '<' . self::TAG_NAME . '>';
-        if ($this->template) {
+        if ($this->result) {
+            $str .= $this->result;
+        } elseif ($this->template) {
             $str .= $this->templating->render(
                 $this->template,
                 $this->parameters

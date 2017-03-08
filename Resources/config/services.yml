@@ -263,6 +263,7 @@ services:
         class: "%ezsystems.platformui.controller.proto.class%"
         arguments:
             - @ezsystems.platformui.component.app
+            - @router
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.webcomponent:

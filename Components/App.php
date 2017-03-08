@@ -37,8 +37,12 @@ class App implements Component
     {
         $this->title = $config['title'];
         $this->setToolbarsVisibility($config['toolbars']);
-        $this->mainContent->setTemplate($config['mainContent']['template']);
-        $this->mainContent->setParameters($config['mainContent']['parameters']);
+        if (isset($config['mainContent']['result'])) {
+            $this->mainContent->setResult($config['mainContent']['result']);
+        } else {
+            $this->mainContent->setTemplate($config['mainContent']['template']);
+            $this->mainContent->setParameters($config['mainContent']['parameters']);
+        }
     }
 
     public function getTitle()
@@ -76,6 +80,7 @@ class App implements Component
             'update' => [
                 'attributes' => [
                     'title' => $this->title,
+                    'url' => $_SERVER['REQUEST_URI'],
                 ],
                 'children' => array_merge(
                     $this->toolbars,
