@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
-    var renderTest, activeTest, searchResultChangeTest, navigateTest, scrollTest, removeHighlightTest, loadMoreItemsTest, resetTest,
+    var renderTest, activeTest, searchResultChangeTest, navigateTest, scrollTest,
+        removeHighlightTest, loadMoreItemsTest, resetTest, disabledTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -149,7 +150,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         },
     });
 
-    var _fullLevelViewSetup = function (context, ownSelectedItem) {
+    var _fullLevelViewSetup = function (context, ownSelectedItem, disabled) {
         context.contentInfo = new Mock();
         context.location = new Mock();
         context.contentType = new Mock();
@@ -204,6 +205,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
             offset: context.offset,
             limit: context.limit,
             ownSelectedItem: !!ownSelectedItem,
+            disabled: !!disabled,
         });
     };
 
@@ -478,6 +480,40 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         },
     });
 
+    disabledTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Finder Explorer disable tests',
+
+        setUp: function () {
+            _fullLevelViewSetup(this, undefined, true);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should set the is-disabled class on container id view is disabled": function () {
+            var container = this.view.get('container');
+
+            Assert.isTrue(container.hasClass('is-disabled'), 'Should have the disabled class');
+        },
+
+        "Should NOT fire explorerNavigate on tap on an explorer level item if view is disabled": function () {
+            var fireExplorerNavigate = false;
+
+            this.view.set('items', this.searchResult);
+            this.view.on('explorerNavigate', function () {
+                fireExplorerNavigate = true;
+            }, this);
+            this.view.get('container').one('.ez-explorer-level-item').simulateGesture('tap', Y.bind(function (e) {
+                this.resume(function () {
+                    Assert.isFalse(fireExplorerNavigate, "Should not fire explorer navigate");
+                });
+            }, this));
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Finder Explorer Level View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(activeTest);
@@ -487,5 +523,6 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
     Y.Test.Runner.add(removeHighlightTest);
     Y.Test.Runner.add(loadMoreItemsTest);
     Y.Test.Runner.add(resetTest);
+    Y.Test.Runner.add(disabledTest);
 
 }, '', {requires: ['test', 'view', 'ez-universaldiscoveryfinderexplorerlevelview', 'node-screen', 'node-style', 'node-event-simulate']});

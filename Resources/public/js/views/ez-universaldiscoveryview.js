@@ -270,6 +270,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             var visibleMethod = this.get('visibleMethod'),
                 startingLocationId = this.get('startingLocationId'),
                 startingLocation = this.get('startingLocation'),
+                minDiscoverDepth = this.get('minDiscoverDepth'),
                 virtualRootLocation = this.get('virtualRootLocation');
 
             /**
@@ -287,6 +288,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     'virtualRootLocation': virtualRootLocation,
                     'multiple': this.get('multiple'),
                     'loadContent': true,
+                    'minDiscoverDepth': minDiscoverDepth,
                     'startingLocationId': startingLocationId,
                     'startingLocation': startingLocation,
                     'visible': visible,
@@ -518,6 +520,17 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             },
 
             /**
+             * The depth of the root where we start discovering content.
+             * The UDW needs a starting location having a greater depth than the min discover depth to work.
+             *
+             * @attribute minDiscoverDepth
+             * @type {Number|false}
+             */
+            minDiscoverDepth: {
+                value: false,
+            },
+
+            /**
              * The Location that should be considered as the starting point when
              * discovering Content.
              *
@@ -587,6 +600,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             multiple: this.get('multiple'),
                             loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
+                            minDiscoverDepth: this.get('minDiscoverDepth'),
                             startingLocationId: this.get('startingLocationId'),
                             startingLocation: this.get('startingLocation'),
                             virtualRootLocation: this.get('virtualRootLocation'),
@@ -597,6 +611,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             multiple: this.get('multiple'),
                             loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
+                            minDiscoverDepth: this.get('minDiscoverDepth'),
                             startingLocationId: this.get('startingLocationId'),
                             startingLocation: this.get('startingLocation'),
                             virtualRootLocation: this.get('virtualRootLocation'),

@@ -10,6 +10,9 @@ YUI.add('ez-treeactionview', function (Y) {
      * @method ez-treeactionview
      */
     Y.namespace('eZ');
+    
+    console.log('[DEPRECRATED] eZ.TreeActionView is deprecated');
+    console.log('[DEPRECRATED] it will be removed from PlatformUI 2.0');
 
     var NAVIGATION_MAX_HEIGHT = 120;
 
@@ -36,6 +39,7 @@ YUI.add('ez-treeactionview', function (Y) {
          *
          * @method _uiExpand
          * @protected
+         * @deprecated
          * @param {Object} e event facade
          */
         _uiExpand: function (e) {
@@ -50,6 +54,7 @@ YUI.add('ez-treeactionview', function (Y) {
          *
          * @method _handleClickOutside
          * @param {Boolean} expanded state
+         * @deprecated
          * @protected
          */
         _handleClickOutside: function (expanded) {
@@ -66,6 +71,7 @@ YUI.add('ez-treeactionview', function (Y) {
          * Sets the maximum height of the expandable area of the view
          *
          * @method _uiSetMaxHeight
+         * @deprecated
          * @protected
          */
         _uiSetMaxHeight: function () {
@@ -104,6 +110,7 @@ YUI.add('ez-treeactionview', function (Y) {
          *
          * @method _uiNavigate
          * @param {EventFacade} e
+         * @deprecated
          * @protected
          */
         _uiNavigate: function (e) {
@@ -114,6 +121,7 @@ YUI.add('ez-treeactionview', function (Y) {
          * Toggles the expanded state
          *
          * @method _toggleExpanded
+         * @deprecated
          * @protected
          */
         _toggleExpanded: function () {
@@ -126,6 +134,7 @@ YUI.add('ez-treeactionview', function (Y) {
              *
              * @attribute tree
              * @type eZ.ContentTree
+             * @deprecated
              * @writeOnce
              */
             tree: {
@@ -137,6 +146,7 @@ YUI.add('ez-treeactionview', function (Y) {
              *
              * @attribute treeView
              * @type eZ.TreeView
+             * @deprecated
              */
             treeView: {
                 valueFn: function () {

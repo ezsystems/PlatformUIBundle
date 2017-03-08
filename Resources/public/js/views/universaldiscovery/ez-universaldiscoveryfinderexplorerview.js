@@ -41,12 +41,13 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
                 }
                 this._removeLevels();
                 this._getLevelViewPath().forEach(function (location, index, path) {
-                    var next = path[index + 1];
+                    var next = path[index + 1],
+                        disabled = this.get('minDiscoverDepth') > index;
 
                     if ( next ) {
-                        this._addLevel(location, next.get('locationId'));
+                        this._addLevel(location, next.get('locationId'), disabled);
                     } else if ( location.get('childCount') !== 0 ) {
-                        this._addLevel(location);
+                        this._addLevel(location, undefined, disabled);
                     }
                 }, this);
             });
@@ -180,14 +181,16 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
          * @param {Y.eZ.Location} location the parent location
          * @param {Number} selectedLocationId the location id that should be
          * selected in the level view
+         * @param {Boolean} disabled the boolean determining if the level view can be used by the user
          * @protected
          */
-        _addLevel: function (location, selectedLocationId) {
+        _addLevel: function (location, selectedLocationId, disabled) {
             var LevelView = this.get('levelViewConstructor'),
                 levelView = new LevelView({
                     parentLocation: location,
                     selectLocationId: selectedLocationId,
                     depth: this.get('levelViews').length + 1,
+                    disabled: disabled,
                 });
 
             levelView.addTarget(this);
@@ -213,6 +216,17 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
                 },
             },
 
+            /**
+             * The minimum discover root depth if the UDW is configured with one.
+             *
+             * @attribute minDiscoverDepth
+             * @type {Number|false}
+             * @default {false}
+             */
+            minDiscoverDepth: {
+                value: false,
+            },
+            
             /**
              * The starting Location if the UDW is configured with one.
              *
