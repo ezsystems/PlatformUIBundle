@@ -40,7 +40,10 @@
 
     function updateElement(element, updateStruct) {
         if ( typeof updateStruct === "string" ) {
-            element.outerHTML = updateStruct;
+            // this replaces element.outerHTML = updateStruct;
+            // because of https://github.com/webcomponents/custom-elements/issues/71
+            const doc = new DOMParser().parseFromString(updateStruct, "text/html");
+            element = element.parentNode.replaceChild(doc.body.firstChild, element);
         } else if ( updateStruct ) {
             let attributes = updateStruct.attributes || {},
                 children = updateStruct.children || [];
