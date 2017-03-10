@@ -43,9 +43,12 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 'NAME': Y.eZ.trans('sort.name', {}, 'locationview'),
             };
 
-            this._fireMethod = this._fireLoadUser;
+            this._fireMethod = function() {
+                this._fireLoadSection();
+                this._fireLoadUser();
+            };
 
-            this.after(['creatorChange', 'ownerChange'], function (e) {
+            this.after(['creatorChange', 'ownerChange', 'sectionChange'], function (e) {
                 this.render();
             });
             this._addDOMEventHandlers(events);
@@ -62,7 +65,8 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 currentVersion = content.get('currentVersion'),
                 translationsList = currentVersion.getTranslationsList(),
                 creator = null,
-                owner = null;
+                owner = null,
+                section = null;
 
             if (this.get('creator')) {
                 creator=this.get('creator').toJSON();
@@ -72,6 +76,10 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 owner=this.get('owner').toJSON();
             }
 
+            if (this.get('section')) {
+                section = this.get('section').toJSON();
+            }
+            
             container.setHTML(this.template({
                 "content": content.toJSON(),
                 "location": this.get('location').toJSON(),
@@ -82,7 +90,8 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 "languageCount": translationsList.length,
                 "loadingError": this.get('loadingError'),
                 "sortFields": this._getSortFields(),
-                "isAscendingOrder": (this.get('sortOrder') === 'ASC')
+                "isAscendingOrder": (this.get('sortOrder') === 'ASC'),
+                "section": section,
             }));
 
             return this;
@@ -182,6 +191,31 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 });
             }
         },
+
+        /**
+         * Fire the `loadSection` event
+         * @method _fireLoadSection
+         * @protected
+         */
+        _fireLoadSection: function () {
+            var callback = Y.bind(function (error, section) {
+                    if (error) {
+                        this.fire('error', Y.eZ.trans('failed.to.load.section', {}, 'locationview'));    
+                    } else {
+                        this.set('section', section);
+                    }
+                }, this);
+            /**
+             * Fired when the details view needs section
+             * @event loadSection
+             * @param {eZ.Content} content the content
+             * @param {Function} callback
+             */
+            this.fire('loadSection', {
+                content: this.get('content'),
+                callback: callback
+            });
+        },
     }, {
         ATTRS: {
             /**
@@ -279,6 +313,14 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
             sortOrder: {
                 value: ''
             },
+
+            /**
+             * The section
+             *
+             * @attribute section
+             * @type {eZ.Section}
+             */
+            section: {},
         }
     });
 });

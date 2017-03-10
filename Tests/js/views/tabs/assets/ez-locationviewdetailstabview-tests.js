@@ -8,6 +8,7 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
         changeEventTest,
         fireLoadUserEventTest,
         orderingTest,
+        fireLoadSectionEventTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -68,6 +69,7 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
             this.versionMock = new Mock();
             this.ownerMock = new Mock();
             this.creatorMock = new Mock();
+            this.sectionMock = new Mock();
             this.sortFieldIdentifier = 'SECTION';
             this.sortFieldName = "sort.section domain=locationview";
             this.loadingError = false;
@@ -122,12 +124,18 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
                 returns: {}
             });
 
+            Mock.expect(this.sectionMock, {
+                method: 'toJSON',
+                returns: {}
+            });
+
             this.view = new Y.eZ.LocationViewDetailsTabView({
                 content: this.contentMock,
                 location: this.locationMock,
                 config: {},
                 creator: this.creatorMock,
                 owner: this.ownerMock,
+                section: this.sectionMock,
                 loadingError: this.loadingError,
                 selectedSortField: {},
                 selectedSortOrder: {},
@@ -175,6 +183,10 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
                 Assert.areSame(
                     that.ownerMock.toJSON(), args.contentCreator,
                     "ContentCreator should be available in the template"
+                );
+                Assert.areSame(
+                    that.sectionMock.toJSON(), args.section,
+                    "Section should be available in the template"
                 );
                 Assert.areSame(
                     that.translationsList, args.translationsList,
@@ -406,68 +418,70 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
         },
     });
 
+    function _eventTestSetup(context) {
+        context.contentMock = new Mock();
+        context.versionMock = new Mock();
+        context.locationMock = new Mock();
+        context.translationsList = ['eng-GB', 'fre-FR'];
+        context.creator = "13";
+        context.owner = "42";
+
+        Mock.expect(context.contentMock, {
+            method: 'get',
+            args: [Mock.Value.String],
+            run: function (attr) {
+                if (attr === 'currentVersion') {
+                    return context.versionMock;
+                } else if (attr === 'resources') {
+                    return {Owner: context.owner};
+                } else {
+                    Y.fail("Unexpected parameter " + attr + " for content mock");
+                }
+            }
+        });
+
+        Mock.expect(context.contentMock, {
+            method: 'toJSON',
+            returns: {}
+        });
+
+        Mock.expect(context.versionMock, {
+            method: 'get',
+            args: ['resources'],
+            returns: {Creator: context.creator}
+        });
+
+        Mock.expect(context.versionMock, {
+            method: 'getTranslationsList',
+            returns: context.translationsList
+        });
+
+        Mock.expect(context.versionMock, {
+            method: 'toJSON',
+            returns: {}
+        });
+
+        Mock.expect(context.locationMock, {
+            method: 'toJSON',
+            returns: {}
+        });
+
+        Mock.expect(context.locationMock, {
+            method: 'get',
+            args: [Y.Mock.Value.String],
+        });
+
+        context.view = new Y.eZ.LocationViewDetailsTabView({
+            content: context.contentMock,
+            location: context.locationMock,
+            container: '.container'
+        });
+    }
+
     fireLoadUserEventTest = new Y.Test.Case({
         name: "eZ LocationViewDetailsTabView fire load user event test",
         setUp: function () {
-            var that = this;
-
-            this.contentMock = new Mock();
-            this.versionMock = new Mock();
-            this.locationMock = new Mock();
-            this.translationsList = ['eng-GB', 'fre-FR'];
-            this.creator = "13";
-            this.owner = "42";
-
-            Mock.expect(that.contentMock, {
-                method: 'get',
-                args: [Mock.Value.String],
-                run: function (attr) {
-                    if (attr === 'currentVersion') {
-                        return that.versionMock;
-                    } else if (attr === 'resources') {
-                        return {Owner: that.owner};
-                    } else {
-                        Y.fail("Unexpected parameter " + attr + " for content mock");
-                    }
-                }
-            });
-
-            Mock.expect(this.contentMock, {
-                method: 'toJSON',
-                returns: {}
-            });
-
-            Mock.expect(that.versionMock, {
-                method: 'get',
-                args: ['resources'],
-                returns: {Creator: this.creator}
-            });
-
-            Mock.expect(this.versionMock, {
-                method: 'getTranslationsList',
-                returns: this.translationsList
-            });
-
-            Mock.expect(this.versionMock, {
-                method: 'toJSON',
-                returns: {}
-            });
-
-            Mock.expect(this.locationMock, {
-                method: 'toJSON',
-                returns: {}
-            });
-
-            Mock.expect(this.locationMock, {
-                method: 'get',
-                args: [Y.Mock.Value.String],
-            });
-
-            this.view = new Y.eZ.LocationViewDetailsTabView({
-                content: this.contentMock,
-                location: this.locationMock,
-                container: '.container'
-            });
+            _eventTestSetup(this);
         },
 
         tearDown: function () {
@@ -584,10 +598,68 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
         },
     });
 
+    fireLoadSectionEventTest = new Y.Test.Case({
+        name: "eZ LocationViewDetailsTabView fire load section event test",
+        setUp: function () {
+            _eventTestSetup(this);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should fire the loadSection event when view become active": function () {
+            var sectionCalled = false;
+
+            this.view.on('loadSection', Y.bind(function (e) {
+                sectionCalled = true;
+                Assert.areSame(
+                    this.view.get('content'),
+                    e.content,
+                    "The event facade should contain the content"
+                );
+            }, this));
+
+            this.view.set('active', true);
+
+            Assert.isTrue(sectionCalled, "loadSection should have been called");
+        },
+
+        "Should try to reload the content when tapping on the retry button": function () {
+            var loadSection = false;
+
+            this.view.render();
+            this.view.set('active', true);
+            this.view.set('loadingError', true);
+
+            this.view.on('loadSection', function () {
+                loadSection = true;
+            });
+
+            this.view.get('container').one('.ez-asynchronousview-retry').simulateGesture('tap', this.next(function () {
+                Y.Assert.isUndefined(
+                    this.view.get('section'),
+                    "The `creator` attribute should not be defined"
+                );
+                Y.Assert.isFalse(
+                    this.view.get('loadingError'),
+                    "The `loadingError` attribute should be resetted to false"
+                );
+                Y.Assert.isTrue(
+                    loadSection,
+                    "The loadUser should have been fired"
+                );
+            }, this));
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View Details Tab View tests");
     Y.Test.Runner.add(attributesTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(changeEventTest);
     Y.Test.Runner.add(orderingTest);
     Y.Test.Runner.add(fireLoadUserEventTest);
+    Y.Test.Runner.add(fireLoadSectionEventTest);
 }, '', {requires: ['test', 'ez-locationviewdetailstabview', 'node-event-simulate']});

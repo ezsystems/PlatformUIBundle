@@ -6,7 +6,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
         getFieldsOfTypeTest, createDraftTest, currentVersionTest, fieldAttributeTest,
-        getFieldTest, getFieldsInTest,
+        getFieldTest, getFieldsInTest, loadSectionTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -171,6 +171,10 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             "Owner": {
                 "_media-type": "application\/vnd.ez.api.User+json",
                 "_href": "\/api\/ezp\/v2\/user\/users\/14"
+            },
+            "Section": {
+                "_media-type": "application\/vnd.ez.api.Section+json",
+                "_href": "\/api\/ezp\/v2\/section\/section\/1"
             },
             "lastModificationDate": "2010-09-14T10:46:59+02:00",
             "publishedDate": "2007-11-19T14:54:46+01:00",
@@ -886,6 +890,84 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    loadSectionTest = new Y.Test.Case({
+        name: "eZ Content Model load section tests",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+            this.resources = {
+                Section: "/Section/id"
+            };
+            this.capi = new Mock();
+
+            Mock.expect(this.capi, {
+                method: 'getContentService',
+                returns: {}
+            });
+
+            Mock.expect(this.model, {
+                method: 'get',
+                args: ['resources'],
+                returns: this.resources
+            });
+            this.sectionId = 1;
+        },
+
+        _getSectionModel: function (loadError, options) {
+            return Y.Base.create('sectionModel', Y.Base, [], {
+                load: Y.bind(function (opts, callback) {
+                    Assert.areSame(opts.api, this.capi, 'Options with API should be the same');
+                    callback(loadError);
+                }, this)
+            });
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+            delete this.capi;
+            delete this.contentService;
+            delete Y.eZ.Section;
+        },
+
+        'Should load section': function () {
+            var options = {api: this.capi},
+                callbackCalled = false,
+                error = false;
+            
+            Y.eZ.Section = this._getSectionModel(error, options);
+
+            this.model.loadSection(options, Y.bind(function (err, section) {
+                callbackCalled = true;
+
+                Assert.isFalse(err, 'error should be false');
+                Assert.isInstanceOf(Y.eZ.Section, section, 'Should return the section');
+            }, this));
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+
+        'Should pass error to callback function and not set attribute in section when CAPI loadSection fails': function () {
+            var options = {api: this.capi},
+                callbackCalled = false,
+                error = {};
+
+            Y.eZ.Section = this._getSectionModel(error, options);
+
+            this.model.loadSection(options, Y.bind(function (err, section) {
+                callbackCalled = true;
+
+                Assert.isUndefined(
+                    section,
+                    'section should not be given to the callback'
+                );
+                Assert.areSame(error, err, 'Should return the error');
+            }, this));
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+    });
+
     addLocationTest = new Y.Test.Case({
         name: "eZ Content Model add location test",
 
@@ -1482,4 +1564,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(fieldAttributeTest);
     Y.Test.Runner.add(getFieldTest);
     Y.Test.Runner.add(getFieldsInTest);
+    Y.Test.Runner.add(loadSectionTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

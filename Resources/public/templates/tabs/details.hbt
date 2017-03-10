@@ -71,6 +71,18 @@
 </div>
 
 <div class="ez-details-box">
+    <h2 class="ez-details-box-title">{{ translate 'locationview.details.sectiondetails' 'locationview' }}</h2>
+    <dl class="ez-details-box-list pure-g">
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.sectionName' 'locationview' }}</dt>
+        <dd class="ez-details-value pure-u-2-3">{{section.name}}</dd>
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.sectionIdentifier' 'locationview' }}</dt>
+        <dd class="ez-details-value pure-u-2-3">{{section.identifier}}</dd>
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.sectionId' 'locationview' }}</dt>
+        <dd class="ez-details-value pure-u-2-3">{{section.sectionId}}</dd>
+    </dl>
+</div>
+
+<div class="ez-details-box">
     <h2 class="ez-details-box-title">{{ translate 'locationview.details.subitems.default.ordering' 'locationview' }}</h2>
     <p class="ez-subitem-ordering-details">{{ translate 'locationview.details.default.listing.of.subitems.by' 'locationview' }}
         <select class="ez-subitems-ordering-sort-type" >
