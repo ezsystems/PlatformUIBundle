@@ -1,0 +1,52 @@
+<link rel="import" href="ez-fieldinput.html">
+<link rel="import" href="ez-map.html">
+
+<style>
+ez-fieldinput-ezgmaplocation {
+    display: block;
+    padding: 1em;
+}
+
+ez-fieldinput-ezgmaplocation.is-invalid fieldset {
+    background: #fdd;
+}
+</style>
+
+<script>
+(function () {
+    class eZFieldInputMapLocation extends customElements.get('ez-fieldinput') {
+        static get is() {
+            return 'ez-fieldinput-ezgmaplocation';
+        }
+
+        constructor() {
+            super();
+        }
+
+        _getFieldValue(subField) {
+            return this._getFieldInput(subField).value;
+        }
+
+        _getFieldInput(subField) {
+            return this.querySelector('input[name*="' + subField + '"]');
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+
+            const map = document.createElement('ez-map');
+            map.latitude = this._getFieldValue('latitude');
+            map.longitude = this._getFieldValue('longitude');
+            map.address = this._getFieldValue('address');
+
+            this.querySelector('fieldset').appendChild(map);
+            map.addEventListener('coordinatesUpdate', function (e) {
+                this._getFieldInput('latitude').value = e.detail.latitude.toFixed(6);
+                this._getFieldInput('longitude').value = e.detail.longitude.toFixed(6);
+            }.bind(this));
+        }
+    }
+
+    customElements.define(eZFieldInputMapLocation.is, eZFieldInputMapLocation);
+})();
+</script>

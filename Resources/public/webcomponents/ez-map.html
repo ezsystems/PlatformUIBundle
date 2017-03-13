@@ -1,0 +1,84 @@
+<link rel="import" href="../vendors/polymer/polymer-element.html">
+<link rel="import" href="../vendors/polymer/lib/utils/render-status.html">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
+<style>
+ez-map {
+    display: block;
+    min-height: 400px;
+}
+</style>
+
+<script>
+(function () {
+    class eZMap extends Polymer.Element {
+        static get is() {
+            return 'ez-map';
+        }
+
+        static get properties() {
+            return {
+                "latitude": {
+                    type: Number,
+                    reflectToAttribute: true,
+                },
+                "longitude": {
+                    type: Number,
+                    reflectToAttribute: true,
+                },
+                "address": {
+                    type: String,
+                    reflectToAttribute: true,
+                },
+            };
+        }
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+            this._map = L.map(this, {
+                center: [this.latitude, this.longitude],
+                zoom: 13,
+                layers: [L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')],
+            });
+            this._marker = L.marker([this.latitude, this.longitude], {
+                icon: new L.Icon.Default({
+                    'imagePath': 'https://unpkg.com/leaflet@1.0.3/dist/images/',
+                }),
+            }).addTo(this._map);
+            Polymer.RenderStatus.afterNextRender(this, function () {
+                this._map.invalidateSize(true);
+                this._map.on('click', this._updateCoordinates.bind(this));
+            });
+        }
+
+        _updateCoordinates(e) {
+            this.latitude = e.latlng.lat;
+            this.longitude = e.latlng.lng;
+            this._marker.setLatLng(e.latlng);
+            this._map.setView(e.latlng);
+
+            this.dispatchEvent(new CustomEvent('coordinatesUpdate', {
+                detail: {
+                    latitude: e.latlng.lat,
+                    longitude: e.latlng.lng,
+                },
+                bubbles: false,
+            }));
+        }
+
+        disconnectedCallback() {
+            this._marker.remove();
+            this._map.remove();
+            super.disconnectedCallback();
+        }
+    }
+
+    customElements.define(eZMap.is, eZMap);
+})();
+</script>
