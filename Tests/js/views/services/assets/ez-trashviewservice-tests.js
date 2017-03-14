@@ -993,13 +993,22 @@ YUI.add('ez-trashviewservice-tests', function (Y) {
             delete this.service;
         },
 
-        _createTrashItem: function (id, error) {
+        _createTrashItem: function (id, error, expectedDestination) {
             var item = new Mock();
 
             Mock.expect(item, {
                 method: "restore",
                 args: [Mock.Value.Object, Mock.Value.Function],
                 run: Y.bind(function (loadOptions, callback) {
+
+                    if (expectedDestination) {
+                        Assert.areSame(
+                            expectedDestination,
+                            loadOptions.destination,
+                            "The destination should have been provided to restore's load options"
+                        );
+                    }
+
                     callback(error);
                     this.restoreCalled = true;
                 }, this),
@@ -1049,6 +1058,19 @@ YUI.add('ez-trashviewservice-tests', function (Y) {
             );
 
             Assert.isTrue(notified, "The notified event should have been fired");
+            Assert.isTrue(this.restoreCalled, "The restore method should have been called");
+        },
+
+        "Should call restore with a given destination if provided": function () {
+            var destination = {};
+
+            this.service.fire(
+                'whatever:restoreItems', {
+                    trashItems: [this._createTrashItem(42, false, destination)],
+                    destination: destination,
+                }
+            );
+
             Assert.isTrue(this.restoreCalled, "The restore method should have been called");
         },
 

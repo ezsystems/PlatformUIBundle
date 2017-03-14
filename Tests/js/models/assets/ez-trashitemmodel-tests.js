@@ -220,8 +220,6 @@ YUI.add('ez-trashitemmodel-tests', function (Y) {
                 args: [],
                 returns: this.contentServiceMock
             });
-
-            this.options = {api: this.apiMock};
         },
 
         tearDown: function () {
@@ -230,7 +228,8 @@ YUI.add('ez-trashitemmodel-tests', function (Y) {
         },
 
         "Should call the api on restore": function () {
-            var restoreCallback = function () {};
+            var restoreCallback = function () {},
+                options = {api: this.apiMock};
 
             Mock.expect(this.contentServiceMock, {
                 method: "recover",
@@ -253,7 +252,38 @@ YUI.add('ez-trashitemmodel-tests', function (Y) {
             });
 
             this.model.set('id', this.id);
-            this.model.restore(this.options, restoreCallback);
+            this.model.restore(options, restoreCallback);
+
+            Mock.verify(this.contentServiceMock);
+        },
+
+        "Should call the api on restore with destination provided": function () {
+            var restoreCallback = function () {},
+                destination = {},
+                options = {api: this.apiMock, destination: destination};
+
+            Mock.expect(this.contentServiceMock, {
+                method: "recover",
+                args: [this.id, destination, Mock.Value.Function],
+                run: Y.bind(function (id, destination, callback) {
+                    Assert.areSame(
+                        this.id,
+                        id,
+                        "Id passed to the contentService should match the model's"
+                    );
+
+                    Assert.areSame(
+                        restoreCallback,
+                        callback,
+                        "Callback passed to the contentService should match"
+                    );
+
+                    callback();
+                }, this),
+            });
+
+            this.model.set('id', this.id);
+            this.model.restore(options, restoreCallback);
 
             Mock.verify(this.contentServiceMock);
         },

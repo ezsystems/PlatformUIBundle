@@ -26,6 +26,9 @@ YUI.add('ez-trashview', function (Y) {
             '.ez-trashitem-box': {
                 'change': '_updateTrashBarButtons'
             },
+            '.ez-trashitem-restore': {
+                'tap': '_restoreSingleTrashItem'
+            },
         },
 
         initializer: function () {
@@ -96,7 +99,48 @@ YUI.add('ez-trashview', function (Y) {
         },
 
         /**
-         * Restores the selected trash items
+         * Finds a trash item in the item list and returns it
+         *
+         * @private
+         * @method _findTrashItems
+         * @param {String} trashItemId
+         * @return {Array} of TrashItem
+         */
+        _findTrashItems: function (trashItemId) {
+            var resultArray = [];
+            Y.Array.some(this.get('trashItems'), function (trashItem) {
+                if (trashItemId === trashItem.item.get('id')) {
+                    resultArray.push(trashItem.item);
+                    return true;
+                }
+            });
+
+            return resultArray;
+        },
+
+        /**
+         * Fires the `restoreItems` event
+         *
+         * @private
+         * @method _fireRestoreItems
+         * @param {Array} trashItems Trash items to be restored
+         * @param {String} [destination] if provided, Location Id where it will be restored
+         */
+        _fireRestoreItems: function (trashItems, destination) {
+            /**
+            * Fired to restore the selected items
+            * @event restoreItems
+            * @param {Array} trashItems Trash items to be restored
+            * @param {String} [destination] if provided, Location Id where it will be restored
+            */
+            this.fire('restoreItems', {
+                trashItems: trashItems,
+                destination: destination,
+            });
+        },
+
+        /**
+         * Restores selected trash items
          *
          * @private
          * @method _restoreTrashItems
@@ -106,19 +150,35 @@ YUI.add('ez-trashview', function (Y) {
                 trashItems = [];
 
             selectedTrashItems.each(function (selectedTrashItem) {
-                Y.Array.some(this.get('trashItems'), function (trashItem) {
-                    if (selectedTrashItem.getAttribute('value') === trashItem.item.get('id')) {
-                        trashItems.push(trashItem.item);
-                        return true;
-                    }
-                });
+                trashItems = trashItems.concat(this._findTrashItems(selectedTrashItem.getAttribute('value')));
             }, this);
 
-            /**
-             * Fired to restore the selected items
-             * @event restoreItems
-             */
-            this.fire('restoreItems', {trashItems: trashItems});
+            this._fireRestoreItems(trashItems);
+        },
+
+        /**
+         * Restores the selected (using UDW) trash item
+         *
+         * @protected
+         * @method _restoreSingleTrashItem
+         * @param {EventFacade} e
+         */
+        _restoreSingleTrashItem: function (e) {
+            var trashItemId = e.target.getAttribute('data-trash-item-id');
+
+            e.preventDefault();
+            this.fire('contentDiscover', {
+                config: {
+                    title: Y.eZ.trans('trash.ancestor.to.select', {}, 'trash'),
+                    multiple: false,
+                    contentDiscoveredHandler: Y.bind(function (e) {
+                        this._fireRestoreItems(this._findTrashItems(trashItemId), e.selection.location.get('id'));
+                    }, this),
+                    isSelectable: function (contentStruct) {
+                        return contentStruct.contentType.get('isContainer');
+                    },
+                },
+            });
         },
 
         /**

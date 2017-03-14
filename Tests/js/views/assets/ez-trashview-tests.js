@@ -217,6 +217,7 @@ YUI.add('ez-trashview-tests', function (Y) {
             this.view = new Y.eZ.TrashView({
                 trashBar: new Y.View(),
                 trashItems: this.trashItems,
+                container: '.container',
             });
         },
 
@@ -268,6 +269,125 @@ YUI.add('ez-trashview-tests', function (Y) {
             this.item3.setAttribute('checked', 'checked');
 
             this.view.fire('whatever:restoreTrashItemsAction');
+        },
+
+        "Should run the UDW when clicking on the restore a single item button": function () {
+            var itemId = '/trash/item/42',
+                udwStarted = false;
+
+            this.trashItems.push(this._createItem(itemId));
+
+            this.view.on('contentDiscover', Y.bind(function (e) {
+                this.resume(function () {
+                    udwStarted = true;
+                });
+            }, this));
+
+            this.view.render();
+
+            this.view.get('container').one('.ez-trashitem-restore').simulateGesture('tap');
+            this.wait();
+
+            Assert.isTrue(
+                udwStarted,
+                "UDW should have been started"
+            );
+        },
+
+        _testIsSelectable: function (isContainer) {
+            var itemId = '/trash/item/42';
+
+            this.trashItems.push(this._createItem(itemId));
+
+            this.view.on('contentDiscover', Y.bind(function (e) {
+                this.resume(function () {
+                    var contentTypeMock = new Mock();
+
+                    Mock.expect(contentTypeMock, {
+                        method: 'get',
+                        args: ['isContainer'],
+                        returns: isContainer
+                    });
+
+                    Assert.areSame(
+                        isContainer,
+                        e.config.isSelectable.call(this, {contentType: contentTypeMock}),
+                        "The isSelectable method should the value of isContainer"
+                    );
+                });
+            }, this));
+
+            this.view.render();
+
+            this.view.get('container').one('.ez-trashitem-restore').simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should allow to pick an element which is a container": function () {
+            this._testIsSelectable(true);
+        },
+
+        "Should not allow to pick an element which is not a container": function () {
+            this._testIsSelectable(false);
+        },
+
+        "Should fire `restoreItems` with destination when restoring a single item": function () {
+            var locationMock = new Mock(),
+                fakeEventFacade = {selection: {location: locationMock}},
+                destinationId = '/my/destination/42',
+                itemId = '/trash/item/42';
+
+            Mock.expect(locationMock, {
+                method: 'get',
+                args: ['id'],
+                returns: destinationId
+            });
+
+            this.trashItems.push(this._createItem(itemId));
+
+            this.view.on('*:restoreItems', Y.bind(function (e) {
+                Assert.areSame(
+                    1,
+                    e.trashItems.length,
+                    "The clicked item should be provided"
+                );
+
+                Assert.areSame(
+                    itemId,
+                    e.trashItems[0].get('id'),
+                    "Item 1 should be the same"
+                );
+
+                Assert.areSame(
+                    destinationId,
+                    e.destination,
+                    "Destination should be provided"
+                );
+            }, this));
+
+            this.view.on('contentDiscover', Y.bind(function (e) {
+                this.resume(function () {
+                    var contentTypeMock = new Mock();
+
+                    Mock.expect(contentTypeMock, {
+                        method: 'get',
+                        args: ['isContainer'],
+                        returns: true
+                    });
+
+                    Assert.isTrue(
+                        e.config.isSelectable.call(this, {contentType: contentTypeMock}),
+                        "The isSelectable method should the value of isContainer"
+                    );
+
+                    e.config.contentDiscoveredHandler.call(this, fakeEventFacade);
+                });
+            }, this));
+
+            this.view.render();
+
+            this.view.get('container').one('.ez-trashitem-restore').simulateGesture('tap');
+            this.wait();
         },
     });
 
