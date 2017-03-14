@@ -1,7 +1,7 @@
 <!doctype html>
 <html class=""><!-- empty class is needed for webcomponents polyfill with ez-yui-app.html import (?!) -->
 <head>
-    <title>{{ platformUIApp.title }}</title>
+    <title>{{ title|default("AdminUI prototype") }}</title>
     <meta name="viewport" content="width=device-width">
     <meta charset="utf-8">
 
@@ -64,6 +64,7 @@
     <link rel="import" href="{{ asset( 'bundles/ezplatformui/webcomponents/ez-universaldiscoverywidget.html' ) }}">
 </head>
 <body class="ez-platformui-app is-app-open">
-    {{ platformUIApp|raw }}
+    {% block app %}
+    {% endblock %}
 </body>
 </html>

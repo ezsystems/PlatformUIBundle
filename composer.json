@@ -21,7 +21,12 @@
         "symfony/symfony": "~2.8|~3.2",
         "phpunit/phpunit": "~4.7",
         "matthiasnoback/symfony-dependency-injection-test": "^0.7",
-        "mockery/mockery": "^0.9.5"
+        "mockery/mockery": "^0.9.5",
+        "phpspec/phpspec": "^3.2",
+        "memio/spec-gen": "^0.6"
+    },
+    "config": {
+        "bin-dir": "bin"
     },
     "extra": {
         "_ci_branch-comment_": "Keep ci branch up-to-date with master or branch if on stable. ci is never on github but convention used for ci behat testing!",

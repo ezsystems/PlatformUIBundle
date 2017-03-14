@@ -421,3 +421,45 @@ services:
             calls:
                 - [setRequestStack, ['@request_stack']]
                 - [setPjaxRequestMatcher, ['@ezsystems.platformui.pjax.request_matcher']]
+
+    ezsystems.platformui.hybrid.controller.navigation_hub:
+        class: EzSystems\PlatformUIBundle\Hybrid\Controller\NavigationHubController
+        arguments:
+            - "@templating"
+            - "@request_stack"
+            -
+                - "@ezsystems.platformui.navigationhub.zones.content"
+                - "@ezsystems.platformui.navigationhub.zones.page"
+                - "@ezsystems.platformui.navigationhub.zones.performances"
+                - "@ezsystems.platformui.navigationhub.zones.admin"
+            -
+                - "@ezsystems.platformui.navigationhub.link.contentstructure"
+                - "@ezsystems.platformui.navigationhub.link.medialibrary"
+                - "@ezsystems.platformui.navigationhub.link.users"
+
+    ezsystems.platformui.hybrid.controller.toolbars:
+        class: EzSystems\PlatformUIBundle\Hybrid\Controller\ToolbarsController
+        arguments:
+            -
+                "discovery":
+                    - "@ezsystems.platformui.component.search"
+                    - "@ezsystems.platformui.component.browse"
+                    - "@ezsystems.platformui.component.trash"
+
+    ezsystems.platformui.hybrid.request_matcher.admin:
+        class: EzSystems\PlatformUIBundle\Hybrid\AdminRequestMatcher
+
+    ezsystems.platformui.hybrid.event_subscriber.app_renderer:
+        class: EzSystems\PlatformUIBundle\Hybrid\EventSubscriber\AppRenderer
+        arguments:
+            - "@templating"
+            - "@kernel"
+            - "@ezsystems.platformui.hybrid.request_matcher.admin"
+        tags:
+            - {name: kernel.event_subscriber}
+
+    ezsystems.platformui.hybrid.event_subscriber.json_view_renderer:
+        class: EzSystems\PlatformUIBundle\Hybrid\EventSubscriber\JsonRenderer
+        arguments:
+            - "@ezpublish.view.template_renderer"
+            - "@ezsystems.platformui.hybrid.request_matcher.admin"
