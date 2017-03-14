@@ -2,6 +2,6 @@
 <div class="pure-g ez-editfield-row">
     <div class="pure-u ez-editfield-infos"></div>
     <div class="pure-u ez-editfield-input-area">
-        <div class="ez-editfield-input-no-validation"><button data-icon="&#xe616;" class="ez-field-author-add ez-button pure-button">{{translate "author.add" "fieldedit"}}</button></div>
+        <div class="ez-editfield-input-no-validation"><button data-icon="&#xe616;" class="ez-field-author-add ez-button pure-button" {{#if isNotTranslatable}}disabled="disabled"{{/if}}>{{translate "author.add" "fieldedit"}}</button></div>
     </div>
 </div>

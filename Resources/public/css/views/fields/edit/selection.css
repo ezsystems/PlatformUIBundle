@@ -18,7 +18,7 @@
     padding: 0 2em 0 0;
 }
 
-.ez-view-selectioneditview .ez-selection-values:hover {
+.ez-view-selectioneditview .ez-selection-values {
     cursor: pointer;
 }
 

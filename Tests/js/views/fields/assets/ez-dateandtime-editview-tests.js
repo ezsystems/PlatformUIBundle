@@ -44,7 +44,8 @@ YUI.add('ez-dateandtime-editview-tests', function (Y) {
                 field: this.field,
                 content: this.content,
                 version: this.version,
-                contentType: this.contentType
+                contentType: this.contentType,
+                translating: false,
             });
         },
 
@@ -62,7 +63,7 @@ YUI.add('ez-dateandtime-editview-tests', function (Y) {
                 var expectedDate = new Date(timestamp * 1000);
 
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
+                Y.Assert.areEqual(10, Y.Object.keys(variables).length, "The template should receive 10 variables");
 
                 Y.Assert.areSame(
                     that.jsonContent, variables.content,
@@ -83,6 +84,10 @@ YUI.add('ez-dateandtime-editview-tests', function (Y) {
                 Y.Assert.areSame(
                     that.field, variables.field,
                     "The field should be available in the field edit view template"
+                );
+                Y.Assert.isFalse(
+                    variables.isNotTranslatable,
+                    "The isNotTranslatable should be available in the field edit view template"
                 );
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);

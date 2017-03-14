@@ -17,6 +17,7 @@
                     class="ez-field-author-name ez-validated-input"
                     value="{{ author.name }}"
                     id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-name"
+                    {{#if isNotTranslatable}} readonly{{/if}}
                 ></div></div>
             </div>
         </div>
@@ -42,11 +43,12 @@
                     class="ez-field-author-email ez-validated-input"
                     value="{{ author.email }}"
                     id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-email"
-                ></div></div>
+                    {{#if isNotTranslatable}} readonly{{/if}}
+                ></div><p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p></div>
                 {{> ez_fielddescription_tooltip }}
             </div>
             <div class="pure-u-2-5">
-                <button data-icon="&#xe615;" class="ez-field-author-remove ez-button pure-button"{{#unless canRemove }} disabled="disabled"{{/unless}}>
+                <button data-icon="&#xe615;" class="ez-field-author-remove ez-button pure-button"{{#unless canRemove }} disabled="disabled"{{/unless}} {{#if isNotTranslatable}}disabled="disabled"{{/if}}>
                     {{translate "authorinput.remove" "fieldedit"}}
                 </button>
             </div>

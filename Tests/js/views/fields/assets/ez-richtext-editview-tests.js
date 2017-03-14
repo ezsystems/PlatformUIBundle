@@ -103,6 +103,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 contentType: this.contentType,
                 editorContentProcessors: [],
                 processors: [],
+                translating: false,
             });
         },
 
@@ -120,7 +121,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Assert.isObject(variables, "The template should receive some variables");
-                Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
+                Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
 
                 Assert.areSame(
                      that.jsonContent, variables.content,
@@ -141,6 +142,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 Assert.areSame(
                     that.field, variables.field,
                     "The field should be available in the field edit view template"
+                );
+                Y.Assert.isFalse(
+                    variables.isNotTranslatable,
+                    "The isNotTranslatable should be available in the field edit view template"
                 );
                 Assert.areEqual(
                     "ez-richtext-editable", variables.editableClass,
@@ -180,6 +185,18 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         // regression test for EZP-26135
         "Should not double the br tag": function () {
             this._testAvailableVariables(false, false, VALID_XHTML_BR, RESULT_BR_XHTML);
+        },
+
+        "Should not init the editor when translating": function () {
+            this.view.set('fieldDefinition', {identifier: 'truc'});
+            this.view._set('isNotTranslatable', true);
+            this.view.render();
+            this.view.set('active', true);
+
+            Assert.isNull(
+                this.view.get('editor'),
+                "Editor should have it's default value"
+            );
         },
     });
 
@@ -389,6 +406,39 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             }, this));
             this.view.set('active', true);
             this.wait();
+        },
+
+        "Should not modify the value of the field when translating (editor not present)": function () {
+            var fieldDefinition = this._getFieldDefinition(true),
+                field,
+                xhtml5editValue = "something";
+
+            this.field.fieldValue.xhtml5edit = xhtml5editValue;
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view._set('isNotTranslatable', true);
+            this.view.render();
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                field = this.view.getField();
+
+                Assert.isObject(field, "The field should be an object");
+                Assert.areNotSame(
+                    this.field, field,
+                    "The getField method should be return a different object"
+                );
+                Assert.isObject(field.fieldValue, "The fieldValue should be an object");
+
+                Assert.areSame(
+                    xhtml5editValue,
+                    field.fieldValue.xml,
+                    "The xml value of the field should not be modified"
+                );
+                Assert.areSame(
+                    xhtml5editValue,
+                    field.fieldValue.xhtml5edit,
+                    "The xhtml5edit value of the field should not be modified"
+                );
+            }, this));
+            this.view.set('active', true);
         },
 
         _getProcessorMock: function () {

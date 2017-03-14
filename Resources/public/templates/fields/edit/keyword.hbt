@@ -13,7 +13,8 @@
                 class="ez-validated-input"
                 id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
                 {{#if isRequired}} required{{/if}}
-            ></div></div>
+                {{#if isNotTranslatable}} readonly{{/if}}
+            ><p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p></div></div>
         {{> ez_fielddescription_tooltip }}
     </div>
 </div>

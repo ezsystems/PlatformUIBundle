@@ -14,12 +14,12 @@ YUI.add('binarybase-tests', function (Y) {
     // attribute in the template
     //
     // And optionally:
-    // - templateVariablesCount: the number of expected template variables (7
+    // - templateVariablesCount: the number of expected template variables (8
     // by default)
     // - _additionalVariableAssertions: a method to check additional variables
     // if there are any
     Y.eZ.Test.BinaryBaseViewTest = {
-        templateVariablesCount: 7,
+        templateVariablesCount: 8,
         _getFieldDefinition: function (required) {
             return {
                 isRequired: required
@@ -58,7 +58,8 @@ YUI.add('binarybase-tests', function (Y) {
                 field: this.field,
                 version: this.version,
                 content: this.content,
-                contentType: this.contentType
+                contentType: this.contentType,
+                translating: false,
             });
         },
 
@@ -107,6 +108,10 @@ YUI.add('binarybase-tests', function (Y) {
                 Assert.areSame(
                     view.get('file'), variables[that.fileTemplateVariable],
                     "The file struct should be available in the field edit view template"
+                );
+                Y.Assert.isFalse(
+                    variables.isNotTranslatable,
+                    "The isNotTranslatable should be available in the field edit view template"
                 );
 
                 Assert.areSame(expectRequired, variables.isRequired);
@@ -661,7 +666,7 @@ YUI.add('binarybase-tests', function (Y) {
 
             this.view.render();
             this.view._updateFile(eventFacade);
-            
+
             this._readFileAssert(fileContent, file, this.view.get('file'), fileReader);
         },
 
@@ -951,7 +956,7 @@ YUI.add('binarybase-tests', function (Y) {
             );
             Mock.verify(reader);
         },
-        
+
         "Should accept the dropped file": function () {
             var dropArea,
                 that = this,

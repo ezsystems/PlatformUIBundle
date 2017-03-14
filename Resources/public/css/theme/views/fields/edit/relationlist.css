@@ -36,3 +36,7 @@
     font-weight: normal;
     margin-bottom: 1em;
 }
+
+.ez-view-relationlisteditview.is-not-translatable .ez-relationlist-contents {
+    opacity: 0.3;
+}

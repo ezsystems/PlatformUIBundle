@@ -76,6 +76,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             Marker: function(options) {
                 this.position = options.position;
                 this.map = options.map;
+                this.draggable = options.draggable;
                 this.setPosition = function (location) {
                     currentMarkerLat = location.lat();
                     currentMarkerLng = location.lng();
@@ -124,7 +125,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 field: field,
                 version: version,
                 content: content,
-                contentType: contentType
+                contentType: contentType,
+                translating: false,
             });
         },
 
@@ -140,7 +142,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 6 variables");
+                Y.Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
 
                 Y.Assert.areSame(
                     jsonContent, variables.content,
@@ -161,6 +163,10 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 Y.Assert.areSame(
                     field, variables.field,
                     "The field should be available in the field edit view template"
+                );
+                Y.Assert.isFalse(
+                    variables.isNotTranslatable,
+                    "The isNotTranslatable should be available in the field edit view template"
                 );
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);
@@ -257,7 +263,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
         _getFieldDefinition: function (required) {
             return {
-                isRequired: required
+                isRequired: required,
+                isTranslatable: false
             };
         },
 
@@ -282,6 +289,11 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             Y.Assert.isObject(view.get('map'), "Map should be created");
             Y.Assert.isObject(view.get('marker'), "Marker should be created");
 
+            Y.Assert.isTrue(
+                view.get('marker').draggable,
+                "The marker should be draggable"
+            );
+
             Y.Assert.areEqual(
                 container.one('.ez-maplocation-longitude').getHTML(),
                 0,
@@ -300,9 +312,35 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             );
 
             view.destroy();
+        },
+
+        "Should set the marker to not draggable if translating": function () {
+            var fieldDefinition = this._getFieldDefinition(false),
+                view;
+
+            field = {};
+
+            view = new Y.eZ.MapLocationEditView({
+                container: container,
+                field: field,
+                version: version,
+                content: content,
+                contentType: contentType,
+                fieldDefinition: fieldDefinition,
+                translating: true,
+            });
+
+            view.render();
+            view.set('active', true);
+
+            Y.Assert.isObject(view.get('marker'), "Marker should be created");
+            Y.Assert.isFalse(
+                view.get('marker').draggable,
+                "The marker should not be draggable"
+            );
+
+            view.destroy();
         }
-
-
     });
 
     findAddressTest = new Y.Test.Case({

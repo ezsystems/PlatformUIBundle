@@ -9,13 +9,15 @@
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
         <div class="ez-editfield-input"><div class="ez-textblock-input-ui">
-            <textarea
-            class="ez-validated-input"
-            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
-            rows="{{ fieldDefinition.fieldSettings.textRows }}"
-            {{#if isRequired}} required{{/if}}>
-{{ field.fieldValue }}</textarea>
-        </div></div>
+                <textarea
+                class="ez-validated-input"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                rows="{{ fieldDefinition.fieldSettings.textRows }}"
+                {{#if isRequired}} required{{/if}}
+                {{#if isNotTranslatable}} readonly{{/if}}>{{ field.fieldValue }}</textarea>
+            </div>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
+        </div>
         {{> ez_fielddescription_tooltip }}
     </div>
 </div>

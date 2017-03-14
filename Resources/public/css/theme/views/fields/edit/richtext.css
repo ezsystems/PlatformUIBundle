@@ -38,3 +38,8 @@
     font-size: 80%;
     opacity: 1;
 }
+
+.ez-view-richtexteditview.is-not-translatable .ez-richtext-editable {
+    opacity: 0.3;
+    cursor: default;
+}

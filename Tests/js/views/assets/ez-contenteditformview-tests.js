@@ -4,8 +4,8 @@
  */
 YUI.add('ez-contenteditformview-tests', function (Y) {
     var viewTest, isValidTest, getFieldsTest, activeFlagTest, haltSubmitTest, incosistencyFieldsTest,
-        setVersionTest, setServerSideErrorsTest,
-        Assert = Y.Assert;
+        setVersionTest, setServerSideErrorsTest, translatingTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit Form View test",
@@ -86,6 +86,12 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                         'identifier': id
                     };
                 }
+            });
+
+            Mock.expect(this.content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.languageCode
             });
 
             this.view = new Y.eZ.ContentEditFormView({
@@ -196,6 +202,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             var that = this;
 
             this.contentType = new Y.Mock();
+            this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.config = {
                 fieldEditViews: {
@@ -251,9 +258,16 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 }
             });
 
+            Mock.expect(this.content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.languageCode
+            });
+
             this.view = new Y.eZ.ContentEditFormView({
                 contentType: this.contentType,
                 version: this.version,
+                content: this.content,
                 languageCode: this.languageCode,
                 config: this.config
             });
@@ -318,6 +332,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             var that = this;
 
             this.contentType = new Y.Mock();
+            this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.config = {
                 fieldEditViews: {
@@ -373,9 +388,16 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 }
             });
 
+            Mock.expect(this.content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.languageCode
+            });
+
             this.view = new Y.eZ.ContentEditFormView({
                 contentType: this.contentType,
                 version: this.version,
+                content: this.content,
                 languageCode: this.languageCode,
                 config: this.config
             });
@@ -421,6 +443,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             var that = this;
 
             this.contentType = new Y.Mock();
+            this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.config = {
                 fieldEditViews: {
@@ -456,6 +479,12 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 }
             });
 
+            Mock.expect(this.content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.languageCode
+            });
+
             Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('fieldEdit1', Y.eZ.FieldEditView, [], {
                 initializer: function () {
                     this.after('activeChange', function (e) {
@@ -474,6 +503,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.view = new Y.eZ.ContentEditFormView({
                 contentType: this.contentType,
                 version: this.version,
+                content: this.content,
                 languageCode: this.languageCode,
                 config: this.config
             });
@@ -614,6 +644,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
 
         setUp: function () {
             this.contentType = new Y.Mock();
+            this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.fieldType = 'test1';
             this.fieldDefinitionIdentifier = 'id1';
@@ -657,9 +688,16 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 }, this),
             });
 
+            Mock.expect(this.content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.languageCode
+            });
+
             this.view = new Y.eZ.ContentEditFormView({
                 contentType: this.contentType,
                 version: this.version,
+                content: this.content,
                 languageCode: this.languageCode,
                 config: this.config
             });
@@ -707,6 +745,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
 
             this.appendServerSideErrorCalled = false;
             this.contentType = new Y.Mock();
+            this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.config = {
                 fieldEditViews: {
@@ -753,9 +792,16 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 }
             });
 
+            Mock.expect(this.content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.languageCode
+            });
+
             this.view = new Y.eZ.ContentEditFormView({
                 contentType: this.contentType,
                 version: this.version,
+                content: this.content,
                 languageCode: this.languageCode,
                 config: this.config
             });
@@ -778,6 +824,116 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
         },
     });
 
+
+    translatingTest = new Y.Test.Case({
+        name: "eZ Content Edit Form View translating test",
+
+        setUp: function () {
+            this.contentType = new Y.Mock();
+            this.content = new Y.Mock();
+            this.version = new Y.Mock();
+            this.config = {
+                fieldEditViews: {
+                    something: 'hello'
+                }
+            };
+
+            Y.Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['fieldDefinitions'],
+                returns: {
+                    'id1': {
+                        'identifier': 'id1',
+                        'fieldType': 'test1',
+                        'fieldGroup': 'testfieldgroup',
+                        'id': 'id1',
+                    },
+                }
+            });
+            Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('fieldEdit1', Y.eZ.FieldEditView, [], {
+                getField: function () {
+                    return this.get('translating');
+                }
+
+            }, {
+                ATTRS: {
+                    field: {
+                        fieldDefinitionIdentifier: 'test1'
+                    },
+                    fieldDefinition: {
+                        id: 'id1'
+                    }
+                }
+            }));
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            Y.eZ.FieldEditView.registerFieldEditView('test1', undefined);
+        },
+
+        _testTranslating: function (contentLanguageCode, fieldLanguageCode, assertCallback) {
+            var fields;
+
+            Y.Mock.expect(this.version, {
+                method: 'getField',
+                args: [Y.Mock.Value.String, fieldLanguageCode],
+                run: function (id) {
+                    return {
+                        'identifier': id,
+                        'value': 'some value'
+                    };
+                }
+            });
+
+            Mock.expect(this.content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: contentLanguageCode
+            });
+
+            this.view = new Y.eZ.ContentEditFormView({
+                contentType: this.contentType,
+                version: this.version,
+                content: this.content,
+                languageCode: fieldLanguageCode,
+                config: this.config
+            });
+
+            fields = this.view.getFields();
+
+            assertCallback(fields[0]);
+        },
+
+        "Should not set translating when editing the main language": function () {
+            this._testTranslating("fre-FR", "fre-FR", function (translating) {
+                Assert.isFalse(
+                    translating,
+                    "Translating should be set to false"
+                );
+            });
+        },
+
+        "Should not set translating when editing a draft": function () {
+            this._testTranslating("", "fre-FR", function (translating) {
+                Assert.isFalse(
+                    translating,
+                    "Translating should be set to false"
+                );
+            });
+        },
+
+        "Should set translating if editing another language": function () {
+            this._testTranslating("eng-GB", "fre-FR", function (translating) {
+                Assert.isTrue(
+                    translating,
+                    "Translating should be set to true"
+                );
+            });
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Edit Form View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(isValidTest);
@@ -787,4 +943,5 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
     Y.Test.Runner.add(incosistencyFieldsTest);
     Y.Test.Runner.add(setVersionTest);
     Y.Test.Runner.add(setServerSideErrorsTest);
+    Y.Test.Runner.add(translatingTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditformview']});

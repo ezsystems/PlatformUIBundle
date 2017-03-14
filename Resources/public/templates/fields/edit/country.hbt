@@ -8,13 +8,20 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        <div class="ez-editfield-input"><div class="ez-selection-input-ui" id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
-            <ul class="ez-selection-values">{{#each selected}}<li class="ez-selection-value" data-text="{{text}}" data-alpha2= "{{alpha2}}">{{text}}</li>{{/each}}</ul>
-            <div class="ez-selection-list">
-                <input type="text" class="ez-selection-filter-input" placeholder="Filter the option list">
-                <ul class="ez-selection-options"></ul>
+        <div class="ez-editfield-input">
+            <div class="ez-selection-input-ui" id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                <ul class="ez-selection-values">
+                    {{#each selected}}
+                    <li class="ez-selection-value" data-text="{{text}}" data-alpha2= "{{alpha2}}">{{text}}</li>
+                    {{/each}}
+                </ul>
+                <div class="ez-selection-list">
+                    <input type="text" class="ez-selection-filter-input" placeholder="Filter the option list">
+                    <ul class="ez-selection-options"></ul>
+                </div>
             </div>
-        </div></div>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p    
+        </div>
         {{> ez_fielddescription_tooltip }}
     </div>
 </div>

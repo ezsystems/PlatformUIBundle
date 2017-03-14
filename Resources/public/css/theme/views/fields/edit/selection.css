@@ -88,3 +88,8 @@
 .ez-view-selectioneditview.is-top-list .ez-fielddescription-tooltip.is-visible {
     opacity: 0;
 }
+
+.ez-view-selectioneditview.is-not-translatable .ez-selection-values {
+    opacity: 0.3;
+    cursor: default;
+}

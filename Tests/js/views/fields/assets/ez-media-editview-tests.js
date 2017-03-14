@@ -87,7 +87,7 @@ YUI.add('ez-media-editview-tests', function (Y) {
         Y.merge(Y.eZ.Test.BinaryBaseViewTest, {
             name: "eZ Media View test",
             ViewConstructor: Y.eZ.MediaEditView,
-            templateVariablesCount: 13,
+            templateVariablesCount: 14,
             fileTemplateVariable: "media",
             _getFieldDefinition: function (required) {
                 return {

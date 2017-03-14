@@ -24,12 +24,13 @@ YUI.add('ez-country-editview', function (Y) {
      */
     Y.eZ.CountryEditView = Y.Base.create('countryEditView', Y.eZ.SelectionEditView, [], {
         initializer: function () {
-            var config = this.get('config');
+            var config = this.get('config'),
+                container = this.get('container');
 
             this._useStandardFieldDefinitionDescription = false;
-            this.containerTemplate = '<div class="' +
-                this._generateViewClassName(this._getName()) + ' ' +
-                this._generateViewClassName(Y.eZ.SelectionEditView.NAME) + '"/>';
+
+            container.addClass(this._generateViewClassName(this._getName()));
+            container.addClass(this._generateViewClassName(Y.eZ.SelectionEditView.NAME));
 
             if ( config && config.countriesInfo ) {
                 this._set('countryList', config.countriesInfo);
