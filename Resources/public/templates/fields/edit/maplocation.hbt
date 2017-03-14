@@ -14,12 +14,18 @@
             </label>
             <span class="ez-maplocation-errors"></span>
             <div class="ez-maplocation-find-address-input ez-editfield-input pure-g">
-                <div class="pure-u-5-8"><input type="text"
+                <div class="pure-u-5-8">
+                    <input type="text"
                      id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address"
                      value="{{ field.fieldValue.address }}"
-                ></div>
+                     {{#if isNotTranslatable}} readonly{{/if}}
+                     >
+                     <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
+                </div>
                 <div class="pure-u-3-8">
-                    <button class="pure-button pure-button-disabled ez-button ez-maplocation-find-address-button">{{translate "maplocation.locateaddress" "fieldedit"}} <span class="ez-inline-loader"></span></button>
+                    <button class="pure-button pure-button-disabled ez-button ez-maplocation-find-address-button" {{#if isNotTranslatable}} disabled="disabled"{{/if}}>
+                        {{translate "maplocation.locateaddress" "fieldedit"}} <span class="ez-inline-loader"></span>
+                    </button>
                 </div>
             </div>
             {{> ez_fielddescription_tooltip }}
@@ -40,7 +46,9 @@
                             </li>
                         </ul>
                     </div>
-                    <button class="pure-button pure-button-disabled ez-button ez-maplocation-locate-me-button">{{translate "maplocation.locateme" "fieldedit"}} <span class="ez-inline-loader"></span></button>
+                    <button class="pure-button pure-button-disabled ez-button ez-maplocation-locate-me-button" {{#if isNotTranslatable}} disabled="disabled"{{/if}}>
+                        {{translate "maplocation.locateme" "fieldedit"}} <span class="ez-inline-loader"></span>
+                    </button>
                     <p class="ez-maplocation-locate-me-errors"></p>
                 </div>
             </div>

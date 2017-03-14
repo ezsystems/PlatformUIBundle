@@ -50,7 +50,9 @@ YUI.add('ez-richtext-editview', function (Y) {
                 if ( this.get('active') ) {
                     this._initEditor();
                 } else {
-                    this.get('editor').destroy();
+                    if (this.get('editor')) {
+                        this.get('editor').destroy();
+                    }
                 }
             });
             this.after('focusModeChange', this._uiFocusMode);
@@ -157,6 +159,10 @@ YUI.add('ez-richtext-editview', function (Y) {
                     'ezaddcontent', 'widget', 'ezembed', 'ezremoveblock',
                     'ezfocusblock', 'yui3', 'ezpaste', 'ezmoveelement',
                 ];
+
+            if (this.get('isNotTranslatable')) {
+                return;
+            }
 
             this._registerExternalCKEditorPlugin('widget', 'widget/');
             this._registerExternalCKEditorPlugin('lineutils', 'lineutils/');
@@ -351,7 +357,14 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return {Object}
          */
         _getFieldValue: function () {
-            var value = this._getXHTML5EditValue();
+            var value;
+
+            if (this.get('editor')) {
+                value = this._getXHTML5EditValue();
+            } else {
+                // Editor is disabled, using the previous value
+                value = this.get('field').fieldValue.xhtml5edit;
+            }
 
             return {
                 xml: value,

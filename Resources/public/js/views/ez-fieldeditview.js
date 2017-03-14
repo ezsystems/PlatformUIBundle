@@ -77,6 +77,7 @@ YUI.add('ez-fieldeditview', function (Y) {
                     content: this.get('content').toJSON(),
                     version: this.get('version').toJSON(),
                     contentType: this.get('contentType').toJSON(),
+                    isNotTranslatable: this.get('isNotTranslatable'),
                 },
                 container = this.get('container');
 
@@ -276,6 +277,14 @@ YUI.add('ez-fieldeditview', function (Y) {
             this.after('errorStatusChange', this._errorUI);
 
             this._addDOMEventHandlers(_events);
+
+            this.after('isNotTranslatableChange', function() {
+                if (this.get('isNotTranslatable')) {
+                    this.get('container').addClass('is-not-translatable');
+                }
+            });
+
+            this._set('isNotTranslatable', this.get('translating') && !this.get('fieldDefinition').isTranslatable);
         },
 
         /**
@@ -459,7 +468,29 @@ YUI.add('ez-fieldeditview', function (Y) {
              */
             languageCode: {
                 value: null
-            }
+            },
+
+            /**
+             * True if the field is currently being translated.
+             *
+             * @attribute translating
+             * @type {Boolean}
+             * @required
+             */
+            translating: {},
+
+            /**
+             * True if the field is not translatable
+             *
+             * @attribute isNotTranslatable
+             * @readOnly
+             * @type {Boolean}
+             * @default false
+             */
+            isNotTranslatable: {
+                value: false,
+                readOnly: true,
+            },
         },
 
         /**

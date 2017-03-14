@@ -16,3 +16,7 @@
             animation: spin 0.5s infinite linear;
     content: "\E61c";
 }
+
+.ez-view-usereditview.is-not-translatable .ez-field-sublabel {
+    opacity: 0.3;
+}

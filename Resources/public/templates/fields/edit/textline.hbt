@@ -9,14 +9,19 @@
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
 
-        <div class="ez-editfield-input"><div class="ez-textline-input-ui"><input type="text"
+        <div class="ez-editfield-input"><div class="ez-textline-input-ui">
+                <input type="text"
                 value="{{ field.fieldValue }}"
                 class="ez-validated-input"
                 id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
                 {{#if isRequired}} required{{/if}}
                 {{#if maxLength}} maxlength="{{ maxLength }}"{{/if}}
                 {{#if minLengthPattern}} pattern="{{ minLengthPattern }}"{{/if}}
-            ></div></div>
+                {{#if isNotTranslatable}} readonly{{/if}}
+                >
+            </div>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
+        </div>
         {{> ez_fielddescription_tooltip }}
     </div>
 </div>

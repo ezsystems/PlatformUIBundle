@@ -193,6 +193,7 @@ system:
                 - 'bundles/ezplatformui/css/theme/views/fields/edit/relationlist.css'
                 - 'bundles/ezplatformui/css/theme/views/fields/edit/country.css'
                 - 'bundles/ezplatformui/css/theme/views/fields/edit/richtext.css'
+                - 'bundles/ezplatformui/css/theme/views/fields/edit/url.css'
                 - 'bundles/ezplatformui/css/theme/views/fields/edit/user.css'
                 - 'bundles/ezplatformui/css/theme/views/dashboard/base.css'
                 - 'bundles/ezplatformui/css/theme/views/dashboard/asynchronous.css'

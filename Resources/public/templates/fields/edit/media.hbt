@@ -5,6 +5,7 @@
                 {{ translate_property fieldDefinition.names }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
             <p class="ez-field-description is-showing-description">
                 {{ translate_property fieldDefinition.descriptions }}
             </p>
@@ -64,19 +65,19 @@
                         <li class="ez-media-player-settings-item">
                             <label>
                                 {{translate "media.displaycontrols" "fieldedit"}}
-                                 <input type="checkbox" value="1" name="hasController" {{#if hasController }}checked="checked"{{/if}}>
+                                 <input {{#if isNotTranslatable}}disabled="disabled"{{/if}} type="checkbox" value="1" name="hasController" {{#if hasController }}checked="checked"{{/if}}>
                             </label>
                         </li>
                         <li class="ez-media-player-settings-item">
                             <label>
                                 {{translate "media.autoplay" "fieldedit"}}
-                                <input type="checkbox" value="1" name="autoplay" {{#if autoplay }}checked="checked"{{/if}}>
+                                <input {{#if isNotTranslatable}}disabled="disabled"{{/if}} type="checkbox" value="1" name="autoplay" {{#if autoplay }}checked="checked"{{/if}}>
                             </label>
                         </li>
                         <li class="ez-media-player-settings-item">
                             <label>
                                 {{translate "media.loop" "fieldedit"}}
-                                <input type="checkbox" value="1" name="loop" {{#if loop }}checked="checked"{{/if}}>
+                                <input {{#if isNotTranslatable}}disabled="disabled"{{/if}} type="checkbox" value="1" name="loop" {{#if loop }}checked="checked"{{/if}}>
                             </label>
                         </li>
                     </ul>
@@ -85,13 +86,13 @@
                         <li class="ez-media-player-settings-item">
                             <label>
                                 {{translate "media.width" "fieldedit"}}
-                                <input type="number" name="width" value="{{ width }}" step="1" class="ez-media-settings-size" min="0">
+                                <input {{#if isNotTranslatable}}readonly{{/if}} type="number" name="width" value="{{ width }}" step="1" class="ez-media-settings-size" min="0">
                             </label>
                         </li>
                         <li class="ez-media-player-settings-item">
                             <label>
                                 {{translate "media.height" "fieldedit"}}
-                                <input type="number" name="height" value="{{ height }}" step="1" class="ez-media-settings-size" min="0">
+                                <input {{#if isNotTranslatable}}readonly{{/if}} type="number" name="height" value="{{ height }}" step="1" class="ez-media-settings-size" min="0">
                             </label>
                         </li>
                     </ul>
@@ -112,7 +113,7 @@
                     <a href="#" class="ez-binarybase-warning-hide ez-font-icon"></a>
                     <p class="ez-binarybase-warning-text ez-font-icon"></p>
                 </div>
-                <button class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
+                <button {{#if isNotTranslatable}}disabled="disabled"{{/if}} class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
                     <span class="ez-binarybase-upload-new">
                         {{#if isAudio}}
                         {{translate "media.audio.upload" "fieldedit"}}
@@ -130,7 +131,7 @@
                 </button>
                 <span class="ez-binarybase-remove-option">
                     or
-                    <button class="ez-button ez-button-height ez-button-delete pure-button ez-font-icon">
+                    <button {{#if isNotTranslatable}}disabled="disabled"{{/if}} class="ez-button ez-button-height ez-button-delete pure-button ez-font-icon">
                         {{#if isAudio}}
                         {{translate "media.audio.remove" "fieldedit"}}
                         {{else}}

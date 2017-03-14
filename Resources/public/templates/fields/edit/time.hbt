@@ -8,8 +8,9 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        <div class="ez-editfield-input"><div class="ez-time-input-ui">
-            <input type="time" {{#if useSeconds}}step="1"{{/if}}
+        <div class="ez-editfield-input">
+            <div class="ez-time-input-ui">
+                <input type="time" {{#if useSeconds}}step="1"{{/if}}
                 value="{{ time }}"
                 {{#unless supportsTimeInput}}
                     {{#if useSeconds}}
@@ -23,8 +24,11 @@
                 class="ez-validated-input"
                 id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
                 {{#if isRequired}} required{{/if}}
+                {{#if isNotTranslatable}} readonly{{/if}}
                 >
-        </div></div>
+            </div>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
+        </div>
         {{> ez_fielddescription_tooltip }}
     </div>
 </div>

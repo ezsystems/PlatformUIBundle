@@ -137,7 +137,8 @@ YUI.add('ez-author-editview', function (Y) {
             return {
                 author: this.get('author').toJSON(),
                 canRemove: this.get('canRemove'),
-                isRequired: this.get('required')
+                isRequired: this.get('required'),
+                isNotTranslatable: this.get('isNotTranslatable')
             };
         },
 
@@ -464,7 +465,9 @@ YUI.add('ez-author-editview', function (Y) {
                 contentType: this.get('contentType'),
                 fieldDefinition: this.get('fieldDefinition'),
                 showInfos: showInfos,
-                required: (this.get('fieldDefinition').isRequired && !this._hasContent)
+                required: (this.get('fieldDefinition').isRequired && !this._hasContent),
+                isNotTranslatable: this.get('isNotTranslatable'),
+                translating: this.get('translating')
             });
 
             this._authorInputs.push(inputView);

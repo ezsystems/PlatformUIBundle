@@ -4,6 +4,7 @@
             <p class="ez-fielddefinition-name">
                 {{ translate_property fieldDefinition.names }}{{#if isRequired}}*{{/if}}:
             </p>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
             <p class="ez-editfield-login-error-message ez-editfield-error-message">&nbsp;</p>
         </label>
     </div>
@@ -35,6 +36,7 @@
             value="{{ field.fieldValue.email }}"
             id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-email"
             {{#if isRequired}} required{{/if}}
+            {{#if isNotTranslatable}} readonly{{/if}}
         ></div></div>
     </div>
 </div>
@@ -54,6 +56,7 @@
             value=""
             id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-password"
             {{#if passwordRequired}} required{{/if}}
+            {{#if isNotTranslatable}} readonly{{/if}}
         ></div></div>
 
         <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-confirm">
@@ -64,6 +67,7 @@
             value=""
             id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-confirm"
             {{#if passwordRequired}} required{{/if}}
+            {{#if isNotTranslatable}} readonly{{/if}}
         ></div></div>
         {{> ez_fielddescription_tooltip }}
     </div>

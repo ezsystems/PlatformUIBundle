@@ -196,6 +196,12 @@
         <note>key: failed.retrieve.google.maps.api</note>
         <jms:reference-file>Resources/public/js/views/fields/ez-maplocation-editview.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="48c7ad76114f57866321089105b2e7c0f2ea7806" resname="fieldedit.notTranslatable">
+        <source>This is not a translatable field and cannot be modified.</source>
+        <target>This is not a translatable field and cannot be modified.</target>
+        <note>key: fieldedit.notTranslatable</note>
+        <jms:reference-file>./Resources/public/templates/fields/edit/checkbox.hbt</jms:reference-file>
+      </trans-unit>
       <trans-unit id="a64621b5af174b18350e8774d65ac227c79f0077" resname="file.size">
         <source>(%size% bytes)</source>
         <target>(%size% bytes)</target>
