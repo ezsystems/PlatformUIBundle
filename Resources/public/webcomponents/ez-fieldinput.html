@@ -25,8 +25,13 @@ ez-fieldinput.is-invalid fieldset {
         }
 
         _checkValidity(e) {
-            // should also probably change the way message are displayed
-            if ( !e.target.validity.valid ) {
+            let valid = true;
+
+            this.querySelectorAll('input, select, textarea').forEach(function (formElement) {
+                // should also probably change the way message are displayed
+                valid = valid && formElement.validity.valid;
+            });
+            if ( !valid ) {
                 this.classList.add('is-invalid');
             } else {
                 this.classList.remove('is-invalid');
