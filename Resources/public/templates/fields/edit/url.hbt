@@ -11,20 +11,30 @@
         <label class="ez-field-sublabel ez-first-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link">
             {{translate "url.url" "fieldedit"}}{{#if isRequired}}*{{/if}}:
         </label>
-        <div class="ez-editfield-input"><div class="ez-url-input-ui"><input type="text"
-            class="ez-url-field-value ez-validated-input"
-            value="{{ field.fieldValue.link }}"
-            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link"
-            {{#if isRequired}} required{{/if}}
-        ></div></div>
+        <div class="ez-editfield-input"><div class="ez-url-input-ui">
+                <input type="text"
+                class="ez-url-field-value ez-validated-input"
+                value="{{ field.fieldValue.link }}"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link"
+                {{#if isRequired}} required{{/if}}
+                {{#if isNotTranslatable}} readonly{{/if}}
+                >
+            </div>
+        </div>
         <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-text">
             {{translate "url.text" "fieldedit"}}
         </label>
-        <div class="ez-editfield-input-no-validation"><div class="ez-url-input-ui"><input type="text"
-            class="ez-url-title-value"
-            value="{{ field.fieldValue.text }}"
-            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-text"
-        ></div></div>
+        <div class="ez-editfield-input-no-validation">
+            <div class="ez-url-input-ui">
+                <input type="text"
+                class="ez-url-title-value"
+                value="{{ field.fieldValue.text }}"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-text"
+                {{#if isNotTranslatable}} readonly{{/if}}
+                >
+            </div>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
+        </div>
         {{> ez_fielddescription_tooltip }}
     </div>
 </div>

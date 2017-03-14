@@ -28,3 +28,7 @@
 .ez-view-authoreditview.is-author-error .ez-fielddefinition-name {
     color: #BF3E33;
 }
+
+.ez-view-authoreditview.is-not-translatable .ez-field-sublabel {
+    opacity: 0.3;
+}

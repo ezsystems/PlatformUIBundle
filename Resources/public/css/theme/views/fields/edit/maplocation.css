@@ -21,3 +21,9 @@
 .ez-view-maplocationeditview .ez-maplocation-locate-me-errors {
     color: #BF3E33;
 }
+
+.ez-view-maplocationeditview.is-not-translatable .ez-maplocation-map-container,
+.ez-view-maplocationeditview.is-not-translatable .ez-maplocation-coordinates,
+.ez-view-maplocationeditview.is-not-translatable .ez-field-sublabel {
+    opacity: 0.3;
+}

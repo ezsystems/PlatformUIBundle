@@ -8,9 +8,12 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area">
-        <div class="ez-editfield-input"><div class="ez-checkbox-input-ui"><input type="checkbox"
-                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
-                {{#if field.fieldValue}}checked="checked"{{/if}}/>
-        </div></div>
+        <div class="ez-editfield-input"><div class="ez-checkbox-input-ui">
+                <input type="checkbox" id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                {{#if field.fieldValue}}checked="checked"{{/if}}
+                {{#if isNotTranslatable}}disabled="disabled"{{/if}}/>
+                <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
+            </div>
+        </div>
     </div>
 </div>

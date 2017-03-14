@@ -53,6 +53,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 contentType: this.contentType,
                 config: {},
                 value: this.value,
+                translating: false,
             });
         },
 
@@ -72,7 +73,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
+                Y.Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
 
                 Y.Assert.areSame(
                     that.jsonContent, variables.content,
@@ -93,6 +94,10 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 Y.Assert.areSame(
                     field, variables.field,
                     "The field should be available in the field edit view template"
+                );
+                Y.Assert.isFalse(
+                    variables.isNotTranslatable,
+                    "The isNotTranslatable should be available in the field edit view template"
                 );
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);
@@ -233,6 +238,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
                     },
                 },
                 value: this.value,
+                translating: false,
             });
         },
 
@@ -252,7 +258,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
+                Y.Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
 
                 Y.Assert.areSame(
                     that.jsonContent, variables.content,
@@ -273,6 +279,10 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 Y.Assert.areSame(
                     field, variables.field,
                     "The field should be available in the field edit view template"
+                );
+                Y.Assert.isFalse(
+                    variables.isNotTranslatable,
+                    "The isNotTranslatable should be available in the field edit view template"
                 );
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);

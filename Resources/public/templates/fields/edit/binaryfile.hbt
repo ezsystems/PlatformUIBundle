@@ -5,6 +5,7 @@
                 {{ translate_property fieldDefinition.names }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
+            <p class="ez-editfield-not-translatable ez-font-icon">{{translate "fieldedit.notTranslatable" "fieldedit"}}</p>
             <p class="ez-field-description is-showing-description">
                 {{ translate_property fieldDefinition.descriptions }}
             </p>
@@ -40,13 +41,13 @@
                     <a href="#" class="ez-binarybase-warning-hide ez-font-icon"></a>
                     <p class="ez-binarybase-warning-text ez-font-icon"></p>
                 </div>
-                <button class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
+                <button {{#if isNotTranslatable}}disabled="disabled"{{/if}} class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
                     <span class="ez-binarybase-upload-new">{{translate "binaryfile.upload" "fieldedit"}}</span>
                     <span class="ez-binarybase-upload-replace">{{translate "binaryfile.replace" "fieldedit"}}</span>
                 </button>
                 <span class="ez-binarybase-remove-option">
                     {{translate "binaryfile.or" "fieldedit"}}
-                    <button class="ez-button ez-button-height ez-button-delete pure-button ez-font-icon">
+                    <button {{#if isNotTranslatable}}disabled="disabled"{{/if}} class="ez-button ez-button-height ez-button-delete pure-button ez-font-icon">
                         {{translate "binaryfile.remove" "fieldedit"}}
                     </button>
                 </span>

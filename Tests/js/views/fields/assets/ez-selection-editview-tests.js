@@ -55,7 +55,8 @@ YUI.add('ez-selection-editview-tests', function (Y) {
                 field: this.field,
                 content: this.content,
                 version: this.version,
-                contentType: this.contentType
+                contentType: this.contentType,
+                translating: false,
             });
         },
 
@@ -74,7 +75,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
+                Y.Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
 
                 Y.Assert.areSame(
                      that.jsonContent, variables.content,
@@ -95,6 +96,10 @@ YUI.add('ez-selection-editview-tests', function (Y) {
                 Y.Assert.areSame(
                     field, variables.field,
                     "The field should be available in the field edit view template"
+                );
+                Y.Assert.isFalse(
+                    variables.isNotTranslatable,
+                    "The isNotTranslatable should be available in the field edit view template"
                 );
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);
@@ -236,7 +241,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
                 fieldValue.length, this.view.get('values').length,
                 "Values should contain as many values as the field value"
             );
-            
+
             Y.Array.each(this.view.get('values'), function (val, i) {
                 Y.Assert.areEqual(fieldValue[i], options.indexOf(val));
             }, this);
@@ -350,6 +355,30 @@ YUI.add('ez-selection-editview-tests', function (Y) {
             this.wait();
         },
 
+        "Should not display the selection filter when taping on the selection ui when translating": function () {
+            var container = this.view.get('container'),
+                that = this;
+
+            this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
+            this.view._set('isNotTranslatable', true);
+            this._render();
+
+            container.one('.ez-selection-values').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.Assert.isTrue(
+                        container.hasClass('is-list-hidden'),
+                        "The selection filter should not be visible"
+                    );
+
+                    Y.Assert.isFalse(
+                        container.hasClass('is-top-list'),
+                        "The selection filter should appear below the selection UI"
+                    );
+                });
+            });
+            this.wait();
+        },
+
         "tap on the selection ui display the selection filter view above if there's not enough space": function () {
             var container = this.view.get('container'),
                 that = this;
@@ -426,6 +455,31 @@ YUI.add('ez-selection-editview-tests', function (Y) {
                     Y.Assert.areEqual(
                         0, container.all('.ez-selection-values .ez-selection-value').size(),
                         "The selection should be empty in the DOM"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should not remove value from selection when translating": function () {
+            var container = this.view.get('container'),
+                that = this;
+
+            this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
+            this.view.set('field', this._getField([2]));
+            this.view._set('isNotTranslatable', true);
+            this._render();
+
+            container.one('.ez-selection-values .ez-selection-value').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.Assert.areEqual(
+                        1, this.view.get('values').length,
+                        "The selection should not be empty"
+                    );
+
+                    Y.Assert.areEqual(
+                        1, container.all('.ez-selection-values .ez-selection-value').size(),
+                        "The selection should not be empty in the DOM"
                     );
                 });
             });

@@ -147,7 +147,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
             marker = new google.maps.Marker({
                 position: mapOptions.center,
                 map: map,
-                draggable: true,
+                draggable: !this.get('isNotTranslatable'),
                 title: MARKER_TITLE
             });
             this.set('marker', marker);

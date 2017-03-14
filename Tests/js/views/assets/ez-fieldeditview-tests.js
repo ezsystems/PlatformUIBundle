@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-fieldeditview-tests', function (Y) {
-    var viewTest, descriptionTest, customViewTest, registryTest, rerenderTest,
+    var viewTest, descriptionTest, customViewTest, registryTest, rerenderTest, isTranslatableTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -66,7 +66,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             var that = this;
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
+                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 5 variables");
 
                 Y.Assert.areSame(
                      that.jsonContent, variables.content,
@@ -483,7 +483,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
+                Y.Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 7 variables");
 
                 Y.Assert.areSame(
                      that.jsonContent, variables.content,
@@ -685,10 +685,102 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         },
     });
 
+    isTranslatableTest = new Y.Test.Case({
+        name: "eZ Field Edit View isTranslatableTest test",
+
+        setUp: function () {
+            this.jsonContent = {};
+            this.jsonContentType = {};
+            this.jsonVersion = {};
+            this.content = new Y.Mock();
+            this.contentType = new Y.Mock();
+            this.version = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: this.jsonContent
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: this.jsonContentType
+            });
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: this.jsonVersion
+            });
+
+            this.field = {descriptions: {}};
+        },
+
+        tearDown: function () {
+            this.view.get('container').setContent(this.containerContent);
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _testIsTranslatable: function (isTranslatable, translating, assertCallback) {
+            this.fieldDefinition = {
+                identifier: 'some_identifier',
+                descriptions: {"eng-GB": "Test description"},
+                isTranslatable: isTranslatable,
+            };
+
+            this.view = new Y.eZ.FieldEditView({
+                container: '.container',
+                fieldDefinition: this.fieldDefinition,
+                field: this.field,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType,
+                translating: translating,
+            });
+
+            assertCallback(
+                this.view.get('isNotTranslatable'), this.view.get('container').hasClass('is-not-translatable')
+            );
+        },
+
+        "Should not be translatable when translating a not translatable attribute": function () {
+            this._testIsTranslatable(false, true, Y.bind(function (isNotTranslatable, hasNotTranslatableClass) {
+                Assert.isTrue(
+                    isNotTranslatable,
+                    "The edit view should not be translatable"
+                );
+
+                Assert.isTrue(
+                    hasNotTranslatableClass,
+                    "The not translatable class should have been added to the container"
+                );
+
+                this.view.get('container').removeClass('is-not-translatable');
+            }, this));
+        },
+
+        _assertShouldBeTranslatable: function (isNotTranslatable, hasNotTranslatableClass) {
+            Assert.isFalse(
+                isNotTranslatable,
+                "The edit view should be translatable"
+            );
+
+            Assert.isFalse(
+                hasNotTranslatableClass,
+                "The not translatable class should not have been added to the container"
+            );
+        },
+
+        "Should be translatable when not translating a not translatable attribute": function () {
+            this._testIsTranslatable(false, false, this._assertShouldBeTranslatable);
+        },
+
+        "Should be translatable when translating a translatable attribute": function () {
+            this._testIsTranslatable(true, true, this._assertShouldBeTranslatable);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Field Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(descriptionTest);
     Y.Test.Runner.add(customViewTest);
     Y.Test.Runner.add(registryTest);
     Y.Test.Runner.add(rerenderTest);
+    Y.Test.Runner.add(isTranslatableTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-fieldeditview']});

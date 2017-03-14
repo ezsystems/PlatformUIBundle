@@ -114,3 +114,22 @@
 .is-using-touch-device .ez-editfield-input-area .ez-field-description.is-visible {
     opacity: 1;
 }
+
+.ez-editfield-not-translatable {
+    display: none;
+}
+
+.is-not-translatable .ez-editfield-not-translatable {
+    margin-top: 0.2em;
+    font-size: 0.8em;
+    display:block;
+}
+
+.is-not-translatable .ez-fielddefinition-name {
+    opacity: 0.3;
+}
+
+.is-not-translatable .ez-editfield-not-translatable:before {
+    content: "\e61b";
+    padding-right: 0.4em;
+}
