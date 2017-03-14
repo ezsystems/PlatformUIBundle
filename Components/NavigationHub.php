@@ -12,11 +12,25 @@ class NavigationHub implements Component
 
     const MATCHED_LINK_CLASS = 'ez-matched-link';
 
+    /**
+     * @var \Twig_Environment
+     */
     protected $templating;
 
+    /**
+     * @var \EzSystems\PlatformUIBundle\NavigationHub\Zone[]
+     */
     protected $zones;
 
+    /**
+     * @var \EzSystems\PlatformUIBundle\NavigationHub\Link[]
+     */
     protected $links;
+
+    /**
+     * @var \Symfony\Component\HttpFoundation\Request
+     */
+    protected $request;
 
     public function __construct($templating, RequestStack $stack, array $zones, array $links)
     {
