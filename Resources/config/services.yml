@@ -189,6 +189,8 @@ services:
             - {"locationId": 2}
             - "Content structure"
             - "content"
+        tags:
+            - {name: ezplatform.ui.link}
 
     ezsystems.platformui.navigationhub.link.medialibrary:
         class: "%ezsystems.platformui.navigationhub.link.subtree.class%"
@@ -198,6 +200,8 @@ services:
             - {"locationId": 43}
             - "Media Library"
             - "content"
+        tags:
+            - {name: ezplatform.ui.link}
 
     ezsystems.platformui.navigationhub.link.users:
         class: "%ezsystems.platformui.navigationhub.link.subtree.class%"
@@ -207,34 +211,40 @@ services:
             - {"locationId": 5}
             - "Users"
             - "admin"
+        tags:
+            - {name: ezplatform.ui.link}
 
-    # todo tag those services so that it's possible to add new zones
-    # to the navigation hub from external bundles
-    # we could also simplifies that to have a simpler settings directly converted
-    # into those services.
     ezsystems.platformui.navigationhub.zones.content:
         class: "%ezsystems.platformui.navigationhub.zone.class%"
         arguments:
             - "Content"
             - "content"
+        tags:
+            - {name: ezplatform.ui.zone}
 
     ezsystems.platformui.navigationhub.zones.page:
         class: "%ezsystems.platformui.navigationhub.zone.class%"
         arguments:
             - "Page"
             - "page"
+        tags:
+            - {name: ezplatform.ui.zone}
 
     ezsystems.platformui.navigationhub.zones.performances:
         class: "%ezsystems.platformui.navigationhub.zone.class%"
         arguments:
             - "Performances"
             - "performances"
+        tags:
+            - {name: ezplatform.ui.zone}
 
     ezsystems.platformui.navigationhub.zones.admin:
         class: "%ezsystems.platformui.navigationhub.zone.class%"
         arguments:
             - "Admin Panel"
             - "admin"
+        tags:
+            - {name: ezplatform.ui.zone}
 
     ezsystems.platformui.component.maincontent:
         class: "%ezsystems.platformui.component.maincontent.class%"
@@ -251,13 +261,19 @@ services:
 
     ezsystems.platformui.component.search:
         class: "%ezsystems.platformui.component.search.class%"
+        tags:
+            - {name: ezplatform.ui.toolbar_item, toolbar: "discovery"}
 
     ezsystems.platformui.component.browse:
         class: "%ezsystems.platformui.component.browse.class%"
         arguments: [@request_stack, @router]
+        tags:
+            - {name: ezplatform.ui.toolbar_item, toolbar: "discovery"}
 
     ezsystems.platformui.component.trash:
         class: "%ezsystems.platformui.component.trash.class%"
+        tags:
+            - {name: ezplatform.ui.toolbar_item, toolbar: "discovery"}
 
     ezsystems.platformui.controller.proto:
         class: "%ezsystems.platformui.controller.proto.class%"
@@ -427,24 +443,13 @@ services:
         arguments:
             - "@templating"
             - "@request_stack"
-            -
-                - "@ezsystems.platformui.navigationhub.zones.content"
-                - "@ezsystems.platformui.navigationhub.zones.page"
-                - "@ezsystems.platformui.navigationhub.zones.performances"
-                - "@ezsystems.platformui.navigationhub.zones.admin"
-            -
-                - "@ezsystems.platformui.navigationhub.link.contentstructure"
-                - "@ezsystems.platformui.navigationhub.link.medialibrary"
-                - "@ezsystems.platformui.navigationhub.link.users"
+            - []
+            - []
 
     ezsystems.platformui.hybrid.controller.toolbars:
         class: EzSystems\PlatformUIBundle\Hybrid\Controller\ToolbarsController
         arguments:
-            -
-                "discovery":
-                    - "@ezsystems.platformui.component.search"
-                    - "@ezsystems.platformui.component.browse"
-                    - "@ezsystems.platformui.component.trash"
+            - []
 
     ezsystems.platformui.hybrid.request_matcher.admin:
         class: EzSystems\PlatformUIBundle\Hybrid\AdminRequestMatcher
