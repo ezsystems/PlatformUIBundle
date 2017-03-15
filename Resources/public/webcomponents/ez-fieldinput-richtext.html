@@ -1,0 +1,97 @@
+<link rel="import" href="ez-fieldinput.html">
+
+<!--
+<script>
+var CKEDITOR_BASEPATH = ALLOYEDITOR_BASEPATH = "/bundles/ezplatformuiassets/vendors/alloy-editor/dist/alloy-editor/";
+</script>
+<script src="../vendors/alloyeditor/dist/alloy-editor/alloy-editor-all-min.js"></script>
+-->
+
+<style>
+ez-fieldinput-ezrichtext {
+    display: block;
+    padding: 1em;
+}
+
+ez-fieldinput-ezrichtext fieldset {
+    padding: 1em 3em;
+}
+
+ez-fieldinput-ezrichtext .ae-editable,
+ez-fieldinput-ezrichtext .ae-editable:focus {
+    border: 1px solid #ddd;
+}
+
+ez-fieldinput-ezrichtext.is-invalid fieldset {
+    background: #fdd;
+}
+</style>
+
+<script>
+(function () {
+    window.eZ = window.eZ || {};
+
+    class eZFieldInputRichText extends customElements.get('ez-fieldinput') {
+        static get is() {
+            return 'ez-fieldinput-ezrichtext';
+        }
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+            this._textarea = this.querySelector('textarea');
+            this._trackYUIAppReady();
+        }
+
+        _trackYUIAppReady() {
+            if ( eZ.YUI ) {
+                return this._createEditor();
+            }
+            document.addEventListener('ez:yui-app:ready', this._createEditor.bind(this));
+        }
+
+        _createEditor() {
+            const Y = eZ.YUI.Y;
+            const ToolbarConfig = Y.eZ.AlloyEditorToolbarConfig;
+            const extraPlugins = [
+                'ezaddcontent', 'widget', 'ezembed', 'ezremoveblock',
+                'ezfocusblock', 'yui3', 'ezpaste', 'ezmoveelement',
+            ];
+            const div = this.ownerDocument.createElement('div');
+            div.innerHTML = this._textarea.value.replace('<?xml version="1.0" encoding="UTF-8"?>', '');
+
+            this.querySelector('fieldset').appendChild(div);
+            this._textarea.style.display = 'none';
+            // maybe we could create a <ez-online-editor> custom element ?
+
+            this._editor = Y.eZ.AlloyEditor.editable(div, {
+                customConfig: '',
+                toolbars: Y.eZ.RichTextEditView.ATTRS.toolbarsConfig.valueFn(),
+                extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',' + extraPlugins.join(','),
+                removePlugins: AlloyEditor.Core.ATTRS.removePlugins.value + ',ae_embed',
+            });
+            this._editor.get('nativeEditor').on('change', this._syncTextarea.bind(this));
+            this._editor.get('nativeEditor').on('blur', this._syncTextarea.bind(this));
+        }
+
+        _syncTextarea(e) {
+            const editor = this._editor.get('nativeEditor');
+
+            this._textarea.value = '<?xml version="1.0" encoding="UTF-8"?>' + editor.getData();
+        }
+
+        disconnectedCallback() {
+            super.disconnectedCallback();
+            if ( this._editor ) {
+                this._editor.destroy();
+                delete this._editor;
+            }
+        }
+    }
+
+    customElements.define(eZFieldInputRichText.is, eZFieldInputRichText);
+})();
+</script>
