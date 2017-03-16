@@ -468,3 +468,74 @@ services:
         arguments:
             - "@ezpublish.view.template_renderer"
             - "@ezsystems.platformui.hybrid.request_matcher.admin"
+
+    ezsystems.platformui.hybrid.event_subscriber.pjax_response_subscriber:
+        class: EzSystems\PlatformUIBundle\Hybrid\EventSubscriber\PjaxResponseSubscriber
+        arguments:
+            - "@ezsystems.platformui.pjax.request_matcher"
+            - "@ezsystems.platformui.hybrid.request_matcher.admin"
+            - "@ezsystems.platformui.hybrid.mapper.pjax_response_view_mapper"
+            - "@ezsystems.platformui.hybrid.view.pjax_view_renderer"
+        tags:
+            - {name: kernel.event_subscriber}
+
+    ezsystems.platformui.hybrid.mapper.pjax_response_view_mapper:
+        class: EzSystems\PlatformUIBundle\Hybrid\Mapper\PjaxResponseHybridViewMapper
+
+    ezsystems.platformui.hybrid.view.pjax_view_renderer:
+        class: EzSystems\PlatformUIBundle\Hybrid\View\Renderer\PjaxViewRenderer
+
+    ezsystems.platformui.navigationhub.link.admin.section:
+        class: "%ezsystems.platformui.navigationhub.link.route.class%"
+        arguments:
+            - @router
+            - "admin_sectionlist"
+            - {}
+            - "Sections"
+            - "admin"
+        tags:
+            - {name: ezplatform.ui.link}
+
+    ezsystems.platformui.navigationhub.link.admin.languages:
+        class: "%ezsystems.platformui.navigationhub.link.route.class%"
+        arguments:
+            - @router
+            - "admin_languagelist"
+            - {}
+            - "Languages"
+            - "admin"
+        tags:
+            - {name: ezplatform.ui.link}
+
+    ezsystems.platformui.navigationhub.link.admin.content_types:
+        class: "%ezsystems.platformui.navigationhub.link.route.class%"
+        arguments:
+            - @router
+            - "admin_contenttypeGroupList"
+            - {}
+            - "Content types"
+            - "admin"
+        tags:
+            - {name: ezplatform.ui.link}
+
+    ezsystems.platformui.navigationhub.link.admin.roles:
+        class: "%ezsystems.platformui.navigationhub.link.route.class%"
+        arguments:
+            - @router
+            - "admin_roleList"
+            - {}
+            - "Roles"
+            - "admin"
+        tags:
+            - {name: ezplatform.ui.link}
+
+    ezsystems.platformui.navigationhub.link.admin.system_info:
+        class: "%ezsystems.platformui.navigationhub.link.route.class%"
+        arguments:
+            - @router
+            - "admin_systeminfo"
+            - {}
+            - "System info"
+            - "admin"
+        tags:
+            - {name: ezplatform.ui.link}
