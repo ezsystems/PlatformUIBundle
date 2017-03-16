@@ -11,6 +11,8 @@ namespace EzSystems\PlatformUIBundle;
 use EzSystems\PlatformUIBundle\DependencyInjection\Compiler\ApplicationConfigProviderPass;
 use EzSystems\PlatformUIBundle\DependencyInjection\Compiler\TranslationDomainsExtensionsPass;
 use EzSystems\PlatformUIBundle\DependencyInjection\EzPlatformUIExtension;
+use EzSystems\PlatformUIBundle\Hybrid\DependencyInjection\AdminSiteAccessConfigurationFilter;
+use EzSystems\PlatformUIBundle\Hybrid\DependencyInjection\Compiler\AdminSiteaccessPass;
 use EzSystems\PlatformUIBundle\Hybrid\DependencyInjection\Compiler\NavigationHubPass;
 use EzSystems\PlatformUIBundle\Hybrid\DependencyInjection\Compiler\ToolbarsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -40,5 +42,11 @@ class EzSystemsPlatformUIBundle extends Bundle
         $container->addCompilerPass(new TranslationDomainsExtensionsPass());
         $container->addCompilerPass(new NavigationHubPass());
         $container->addCompilerPass(new ToolbarsPass());
+        //$container->addCompilerPass(new AdminSiteaccessPass());
+
+        $eZExtension = $container->getExtension('ezpublish');
+        $eZExtension->addSiteAccessConfigurationFilter(
+            new AdminSiteAccessConfigurationFilter()
+        );
     }
 }
