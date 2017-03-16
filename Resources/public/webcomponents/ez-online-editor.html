@@ -1,0 +1,74 @@
+<link rel="import" href="../vendors/polymer/polymer-element.html">
+<link rel="import" href="../../../webcomponents/ez-yui-app.html">
+
+<style>
+ez-online-editor {
+    display: block;
+}
+</style>
+
+<script>
+(function () {
+    class eZOnlineEditor extends Polymer.Element {
+        static get is() {
+            return 'ez-online-editor';
+        }
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+            this._trackYUIAppReady();
+        }
+
+        _trackYUIAppReady() {
+            if ( eZ.YUI ) {
+                return this._createEditor();
+            }
+            document.addEventListener('ez:yui-app:ready', this._createEditor.bind(this));
+        }
+
+        _createEditor() {
+            const Y = eZ.YUI.Y;
+            const ToolbarConfig = Y.eZ.AlloyEditorToolbarConfig;
+            const extraPlugins = [
+                'ezaddcontent', 'widget', 'ezembed', 'ezremoveblock',
+                'ezfocusblock', 'yui3', 'ezpaste', 'ezmoveelement',
+            ];
+            this.innerHTML = '<div>' + this.innerHTML + '</div>';
+
+            this._editor = Y.eZ.AlloyEditor.editable(this.querySelector('div'), {
+            //this._editor = Y.eZ.AlloyEditor.editable(this, {
+                customConfig: '',
+                toolbars: Y.eZ.RichTextEditView.ATTRS.toolbarsConfig.valueFn(),
+                extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',' + extraPlugins.join(','),
+                removePlugins: AlloyEditor.Core.ATTRS.removePlugins.value + ',ae_embed',
+            });
+            this._editor.get('nativeEditor').on('change', this._forwardEvent.bind(this));
+            this._editor.get('nativeEditor').on('blur', this._forwardEvent.bind(this));
+        }
+
+        _forwardEvent(e) {
+            this.dispatchEvent(new CustomEvent(e.name, {
+                bubbles: true
+            }));
+        }
+
+        getData() {
+            return this._editor.get('nativeEditor').getData();
+        }
+
+        disconnectedCallback() {
+            super.disconnectedCallback();
+            if ( this._editor ) {
+                this._editor.destroy();
+                delete this._editor;
+            }
+        }
+    }
+
+    customElements.define(eZOnlineEditor.is, eZOnlineEditor);
+})();
+</script>
