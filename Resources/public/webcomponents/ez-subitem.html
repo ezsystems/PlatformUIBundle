@@ -68,6 +68,7 @@ class eZSubitem extends Polymer.Element {
             this.innerHTML = 'An error occurred';
             return;
         }
+        this._view = view;
         this._blockClick(view);
         view.on('*:navigateTo', function (e) {
             let event, view = e.target;
@@ -109,6 +110,10 @@ class eZSubitem extends Polymer.Element {
     }
 
     disconnectedCallback() {
+        if ( this._view ) {
+            this._view.set('active', false);
+            this._view.destroy({remove: true});
+        }
         super.disconnectedCallback();
     }
 }
