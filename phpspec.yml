@@ -1,0 +1,8 @@
+extensions:
+    Memio\SpecGen\MemioSpecGenExtension: ~
+
+suites:
+    platformui:
+        namespace: EzSystems\PlatformUIBundle
+        psr4_prefix: EzSystems\PlatformUIBundle
+        src_path: .
