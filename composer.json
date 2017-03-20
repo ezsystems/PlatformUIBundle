@@ -15,7 +15,8 @@
         "ezsystems/ez-support-tools": "^0.1",
         "zetacomponents/system-information": "^1.1",
         "willdurand/js-translation-bundle": "^2.5",
-        "jms/translation-bundle": "^1.3"
+        "jms/translation-bundle": "^1.3",
+        "bower-asset/alloyeditor": "^1.3"
     },
     "require-dev": {
         "symfony/symfony": "~2.8|~3.2",
@@ -29,7 +30,15 @@
         "_ezplatform_branch_for_behat_tests": "master",
         "branch-alias": {
             "dev-master": "1.9.x-dev",
+            "dev-test_composer_plugin": "1.9.x-dev",
             "dev-tmp_ci_branch": "1.9.x-dev"
+        }
+    },
+    "config": {
+        "fxp-asset": {
+            "installer-paths": {
+                "bower-asset-library": "Resources/public/"
+            }
         }
     }
 }
