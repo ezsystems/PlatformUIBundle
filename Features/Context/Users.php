@@ -102,6 +102,7 @@ class Users extends PlatformUI
             throw new \Exception('Errors found in the page');
         }
     }
+
     /**
      * Helper function, returns true if errors are found in the page, false otherwise.
      */

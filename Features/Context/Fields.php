@@ -172,6 +172,7 @@ class Fields extends PlatformUI
             throw new \Exception('Cannot publish content, application in wrong state');
         }
     }
+
     /**
      * @Then I see the content edit view/form
      */
