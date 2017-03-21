@@ -27,8 +27,8 @@ class InterfaceLanguagesTest extends PHPUnit_Framework_TestCase
     {
         return [
             ['en', 'en-US,fr-FR', ['en_US', 'en']],
-            ['en', 'fr', ['fr','en']],
-            ['en', 'fr-FR,fr-BE', ['fr_FR', 'fr','en']],
+            ['en', 'fr', ['fr', 'en']],
+            ['en', 'fr-FR,fr-BE', ['fr_FR', 'fr', 'en']],
         ];
     }
 
