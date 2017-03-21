@@ -11,6 +11,7 @@ use eZ\Publish\Core\Repository\Values\User\UserCreateStruct;
 use eZ\Publish\Core\REST\Server\Exceptions\BadRequestException;
 use eZ\Publish\Core\REST\Server\Values\RestContent;
 use eZ\Publish\Core\REST\Server\Values\Version;
+use eZ\Publish\Core\REST\Server\Values\CreatedVersion;
 use Symfony\Component\HttpFoundation\Request;
 use eZ\Publish\Core\REST\Common\Message;
 use eZ\Publish\Core\REST\Server\Controller\Content;
@@ -52,6 +53,28 @@ class ContentController extends Content
         );
 
         return new NoContent();
+    }
+
+    public function createDraftFromCurrentVersion($contentId)
+    {
+        if (!$this->isUserContent($contentId)) {
+            return parent::createDraftFromCurrentVersion($contentId);
+        }
+
+        // Not creating the draft in this method as it will be created later by `updateVersion` and returning a dummy version
+        $content = $this->repository->getUserService()->loadUser($contentId);
+        $contentInfo = $this->repository->getContentService()->loadContentInfo($contentId);
+        $contentType = $this->repository->getContentTypeService()->loadContentType($contentInfo->contentTypeId);
+
+        return new CreatedVersion(
+            array(
+                'version' => new Version(
+                    $content,
+                    $contentType,
+                    []
+                ),
+            )
+        );
     }
 
     /**
