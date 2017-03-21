@@ -134,7 +134,7 @@ class Role extends PlatformUI
     {
         $this->iSeeNotification('Form did not validate. Please review errors below.');
         $element = $this->getElementByText(
-            'Identifier "' .  $name . '" already exists. Role identifier must be unique.',
+            'Identifier "' . $name . '" already exists. Role identifier must be unique.',
             'li'
         );
         if (!$element) {

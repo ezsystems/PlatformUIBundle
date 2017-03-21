@@ -7,6 +7,15 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
         lockPriorityEditTest, itemViewTest, loadingTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
+    function _getGetterForLocationMock(attrs) {
+        return function (attr) {
+            if ( typeof attrs[attr] !== "undefined" ) {
+                return attrs[attr];
+            }
+            Y.fail("Unexpected attr '" + attr + "'");
+        };
+    }
+
     function _configureSubitemsMock(priority) {
         var i = 0;
 
@@ -30,15 +39,6 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
                 run: _getGetterForLocationMock({locationId: 41 + i, priority: priority})
             });
         }
-    }
-
-    function _getGetterForLocationMock(attrs) {
-        return function (attr) {
-            if ( typeof attrs[attr] !== "undefined" ) {
-                return attrs[attr];
-            }
-            Y.fail("Unexpected attr '" + attr + "'");
-        };
     }
 
     renderTest = new Y.Test.Case({

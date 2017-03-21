@@ -447,6 +447,7 @@ class PlatformUI extends Context
         } catch (\Exception $e) {
         }
     }
+
     /**
      * Attaches a file to a input field on the HTML.
      *

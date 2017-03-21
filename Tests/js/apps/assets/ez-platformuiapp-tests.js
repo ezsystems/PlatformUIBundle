@@ -292,6 +292,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 serviceInit = false, serviceLoad = false,
                 viewParameters = {'myVar': 1},
                 test = this,
+                res = {},
+                expectReq = {},
                 TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
                     initializer: function () {
                         Y.Assert.areSame(
@@ -303,7 +305,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                             "The app should be passed to the service"
                         );
                         Y.Assert.areSame(
-                            req, this.get('request'),
+                            expectReq, this.get('request'),
                             "The request object should be passed to the service"
                         );
                         Y.Assert.areSame(
@@ -327,8 +329,9 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                         view: 'myView',
                         service: TestService,
                     },
-                },
-                res = {};
+                };
+
+            expectReq = req;
 
             this.app.views.myView = {
                 type: Y.Base.create('myView', Y.View, [], {
@@ -355,6 +358,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 viewParameters = {'myVar': 1},
                 test = this,
                 appConf = {countriesInfo: {}},
+                res = {},
+                expectReq = {},
                 TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
                     initializer: function () {
                         Y.Assert.areSame(
@@ -366,7 +371,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                             "The app should be passed to the service"
                         );
                         Y.Assert.areSame(
-                            req, this.get('request'),
+                            expectReq, this.get('request'),
                             "The request object should be passed to the service"
                         );
                         Y.Assert.areSame(
@@ -395,8 +400,9 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                         view: 'myView',
                         service: TestService,
                     },
-                },
-                res = {};
+                };
+
+            expectReq = req;
 
             this.app._set('config', appConf);
             this.app.views.myView = {
@@ -419,7 +425,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
 
         "With a service, the view events should bubble to the app through the service": function () {
-            var TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
+            var bubbleApp = false, bubbleService = false,
+                TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
                     initializer: function () {
                         this.on('*:testEvent', function (e) {
                             bubbleService = true;
@@ -431,8 +438,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                         view: 'myView',
                         service: TestService,
                     },
-                },
-                bubbleApp = false, bubbleService = false;
+                };
 
             this.app.on('*:testEvent', function (e) {
                 bubbleApp = true;

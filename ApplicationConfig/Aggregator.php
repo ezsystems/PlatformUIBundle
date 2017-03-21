@@ -9,7 +9,7 @@ namespace EzSystems\PlatformUIBundle\ApplicationConfig;
  */
 class Aggregator implements Provider
 {
-    /** @var Provider[] ApplicationConfigProviders, indexed by namespace string*/
+    /** @var Provider[] ApplicationConfigProviders, indexed by namespace string */
     private $providers = [];
 
     /**
