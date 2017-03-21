@@ -37,6 +37,7 @@ YUI.add('ez-viewservice-tests', function (Y) {
 
         "setNextViewServiceParameters() should spread the provided param to the view service plugins": function () {
             var pluginMethodCalled = false,
+                param = 'test',
                 plugin = Y.Base.create('plugin1', Y.eZ.Plugin.ViewServiceBase, [], {
                     setNextViewServiceParameters: function (service) {
                         pluginMethodCalled = true;
@@ -48,8 +49,7 @@ YUI.add('ez-viewservice-tests', function (Y) {
                     }
                 }, {NS: 'plugin1'}),
                 plugins = [plugin],
-                service,
-                param = 'test';
+                service;
 
             service = new Y.eZ.ViewService({plugins: plugins});
             service.setNextViewServiceParameters(param);
