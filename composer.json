@@ -34,6 +34,11 @@
             "dev-tmp_ci_branch": "1.9.x-dev"
         }
     },
+    "scripts": {
+        "post-install-cmd": [
+            "echo 'POST INSTALL PLATFORMUI'"
+        ]
+    },
     "config": {
         "fxp-asset": {
             "installer-paths": {
