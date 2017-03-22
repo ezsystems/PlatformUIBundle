@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-subitemlistitemview-tests', function (Y) {
-    var renderTest, propertiesTest, priorityUpdateTest,
+    var renderTest, propertiesTest, priorityUpdateTest, editTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     function createModelMock(name) {
@@ -367,7 +367,7 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
                     vars.contentType,
                     "The contentType should be available in the template"
                 );
-                
+
                 return rendered;
             }, this));
             this.view.get('availableProperties')[attr] = {
@@ -628,8 +628,87 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
         },
     });
 
+    editTest = new Y.Test.Case({
+        name: "eZ Subitem List View edit test",
+
+        _createModelMock: createModelMock,
+
+        setUp: function () {
+            this._createModelMock('location');
+            this._createModelMock('content');
+            this._createModelMock('contentType');
+            this.languageCode = "fre-FR";
+            this.contentInfoMock = new Mock();
+
+            Mock.expect(this.contentInfoMock, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.languageCode,
+            });
+
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['contentInfo'],
+                returns: this.contentInfoMock,
+            });
+
+            this.view = new Y.eZ.SubitemListItemView({
+                container: '.container',
+                location: this.location,
+                content: this.content,
+                contentType: this.contentType,
+                displayedProperties: [],
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        'Should fire `editContentRequest` when edit button is clicked': function () {
+            var editButton,
+                eventFired = false;
+
+            editButton = this.view.get('container').one('.ez-subitemlistitem-edit');
+
+            this.view.on('editContentRequest', Y.bind(function (e) {
+                eventFired = true;
+
+                Assert.areSame(
+                    this.contentInfoMock,
+                    e.contentInfo,
+                    "The contentInfo provided by the event should be the same."
+                );
+                Assert.areSame(
+                    this.languageCode,
+                    e.languageCode,
+                    "The languageCode provided by the event should be the same."
+                );
+                Assert.areSame(
+                    this.contentType,
+                    e.contentType,
+                    "The contentType provided by the event should be the same."
+                );
+            }, this));
+
+            editButton.simulateGesture('tap', Y.bind(function () {
+                this.resume(function (e) {
+                    Assert.isTrue(
+                        eventFired,
+                        "The `editContentRequest` event should have been fired"
+                    );
+                });
+            }, this));
+            this.wait();
+        },
+    });
+
+
     Y.Test.Runner.setName("eZ Subitem List View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(propertiesTest);
     Y.Test.Runner.add(priorityUpdateTest);
+    Y.Test.Runner.add(editTest);
 }, '', {requires: ['test', 'template', 'handlebars', 'node-event-simulate', 'ez-subitemlistitemview']});

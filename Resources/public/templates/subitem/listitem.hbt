@@ -5,3 +5,8 @@
         <td class="{{ class }}">{{ value }}</td>
     {{/if}}
 {{/each}}
+<td class="ez-subitemlistitem-cell">
+    <button class="ez-subitemlistitem-edit ez-font-icon pure-button ez-button">
+        {{translate 'subitem.listitem.edit' 'subitem'}}
+    </button>
+</td>

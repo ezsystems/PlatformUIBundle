@@ -14,6 +14,7 @@
         <td class="{{ class }}">{{ value }}</td>
     {{/if}}
 {{/each}}
+<button class="ez-subitemlistitem-edit">edit</button>
 </script>
 
 <script type="text/x-handlebars-template" id="priority-tpl">
@@ -52,8 +53,19 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemlistitemview": {
-                requires: ['ez-templatebasedview', 'ez-translateproperty', 'event-tap', 'event-valuechange', 'template'],
+                requires: [
+                    'ez-templatebasedview',
+                    'ez-translateproperty',
+                    'event-tap',
+                    'event-valuechange',
+                    'template',
+                    'ez-draftconflict',
+                ],
                 fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemlistitemview.js"
+            },
+            'ez-draftconflict': {
+                requires: ['view'],
+                fullpath: '../../../../Resources/public/js/extensions/ez-draftconflict.js'
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
