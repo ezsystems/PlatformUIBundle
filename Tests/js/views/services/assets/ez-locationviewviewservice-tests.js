@@ -281,13 +281,11 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.locationId = '42';
             this.sortField = "PRIORITY";
             this.sortOrder = 'ASC';
-            this.priority = '50';
             this.updateStruct = {
                 body: {
                     LocationUpdate: {
                         sortField: this.sortField,
                         sortOrder: this.sortOrder,
-                        priority: this.priority,
                     }
                 }
             };
@@ -511,68 +509,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             Assert.isTrue(notified, "The notified event should have been fired");
             Mock.verify(this.locationMock);
         },
-
-        "Should update the priority on priorityUpdate event": function () {
-            var that = this;
-
-            Mock.expect(this.locationMock, {
-                method: 'updatePriority',
-                args: [Mock.Value.Object, this.priority, Mock.Value.Function],
-                run: function (options, priority, cb) {
-                    Assert.areSame(options.api, that.capi, "load options should contain JS REST API");
-                    cb(false);
-                },
-            });
-            this.service.fire('whatever:updatePriority', {location: this.locationMock, priority: this.priority});
-
-            Mock.verify(this.locationMock);
-        },
-
-        "Should send a 'error' notification after error when updating priority": function () {
-            var notified = false,
-                that = this;
-
-            Mock.expect(this.locationMock, {
-                method: 'updatePriority',
-                args: [Mock.Value.Object, this.priority, Mock.Value.Function],
-                run: function (options, priority, cb) {
-                    cb(true);
-                },
-            });
-
-            Mock.expect(this.locationMock, {
-                method: 'get',
-                args: ['locationId'],
-                returns: this.locationId,
-            });
-
-            this.service.once('notify', function (e) {
-                notified = true;
-
-                Assert.isObject(e.notification, "The event facade should provide a notification config");
-                Assert.areEqual(
-                    "error", e.notification.state,
-                    "The notification state should be 'error'"
-                );
-                Assert.isString(
-                    e.notification.text,
-                    "The notification text should be a string"
-                );
-
-                Assert.isTrue(
-                    e.notification.identifier.indexOf(that.locationId) !== -1,
-                    "The notification identifier should contain the locationId"
-                );
-                Assert.areSame(
-                    0, e.notification.timeout,
-                    "The notification timeout should be set to 0"
-                );
-            });
-            this.service.fire('whatever:updatePriority', {location: this.locationMock, priority: this.priority});
-            Assert.isTrue(notified, "The notified event should have been fired");
-            Mock.verify(this.locationMock);
-        },
-
     });
 
     moveContentTest = new Y.Test.Case({

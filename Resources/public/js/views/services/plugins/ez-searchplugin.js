@@ -709,6 +709,7 @@ YUI.add('ez-searchplugin', function (Y) {
             'locationViewViewService', 'universalDiscoveryViewService',
             'contentEditViewService', 'contentCreateViewService',
             'dashboardBlocksViewService', 'contentPeekViewService',
+            'subitemBoxViewService',
         ]
     );
 });
