@@ -1858,6 +1858,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
     registerTest.components = [
         'locationViewViewService', 'universalDiscoveryViewService', 'contentEditViewService',
         'contentCreateViewService', 'dashboardBlocksViewService', 'contentPeekViewService',
+        'subitemBoxViewService',
     ];
 
     Y.Test.Runner.setName("eZ Search Plugin Tests");
