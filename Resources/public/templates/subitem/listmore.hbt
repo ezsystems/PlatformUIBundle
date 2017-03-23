@@ -8,6 +8,7 @@
                 {{ name }}
             </th>
             {{/each}}
+            <th class="ez-subitem-column-head ez-subitem-edit-column"></th>
         </tr>
         </thead>
         <tbody class="ez-subitemlist-content ez-loadmorepagination-content"></tbody>

@@ -23,7 +23,7 @@ YUI.add('ez-subitemlistitemview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.SubitemListItemView = Y.Base.create('subitemListItemView', Y.eZ.TemplateBasedView, [Y.eZ.TranslateProperty], {
+    Y.eZ.SubitemListItemView = Y.Base.create('subitemListItemView', Y.eZ.TemplateBasedView, [Y.eZ.TranslateProperty, Y.eZ.DraftConflict], {
         events: {
             '.ez-subitemlistitem-priority': {
                 'mouseover': '_displayEditIcon',
@@ -39,6 +39,9 @@ YUI.add('ez-subitemlistitemview', function (Y) {
             },
             '.ez-subitem-priority-form': {
                 'submit': '_setPriority'
+            },
+            '.ez-subitemlistitem-edit': {
+                'tap': '_editContent',
             },
         },
 
@@ -365,7 +368,7 @@ YUI.add('ez-subitemlistitemview', function (Y) {
          */
         _validatePriority: function () {
             var validity;
-            
+
             if ( this.get('editingPriority') ) {
                 validity = this._getPriorityInput().get('validity');
 
@@ -395,6 +398,18 @@ YUI.add('ez-subitemlistitemview', function (Y) {
          */
         _getPriorityInput: function (inputId) {
             return this.get('container').one('.ez-subitem-priority-input');
+        },
+
+        /**
+         * Edits the content by sending an edit content request
+         *
+         * @method _editContent
+         */
+        _editContent: function () {
+            this._fireEditContentRequest(
+                this.get('location').get('contentInfo'),
+                this.get('contentType')
+            );
         },
     }, {
          ATTRS: {

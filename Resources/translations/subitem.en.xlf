@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-01-31T10:50:08Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-03-22T16:01:33Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -73,6 +73,12 @@
         <target>Last</target>
         <note>key: subitem.last</note>
         <jms:reference-file>Resources/public/templates/subitem/list.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e85e98a7e031974c2dc497b926158e893a366f56" resname="subitem.listitem.edit">
+        <source>Edit</source>
+        <target>Edit</target>
+        <note>key: subitem.listitem.edit</note>
+        <jms:reference-file>Resources/public/templates/subitem/listitem.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="c9196a19ae958da788cf0b5fbb4e0fb6451ebdf2" resname="subitem.next">
         <source>Next</source>

@@ -484,6 +484,7 @@ system:
                         - 'subitemlistitemview-ez-template'
                         - 'subitemlistitem-name-ez-template'
                         - 'subitemlistitem-priority-ez-template'
+                        - 'ez-draftconflict'
                     path: "%ez_platformui.public_dir%/js/views/subitem/ez-subitemlistitemview.js"
                 subitemlistitemview-ez-template:
                     type: 'template'
