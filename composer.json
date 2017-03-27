@@ -17,12 +17,17 @@
         "jms/translation-bundle": "^1.3",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
         "dpobel/ez-field-edit": "dev-master as 1.0.x-dev",
-        "composer/installers": "dev-ezplatform_webcomponent as 1.3.x-dev"
+        "dpobel/hybrid-platformui-assets": "~0.1.0",
+        "composer/installers": "dev-ezplatform_assets as 1.3.x-dev"
     },
     "repositories": [
         {
             "type": "vcs",
             "url": "https://github.com/dpobel/ez-field-edit.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/dpobel/hybrid-platformui-assets.git"
         },
         {
             "type": "vcs",
