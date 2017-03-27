@@ -15,8 +15,20 @@
         "zetacomponents/system-information": "^1.1",
         "willdurand/js-translation-bundle": "^2.5",
         "jms/translation-bundle": "^1.3",
-        "friendsofsymfony/jsrouting-bundle": "^1.6"
+        "friendsofsymfony/jsrouting-bundle": "^1.6",
+        "dpobel/ez-field-edit": "dev-master as 1.0.x-dev",
+        "composer/installers": "dev-ezplatform_webcomponent as 1.3.x-dev"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/dpobel/ez-field-edit.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/dpobel/installers.git"
+        }
+    ],
     "require-dev": {
         "symfony/symfony": "~2.8|~3.2",
         "phpunit/phpunit": "~4.7",

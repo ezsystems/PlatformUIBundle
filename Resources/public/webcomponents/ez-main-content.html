@@ -3,9 +3,9 @@
     for extensibility, custom field input need to be loaded before the component
     that wants to use it. For our own field input, we can import them here
 -->
-<link rel="import" href="ez-fieldinput.html">
-<link rel="import" href="ez-fieldinput-maplocation.html">
-<link rel="import" href="ez-fieldinput-richtext.html">
+<link rel="import" href="../../../assets/webcomponents/ez-field-edit.html">
+<link rel="import" href="ez-field-edit-maplocation.html">
+<link rel="import" href="ez-field-edit-richtext.html">
 
 <style>
 ez-main-content {
@@ -64,10 +64,10 @@ ez-main-content {
         }
 
         _getFieldTypeInputTag(div) {
-            const defaultTag = 'ez-fieldinput',
+            const defaultTag = 'ez-field-edit',
                   customTag = defaultTag + '-' + this._getFieldTypeIdentifier(div);
             // we are looking for a custom tag dedicated to the field type
-            // ie whether ez-fieldinput-<fieldTypeIdentifier> exists
+            // ie whether ez-field-edit-<fieldTypeIdentifier> exists
 
             return (customElements.get(customTag) ? customTag : defaultTag);
         }

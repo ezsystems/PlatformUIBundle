@@ -1,22 +1,22 @@
-<link rel="import" href="ez-fieldinput.html">
+<link rel="import" href="../../../assets/webcomponents/ez-field-edit.html">
 <link rel="import" href="ez-online-editor.html">
 
 <style>
-ez-fieldinput-ezrichtext {
+ez-field-edit-ezrichtext {
     display: block;
     padding: 1em;
 }
 
-ez-fieldinput-ezrichtext ez-online-editor {
+ez-field-edit-ezrichtext ez-online-editor {
     padding: 1em 2em;
 }
 
-ez-fieldinput-ezrichtext .ae-editable,
-ez-fieldinput-ezrichtext .ae-editable:focus {
+ez-field-edit-ezrichtext .ae-editable,
+ez-field-edit-ezrichtext .ae-editable:focus {
     border: 1px solid #ddd;
 }
 
-ez-fieldinput-ezrichtext.is-invalid fieldset {
+ez-field-edit-ezrichtext.is-invalid fieldset {
     background: #fdd;
 }
 </style>
@@ -25,9 +25,9 @@ ez-fieldinput-ezrichtext.is-invalid fieldset {
 (function () {
     window.eZ = window.eZ || {};
 
-    class eZFieldInputRichText extends customElements.get('ez-fieldinput') {
+    class eZFieldEditRichText extends customElements.get('ez-field-edit') {
         static get is() {
-            return 'ez-fieldinput-ezrichtext';
+            return 'ez-field-edit-ezrichtext';
         }
 
         constructor() {
@@ -73,6 +73,6 @@ ez-fieldinput-ezrichtext.is-invalid fieldset {
         }
     }
 
-    customElements.define(eZFieldInputRichText.is, eZFieldInputRichText);
+    customElements.define(eZFieldEditRichText.is, eZFieldEditRichText);
 })();
 </script>

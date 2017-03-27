@@ -1,22 +1,22 @@
-<link rel="import" href="ez-fieldinput.html">
+<link rel="import" href="../../../assets/webcomponents/ez-field-edit.html">
 <link rel="import" href="ez-map.html">
 
 <style>
-ez-fieldinput-ezgmaplocation {
+ez-field-edit-ezgmaplocation {
     display: block;
     padding: 1em;
 }
 
-ez-fieldinput-ezgmaplocation.is-invalid fieldset {
+ez-field-edit-ezgmaplocation.is-invalid fieldset {
     background: #fdd;
 }
 </style>
 
 <script>
 (function () {
-    class eZFieldInputMapLocation extends customElements.get('ez-fieldinput') {
+    class eZFieldEditMapLocation extends customElements.get('ez-field-edit') {
         static get is() {
-            return 'ez-fieldinput-ezgmaplocation';
+            return 'ez-field-edit-ezgmaplocation';
         }
 
         constructor() {
@@ -24,10 +24,10 @@ ez-fieldinput-ezgmaplocation.is-invalid fieldset {
         }
 
         _getFieldValue(subField) {
-            return this._getFieldInput(subField).value;
+            return this._getFieldEdit(subField).value;
         }
 
-        _getFieldInput(subField) {
+        _getFieldEdit(subField) {
             return this.querySelector('input[name*="' + subField + '"]');
         }
 
@@ -41,12 +41,12 @@ ez-fieldinput-ezgmaplocation.is-invalid fieldset {
 
             this.querySelector('fieldset').appendChild(map);
             map.addEventListener('coordinatesUpdate', function (e) {
-                this._getFieldInput('latitude').value = e.detail.latitude.toFixed(6);
-                this._getFieldInput('longitude').value = e.detail.longitude.toFixed(6);
+                this._getFieldEdit('latitude').value = e.detail.latitude.toFixed(6);
+                this._getFieldEdit('longitude').value = e.detail.longitude.toFixed(6);
             }.bind(this));
         }
     }
 
-    customElements.define(eZFieldInputMapLocation.is, eZFieldInputMapLocation);
+    customElements.define(eZFieldEditMapLocation.is, eZFieldEditMapLocation);
 })();
 </script>
