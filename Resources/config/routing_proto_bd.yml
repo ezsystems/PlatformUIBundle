@@ -1,0 +1,5 @@
+proto_dashboard:
+    path: /dashboard
+    defaults:
+        _controller: eZPlatformUIBundle:ProtoBD:dashboard
+    methods: [GET]

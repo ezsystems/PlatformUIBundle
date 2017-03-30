@@ -19,6 +19,9 @@ v2proto:
     resource: "@eZPlatformUIBundle/Resources/config/routing_proto.yml"
     prefix:   /proto
 
+v2proto_bd:
+    resource: "@eZPlatformUIBundle/Resources/config/routing_proto_bd.yml"
+
 webcomponents:
     resource: "@eZPlatformUIBundle/Resources/config/routing_webcomponent.yml"
 

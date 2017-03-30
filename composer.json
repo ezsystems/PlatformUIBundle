@@ -10,7 +10,7 @@
     "require": {
         "ezsystems/platform-ui-assets-bundle": "^3.1.0",
         "ezsystems/repository-forms": "^1.2",
-        "ezsystems/ezpublish-kernel": "^6.6",
+        "ezsystems/ezpublish-kernel": "dev-siteaccess_configuration_filter as 6.9-dev",
         "ezsystems/ez-support-tools": "^0.1",
         "zetacomponents/system-information": "^1.1",
         "willdurand/js-translation-bundle": "^2.5",
@@ -43,7 +43,12 @@
         "symfony/symfony": "~2.8|~3.2",
         "phpunit/phpunit": "~4.7",
         "matthiasnoback/symfony-dependency-injection-test": "^0.7",
-        "mockery/mockery": "^0.9.5"
+        "mockery/mockery": "^0.9.5",
+        "phpspec/phpspec": "^3.2",
+        "memio/spec-gen": "^0.6"
+    },
+    "config": {
+        "bin-dir": "bin"
     },
     "extra": {
         "_ci_branch-comment_": "Keep ci branch up-to-date with master or branch if on stable. ci is never on github but convention used for ci behat testing!",

@@ -2,7 +2,6 @@
 
 namespace EzSystems\PlatformUIBundle\NavigationHub\Link;
 
-use EzSystems\PlatformUIBundle\NavigationHub\Link\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class Subtree extends Route
@@ -11,10 +10,10 @@ class Subtree extends Route
     {
         $location = $request->attributes->get('location');
 
-        return (
+        return
             $this->matchRoute($this->routeName)
             && $location
             && in_array((string)$this->routeParams['locationId'], $location->path)
-        );
+        ;
     }
 }

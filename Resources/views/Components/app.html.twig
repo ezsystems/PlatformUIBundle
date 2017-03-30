@@ -1,7 +1,21 @@
-{{ navigationHub|raw }}
-<main>
-    {% for toolbar in toolbars %}
-        {{ toolbar|raw }}
-    {% endfor %}
-    {{ mainContent|raw }}
-</main>
+{% extends "@eZPlatformUI/PlatformUI/proto.html.twig" %}
+
+{% block app %}
+
+    {% block navigationHub %}
+        {{ navigationHub|raw }}
+    {% endblock %}
+
+    {% block main %}
+        <main>
+            {% block toolbars %}
+                {{ toolbars|raw }}
+            {% endblock %}
+
+            {% block mainContent %}
+                {{ mainContent|raw }}
+            {% endblock %}
+        </main>
+    {% endblock %}
+
+{% endblock %}

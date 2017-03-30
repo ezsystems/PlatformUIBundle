@@ -29,7 +29,7 @@ class Route extends Link
     public function match(Request $request)
     {
         $routeName = $request->attributes->get('_route');
-        $routeParams = $request->attributes->get('_routeParams');
+        $routeParams = $request->attributes->get('_routeParams', []);
 
         return (
             $this->matchRoute($routeName)

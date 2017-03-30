@@ -1,10 +1,16 @@
 <?php
+/**
+ * @copyright Copyright (C) eZ Systems AS. All rights reserved.
+ * @license For full copyright and license information view LICENSE file distributed with this source code.
+ */
 
-namespace EzSystems\PlatformUIBundle\Components;
+namespace EzSystems\PlatformUIBundle\Hybrid\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 
-class NavigationHub implements Component
+class NavigationHubController extends Controller
 {
     const TAG_NAME = 'ez-navigation-hub';
 
@@ -40,19 +46,21 @@ class NavigationHub implements Component
         $this->links = $links;
     }
 
-    public function __toString()
+    public function showNavigationHubAction()
     {
-        return $this->templating->render(
-            'eZPlatformUIBundle:Components:navigationhub.html.twig',
-            [
-                'tag' => self::TAG_NAME,
-                'attributes' => $this->getAttributes(),
-                'zones' => $this->zones,
-                'links' => $this->links,
-                'activeZone' => $this->getActiveZoneIdentifier(),
-                'activeZoneClass' => self::ACTIVE_ZONE_CLASS,
-                'matchedLinkClass' => self::MATCHED_LINK_CLASS,
-            ]
+        return new Response(
+            $this->templating->render(
+                'eZPlatformUIBundle:Components:navigationhub.html.twig',
+                [
+                    'tag' => self::TAG_NAME,
+                    'attributes' => $this->getAttributes(),
+                    'zones' => $this->zones,
+                    'links' => $this->links,
+                    'activeZone' => $this->getActiveZoneIdentifier(),
+                    'activeZoneClass' => self::ACTIVE_ZONE_CLASS,
+                    'matchedLinkClass' => self::MATCHED_LINK_CLASS,
+                ]
+            )
         );
     }
 
