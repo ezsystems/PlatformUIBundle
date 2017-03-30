@@ -70,6 +70,7 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         },
 
         destroy: function () {
+            this.container.removeAttribute('style');
             this.editor.destroy();
         },
 
@@ -135,6 +136,15 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                     wrapper.get('region').left, region.left,
                     "region left property should hold the wrapper top position"
                 );
+                Assert.areEqual(
+                    wrapper.get('region').bottom, region.bottom,
+                    "region bottom property should hold the wrapper bottom position"
+                );
+                Assert.areEqual(
+                    wrapper.get('region').right, region.right,
+                    "region right property should hold the wrapper top position"
+                );
+
                 Assert.areSame(
                     nativeEditor.widgets.focused, widget,
                     "The widget should have the focus"
@@ -146,6 +156,17 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                 editorInteractionFired,
                 "The editorInteraction event should have been fired"
             );
+        },
+
+        // regression test for EZP-27114
+        // region object was incorrectly computed as a result, the toolbar was
+        // mispositioned when getting the focus.
+        "Should take scroll into account when computing region for editorInteraction event": function () {
+            this.container.setStyle('margin-top', '2000px');
+            this.container.setStyle('margin-left', '2000px');
+            this.container.scrollIntoView();
+
+            this["Should fire editorInteraction on focus"]();
         },
     });
 
@@ -840,4 +861,4 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     Y.Test.Runner.add(initTest);
     Y.Test.Runner.add(alignMethodsTest);
     Y.Test.Runner.add(insertEditTest);
-}, '', {requires: ['test', 'node-event-simulate', 'ez-alloyeditor-plugin-embed']});
+}, '', {requires: ['test', 'node-event-simulate', 'node-style', 'ez-alloyeditor-plugin-embed']});
