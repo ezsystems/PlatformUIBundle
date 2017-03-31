@@ -22,6 +22,7 @@
 <script type="text/javascript" src="./assets/fake-alloyeditor-toolbarconfig.js"></script>
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-richtext-editview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -40,7 +41,7 @@
         filter: loaderFilter,
         modules: {
             "ez-richtext-editview": {
-                requires: ['ez-fieldeditview', 'ez-alloyeditor', 'ez-processable', 'node'],
+                requires: ['ez-fieldeditview', 'ez-translator', 'ez-alloyeditor', 'ez-processable', 'node'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-richtext-editview.js"
             },
             "ez-processable": {
