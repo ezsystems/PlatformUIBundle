@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-02-03T15:42:16Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-03-09T16:35:22Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -138,6 +138,12 @@
         <note>key: failed.to.load.location.path</note>
         <jms:reference-file>Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="3f04f55debf0d3a13a9cfa32616c860989ac11d1" resname="failed.to.load.section">
+        <source>Failed to load content's section</source>
+        <target>Failed to load content's section</target>
+        <note>key: failed.to.load.section</note>
+        <jms:reference-file>Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="e59fc009e6dc0079786973ab8b8542f463d3b233" resname="failed.updated.priority">
         <source>An error occurred when updating the priority</source>
         <target>An error occurred when updating the priority</target>
@@ -232,6 +238,30 @@
         <source>Retry</source>
         <target>Retry</target>
         <note>key: locationview.details.retry</note>
+        <jms:reference-file>Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="331cffcd3a384170271d5718f985aceb785c1c66" resname="locationview.details.sectionId">
+        <source>Section id</source>
+        <target>Section id</target>
+        <note>key: locationview.details.sectionId</note>
+        <jms:reference-file>Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="a7269661e9fb6263e1384653afec0a71a486f464" resname="locationview.details.sectionIdentifier">
+        <source>Section identifier</source>
+        <target>Section identifier</target>
+        <note>key: locationview.details.sectionIdentifier</note>
+        <jms:reference-file>Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="3856df0053db711c29636338a59538cba6951220" resname="locationview.details.sectionName">
+        <source>Section name</source>
+        <target>Section name</target>
+        <note>key: locationview.details.sectionName</note>
+        <jms:reference-file>Resources/public/templates/tabs/details.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="eca9605beb0cee0f9908fcb213519c57b987bf80" resname="locationview.details.sectiondetails">
+        <source>Section details</source>
+        <target>Section details</target>
+        <note>key: locationview.details.sectiondetails</note>
         <jms:reference-file>Resources/public/templates/tabs/details.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="92ecfb85a6f93f491fb98ca6f584fffaea5d56a2" resname="locationview.details.subitems.default.ordering">

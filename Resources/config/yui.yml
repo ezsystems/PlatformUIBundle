@@ -294,6 +294,7 @@ system:
                         - 'ez-objectrelationloadplugin'
                         - 'ez-objectrelationsloadplugin'
                         - 'ez-userloadplugin'
+                        - 'ez-sectionloadplugin'
                         - 'ez-contenteditplugin'
                         - 'ez-locationsloadplugin'
                         - 'ez-locationcreateplugin'
@@ -1166,7 +1167,7 @@ system:
                     requires: ['model', 'json']
                     path: "%ez_platformui.public_dir%/js/models/ez-restmodel.js"
                 ez-contentmodel:
-                    requires: ['ez-restmodel', 'ez-versionmodel','ez-versioninfomodel', 'array-extras', 'ez-contentinfo-base']
+                    requires: ['ez-restmodel', 'ez-versionmodel','ez-versioninfomodel', 'ez-sectionmodel', 'array-extras', 'ez-contentinfo-base']
                     path: "%ez_platformui.public_dir%/js/models/ez-contentmodel.js"
                 ez-versionmodel:
                     requires: ['ez-versioninfomodel']
@@ -1192,6 +1193,9 @@ system:
                 ez-contentinfomodel:
                     requires: ['ez-restmodel', 'ez-contentinfo-base']
                     path: "%ez_platformui.public_dir%/js/models/ez-contentinfomodel.js"
+                ez-sectionmodel:
+                    requires: ['ez-restmodel']
+                    path: "%ez_platformui.public_dir%/js/models/ez-sectionmodel.js"
                 ez-contenttree:
                     requires: ['tree', 'tree-openable', 'tree-selectable', 'tree-lazy']
                     path: "%ez_platformui.public_dir%/js/models/structs/ez-contenttree.js"
@@ -1350,6 +1354,9 @@ system:
                 ez-userloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js"
+                ez-sectionloadplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-sectionloadplugin.js"
                 ez-contenteditplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contenteditplugin.js"

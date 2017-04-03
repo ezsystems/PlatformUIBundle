@@ -355,7 +355,26 @@ YUI.add('ez-contentmodel', function (Y) {
             );
         },
 
+        /**
+         * Loads content's section
+         *
+         * @method loadSection
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback
+         */
+        loadSection: function (options, callback) {
+            var section = new Y.eZ.Section();
 
+            section.set('id', this.get('resources').Section);
+            section.load(options, function(error) {
+                if (error) {
+                    callback(error);
+                } else {
+                    callback(error, section);
+                }
+            });
+        },
 
         /**
          * Adds new location for content
@@ -456,7 +475,7 @@ YUI.add('ez-contentmodel', function (Y) {
             {'_href': 'id'},
         ],
         LINKS_MAP: [
-            'Owner', 'MainLocation', 'ContentType'
+            'Owner', 'MainLocation', 'ContentType', 'Section',
         ],
         ATTRS: {
             /**
