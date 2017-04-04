@@ -240,7 +240,7 @@ YUI.add('ez-binarybase-editview', function (Y) {
          */
         _base64ToFileStruct: function (file, e) {
             var base64 = e.target.result.replace(/^.*;base64,/, '');
-            
+
             this._set('file', this._createFileStruct(file, base64));
             e.target.onload = undefined;
         },
@@ -357,6 +357,9 @@ YUI.add('ez-binarybase-editview', function (Y) {
          */
         _prepareDrop: function (e) {
             e.preventDefault();
+            if (this.get('isNotTranslatable')) {
+                return;
+            }
             this._set('warning', false);
             this._uiPrepareDropArea(e);
         },
@@ -394,6 +397,10 @@ YUI.add('ez-binarybase-editview', function (Y) {
             var files = e._event.dataTransfer.files;
 
             e.preventDefault();
+            if (this.get('isNotTranslatable')) {
+                return;
+            }
+
             this._uiResetDropArea();
             if ( files.length > 1 ) {
                 this._set(
