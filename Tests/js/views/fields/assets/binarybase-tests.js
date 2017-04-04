@@ -883,6 +883,44 @@ YUI.add('binarybase-tests', function (Y) {
             this._dragEventTest('dragover');
         },
 
+        _dragEventTestNotTranslatable: function (evtName) {
+            var dropArea,
+                container = this.view.get('container'),
+                facade,
+                evt = this._simulateEvent(evtName);
+
+            this.view._set('isNotTranslatable', true);
+            this.view.render();
+
+            dropArea = container.one('.ez-binarybase-drop-area');
+            this.view._set('warning', 'Previous message');
+            container.delegate(evtName, function (e) {
+                facade = e;
+            }, '.ez-binarybase-drop-area', this);
+            evt.dataTransfer = {};
+            dropArea.getDOMNode().dispatchEvent(evt);
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-dragging-file'),
+                "The view container should get the is-dragging-file class"
+            );
+            Assert.isTrue(
+                facade._event.defaultPrevented,
+                "The " + evtName + " event should be prevented"
+            );
+            Assert.areNotEqual(
+                "copy", facade._event.dataTransfer.dropEffect,
+                "The drop effect should not be set to copy"
+            );
+        },
+
+        "Should handle the dragenter DOM event on not translatable elements": function () {
+            this._dragEventTestNotTranslatable('dragenter');
+        },
+
+        "Should handle the dragover DOM event on not translatable elements": function () {
+            this._dragEventTestNotTranslatable('dragover');
+        },
+
         "Should handle the dragleave DOM event": function () {
             var dl = this._simulateEvent('dragleave'),
                 dropArea;
@@ -997,6 +1035,40 @@ YUI.add('binarybase-tests', function (Y) {
                 "The drop event should be prevented"
             );
             this._dropFileAssert(reader, file, this.fileContent);
+        },
+
+        "Should not accept the dropped file on non translatable elements": function () {
+            var dropArea,
+                container = this.view.get('container'),
+                file = {},
+                facade,
+                evt = this._simulateEvent('drop'),
+                defaultFile = {};
+
+            evt.dataTransfer = {files: [file]};
+
+            this.view._set('isNotTranslatable', true);
+            this.view._set('file', defaultFile);
+
+            this.view.render();
+
+            dropArea = container.one('.ez-binarybase-drop-area');
+            container.delegate("drop", function (e) {
+                facade = e;
+            }, '.ez-binarybase-drop-area', this);
+            dropArea.getDOMNode().dispatchEvent(evt);
+            Assert.isFalse(
+                this.view.get('warning'),
+                "The warning attribute should be false"
+            );
+            Assert.isTrue(
+                facade._event.defaultPrevented,
+                "The drop event should be prevented"
+            );
+            Assert.areEqual(
+                defaultFile, this.view.get('file'),
+                "The default File should not have been modified"
+            );
         },
     };
 });
