@@ -11,6 +11,9 @@ YUI.add('ez-contenttree', function (Y) {
      */
     Y.namespace('eZ');
 
+    console.log('[DEPRECRATED] eZ.ContentTree is deprecated');
+    console.log('[DEPRECRATED] it will be removed from PlatformUI 2.0');
+    
     /**
      * Content tree structure
      *

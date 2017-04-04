@@ -126,7 +126,7 @@
     content: "\E607";
 }
 
-.ez-view-buttonactionview .ez-action[data-action="tree"] .action-icon:before {
+.ez-view-buttonactionview .ez-action[data-action="browse"] .action-icon:before {
     content: "\E619";
 }
 

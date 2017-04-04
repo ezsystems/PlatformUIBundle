@@ -18,7 +18,8 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
         },
         viewName = 'universalDiscoveryFinderExplorerLevelView',
         HAS_SELECTED_ITEM = 'has-selected-item',
-        IS_LOADING = 'is-loading';
+        IS_LOADING = 'is-loading',
+        IS_DISABLED = 'is-disabled';
 
     /**
      * The universal discovery finder explorer level. It shows content of a given depth
@@ -62,8 +63,24 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
             container.scrollInfo.on('scrollDown', this._handleScroll, this);
 
             this.after('ownSelectedItemChange', this._uiOwnSelectedItem);
+            this._uiDisableLevelView();
             this._uiOwnSelectedItem();
             this._addDOMEventHandlers(events);
+        },
+
+        /**
+         * Adds the is disabled item class on the container
+         * depending on the `disabled` attribute value.
+         *
+         * @method _uiDisableLevelView
+         * @protected
+         */
+        _uiDisableLevelView: function () {
+            var container = this.get('container');
+
+            if (this.get('disabled')) {
+                container.addClass(IS_DISABLED);
+            }
         },
 
         /**
@@ -232,7 +249,8 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
         _fireExplorerNavigate: function (e) {
             var nodeLocationId = e.target.getData('location-id'),
                 item = this._findItemByLocationId(nodeLocationId);
-            if ((this.get('selectLocationId') != nodeLocationId || !this.get('ownSelectedItem')) && item) {
+
+            if (!this.get('disabled') && (this.get('selectLocationId') != nodeLocationId || !this.get('ownSelectedItem')) && item) {
                 this.set('selectLocationId', nodeLocationId);
 
                 /**
@@ -323,6 +341,20 @@ YUI.add('ez-universaldiscoveryfinderexplorerlevelview', function (Y) {
              * @type Number
              */
             childCount: {},
+
+            /**
+             * Boolean that tell if the view is disabled or not.
+             * The items of a disabled level view can not be explored.
+             * 
+             * @attribute disabled
+             * @writeOnce
+             * @default false
+             * @type Boolean
+             */
+            disabled: {
+                writeOnce: 'initOnly',
+                value: false,
+            },
         },
     });
 });

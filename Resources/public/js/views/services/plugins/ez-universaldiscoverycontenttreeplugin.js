@@ -11,6 +11,9 @@ YUI.add('ez-universaldiscoverycontenttreeplugin', function (Y) {
      */
     Y.namespace('eZ.Plugin');
 
+    console.log('[DEPRECRATED] eZ.Plugin.UniversalDiscoveryContentTree is deprecated');
+    console.log('[DEPRECRATED] it will be removed from PlatformUI 2.0');
+
     /**
      * Universal Discovery Content Tree Plugin. It enhances the universal
      * discovery to handle the content tree related events and fetching.

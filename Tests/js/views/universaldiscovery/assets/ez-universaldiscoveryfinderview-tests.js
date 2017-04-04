@@ -423,7 +423,7 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
     });
 
     settersTest = new Y.Test.Case({
-        name: 'eZ Universal Discovery Finder startingLocation and virtualRootLocation setter tests',
+        name: 'eZ Universal Discovery Finder discoverRootDepth, startingLocation, virtualRootLocation setter tests',
 
         setUp: function () {
             this.selectedView = new Y.View();
@@ -462,6 +462,17 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             Assert.areSame(
                 location, this.finderExplorerView.get('startingLocation'),
                 "The startingLocation should be set on the finder explorer"
+            );
+        },
+        
+        "Should forward the minDiscoverDepth to the finder explorer": function () {
+            var minDiscoverDepth = 1;
+
+            this.view.set('minDiscoverDepth', minDiscoverDepth);
+
+            Assert.areSame(
+                minDiscoverDepth, this.finderExplorerView.get('minDiscoverDepth'),
+                "The minDiscoverDepth should be set on the finder explorer"
             );
         },
     });

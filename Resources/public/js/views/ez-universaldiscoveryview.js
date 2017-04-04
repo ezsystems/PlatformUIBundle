@@ -70,6 +70,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     this._updateMethods();
                     this._uiUpdateTab();
                     this._uiUpdateTitle();
+                    this._uiUpdateConfirmLabel();
                 }
             });
             this.on(['contentDiscoveredHandlerChange', 'cancelDiscoverHandlerChange'], function (e) {
@@ -257,6 +258,17 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         /**
+         * Updates the label of the confirm button in the already rendered view
+         *
+         * @method _uiUpdateConfirmLabel
+         * @protected
+         */
+        _uiUpdateConfirmLabel: function () {
+            this.get('container')
+                .one('.ez-universaldiscovery-confirm').setContent(this.get('confirmLabel'));
+        },
+        
+        /**
          * Updates the method views depending on the value so that their
          * `visible` flag is consistent with the `visibleMethod` attribute value
          * and so that they get the correct `multiple` and `loadContent` flag
@@ -270,6 +282,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             var visibleMethod = this.get('visibleMethod'),
                 startingLocationId = this.get('startingLocationId'),
                 startingLocation = this.get('startingLocation'),
+                minDiscoverDepth = this.get('minDiscoverDepth'),
                 virtualRootLocation = this.get('virtualRootLocation');
 
             /**
@@ -287,6 +300,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     'virtualRootLocation': virtualRootLocation,
                     'multiple': this.get('multiple'),
                     'loadContent': true,
+                    'minDiscoverDepth': minDiscoverDepth,
                     'startingLocationId': startingLocationId,
                     'startingLocation': startingLocation,
                     'visible': visible,
@@ -437,6 +451,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 title: this.get('title'),
                 multiple: this.get('multiple'),
                 methods: this._methodsList(),
+                confirmLabel: this.get('confirmLabel'),
             }));
             container.one('.ez-universaldiscovery-confirmed-list-container').append(
                 this.get('confirmedListView').render().get('container')
@@ -476,6 +491,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     title: method.get('title'),
                     identifier: method.getHTMLIdentifier(),
                     visible: method.get('visible'),
+                    confirmLabel: method.get('confirmLabel'),
                 });
             });
             return res;
@@ -491,6 +507,19 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              */
             title: {
                 value: "Select your content",
+            },
+
+            /**
+             * Label of the 'confirm' button
+             *
+             * @attribute confirmLabel
+             * @type {String}
+             * @default Y.eZ.trans('universaldiscovery.confirm.selection', {}, 'universaldiscovery')
+             */
+            confirmLabel: {
+                valueFn: function () {
+                    return Y.eZ.trans('universaldiscovery.confirm.selection', {}, 'universaldiscovery');
+                },
             },
 
             /**
@@ -514,6 +543,17 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              * @default false if there is no starting location
              */
             startingLocationId: {
+                value: false,
+            },
+
+            /**
+             * The depth of the root where we start discovering content.
+             * The UDW needs a starting location having a greater depth than the min discover depth to work.
+             *
+             * @attribute minDiscoverDepth
+             * @type {Number|false}
+             */
+            minDiscoverDepth: {
                 value: false,
             },
 
@@ -587,6 +627,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             multiple: this.get('multiple'),
                             loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
+                            minDiscoverDepth: this.get('minDiscoverDepth'),
                             startingLocationId: this.get('startingLocationId'),
                             startingLocation: this.get('startingLocation'),
                             virtualRootLocation: this.get('virtualRootLocation'),
@@ -597,6 +638,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             multiple: this.get('multiple'),
                             loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
+                            minDiscoverDepth: this.get('minDiscoverDepth'),
                             startingLocationId: this.get('startingLocationId'),
                             startingLocation: this.get('startingLocation'),
                             virtualRootLocation: this.get('virtualRootLocation'),

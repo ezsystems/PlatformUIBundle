@@ -96,7 +96,6 @@ YUI.add('ez-universaldiscoveryviewservice', function (Y) {
         },
     }, {
         ATTRS: {
-
             /**
              * Holds the starting location where the UDW will start.
              * False if no starting location defined

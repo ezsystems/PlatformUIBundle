@@ -164,6 +164,20 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
             },
 
             /**
+             * The discover root depth if the UDW is configured with one. It is 
+             * directly set on the finder explorer view.
+             *
+             * @attribute minDiscoverDepth
+             * @type {Number|false}
+             */
+            minDiscoverDepth: {
+                setter: function (minDiscoverDepth) {
+                    this.get('finderExplorerView').set('minDiscoverDepth', minDiscoverDepth);
+                    return minDiscoverDepth;
+                }
+            },
+            
+            /**
              * The virtual root Location object. It is directly set on the
              * finder explorer view.
              *
