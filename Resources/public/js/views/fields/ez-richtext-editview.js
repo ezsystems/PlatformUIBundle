@@ -227,7 +227,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                 return;
             }
             if ( this._isEmpty() ) {
-                this.set('errorStatus', "This field is required");
+                this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }
