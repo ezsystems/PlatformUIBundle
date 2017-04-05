@@ -387,7 +387,9 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                         region = this.wrapper.getClientRect();
 
                     region.top += scroll.y;
+                    region.bottom += scroll.y;
                     region.left += scroll.x;
+                    region.right += scroll.x;
                     region.direction = CKEDITOR.SELECTION_TOP_TO_BOTTOM;
                     return region;
                 },
