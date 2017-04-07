@@ -1,0 +1,23 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-contenttypeeditserversideview .ezselection-settings-option-value-prototype {
+    display: none;
+}
+
+.ez-view-contenttypeeditserversideview .ezselection-settings-option-list {
+    margin: 0 0 1em 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.ez-view-contenttypeeditserversideview .ezselection-settings-option-value {
+    line-height: 2.4em;
+}
+
+.ez-view-contenttypeeditserversideview .ezselection-settings-option-list,
+.ez-view-contenttypeeditserversideview .ezselection-settings-toolbar {
+    margin-left: 11em;
+}

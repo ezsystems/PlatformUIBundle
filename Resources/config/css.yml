@@ -103,6 +103,7 @@ system:
                 - 'bundles/ezplatformui/css/views/fields/edit/user.css'
                 - 'bundles/ezplatformui/css/views/dashboard/base.css'
                 - 'bundles/ezplatformui/css/views/dashboard/asynchronous.css'
+                - 'bundles/ezplatformui/css/views/contenttypeedit.css'
                 - 'bundles/ezplatformui/css/modules/tabs.css'
                 - 'bundles/ezplatformui/css/modules/page-header.css'
                 - 'bundles/ezplatformui/css/modules/serverside-content.css'
