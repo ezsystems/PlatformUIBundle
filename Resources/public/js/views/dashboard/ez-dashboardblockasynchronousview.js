@@ -32,6 +32,12 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
         initializer: function () {
             this._fireMethod = this._fireLoadDataEvent;
             this._watchAttribute = 'items';
+            this._errorHandlingMethod = function () {
+                if (this.get('loadingError')) {
+                    this._set('loading', false);
+                    this.render();
+                }
+            };
             /**
              * Stores the click outside event handler
              *
@@ -47,8 +53,14 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
                 .addClass(this._generateViewClassName(Y.eZ.DashboardBlockBaseView.NAME))
                 .addClass(this._generateViewClassName(Y.eZ.DashboardBlockAsynchronousView.NAME));
 
-            this.after('itemsChange', function () {
-                this._set('loading', false);
+            this.on('itemsChange', function (e) {
+                if ( e.newVal === null ) {
+                    // null is set when retrying with the Retry button
+                    e.newVal = Y.eZ.DashboardBlockAsynchronousView.ATTRS.items.value;
+                    this._set('loading', true);
+                } else {
+                    this._set('loading', false);
+                }
             });
             this.after('loadingChange', function () {
                 if ( this.get('loading') ) {

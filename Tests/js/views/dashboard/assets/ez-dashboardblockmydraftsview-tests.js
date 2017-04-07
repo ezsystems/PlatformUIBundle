@@ -8,7 +8,7 @@ YUI.add('ez-dashboardblockmydraftsview-tests', function (Y) {
     var AsynchronousViewTests = Y.eZ.Test.DashblockBlockAsynchronousViewTests,
         renderTest,
         loadUserDraftsEvent,
-        rowOptionTest,
+        rowOptionTest, errorHandlingTest,
         CLASS_LOADING = 'is-loading',
         Assert = Y.Assert, Model = Y.Model, Mock = Y.Mock;
 
@@ -146,10 +146,25 @@ YUI.add('ez-dashboardblockmydraftsview-tests', function (Y) {
         },
     }));
 
+    errorHandlingTest = new Y.Test.Case(Y.merge(AsynchronousViewTests.ErrorHandlingTest, {
+        name: 'eZ Dashboard My Drafts Block View error handling',
+
+        setUp: function () {
+            this.view = new Y.eZ.DashboardBlockMyDraftsView({
+                container: '.container',
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+    }));
+
     Y.Test.Runner.setName('eZ Dashboard My Drafts Block View tests');
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(loadUserDraftsEvent);
     Y.Test.Runner.add(rowOptionTest);
+    Y.Test.Runner.add(errorHandlingTest);
 }, '', {
     requires: [
         'test', 'base', 'view', 'model', 'node-event-simulate',
