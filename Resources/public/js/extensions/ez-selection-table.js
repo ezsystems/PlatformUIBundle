@@ -57,8 +57,9 @@ YUI.add('ez-selection-table', function (Y) {
      * @param {Object} e event facade
      */
     SelectionTable.prototype._handleRowSelection = function (e) {
-        var buttons = this.get('container').all(
-                e.target.ancestor('.ez-selection-table').getAttribute('data-selection-buttons')
+        var selectionTable = e.target.ancestor('.ez-selection-table'),
+            buttons = selectionTable.get('parentNode').all(
+                selectionTable.getAttribute('data-selection-buttons')
             );
 
         this._uiSelectRow(e.target);
