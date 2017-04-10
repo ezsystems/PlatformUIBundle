@@ -359,8 +359,8 @@
         <jms:reference-file>Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="a10ccd621b14ed09703e07e31cbfed166450b722" resname="invalid.isbn10.sum.not.multiple.of.11">
-        <source>invalid ISBN 10 (sum is not a multiple of 11")</source>
-        <target>invalid ISBN 10 (sum is not a multiple of 11")</target>
+        <source>invalid ISBN 10 (sum is not a multiple of 11)</source>
+        <target>invalid ISBN 10 (sum is not a multiple of 11)</target>
         <note>key: invalid.isbn10.sum.not.multiple.of.11</note>
         <jms:reference-file>Resources/public/js/views/fields/ez-isbn-editview.js</jms:reference-file>
       </trans-unit>
