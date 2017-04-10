@@ -446,6 +446,90 @@ YUI.add('ez-serversideview-tests', function (Y) {
             this._serializeTest(html, {}, 'form input[type="submit"]', this._forceActiveElement);
         },
 
+        "Should handle the no submit button case": function () {
+            var html;
+
+            html = '<form method="post" action="" id="form"></form>';
+
+            this._serializeTest(html, {}, '', function () {
+                this.view.get('container').one('#form').simulate('submit');
+            });
+        },
+
+        "Should handle several forms and submit": function () {
+            var c = this.view.get('container'),
+                html,
+                expectedData,
+                submit, submitFormEvent = 0;
+
+            html = '<form method="post" action="" id="form1">';
+            html += '<button type="submit" name="submit1">Submit!</button>';
+            html += '</form>';
+            html += '<form method="post" action="" id="form2">';
+            html += '<button type="submit" name="submit2">Submit!</button>';
+            html += '</form>';
+
+            this.view.set('html', html);
+            this.view.on('submitForm', Y.bind(function (e) {
+                e.originalEvent.preventDefault();
+                submitFormEvent++;
+
+                Assert.isObject(
+                    e.formData,
+                    "The form should be serialzed"
+                );
+                this._assertFormData(e.formData, expectedData);
+            }, this));
+            this.view.render();
+            submit = c.one('#form1 button[type="submit"]');
+            expectedData = {"submit1": ""};
+            submit.focus();
+            submit.simulate('click');
+
+            submit = c.one('#form2 button[type="submit"]');
+            expectedData = {"submit2": ""};
+            submit.focus();
+            submit.simulate('click');
+
+            Assert.areEqual(2, submitFormEvent, "The submitForm should have been fired twice");
+        },
+
+        "Should handle several submit buttons in the same form": function () {
+            var c = this.view.get('container'),
+                html,
+                expectedData,
+                submit, submitFormEvent = 0;
+
+            html = '<form method="post" action="">';
+            html += '<button type="submit" name="submit1">Submit!</button>';
+            html += '<button type="submit" name="submit2">Submit!</button>';
+            html += '</form>';
+
+            this.view.set('html', html);
+            this.view.on('submitForm', Y.bind(function (e) {
+                e.originalEvent.preventDefault();
+                submitFormEvent++;
+
+                Assert.isObject(
+                    e.formData,
+                    "The form should be serialzed"
+                );
+                this._assertFormData(e.formData, expectedData);
+            }, this));
+            this.view.render();
+            submit = c.one('button[name="submit1"]');
+            expectedData = {"submit1": ""};
+            submit.focus();
+            submit.simulate('click');
+
+            submit = c.one('button[name="submit2"]');
+            expectedData = {"submit2": ""};
+            submit.focus();
+            submit.simulate('click');
+
+            Assert.areEqual(2, submitFormEvent, "The submitForm should have been fired twice");
+        },
+
         _forceActiveElement: function (submit) {
             submit.focus();
         },
@@ -471,7 +555,9 @@ YUI.add('ez-serversideview-tests', function (Y) {
             if ( preTestFunc ) {
                 preTestFunc.call(this, submit);
             }
-            submit.simulate('click');
+            if ( submit ) {
+                submit.simulate('click');
+            }
             Assert.isTrue(submitFormEvent, "The submitForm should have been fired");
         },
 
