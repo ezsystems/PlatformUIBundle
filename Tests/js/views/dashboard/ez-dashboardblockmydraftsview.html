@@ -21,6 +21,9 @@
         {{/each}}
         </tbody>
     </table>
+    {{#if loadingError}}
+        <button class="ez-asynchronousview-retry">Retry</button>
+    {{/if}}
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
