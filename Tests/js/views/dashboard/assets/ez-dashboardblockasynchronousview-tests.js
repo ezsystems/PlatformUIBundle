@@ -14,6 +14,70 @@ YUI.add('ez-dashboardblockasynchronousview-tests', function (Y) {
         SELECTOR_OUTSIDE = '.outside',
         Assert = Y.Assert, Mock = Y.Mock;
 
+    NS.ErrorHandlingTest = {
+        "Should unset `loading` on loading error": function () {
+            this.view._set('loading', true);
+            this.view.set('loadingError', true);
+
+            Assert.isFalse(
+                this.view.get('loading'),
+                "`loading` should have been set back to false"
+            );
+        },
+
+        "Should rerender the view on loading error": function () {
+            var templateCalled = false,
+                origTpl = this.view.template;
+
+            this.view.template = function (params) {
+                templateCalled = true;
+
+                return origTpl.apply(this, arguments);
+            };
+
+            this.view.set('loadingError', true);
+
+            Assert.isTrue(
+                templateCalled, "The view should have been rendered"
+            );
+        },
+
+        "Should set items to its default value when retrying loading": function () {
+            var view = this.view;
+
+            view.set('items', []);
+            view.set('loadingError', true);
+
+            view.after('itemsChange', this.next(function () {
+                Assert.areSame(
+                    Y.eZ.DashboardBlockAsynchronousView.ATTRS.items.value,
+                    view.get('items'),
+                    "`items` should have been restored to its default value"
+                );
+            }, this));
+            view.get('container').one('.ez-asynchronousview-retry').simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should set `loading` when retrying loading": function () {
+            var view = this.view;
+
+            view.set('items', []);
+            view.set('loading', false);
+            view.set('loadingError', true);
+
+            view.after('loadingChange', this.next(function () {
+                Assert.isTrue(
+                    view.get('loading'),
+                    "`loading` should be set to true"
+                );
+            }, this));
+
+            view.get('container').one('.ez-asynchronousview-retry').simulateGesture('tap');
+            this.wait();
+        },
+    };
+
     NS.RenderTest = {
         'Should render the view with a template': function () {
             var view = this.view,
