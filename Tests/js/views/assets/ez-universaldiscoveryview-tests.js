@@ -425,17 +425,14 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
             this.method1._set('identifier', 'method1');
             this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
-            this.method2._set('identifier', 'method2');
-            this.defaultMethod = new Y.eZ.UniversalDiscoveryMethodBaseView();
-            this.defaultMethod._set('identifier', 'defaultMethod');
+            this.method2._set('identifier', Y.eZ.UniversalDiscoveryView.ATTRS.visibleMethod.value);
             this.confirmedList = new Y.View();
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
                 title: this.title,
-                visibleMethod: 'method2',
-                defaultVisibleMethod: 'defaultMethod',
+                visibleMethod: Y.eZ.UniversalDiscoveryView.ATTRS.visibleMethod.value,
                 multiple: this.multiple,
-                methods: [this.method1, this.method2, this.defaultMethod],
+                methods: [this.method1, this.method2],
                 confirmedListView: this.confirmedList,
             });
         },
@@ -452,6 +449,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
 
         "Should initialize the visibility flag of the method views": function () {
+            this.view.set('visibleMethod', 'method2');
             this.view.render();
             this.view.set('active', true);
             Assert.isTrue(
@@ -490,10 +488,6 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.view.set('active', true);
             this.view.set('visibleMethod', 'methodUnknown');
             Assert.isTrue(
-                this.defaultMethod.get('visible'),
-                "The default method should be visible"
-            );
-            Assert.isFalse(
                 this.method2.get('visible'),
                 "The method2 should not be visible"
             );

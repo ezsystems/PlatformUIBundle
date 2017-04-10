@@ -279,58 +279,52 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
          * @protected
          */
         _updateMethods: function () {
-            var startingLocationId = this.get('startingLocationId'),
+            var visibleMethod = this.get('visibleMethod'),
+                startingLocationId = this.get('startingLocationId'),
                 startingLocation = this.get('startingLocation'),
                 minDiscoverDepth = this.get('minDiscoverDepth'),
-                virtualRootLocation = this.get('virtualRootLocation');
+                virtualRootLocation = this.get('virtualRootLocation'),
+                defaultMethodView;
 
-            if (this.get('active')) {
-                /**
-                 * Stores a reference to the visible method view
-                 *
-                 * @property _visibleMethodView
-                 * @protected
-                 * @type {eZ.UniversalDiscoveryMethodBaseView|Null}
-                 */
-                this._visibleMethodView = this._getCorrectVisibleMethod();
-
-                Y.Array.each(this.get('methods'), function (method) {
-                    var visible = (method.get('identifier') === this._visibleMethodView.get('identifier'));
-                    method.setAttrs({
-                        'virtualRootLocation': virtualRootLocation,
-                        'multiple': this.get('multiple'),
-                        'loadContent': true,
-                        'minDiscoverDepth': minDiscoverDepth,
-                        'startingLocationId': startingLocationId,
-                        'startingLocation': startingLocation,
-                        'visible': visible,
-                        'isSelectable': Y.bind(this.get('isSelectable'), this),
-                        'active': this.get('active'),
-                    });
-                }, this);
+            if ( !this.get('active') ) {
+                return;
             }
-        },
-
-        /**
-         * Return the visible method, if a wrong or unknown one is setted, it will return the default one.
-         *
-         * @method _getCorrectVisibleMethod
-         * @protected
-         */
-        _getCorrectVisibleMethod: function () {
-            var visibleMethodIdentifier = this.get('visibleMethod'),
-                defaultVisibleMethodIdentifier = this.get('defaultVisibleMethod'),
-                defaultVisibleMethod,
-                visibleMethod;
+            /**
+             * Stores a reference to the visible method view
+             *
+             * @property _visibleMethodView
+             * @protected
+             * @type {eZ.UniversalDiscoveryMethodBaseView|Null}
+             */
+            this._visibleMethodView = null;
 
             Y.Array.each(this.get('methods'), function (method) {
-               if (visibleMethodIdentifier === method.get('identifier')) {
-                   visibleMethod = method;
-               } else if (defaultVisibleMethodIdentifier === method.get('identifier')) {
-                   defaultVisibleMethod = method;
-               }
-            });
-            return visibleMethod ? visibleMethod : defaultVisibleMethod;
+                var visible = (visibleMethod === method.get('identifier'));
+
+                if (!visible && (method.get('identifier') === Y.eZ.UniversalDiscoveryView.ATTRS.visibleMethod.value)) {
+                    defaultMethodView = method;
+                }
+
+                method.setAttrs({
+                    'virtualRootLocation': virtualRootLocation,
+                    'multiple': this.get('multiple'),
+                    'loadContent': true,
+                    'minDiscoverDepth': minDiscoverDepth,
+                    'startingLocationId': startingLocationId,
+                    'startingLocation': startingLocation,
+                    'visible': visible,
+                    'isSelectable': Y.bind(this.get('isSelectable'), this),
+                    'active': this.get('active'),
+                });
+                if ( visible ) {
+                    this._visibleMethodView = method;
+                }
+            }, this);
+
+            if ( !this._visibleMethodView ) {
+                defaultMethodView.set('visible', true);
+                this._visibleMethodView = defaultMethodView;
+            }
         },
 
         /**
@@ -675,17 +669,6 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              * @default 'finder'
              */
             visibleMethod: {
-                value: 'finder',
-            },
-
-            /**
-             * The identifier of the default visible method
-             *
-             * @attribute defaultVisibleMethod
-             * @type String
-             * @default 'finder'
-             */
-            defaultVisibleMethod: {
                 value: 'finder',
             },
 
