@@ -96,6 +96,8 @@ YUI.add('ez-discoverybarviewservice-tests', function (Y) {
             this.mainLanguage = 'LYO-69';
             this.location = new Y.Base();
             this.location.set('id', this.locationId);
+            this.location.set('contentInfo', new Y.Base());
+            this.location.get('contentInfo').set('mainLanguageCode', this.mainLanguage);
 
             Y.eZ.LocationViewView = Y.Base.create('locationView', Y.Base, [], {}, {
                 ATTRS: {
@@ -190,12 +192,6 @@ YUI.add('ez-discoverybarviewservice-tests', function (Y) {
                 args: ["activeView"],
                 callCount: 2,
                 returns: this.activeView
-            });
-
-            Y.Mock.expect(contentMock, {
-                method: 'get',
-                args: ['mainLanguageCode'],
-                returns: this.mainLanguage
             });
 
             Mock.expect(this.app, {
