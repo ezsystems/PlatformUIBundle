@@ -131,10 +131,14 @@ YUI.add('ez-discoverybarviewservice-tests', function (Y) {
         },
         
         "Should fire contentDiscover with a starting location on browseAction event": function () {
-            var contentDiscoverFired = false;
+            var contentDiscoverFired = false,
+                otherLocation = new Y.Base();
 
+            otherLocation.set('id', 'AnyOtherId');
             this.service.on('contentDiscover', Y.bind(function (e) {
                 contentDiscoverFired = true;
+
+                Assert.isFunction(e.config.isSelectable, "config should have a function named isSelectable");
 
                 Assert.areSame(
                     e.config.startingLocationId, this.locationId,
@@ -144,6 +148,40 @@ YUI.add('ez-discoverybarviewservice-tests', function (Y) {
                 Assert.areSame(
                     e.config.minDiscoverDepth, 1,
                     "minDiscoverDepth should be 1"
+                );
+            }, this));
+            this.service.fire('browseAction');
+
+            Assert.isTrue(contentDiscoverFired, 'contentDiscover should be fired');
+        },
+
+        "Should NOT be able to select the current location when content discovering": function () {
+            var contentDiscoverFired = false;
+
+            this.service.on('contentDiscover', Y.bind(function (e) {
+                contentDiscoverFired = true;
+
+                Y.Assert.isFalse(
+                    e.config.isSelectable({location: this.location}),
+                    "isSelectable should return FALSE if location is the same"
+                );
+            }, this));
+            this.service.fire('browseAction');
+
+            Assert.isTrue(contentDiscoverFired, 'contentDiscover should be fired');
+        },
+
+        "Should be able to select any other location than the current location when content discovering": function () {
+            var contentDiscoverFired = false,
+                otherLocation = new Y.Base();
+
+            otherLocation.set('id', 'AnyOtherId');
+            this.service.on('contentDiscover', Y.bind(function (e) {
+                contentDiscoverFired = true;
+
+                Y.Assert.isTrue(
+                    e.config.isSelectable({location: otherLocation}),
+                    "isSelectable should return TRUE if location is not the same"
                 );
             }, this));
             this.service.fire('browseAction');
