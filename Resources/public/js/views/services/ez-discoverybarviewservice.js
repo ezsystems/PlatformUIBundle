@@ -60,6 +60,9 @@ YUI.add('ez-discoverybarviewservice', function (Y) {
                     startingLocationId: startingLocationId,
                     minDiscoverDepth: rootDepth,
                     confirmLabel: Y.eZ.trans('view.content.label', {}, 'bar'),
+                    isSelectable: function (contentStruct) {
+                        return startingLocationId !== contentStruct.location.get('id');
+                    }
                 },
             });
         },
