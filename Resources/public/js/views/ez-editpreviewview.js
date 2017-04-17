@@ -73,14 +73,15 @@ YUI.add('ez-editpreviewview', function (Y) {
          * @method show
          */
         show: function (newWidth) {
-            var previewContainer = this.get('container').get('parentNode');
+            var previewContainer = this.get('container').get('parentNode'),
+                mainViewsTop = Y.one('.ez-mainviews').getY();
 
             if ( this.isHidden() ) {
                 previewContainer.setStyles({
                     'width': newWidth + 'px',
                     'height': previewContainer.get('winHeight') + 'px',
                 });
-                previewContainer.setXY([newWidth * 2, previewContainer.get('docScrollY')]);
+                previewContainer.setXY([newWidth * 2, previewContainer.get('docScrollY')+mainViewsTop]);
                 previewContainer.removeClass(IS_HIDDEN_CLASS);
             }
 
