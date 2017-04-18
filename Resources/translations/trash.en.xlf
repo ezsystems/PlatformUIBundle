@@ -49,8 +49,8 @@
         <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="e4070d79791c331da86fcb230fec53235b1519ad" resname="items.permanently.deleted">
-        <source>%count items were permanently deleted.</source>
-        <target>%count items were permanently deleted.</target>
+        <source>%count% items were permanently deleted.</source>
+        <target>%count% items were permanently deleted.</target>
         <note>key: items.permanently.deleted</note>
         <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
       </trans-unit>
