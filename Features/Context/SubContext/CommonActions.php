@@ -299,7 +299,8 @@ trait CommonActions
      */
     public function onFullView($name)
     {
-        $path = $this->getBasicContentManager()->getContentPath($name);
+        $basicContextNamespace = 'EzSystems\BehatBundle\Context\Object\BasicContent';
+        $path = $this->getContext($basicContextNamespace)->getContentPath($name);
         $this->goToContentWithPath($path);
     }
 
