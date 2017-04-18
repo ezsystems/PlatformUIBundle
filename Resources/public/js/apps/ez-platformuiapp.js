@@ -618,6 +618,8 @@ YUI.add('ez-platformuiapp', function (Y) {
             });
             if ( createView ) {
                 viewInfo.instance = new viewInfo.type();
+            } else {
+                viewInfo.instance.reset();
             }
             view = viewInfo.instance;
             view.addTarget(service);
