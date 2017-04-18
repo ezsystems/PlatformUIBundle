@@ -229,6 +229,10 @@ class ContentTypeController extends Controller
             $fieldDefinitionsByGroup[$fieldDefinition->fieldGroup ?: 'content'][] = $fieldDefinition;
         }
 
+        if (!isset($languageCode) || !isset($contentType->names[$languageCode])) {
+            $languageCode = $this->getPrioritizedLanguage($contentType);
+        }
+
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type.html.twig', [
             'language_code' => $languageCode,
             'content_type' => $contentType,
