@@ -19,7 +19,9 @@ YUI.add('ez-time-view-tests', function (Y) {
 
             setUp: function () {
                 this.fieldValue = 374388330;
-                this.dateObject = new Date(this.fieldValue * 1000);
+                this.tzOffset = new Date(this.fieldValue * 1000).getTimezoneOffset() * 60000;
+                this.utcDate = new Date((this.fieldValue * 1000) + this.tzOffset);
+                this.dateObject = this.utcDate;
 
                 this.time = this.dateObject.toLocaleTimeString(
                     undefined,
