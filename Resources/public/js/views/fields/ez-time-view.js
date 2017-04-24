@@ -34,7 +34,6 @@ YUI.add('ez-time-view', function (Y) {
         /**
          * Returns a timestamps in UTC
          *
-         * @deprecated Since 1.7.1
          * @protected
          * @method _getUtcTimeStamp
          * @param {Number} localizedTimestamp
@@ -90,7 +89,7 @@ YUI.add('ez-time-view', function (Y) {
             if (this._isFieldEmpty()) {
                 return undefined;
             } else {
-                return new Date(this.get('field').fieldValue * 1000);
+                return new Date(this._getUtcTimeStamp(this.get('field').fieldValue * 1000));
             }
         },
 
