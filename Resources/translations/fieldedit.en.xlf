@@ -145,6 +145,24 @@
         <note>key: date.time.required</note>
         <jms:reference-file>./Resources/public/js/views/fields/ez-dateandtime-editview.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="a26a9e8cceea9e78f5ed30052cd1e0aa592498ca" resname="dateandtime.placeholder.date">
+        <source>YYYY-MM-DD</source>
+        <target>YYYY-MM-DD</target>
+        <note>key: dateandtime.placeholder.date</note>
+        <jms:reference-file>Resources/public/templates/fields/edit/dateandtime.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="2cff2d354168b10a19b46934f9a205dfc13a0901" resname="dateandtime.placeholder.time.noseconds">
+        <source>hh:mm</source>
+        <target>hh:mm</target>
+        <note>key: dateandtime.placeholder.time.noseconds</note>
+        <jms:reference-file>Resources/public/templates/fields/edit/dateandtime.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="27990ecc05314691973682a4715a2db9893c0063" resname="dateandtime.placeholder.time.seconds">
+        <source>hh:mm:ss</source>
+        <target>hh:mm:ss</target>
+        <note>key: dateandtime.placeholder.time.seconds</note>
+        <jms:reference-file>Resources/public/templates/fields/edit/dateandtime.hbt</jms:reference-file>
+      </trans-unit>
       <trans-unit id="3512b5e328b32d7ad9f98fa9fdc35df7f2207526" resname="dropped.several.files">
         <source>You dropped several files while only one can be stored in this field. Please choose one file.</source>
         <target>You dropped several files while only one can be stored in this field. Please choose one file.</target>

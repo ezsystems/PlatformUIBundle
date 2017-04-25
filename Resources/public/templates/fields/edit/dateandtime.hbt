@@ -12,6 +12,7 @@
             <div class="ez-dateandtime-date-input-ui">
                 <input type="date"
                 value="{{ html5InputDate }}"
+                placeholder="{{translate "dateandtime.placeholder.date" "fieldedit"}}"
                 class="ez-validated-input"
                 id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
                 {{#if isRequired}} required{{/if}}
@@ -20,7 +21,8 @@
             </div>
             <div class="ez-dateandtime-time-input-ui">
                 <input type="time"
-                {{#if useSeconds}}step="1"{{/if}}
+                {{#if useSeconds}}step="1" placeholder="{{translate "dateandtime.placeholder.time.seconds" "fieldedit"}}"
+                {{else}}placeholder="{{translate "dateandtime.placeholder.time.noseconds" "fieldedit"}}"{{/if}}
                 value="{{ html5InputTime }}"
                 class="ez-validated-input"
                 {{#if isRequired}} required{{/if}}
