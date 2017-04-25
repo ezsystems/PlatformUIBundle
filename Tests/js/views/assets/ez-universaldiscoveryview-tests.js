@@ -425,12 +425,12 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
             this.method1._set('identifier', 'method1');
             this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
-            this.method2._set('identifier', 'method2');
+            this.method2._set('identifier', Y.eZ.UniversalDiscoveryView.ATTRS.visibleMethod.value);
             this.confirmedList = new Y.View();
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
                 title: this.title,
-                visibleMethod: 'method2',
+                visibleMethod: Y.eZ.UniversalDiscoveryView.ATTRS.visibleMethod.value,
                 multiple: this.multiple,
                 methods: [this.method1, this.method2],
                 confirmedListView: this.confirmedList,
@@ -449,6 +449,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
 
         "Should initialize the visibility flag of the method views": function () {
+            this.view.set('visibleMethod', 'method2');
             this.view.render();
             this.view.set('active', true);
             Assert.isTrue(
@@ -462,12 +463,31 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
 
         "Should change the visible flag depending on visibleMethod": function () {
+            this.view.set('active', true);
             this.view.set('visibleMethod', 'method1');
             Assert.isTrue(
                 this.method1.get('visible'),
                 "The method1 should be visible"
             );
             Assert.isFalse(
+                this.method2.get('visible'),
+                "The method2 should not be visible"
+            );
+        },
+
+        "Should change the visible flag depending on visibleMethod if view is NOT active": function () {
+            this.view.set('visibleMethod', 'method1');
+            Assert.isFalse(
+                this.method1.get('visible'),
+                "The method1 should NOT be visible"
+            );
+        },
+
+        "Should use the default visible method when a wrong method name is setted": function () {
+            this.view.render();
+            this.view.set('active', true);
+            this.view.set('visibleMethod', 'methodUnknown');
+            Assert.isTrue(
                 this.method2.get('visible'),
                 "The method2 should not be visible"
             );
