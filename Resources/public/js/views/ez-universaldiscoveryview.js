@@ -283,8 +283,12 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 startingLocationId = this.get('startingLocationId'),
                 startingLocation = this.get('startingLocation'),
                 minDiscoverDepth = this.get('minDiscoverDepth'),
-                virtualRootLocation = this.get('virtualRootLocation');
+                virtualRootLocation = this.get('virtualRootLocation'),
+                defaultMethodView;
 
+            if ( !this.get('active') ) {
+                return;
+            }
             /**
              * Stores a reference to the visible method view
              *
@@ -295,6 +299,10 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             this._visibleMethodView = null;
             Y.Array.each(this.get('methods'), function (method) {
                 var visible = (visibleMethod === method.get('identifier'));
+
+                if (!visible && (method.get('identifier') === Y.eZ.UniversalDiscoveryView.ATTRS.visibleMethod.value)) {
+                    defaultMethodView = method;
+                }
 
                 method.setAttrs({
                     'virtualRootLocation': virtualRootLocation,
@@ -311,6 +319,11 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     this._visibleMethodView = method;
                 }
             }, this);
+
+            if ( !this._visibleMethodView ) {
+                defaultMethodView.set('visible', true);
+                this._visibleMethodView = defaultMethodView;
+            }
         },
 
         /**
