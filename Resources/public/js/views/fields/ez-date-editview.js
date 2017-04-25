@@ -189,7 +189,7 @@ YUI.add('ez-date-editview', function (Y) {
             if ( validity.valueMissing ) {
                 this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
             } else if ( validity.badInput ) {
-                this.set('errorStatus', Y.eZ.trans('input.not.valid', {}, 'fieldedit'));
+                this.set('errorStatus', Y.eZ.trans('invalid.input', {}, 'fieldedit'));
             } else {
                 this.set('errorStatus', false);
             }
