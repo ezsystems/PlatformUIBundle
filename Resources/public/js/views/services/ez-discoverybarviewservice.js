@@ -77,7 +77,7 @@ YUI.add('ez-discoverybarviewservice', function (Y) {
         _navigateToLocation: function (e) {
             this.get('app').navigateTo('viewLocation', {
                 id: e.selection.location.get('id'),
-                languageCode: e.selection.location.get('contentInfo').get('mainLanguageCode')
+                languageCode: e.selection.content.get('mainLanguageCode')
             });
         },
 
