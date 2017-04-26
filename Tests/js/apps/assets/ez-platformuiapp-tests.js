@@ -1128,8 +1128,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     }
                 },
                 initialized = 0, rendered = 0, bubble = 0,
-                activeSet = 0, nextCalls = 0,
-                sideViewReseted = false;
+                activeSet = 0, nextCalls = 0;
 
 
             this.app.sideViews.sideView1.type = Y.Base.create('sideView1', Y.View, [], {
@@ -1137,10 +1136,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     rendered++;
                     this.get('container').setHTML(this.name);
                     return this;
-                },
-
-                reset: function () {
-                    sideViewReseted = true;
                 },
 
                 initializer: function () {
@@ -1186,7 +1181,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     this.app.sideViews.sideView1.instance.get('container')
                 )
             );
-            Y.Assert.isTrue(sideViewReseted, "The side view should have been reseted");
         },
 
         "Should hide the side view instance": function () {
