@@ -95,6 +95,7 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
          */
         wakeUp: function () {
             Y.Array.each(this.get('levelViews'), function (levelView) {
+                levelView.set('ownSelectedItem', false);
                 this._activateLevelView(levelView);
             }, this);
         },
