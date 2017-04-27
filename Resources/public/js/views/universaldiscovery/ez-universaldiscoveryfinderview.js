@@ -101,6 +101,8 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
          * @protected
          */
         _unselectContent: function () {
+            this._fireSelectContent(null);
+            this.get('selectedView').set('contentStruct', null);
             if (this.get('visible')) {
                 this.get('finderExplorerView').wakeUp();
             }

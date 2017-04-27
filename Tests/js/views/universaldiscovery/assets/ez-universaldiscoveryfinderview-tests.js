@@ -221,6 +221,13 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
                 virtualRootLocation: {},
                 visible: true,
             });
+            Mock.expect(this.finderExplorerView, {
+                method: 'wakeUp',
+            });
+            Mock.expect(this.selectedView, {
+                method: 'set',
+                args: ['contentStruct', null],
+            });
         },
 
         tearDown: function () {
@@ -231,17 +238,24 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
         },
 
         "Should wake up finder explorer view when view get visible ": function () {
-            Mock.expect(this.finderExplorerView, {
-                method: 'wakeUp',
-            });
-            Mock.expect(this.selectedView, {
-                method: 'set',
-                args: ['contentStruct', null],
-            });
             this.view.set('visible', false);
             this.view.set('visible', true);
 
             Mock.verify(this.finderExplorerView);
+        },
+
+        "Should reset the current selection when the visible attribute change": function () {
+            var selectContentFired = false;
+
+            this.view.on('*:selectContent', function (e) {
+                selectContentFired = true;
+                Assert.isNull(e.selection, 'selection should be null');
+            });
+
+            this.view.set('visible', false);
+
+            Assert.isTrue(selectContentFired, 'selectContent event should have been fired');
+            Mock.verify(this.selectedView);
         },
     });
 
