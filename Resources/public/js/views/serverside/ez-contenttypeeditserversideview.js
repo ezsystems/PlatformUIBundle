@@ -112,8 +112,8 @@ YUI.add('ez-contenttypeeditserversideview', function (Y) {
                 inputNameTpl = tplNode.getData('ezselection-option-input-name');
 
             settingsNode.all('.ezselection-settings-option-value input[type=text]').each(function (input, i) {
-                input.set('name', inputNameTpl.replace(PROTOTYPE_PLACEHOLDER, i+1));
-                input.set('id', inputIdTpl.replace(PROTOTYPE_PLACEHOLDER, i+1));
+                input.set('name', inputNameTpl.replace(PROTOTYPE_PLACEHOLDER, i));
+                input.set('id', inputIdTpl.replace(PROTOTYPE_PLACEHOLDER, i));
             });
         },
 
