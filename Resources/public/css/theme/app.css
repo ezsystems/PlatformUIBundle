@@ -49,6 +49,7 @@ a {
 
 .ez-view-container {
     transition: opacity 0.2s ease-in-out;
+    position: relative;
 }
 
 .is-app-loading .ez-view-container {
