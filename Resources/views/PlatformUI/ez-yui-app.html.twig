@@ -1,0 +1,26 @@
+{% javascripts
+    'bundles/bazingajstranslation/js/translator.min.js'
+    'bundles/ezplatformuiassets/vendors/yui3/build/yui/yui-min.js'
+    'bundles/ezplatformuiassets/vendors/handlebars-helper-intl/dist/handlebars-intl.min.js'
+    '$javascript.files;ez_platformui$' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% for domain in parameters.translationDomains %}
+    <script src="{{ url('bazinga_jstranslation_js', {'domain': domain}) }}?locales={{ parameters.interfaceLanguages|join(',') }}"></script>
+{% endfor %}
+
+<script>
+    {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
+
+    window.eZ = window.eZ || {};
+
+    YUI().use('ez-platformuiapp', function (Y) {
+        var app = new Y.eZ.PlatformUIApp({
+                config: {{ parameters|json_encode|raw }},
+                plugins: Y.eZ.PluginRegistry.getPlugins(Y.eZ.PlatformUIApp.NAME),
+            });
+
+        HandlebarsIntl.registerWith(Y.Handlebars);
+    });
+</script>
