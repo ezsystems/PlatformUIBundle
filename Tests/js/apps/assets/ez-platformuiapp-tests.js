@@ -6,7 +6,7 @@
 YUI.add('ez-platformuiapp-tests', function (Y) {
     var dispatchConfigTest, getLanguageNameTest,
         setGlobalsTest, appReadyEventTest,
-        renderViewTest,
+        renderViewTest, renderSideViewTest,
         Assert = Y.Assert;
 
     dispatchConfigTest = new Y.Test.Case({
@@ -406,6 +406,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
 
             Y.eZ.PluginRegistry.registerPlugin(Plugin, [Y.eZ.ViewService.NAME]);
             this.app.renderView(Y.View, Y.eZ.ViewService, {}, done);
+            Y.eZ.PluginRegistry.unregisterPlugin(pluginNS);
         },
 
         "Should handle loading error": function () {
@@ -490,10 +491,185 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    renderSideViewTest = new Y.Test.Case({
+        name: "eZ Platform UI App renderSideView test",
+
+        setUp: function () {
+            this.config = {};
+            this.app = new Y.eZ.PlatformUIApp({config: this.config});
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+        },
+
+        "Should configure the side view service": function () {
+            var params = {},
+                capi = {},
+                doneCalled = false,
+                done;
+
+            this.app._set('capi', capi);
+            done = Y.bind(function (err, service, view) {
+                doneCalled = true;
+                Assert.isFalse(
+                    err,
+                    "The error parameter should be false"
+                );
+                Assert.isInstanceOf(
+                    Y.eZ.ViewService, service,
+                    "The service should have been instantiated"
+                );
+                Assert.areSame(
+                    this.app, service.get('app'),
+                    "The service should have received the app"
+                );
+                Assert.areSame(
+                    capi, service.get('capi'),
+                    "The service should have received the CAPI"
+                );
+                Assert.areSame(
+                    params, service.get('parameters'),
+                    "The service should have received the parameters"
+                );
+                Assert.areSame(
+                    this.config, service.get('config'),
+                    "The service should have received the config"
+                );
+            }, this);
+
+            this.app.renderSideView(Y.View, Y.eZ.ViewService, params, done);
+
+            Assert.isTrue(
+                doneCalled,
+                "The renderSideView callback should have been called"
+            );
+        },
+
+        "Should add the app as a bubble target of the side view service": function () {
+            var done,
+                bubble = false;
+
+            done = function (err, service, view) {
+                service.fire('whatever');
+            };
+
+            this.app.on('*:whatever', function () {
+                bubble = true;
+            });
+            this.app.renderSideView(Y.View, Y.eZ.ViewService, {}, done);
+
+            Assert.isTrue(
+                bubble,
+                "The app should be a bubble target of the view service"
+            );
+        },
+
+        "Should pass the plugins to the side view service": function () {
+            var done,
+                pluginNS = 'myPlugin',
+                Plugin = Y.Base.create('myPlugin', Y.eZ.Plugin.ViewServiceBase, [], {}, {NS: pluginNS});
+
+            done = function (err, service, view) {
+                Assert.isInstanceOf(
+                    Plugin,
+                    service[pluginNS],
+                    "Registered plugins should have been instantiated"
+                );
+            };
+
+            Y.eZ.PluginRegistry.registerPlugin(Plugin, [Y.eZ.ViewService.NAME]);
+            this.app.renderSideView(Y.View, Y.eZ.ViewService, {}, done);
+            Y.eZ.PluginRegistry.unregisterPlugin(pluginNS);
+        },
+
+        "Should handle loading error": function () {
+            var done,
+                doneCalled = false,
+                errorMsg = 'error message',
+                Service = Y.Base.create('errorService', Y.eZ.ViewService, [], {
+                    _load: function () {
+                        this._error(errorMsg);
+                    },
+                });
+
+            done = function (err, service, view) {
+                doneCalled = true;
+                Assert.isInstanceOf(
+                    Error, err,
+                    "The error parameter should be an Error"
+                );
+                Assert.areEqual(
+                    errorMsg, err.message,
+                    "The error message should be set with the loading error"
+                );
+                Assert.isUndefined(service, "The service should be undefined");
+                Assert.isUndefined(view, "The view should be undefined");
+            };
+
+            this.app.renderSideView(Y.View, Service, {}, done);
+            Assert.isTrue(doneCalled, "The callback should have been called");
+        },
+
+        "Should render the side view": function () {
+            var done,
+                viewParameters = {},
+                rendered = false,
+                Service = Y.Base.create('errorService', Y.eZ.ViewService, [], {
+                    getViewParameters: function () {
+                        return viewParameters;
+                    }
+                }),
+                View = Y.Base.create('myView', Y.View, [], {
+                    setAttrs: function (config) {
+                        Assert.areSame(
+                            viewParameters, config,
+                            "The view should have received the view parameters"
+                        );
+                    },
+
+                    render: function () {
+                        rendered = true;
+                        return this;
+                    },
+                });
+
+            done = function (err, service, view) {
+                Assert.isInstanceOf(
+                    View, view,
+                    "The view should have been instantiated"
+                );
+            };
+
+            this.app.renderSideView(View, Service, {}, done);
+            Assert.isTrue(rendered, "The view should have been rendered");
+        },
+
+        "Should add the side view service as a bubble target of the side view": function () {
+            var done,
+                bubble = false;
+
+            done = function (err, service, view) {
+                view.fire('whatever');
+            };
+
+            this.app.on('*:whatever', function () {
+                bubble = true;
+            });
+            this.app.renderSideView(Y.View, Y.eZ.ViewService, {}, done);
+
+            Assert.isTrue(
+                bubble,
+                "The view service and then the app should be a bubble target of the view"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(dispatchConfigTest);
     Y.Test.Runner.add(getLanguageNameTest);
     Y.Test.Runner.add(setGlobalsTest);
     Y.Test.Runner.add(appReadyEventTest);
     Y.Test.Runner.add(renderViewTest);
+    Y.Test.Runner.add(renderSideViewTest);
 }, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin']});
