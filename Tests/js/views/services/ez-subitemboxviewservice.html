@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+    <title>eZ Subitem Box View Service tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-subitemboxviewservice-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-subitemboxviewservice'],
+        filter: loaderFilter,
+        modules: {
+            "ez-subitemboxviewservice": {
+                requires: [
+                    'ez-viewservice',
+                    'ez-searchplugin',
+                    'ez-translator',
+                ],
+                fullpath: "../../../../Resources/public/js/views/services/ez-subitemboxviewservice.js"
+            },
+            "ez-viewservice": {
+                requires: ['view'],
+                fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
+            },
+            "ez-searchplugin": {
+                requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-searchplugin.js"
+            },
+            "ez-viewservicebaseplugin": {
+                requires: ['plugin'],
+                fullpath: "../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-subitemboxviewservice-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

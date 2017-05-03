@@ -50,13 +50,7 @@ class eZSubitem extends Polymer.Element {
 
         app.renderView(
             Y.eZ.SubitemBoxView,
-            // LocationViewViewService works for SubitemBoxView but it does too
-            // many things for it, mainly it loads the path of the Location
-            // while it's not actually needed.
-            // Another reason to have an another view service would be to change
-            // the component to receive a Location id (not the REST id), so the
-            // view service would have to load the Location by this id.
-            Y.eZ.LocationViewViewService,
+            Y.eZ.SubitemBoxViewService,
             params,
             this._attachView.bind(this)
         );
