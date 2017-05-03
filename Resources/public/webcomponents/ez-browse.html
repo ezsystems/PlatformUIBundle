@@ -1,4 +1,4 @@
-<link rel="import" href="../vendors/polymer/polymer-element.html">
+<link rel="import" href="../../../assets/ezplatform/polymer/polymer-element.html">
 
 <style>
 ez-browse {
@@ -23,15 +23,13 @@ class eZBrowse extends Polymer.Element {
         return 'ez-browse';
     }
 
-    static get config() {
+    static get properties() {
         return {
-            properties: {
-                "selectedLocationId": {
-                    type: String,
-                },
-                "locationId": { // for now this one is just here for demo/display
-                    type: Number,
-                },
+            "selectedLocationId": {
+                type: String,
+            },
+            "locationId": { // for now this one is just here for demo/display
+                type: Number,
             },
         };
     }
@@ -52,7 +50,7 @@ class eZBrowse extends Polymer.Element {
                     console.log('CANCEL');
                 },
                 onconfirm: this._browseToSelection.bind(this),
-                startingLocationId: this.selectedLocationId,
+                startingLocationId: this.selectedLocationId !== "false" ? this.selectedLocationId : undefined,
             },
             bubbles: true,
         });

@@ -1,0 +1,132 @@
+<link rel="import" href="../../../assets/ezplatform/polymer/polymer-element.html">
+
+<style>
+ez-navigation-hub {
+    display: block;
+}
+
+ez-navigation-hub .ez-zone-list,
+ez-navigation-hub .ez-navigation {
+    padding: 0;
+}
+
+ez-navigation-hub .ez-zone-list li {
+    display: inline-block;
+    padding: 0.4em 0.5em;
+    list-style-type: none;
+}
+
+ez-navigation-hub .ez-navigation li {
+    display: inline-block;
+    padding: 0.1em 0.3em;
+    list-style-type: none;
+}
+
+ez-navigation-hub .ez-active-zone {
+    background: #ddd;
+}
+
+ez-navigation-hub .ez-matched-link {
+    border-bottom: 2px solid grey;
+}
+</style>
+
+<script>
+(function () {
+    class eZNavigationHub extends Polymer.Element {
+        static get is() {
+            return 'ez-navigation-hub';
+        }
+
+        static get properties() {
+            return {
+                "activeZoneClass": {
+                    type: String,
+                },
+                "matchedLinkClass": {
+                    type: String,
+                },
+                "activeZone": {
+                    type: String,
+                    observer: '_updateActiveZone',
+                },
+                "matchedLinkUrl": {
+                    type: String,
+                    observer: '_highlightLink',
+                },
+            };
+        }
+
+        constructor() {
+            super();
+            this.addEventListener('click', function (e) {
+                // TODO we need a Polyfill for Element#matches()
+                if ( e.target.matches('[data-zone-identifier] a') ) {
+                    e.preventDefault();
+                    this.activeZone = e.target.parentNode.getAttribute('data-zone-identifier');
+                }
+            }.bind(this));
+        }
+
+        _updateActiveZone(newValue, oldValue) {
+            this._highlightZone(oldValue, newValue);
+            this._updateNavigation(oldValue, newValue);
+        }
+
+        _getZone(identifier) {
+            return this.querySelector('[data-zone-identifier="' + identifier + '"]');
+        }
+
+        _highlightZone(oldZoneIdentifier, newZoneIdentifier) {
+            if ( oldZoneIdentifier ) {
+                this._getZone(oldZoneIdentifier).classList.remove(this.activeZoneClass);
+            }
+            if ( newZoneIdentifier ) {
+                this._getZone(newZoneIdentifier).classList.add(this.activeZoneClass);
+            }
+        }
+
+        _getZoneItems(identifier) {
+            return this.querySelectorAll('[data-zone="' + identifier + '"]');
+        }
+
+        _updateNavigation(oldZoneIdentifier, newZoneIdentifier) {
+            const forEach = Array.prototype.forEach;
+
+            if ( oldZoneIdentifier ) {
+                forEach.call(this._getZoneItems(oldZoneIdentifier), function (link) {
+                    link.setAttribute('style', 'display: none;');
+                });
+            }
+            if ( newZoneIdentifier ) {
+                forEach.call(this._getZoneItems(newZoneIdentifier), function (link) {
+                    link.removeAttribute('style');
+                });
+            }
+        }
+
+        _getItemByUrl(url) {
+            return this.querySelector('[href="' + url + '"]').parentNode;
+        }
+
+        _highlightLink(newUrl, oldUrl) {
+            if ( oldUrl ) {
+                this._getItemByUrl(oldUrl).classList.remove(this.matchedLinkClass);
+            }
+            if ( newUrl ) {
+                this._getItemByUrl(newUrl).classList.add(this.matchedLinkClass);
+            }
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+        }
+
+        disconnectedCallback() {
+            super.disconnectedCallback();
+        }
+    }
+
+    customElements.define(eZNavigationHub.is, eZNavigationHub);
+})();
+</script>

@@ -2,11 +2,7 @@
 
 namespace EzSystems\PlatformUIBundle\Components;
 
-interface Component
+interface Component extends \JsonSerializable
 {
-    public function getHtml();
-
-    public function getUpdateStruct();
-
-    public function getId();
+    public function __toString();
 }

@@ -1,30 +1,19 @@
 <?php
 
-
 namespace EzSystems\PlatformUIBundle\Components;
 
-class Trash implements Component, \JsonSerializable
+class Trash implements Component
 {
-    public function getId()
+    public function __toString()
     {
-        return 'trash';
-    }
-
-    public function getHtml()
-    {
-        return 'Server side updated at <b>' . date('H:i:s') . '</b>';
-    }
-
-    public function getUpdateStruct()
-    {
-        return $this->getHtml();
+        return '<div class="ez-trash-button">Server side updated at <b>' . date('H:i:s') . '</b></div>';
     }
 
     public function jsonSerialize()
     {
         return [
-            'id' => $this->getId(),
-            'update' => $this->getUpdateStruct(),
+            'selector' => '.ez-trash-button',
+            'update' => (string)$this,
         ];
     }
 }

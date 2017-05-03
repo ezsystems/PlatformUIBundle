@@ -1,0 +1,78 @@
+<link rel="import" href="../../../assets/ezplatform/ez-field-edit/ez-field-edit.html">
+<link rel="import" href="ez-online-editor.html">
+
+<style>
+ez-field-edit-ezrichtext {
+    display: block;
+    padding: 1em;
+}
+
+ez-field-edit-ezrichtext ez-online-editor {
+    padding: 1em 2em;
+}
+
+ez-field-edit-ezrichtext .ae-editable,
+ez-field-edit-ezrichtext .ae-editable:focus {
+    border: 1px solid #ddd;
+}
+
+ez-field-edit-ezrichtext.is-invalid fieldset {
+    background: #fdd;
+}
+</style>
+
+<script>
+(function () {
+    window.eZ = window.eZ || {};
+
+    class eZFieldEditRichText extends customElements.get('ez-field-edit') {
+        static get is() {
+            return 'ez-field-edit-ezrichtext';
+        }
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            const editor = this.ownerDocument.createElement('ez-online-editor');
+
+            super.connectedCallback();
+            this._textarea = this.querySelector('textarea');
+            this._textarea.style.display = 'none';
+
+            editor.innerHTML = this._textarea.value;
+
+            this.querySelector('fieldset').appendChild(editor);
+
+            editor.addEventListener('change', this._syncTextarea.bind(this));
+            editor.addEventListener('blur', this._syncTextarea.bind(this));
+            editor.addEventListener('contentDiscover', this._forwardContentDiscoveryEvent.bind(this));
+        }
+
+        _forwardContentDiscoveryEvent(e) {
+            const config = e.data.config;
+
+            this.dispatchEvent(new CustomEvent(e.name, {
+                detail: {
+                    title: config.title,
+                    onconfirm: config.contentDiscoveredHandler,
+                    oncancel: config.cancelDiscoverHandler,
+                    multiple: config.multiple,
+                },
+                bubbles: true,
+            }));
+        }
+
+        _syncTextarea(e) {
+            this._textarea.value = this.querySelector('ez-online-editor').getData();
+        }
+
+        disconnectedCallback() {
+            super.disconnectedCallback();
+        }
+    }
+
+    customElements.define(eZFieldEditRichText.is, eZFieldEditRichText);
+})();
+</script>

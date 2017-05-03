@@ -16,8 +16,6 @@
     "yui3": "http://yui.zenfs.com/releases/yui3/yui_3.18.1.zip",
     "alloyeditor": "~1.2.3",
     "widget": "http://download.ckeditor.com/widget/releases/widget_4.5.9.zip",
-    "lineutils": "http://download.ckeditor.com/lineutils/releases/lineutils_4.5.9.zip",
-    "polymer": "Polymer/polymer#2.0-preview",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#v1"
+    "lineutils": "http://download.ckeditor.com/lineutils/releases/lineutils_4.5.9.zip"
   }
 }

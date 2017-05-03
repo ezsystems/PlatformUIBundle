@@ -1,0 +1,85 @@
+<link rel="import" href="../../../assets/ezplatform/polymer/polymer-element.html">
+<!--
+    for extensibility, custom field input need to be loaded before the component
+    that wants to use it. For our own field input, we can import them here
+-->
+<link rel="import" href="../../../assets/ezplatform/ez-field-edit/ez-field-edits.html">
+<link rel="import" href="ez-field-edit-richtext.html">
+
+<style>
+ez-main-content {
+    display: block;
+}
+</style>
+
+<script>
+(function () {
+    // this is where we could detect the markup structure to enhance it (tabs, selection table, ...)
+    class eZMainContent extends Polymer.Element {
+        static get is() {
+            return 'ez-main-content';
+        }
+
+        constructor() {
+            super();
+            this.addEventListener('submit', function (e) {
+                const form = e.target;
+
+                if (!form.reportValidity()) {
+                    e.preventDefault();
+                }
+            }.bind(this));
+        }
+
+        connectedCallback() {
+            let form;
+
+            super.connectedCallback();
+            // actually we should have a different "main content" tag for different page
+            // so that a different frontend logic can be applied
+            // for now, we have to do some detection here
+            if ( form = this._getContentEditForm() ) {
+                form.novalidate = true;
+                this._wrapFieldInputs();
+            }
+        }
+
+        // this could also be done server side
+        // Question: where should it be done then ?
+        // here the approach is to "feature check" if there is a custom element
+        // dedicated to the field type.
+        _wrapFieldInputs() {
+            // todo a dedicated class would be nice :)
+            Array.from(this.querySelectorAll('div[class^="ezfield-type"]')).forEach(function (div) {
+                const input = document.createElement(this._getFieldTypeInputTag(div));
+
+                input.setAttribute('class', div.getAttribute('class')); // others attrs as well ?
+                //input.innerHTML = div.innerHTML;
+                while (div.firstChild) {
+                    input.appendChild(div.firstChild);
+                }
+                div.parentNode.replaceChild(input, div);
+            }, this);
+        }
+
+        _getFieldTypeInputTag(div) {
+            const defaultTag = 'ez-field-edit',
+                  customTag = defaultTag + '-' + this._getFieldTypeIdentifier(div);
+            // we are looking for a custom tag dedicated to the field type
+            // ie whether ez-field-edit-<fieldTypeIdentifier> exists
+
+            return (customElements.get(customTag) ? customTag : defaultTag);
+        }
+
+        _getFieldTypeIdentifier(div) {
+            return div.classList.item(0).replace('ezfield-type-', '');
+        }
+
+        _getContentEditForm() {
+            return this.querySelector('form[name="ezrepoforms_content_edit"]');
+        }
+    }
+
+    customElements.define(eZMainContent.is, eZMainContent);
+})();
+</script>

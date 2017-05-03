@@ -1,0 +1,49 @@
+<link rel="import" href="../../../assets/ezplatform/polymer/polymer-element.html">
+
+<style>
+ez-toolbar {
+    display: none;
+}
+ez-toolbar[visible="false"] {
+    display: none;
+}
+ez-toolbar[visible="true"] {
+    display: block;
+}
+</style>
+
+<script>
+(function () {
+    class eZToolbar extends Polymer.Element {
+        static get is() {
+            return 'ez-toolbar';
+        }
+
+        static get properties() {
+            return {
+                "visible": {
+                    // handled as a string to avoid inconsistencies, so with that will get
+                    // visible="false" or visible="true" but not visible alone in the markup
+                    type: String,
+                    reflectToAttribute: true,
+                    value: "false",
+                },
+            };
+        }
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+        }
+
+        disconnectedCallback() {
+            super.disconnectedCallback();
+        }
+    }
+
+    customElements.define(eZToolbar.is, eZToolbar);
+})();
+</script>

@@ -1,0 +1,256 @@
+<link rel="import" href="../../../assets/ezplatform/polymer/polymer-element.html">
+
+<script>
+(function () {
+    function fetchUpdate(updateUrl) {
+        var headers;
+
+        headers = new Headers({
+            'X-AJAX-Update': '1',
+        });
+        return fetch(updateUrl, {
+            credentials: 'same-origin',
+            headers: headers,
+        }).then(function (response) {
+            return response.json();
+        });
+    }
+
+    function fetchForm(form, forceUrl) {
+        var headers,
+            data = new FormData(form),
+            // forcing the same url for now, but the form should have
+            // a correct action attribute value instead...
+            url = forceUrl;
+
+        data.append(form.ownerDocument.activeElement.name, "button");
+
+        headers = new Headers({
+            'X-AJAX-Update': '1',
+        });
+        return fetch(url, {
+            credentials: 'same-origin',
+            headers: headers,
+            method: form.method,
+            body: data,
+        }).then(function (response) {
+            return response.json();
+        });
+    }
+
+    function updateElement(element, updateStruct) {
+        if ( typeof updateStruct === "string" ) {
+            // this replaces element.outerHTML = updateStruct;
+            // because of https://github.com/webcomponents/custom-elements/issues/71
+            const doc = new DOMParser().parseFromString(updateStruct, "text/html");
+            element = element.parentNode.replaceChild(doc.body.firstChild, element);
+        } else if ( updateStruct ) {
+            let attributes = updateStruct.attributes || {},
+                children = updateStruct.children || [];
+
+            Object.keys(attributes).forEach(function (attributeName) {
+                element.setAttribute(attributeName, attributes[attributeName]);
+            });
+            children.forEach(function (childUpdate) {
+                if ( childUpdate ) {
+                    const child = element.querySelector(childUpdate.selector);
+
+                    if ( child ) {
+                        updateElement(child, childUpdate.update);
+                    } else {
+                        console.warn(`Unable to find ${childUpdate.selector} under`, element);
+                    }
+                }
+            }, element);
+        }
+        return updateStruct;
+    }
+
+    document.addEventListener('click', function (e) {
+        if ( e.target.classList.contains('run-udw') ) {
+            const button = e.target;
+            const event = new CustomEvent('contentDiscover', {
+                detail: {
+                    title: "UDW tests (multiple, allow only container)",
+                    multiple: true,
+                    oncancel: function () {
+                        console.log('CANCEL');
+                    },
+                    onconfirm: function (items) {
+                        var list = document.createElement('ul');
+                        items.forEach(function (selection) {
+                            const result = document.createElement('li');
+
+                            result.innerHTML = `${selection.location.contentInfo.name}
+                                (Content id #${selection.content.contentId}) in Location
+                                #${selection.location.locationId}
+                                (${selection.location.pathString}) was
+                                chosen (Type ${selection.contentType.names['eng-GB']})`;
+
+                            list.appendChild(result);
+                        });
+                        button.parentNode.insertBefore(list, button);
+                    },
+                    isSelectable: function (item) {
+                        return item.contentType.isContainer;
+                    },
+                },
+                bubbles: true,
+            });
+            button.dispatchEvent(event);
+        }
+    });
+
+    class PlatformUIApp extends Polymer.Element {
+        static get is() {
+            return 'ez-platformui-app';
+        }
+
+        static get properties() {
+            return {
+                updating: {
+                    type: Boolean,
+                    reflectToAttribute: true,
+                    value: false,
+                },
+                title: {
+                    type: String,
+                    reflectToAttribute: true,
+                    value: "",
+                    observer: '_setPageTitle',
+                },
+                url: {
+                    type: String,
+                    reflectToAttribute: true,
+                    value: location.href,
+                    observer: '_replaceHistory',
+                },
+            };
+        }
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            super.connectedCallback();
+            this._enhanceNavigation();
+            this._listenToBrowseToContent();
+            this._listenToContentDiscover();
+        }
+
+        disconnectedCallback() {
+            super.disconnectedCallback();
+        }
+
+        _setPageTitle(newValue, oldValue) {
+            if ( newValue ) {
+                this.ownerDocument.title = newValue;
+            }
+        }
+
+        _update(updateUrl) {
+            this.updating = true;
+
+            fetchUpdate(updateUrl)
+                .then(this._updateApp.bind(this))
+                .then(function (struct) {
+                    this.updating = false;
+
+                    return struct;
+                }.bind(this));
+        }
+
+        _updateForm(form) {
+            this.updating = true;
+
+            fetchForm(form, this.url)
+                .then(this._updateApp.bind(this))
+                .then(function (struct) {
+                    this.updating = false;
+
+                    return struct;
+                }.bind(this));
+        }
+
+        _replaceHistory() {
+            history.pushState({url: this.url}, this.title, this.url);
+        }
+
+        _updateApp(updateStruct) {
+            updateElement.call(null, this, updateStruct.update);
+        }
+
+        _enhanceNavigation() {
+            this.addEventListener('click', function (e) {
+                var updateUrl;
+
+                function isNavigationLink(element) {
+                    // TODO we need a Polyfill for Element#closest()
+                    var anchor = element.closest('a');
+
+                    // we should probably further check the URI (same origin ?)
+                    // we should also allow to opt out from that with a class
+                    return anchor && anchor.href && anchor.getAttribute('href').indexOf('#') !== 0
+                }
+
+                if ( isNavigationLink(e.target) ) {
+                    updateUrl = e.target.closest('a').href;
+                    e.preventDefault();
+                    this._update(updateUrl);
+                }
+            }.bind(this));
+            window.addEventListener('popstate', function (e) {
+                if ( e.state && e.state.url ) {
+                    this._update(e.state.url);
+                }
+            }.bind(this));
+
+            this.addEventListener('submit', function (e) {
+                e.preventDefault();
+                this._updateForm(e.target);
+            }.bind(this));
+
+        }
+
+        _listenToBrowseToContent() {
+            this.addEventListener('browseToContent', function (e) {
+                const uri = Routing.generate(
+                    'proto_viewLocation',
+                    {"locationId": e.detail.location.locationId}
+                );
+
+                this._update(uri);
+            }.bind(this));
+        }
+
+        _listenToContentDiscover() {
+            this.addEventListener('contentDiscover', function (e) {
+                const udw = document.createElement('ez-universaldiscoverywidget');
+
+                udw.title = e.detail.title;
+                udw.multiple = e.detail.multiple;
+                udw.onconfirm = function (selection) {
+                    e.detail.onconfirm.call(udw, selection);
+                    // removing the UDW is a bit brutal as this prevents
+                    // any kind of animation when hiding the UDW.
+                    udw.remove(true);
+                }
+                udw.oncancel = function (selection) {
+                    if ( e.detail.oncancel ) {
+                        e.detail.oncancel.call(udw, selection);
+                    }
+                    udw.remove(true);
+                }
+                udw.isSelectable = e.detail.isSelectable ? e.detail.isSelectable : undefined;
+                udw.startingLocationId = e.detail.startingLocationId;
+                // that way existing PlatformUI stylesheets work out of the box
+                udw.classList.add('ez-universaldiscovery-container');
+                this.appendChild(udw);
+            }.bind(this));
+        }
+    }
+
+    customElements.define(PlatformUIApp.is, PlatformUIApp);
+})();
+</script>

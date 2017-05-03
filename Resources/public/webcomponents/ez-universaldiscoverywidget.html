@@ -1,4 +1,4 @@
-<link rel="import" href="../vendors/polymer/polymer-element.html">
+<link rel="import" href="../../../assets/ezplatform/polymer/polymer-element.html">
 <link rel="import" href="../../../webcomponents/ez-yui-app.html">
 
 <script>
@@ -7,37 +7,35 @@ class eZUniversalDiscoveryWidget extends Polymer.Element {
         return 'ez-universaldiscoverywidget';
     }
 
-    static get config() {
+    static get properties() {
         return {
-            properties: {
-                "title": {
-                    type: String,
-                },
-                "multiple": {
-                    type: Boolean,
-                    value: false,
-                },
-                "onconfirm": {
-                    type: Function,
-                    value: function () {},
-                },
-                "oncancel": {
-                    type: Function,
-                    value: function () {},
-                },
-                "is-selectable": {
-                    type: Function,
-                    value: () => true,
-                },
-                "starting-location-id": {
-                    type: String,
-                },
-                // is-selectable is a bad name coming from 1.x. Also, onconfirm and
-                // oncancel are a bit misleading because this suggests there are
-                // confirm` and `cancel` events behind the scene while there's none.
-                // So maybe, the UDW should actually triggers real events
-                // (confirm, cancel, select) instead of exposing such attributes.
+            "title": {
+                type: String,
             },
+            "multiple": {
+                type: Boolean,
+                value: false,
+            },
+            "onconfirm": {
+                type: Function,
+                value: function () {},
+            },
+            "oncancel": {
+                type: Function,
+                value: function () {},
+            },
+            "is-selectable": {
+                type: Function,
+                value: () => true,
+            },
+            "starting-location-id": {
+                type: String,
+            },
+            // is-selectable is a bad name coming from 1.x. Also, onconfirm and
+            // oncancel are a bit misleading because this suggests there are
+            // confirm` and `cancel` events behind the scene while there's none.
+            // So maybe, the UDW should actually triggers real events
+            // (confirm, cancel, select) instead of exposing such attributes.
         };
     }
 
