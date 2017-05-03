@@ -182,8 +182,7 @@ system:
                     path: "%ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-locationlink.js"
                 ez-platformuiapp:
                     requires:
-                        - 'base'
-                        - 'node'
+                        - 'app-base'
                         - 'ez-capi'
                         - 'ez-translator'
                         - 'ez-pluginregistry'
