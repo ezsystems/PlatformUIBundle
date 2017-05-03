@@ -159,32 +159,32 @@ services:
     ezsystems.platformui.component.app:
         class: "%ezsystems.platformui.component.app.class%"
         arguments:
-            - @templating
-            - @ezsystems.platformui.component.maincontent
-            - @ezsystems.platformui.component.navigationhub
+            - '@templating'
+            - '@ezsystems.platformui.component.maincontent'
+            - '@ezsystems.platformui.component.navigationhub'
             # todo tag those services so that it's possible to add
             # new toolbars
-            - [@ezsystems.platformui.component.discoverybar]
+            - ['@ezsystems.platformui.component.discoverybar']
 
     ezsystems.platformui.component.navigationhub:
         class: "%ezsystems.platformui.component.navigationhub.class%"
         arguments:
-            - @templating
-            - @request_stack
+            - '@templating'
+            - '@request_stack'
             -
-                - @ezsystems.platformui.navigationhub.zones.content
-                - @ezsystems.platformui.navigationhub.zones.page
-                - @ezsystems.platformui.navigationhub.zones.performances
-                - @ezsystems.platformui.navigationhub.zones.admin
+                - '@ezsystems.platformui.navigationhub.zones.content'
+                - '@ezsystems.platformui.navigationhub.zones.page'
+                - '@ezsystems.platformui.navigationhub.zones.performances'
+                - '@ezsystems.platformui.navigationhub.zones.admin'
             -
-                - @ezsystems.platformui.navigationhub.link.contentstructure
-                - @ezsystems.platformui.navigationhub.link.medialibrary
-                - @ezsystems.platformui.navigationhub.link.users
+                - '@ezsystems.platformui.navigationhub.link.contentstructure'
+                - '@ezsystems.platformui.navigationhub.link.medialibrary'
+                - '@ezsystems.platformui.navigationhub.link.users'
 
     ezsystems.platformui.navigationhub.link.contentstructure:
         class: "%ezsystems.platformui.navigationhub.link.subtree.class%"
         arguments:
-            - @router
+            - '@router'
             - "proto_viewLocation"
             - {"locationId": 2}
             - "Content structure"
@@ -193,7 +193,7 @@ services:
     ezsystems.platformui.navigationhub.link.medialibrary:
         class: "%ezsystems.platformui.navigationhub.link.subtree.class%"
         arguments:
-            - @router
+            - '@router'
             - "proto_viewLocation"
             - {"locationId": 43}
             - "Media Library"
@@ -202,7 +202,7 @@ services:
     ezsystems.platformui.navigationhub.link.users:
         class: "%ezsystems.platformui.navigationhub.link.subtree.class%"
         arguments:
-            - @router
+            - '@router'
             - "proto_viewLocation"
             - {"locationId": 5}
             - "Users"
@@ -239,7 +239,7 @@ services:
     ezsystems.platformui.component.maincontent:
         class: "%ezsystems.platformui.component.maincontent.class%"
         arguments:
-            - @templating
+            - '@templating'
 
     ezsystems.platformui.component.discoverybar:
         class: "%ezsystems.platformui.component.toolbar.class%"
@@ -247,14 +247,14 @@ services:
             - "discovery"
             # todo tag those services with priority instead so that it's possible to new ones
             # from external bundles
-            - [@ezsystems.platformui.component.search, @ezsystems.platformui.component.browse, @ezsystems.platformui.component.trash]
+            - ['@ezsystems.platformui.component.search', '@ezsystems.platformui.component.browse', '@ezsystems.platformui.component.trash']
 
     ezsystems.platformui.component.search:
         class: "%ezsystems.platformui.component.search.class%"
 
     ezsystems.platformui.component.browse:
         class: "%ezsystems.platformui.component.browse.class%"
-        arguments: [@request_stack, @router]
+        arguments: ['@request_stack', '@router']
 
     ezsystems.platformui.component.trash:
         class: "%ezsystems.platformui.component.trash.class%"
@@ -262,8 +262,8 @@ services:
     ezsystems.platformui.controller.proto:
         class: "%ezsystems.platformui.controller.proto.class%"
         arguments:
-            - @ezsystems.platformui.component.app
-            - @router
+            - '@ezsystems.platformui.component.app'
+            - '@router'
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.webcomponent:
