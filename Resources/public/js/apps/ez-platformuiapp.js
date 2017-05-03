@@ -29,6 +29,37 @@ YUI.add('ez-platformuiapp', function (Y) {
         initializer: function () {
             this._dispatchConfig();
             Y.eZ.Translator.setPreferredLanguages(this.get('interfaceLanguages'));
+
+            this._setGlobals();
+            this._fireAppReadyEvent();
+        },
+
+        /**
+         * Registers the `Y` sandbox object and the app instance in the global
+         * `eZ.YUI` namespace.
+         *
+         * @method _setGlobals
+         * @private
+         */
+        _setGlobals: function () {
+            window.eZ = window.eZ || {};
+            window.eZ.YUI = {
+                Y: Y,
+                app: this,
+            };
+        },
+
+        /**
+         * Fires the custom `ez:yui-app:ready` **DOM** event. It is dispatched
+         * from the `document` object.
+         *
+         * @method _fireAppReadyEvent
+         * @private
+         */
+        _fireAppReadyEvent: function () {
+            var evt = new CustomEvent('ez:yui-app:ready');
+
+            document.dispatchEvent(evt);
         },
 
         /**

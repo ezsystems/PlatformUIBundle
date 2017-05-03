@@ -13,8 +13,6 @@
 <script>
     {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
 
-    window.eZ = window.eZ || {};
-
     YUI().use('ez-platformuiapp', function (Y) {
         var app = new Y.eZ.PlatformUIApp({
                 config: {{ parameters|json_encode|raw }},

@@ -2,8 +2,10 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+/* global eZ */
 YUI.add('ez-platformuiapp-tests', function (Y) {
     var dispatchConfigTest, getLanguageNameTest,
+        setGlobalsTest, appReadyEventTest,
         Assert = Y.Assert;
 
     dispatchConfigTest = new Y.Test.Case({
@@ -260,7 +262,63 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    setGlobalsTest = new Y.Test.Case({
+        name: "eZ Platform UI App set globals test",
+
+        setUp: function () {
+            this.app = new Y.eZ.PlatformUIApp();
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete window.eZ;
+        },
+
+        "Should register the app instance under `eZ.YUI`": function () {
+            Assert.areSame(
+                this.app,
+                eZ.YUI.app,
+                "The app should be available under `eZ.YUI`"
+            );
+        },
+
+        "Should register the YUI sandbox under `eZ.YUI`": function () {
+            Assert.areSame(
+                Y,
+                eZ.YUI.Y,
+                "The YUI sandbox should be available under `eZ.YUI`"
+            );
+        }
+    });
+
+    appReadyEventTest = new Y.Test.Case({
+        name: "eZ Platform UI App `ez:yui-app:ready` event test",
+
+        "Should dispatch the `ez:yui-app:ready` event on the document": function () {
+            var app,
+                dispatchedEvent = false;
+
+            document.addEventListener('ez:yui-app:ready', function (e) {
+                dispatchedEvent = true;
+
+                Assert.areSame(
+                    document, e.target,
+                    "The event target should be the document"
+                );
+            });
+
+            app = new Y.eZ.PlatformUIApp();
+
+            Assert.isTrue(
+                dispatchedEvent,
+                "The `ez:yui-app:ready` event should have been dispatched"
+            );
+        }
+    });
+
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(dispatchConfigTest);
     Y.Test.Runner.add(getLanguageNameTest);
+    Y.Test.Runner.add(setGlobalsTest);
+    Y.Test.Runner.add(appReadyEventTest);
 }, '', {requires: ['test', 'ez-platformuiapp']});
