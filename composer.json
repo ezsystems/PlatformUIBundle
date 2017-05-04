@@ -16,9 +16,7 @@
         "willdurand/js-translation-bundle": "^2.5",
         "jms/translation-bundle": "^1.3",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
-        "dpobel/ez-field-edit": "dev-master as 1.0.x-dev",
-        "dpobel/ez-map": "dev-master as 1.0.x-dev",
-        "dpobel/hybrid-platformui-assets": "~0.3",
+        "ezsystems/hybrid-platform-ui-assets": "^0.1",
         "composer/installers": "dev-ezplatform_assets as 1.3.x-dev"
     },
     "repositories": [
