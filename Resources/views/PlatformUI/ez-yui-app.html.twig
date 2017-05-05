@@ -1,10 +1,13 @@
 {% javascripts
     'bundles/bazingajstranslation/js/translator.min.js'
+    'bundles/fosjsrouting/js/router.js'
     'bundles/ezplatformuiassets/vendors/yui3/build/yui/yui-min.js'
     'bundles/ezplatformuiassets/vendors/handlebars-helper-intl/dist/handlebars-intl.min.js'
     '$javascript.files;ez_platformui$' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
+
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
 {% for domain in parameters.translationDomains %}
     <script src="{{ url('bazinga_jstranslation_js', {'domain': domain}) }}?locales={{ parameters.interfaceLanguages|join(',') }}"></script>
