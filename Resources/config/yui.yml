@@ -302,7 +302,7 @@ system:
                     requires: ['ez-serversideviewservice', 'parallel', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-roleserversideviewservice.js"
                 ez-subitemboxviewservice:
-                    requires: ['ez-viewservice', 'ez-searchplugin']
+                    requires: ['ez-viewservice', 'ez-searchplugin', 'ez-imagevariationloadplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-subitemboxviewservice.js"
                 ez-view:
                     requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
