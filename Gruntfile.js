@@ -137,6 +137,38 @@ module.exports = function(grunt) {
                     stderr: true
                 }
             },
+            wct: {
+                command: "./node_modules/.bin/polymer test --skip-plugin sauce",
+                options: {
+                    stdout: true,
+                    stderr: true,
+                    failOnError: true,
+                },
+            },
+            "wct-sauce": {
+                command: "./node_modules/.bin/polymer test --skip-plugin local",
+                options: {
+                    stdout: true,
+                    stderr: true,
+                    failOnError: true,
+                },
+            },
+            "touch-yui-app": {
+                command: "mkdir webcomponents ; touch webcomponents/ez-yui-app.html",
+                options: {
+                    stdout: true,
+                    stderr: false,
+                    failOnError: false,
+                },
+            },
+            "copy-polymer": {
+                command: "mkdir -p assets/ezplatform ; cp -r bower_components/polymer assets/ezplatform/",
+                options: {
+                    stdout: true,
+                    stderr: false,
+                    failOnError: false,
+                },
+            },
             "alloy-generateskin": {
                 command: 'gulp build-css',
                 options: {
@@ -240,7 +272,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-text-replace');
 
     grunt.registerTask('lint', ['jshint']);
-    grunt.registerTask('test', ['jsx', 'jshint', 'shell:grover'] );
+    grunt.registerTask('test', ['test-yui', 'test-webcomponents'] );
+    grunt.registerTask('test-webcomponents', ['mock-wct-env', 'shell:wct'] );
+    grunt.registerTask('test-webcomponents-sauce', ['mock-wct-env', 'shell:wct-sauce'] );
+    grunt.registerTask('mock-wct-env', ['shell:copy-polymer', 'shell:touch-yui-app'] );
+    grunt.registerTask('test-yui', ['jsx', 'jshint', 'shell:grover'] );
     grunt.registerTask('coverage', ['clean', 'jsx', 'jshint', 'instrument', 'shell:groverCoverage'] );
     grunt.registerTask('doc', ['yuidoc'] );
     grunt.registerTask('livedoc', ['shell:livedoc'] );
