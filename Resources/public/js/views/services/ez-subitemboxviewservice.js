@@ -32,7 +32,7 @@ YUI.add('ez-subitemboxviewservice', function (Y) {
          */
         _load: function (next) {
             var request = this.get('request');
-            
+
             this.search.findContent({
                 viewName: 'location-' + request.params.id,
                 loadLocation: true,
