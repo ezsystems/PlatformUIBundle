@@ -272,7 +272,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-text-replace');
 
     grunt.registerTask('lint', ['jshint']);
-    grunt.registerTask('test', ['test-yui', 'test-webcomponents'] );
+    grunt.registerTask('test', ['test-yui', 'test-webcomponents', 'test-webcomponents-sauce'] );
     grunt.registerTask('test-webcomponents', ['mock-wct-env', 'shell:wct'] );
     grunt.registerTask('test-webcomponents-sauce', ['mock-wct-env', 'shell:wct-sauce'] );
     grunt.registerTask('mock-wct-env', ['shell:copy-polymer', 'shell:touch-yui-app'] );
