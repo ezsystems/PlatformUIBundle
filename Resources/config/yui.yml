@@ -1360,7 +1360,7 @@ system:
                     requires: ['ez-searchplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-locationsearchplugin.js"
                 ez-searchplugin:
-                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel']
+                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel', 'ez-contenttypemodel']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-searchplugin.js"
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
