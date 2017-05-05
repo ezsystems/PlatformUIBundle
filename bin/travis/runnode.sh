@@ -6,4 +6,4 @@ set -e
 source ~/.nvm/nvm.sh
 nvm use
 
-grunt test
+xvfb-run grunt test

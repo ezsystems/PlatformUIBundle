@@ -4,8 +4,18 @@ sudo: required
 language: php
 
 env:
-    global:
-        secure: "aNPcXEtgV3Q/GVCH+FvITm/gLXcNyFl7YiOT9JcqZUwYXsT2zi8g4BcwBgDtpbSmi8NSCsEWONNxxDM10BqCPzfkiFD2I0cPHXVxmJ3cmOqySci5JvysEd+RU6gnatCxqzAJYDH2BanfPyu+yPwrSIgWdkPuvNhydNJFUrwsinw="
+  global:
+  - secure: aNPcXEtgV3Q/GVCH+FvITm/gLXcNyFl7YiOT9JcqZUwYXsT2zi8g4BcwBgDtpbSmi8NSCsEWONNxxDM10BqCPzfkiFD2I0cPHXVxmJ3cmOqySci5JvysEd+RU6gnatCxqzAJYDH2BanfPyu+yPwrSIgWdkPuvNhydNJFUrwsinw=
+  - secure: ykdMPWEidiMd/o4XAEThBbHMpsGp9h4PFWBQtcGtqIBnyk5VJ6yOR5WgHPhIiJUYwHRYvdu4JX0awPM6jYlRdGD+o45QjewPwk0rIezeyiRyhCjyXDmlufYg0JI35qTQP7J2IGDqt6jLPX/DCwZshYi7EQSDgA52xlEW1iKtV/Q=
+  - secure: yt7SKe/+GRoR/PFFbx7GkJQ+mHCwUrDvvyhbb5oc/DmhJnIxR5QJyHXvXHkf36C8TQUi0GDyklo1p0nKB+Fj3Tce2czsIYobLlV0+VMGhp/sJw2MA+MKAhYyCRNBB9oAbvQRyVflS7SuZLbUWsdXXwUKZJh94QoRs242Wk+j3iE=
+
+addons:
+  firefox: latest
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 
 cache:
   directories:
