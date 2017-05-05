@@ -189,6 +189,8 @@ system:
                         - 'ez-registerurlhelpersplugin'
                         - 'ez-registerlanguagehelpersplugin'
                         - 'ez-translateproperty'
+                        - 'ez-subitemboxview'
+                        - 'ez-subitemboxviewservice'
                     path: "%ez_platformui.public_dir%/js/apps/ez-platformuiapp.js"
                 ez-viewservice:
                     requires: ['base', 'parallel']
