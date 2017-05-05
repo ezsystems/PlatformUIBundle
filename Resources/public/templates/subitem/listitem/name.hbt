@@ -1,1 +1,1 @@
-<td class="{{ property.class}}"><a href={{path "viewLocation" id=location.id languageCode=content.mainLanguageCode}}>{{ property.value }}</a></td>
+<td class="{{ property.class }}"><a href={{path "_ez_content_view" contentId=location.contentInfo.contentId viewType="full" layout="true" locationId=location.locationId }}>{{ property.value }}</a></td>
