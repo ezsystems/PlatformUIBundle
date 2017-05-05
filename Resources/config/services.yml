@@ -37,18 +37,6 @@ parameters:
     ezsystems.platformui.pjax.request_matcher.class: EzSystems\PlatformUIBundle\Http\PjaxRequestMatcher
     ezsystems.platformui.view_matcher.pjax_request.class: EzSystems\PlatformUIBundle\Matcher\PjaxRequest
 
-    # prototype components
-    ezsystems.platformui.component.app.class: EzSystems\PlatformUIBundle\Components\App
-    ezsystems.platformui.component.maincontent.class: EzSystems\PlatformUIBundle\Components\MainContent
-    ezsystems.platformui.component.navigationhub.class: EzSystems\PlatformUIBundle\Components\NavigationHub
-    ezsystems.platformui.component.toolbar.class: EzSystems\PlatformUIBundle\Components\Toolbar
-    ezsystems.platformui.component.search.class: EzSystems\PlatformUIBundle\Components\Search
-    ezsystems.platformui.component.browse.class: EzSystems\PlatformUIBundle\Components\Browse
-    ezsystems.platformui.component.trash.class: EzSystems\PlatformUIBundle\Components\Trash
-    ezsystems.platformui.navigationhub.zone.class: EzSystems\PlatformUIBundle\NavigationHub\Zone
-    ezsystems.platformui.navigationhub.link.route.class: EzSystems\PlatformUIBundle\NavigationHub\Link\Route
-    ezsystems.platformui.navigationhub.link.subtree.class: EzSystems\PlatformUIBundle\NavigationHub\Link\Subtree
-
     # override of the REST content controller
     ezpublish_rest.controller.content.class: EzSystems\PlatformUIBundle\Controller\Rest\ContentController
 
@@ -150,13 +138,6 @@ services:
     ezsystems.platformui.controller.template:
         class: "%ezsystems.platformui.controller.template.class%"
         arguments: ["@ezpublish.config.resolver"]
-        parent: ezsystems.platformui.controller.base
-
-    ezsystems.platformui.controller.proto:
-        class: "%ezsystems.platformui.controller.proto.class%"
-        arguments:
-            - '@ezsystems.platformui.component.app'
-            - '@router'
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.webcomponent:
