@@ -8,6 +8,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         findAddressTest, locateMeTest, registerTest, getFieldTest,
         content, contentType, version,
         mapLoaderLoadingSuccess,
+        mapLoaderLoadingSuccessWithKey,
         testAddress = "London",
         googleStub, geocoderInput,
         jsonContent = {}, jsonContentType = {}, jsonVersion = {},
@@ -46,14 +47,21 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
     mapLoaderLoadingSuccess = function (key) {
         var that = this;
 
-        Y.Assert.areSame(
-            '',
-            key,
-            "Expected API key to be empty string (as it has not been configured)"
-        );
+        Y.Assert.areSame('', key, "Expected API key to be empty string");
 
         // setTimeout (even with 0 value) will be needed here because we are
         // going to use a node, which is not yet in the DOM
+        setTimeout(function () {
+            that.fire('mapAPIReady');
+        }, 0);
+    };
+
+    mapLoaderLoadingSuccessWithKey = function (key) {
+        var that = this;
+
+        Y.Assert.areSame('4fg334f', key, "Expected API key to be configured");
+
+        // see mapLoaderLoadingSuccess()
         setTimeout(function () {
             that.fire('mapAPIReady');
         }, 0);
@@ -365,7 +373,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this.mapLoaderLoad = Y.eZ.GoogleMapAPILoader.prototype.load;
             this.mapLoaderIsAPILoaded = Y.eZ.GoogleMapAPILoader.prototype.isAPILoaded;
 
-            Y.eZ.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
+            Y.eZ.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccessWithKey;
             Y.eZ.GoogleMapAPILoader.prototype.isAPILoaded = function () {
                 return true;
             };
@@ -377,7 +385,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 field: field,
                 version: version,
                 content: content,
-                contentType: contentType
+                contentType: contentType,
+                config: {'apiKeys': {'google_map': '4fg334f'}}
             });
 
             this.view.set('fieldDefinition', fieldDefinition);
