@@ -175,11 +175,11 @@ YUI.add('ez-contenttypeeditserversideview-tests', function (Y) {
                 "The new option should be based on the prototype"
             );
             Assert.areEqual(
-                'name' + (optionsCount + 1), newInput.get('name'),
+                'name' + optionsCount, newInput.get('name'),
                 "The `__number__` placeholder  should have been replaced"
             );
             Assert.areEqual(
-                'id' + (optionsCount + 1), newInput.get('id'),
+                'id' + optionsCount, newInput.get('id'),
                 "The `__number__` placeholder  should have been replaced"
             );
         },
@@ -294,11 +294,11 @@ YUI.add('ez-contenttypeeditserversideview-tests', function (Y) {
             container.one('.ezselection-settings-option-remove').simulateGesture('tap', this.next(function () {
                 container.all('.ezselection-settings-option-value input[type=text]').each(function (input, i) {
                     Assert.areEqual(
-                        input.get('id'), 'id' + (i+1),
+                        input.get('id'), 'id' + i,
                         "The input should have been reindexed (id)"
                     );
                     Assert.areEqual(
-                        input.get('name'), 'name' + (i+1),
+                        input.get('name'), 'name' + i,
                         "The input should have been reindexed (id)"
                     );
                 });
