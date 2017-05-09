@@ -36,7 +36,8 @@
          */
         _trackYUIAppReady(createComponent) {
             if ( window.eZ && window.eZ.YUI ) {
-                return createComponent();
+                createComponent();
+                return;
             }
             this._readyHandler = createComponent;
             this.ownerDocument.addEventListener('ez:yui-app:ready', this._readyHandler);
@@ -59,6 +60,10 @@
         /**
          * Attaches the YUI subitem view as a child the `<ez-subitem>` element.
          * It also handles loading error while building the subitem list.
+         *
+         * @param {false|Error} err
+         * @param {eZ.ViewService} viewService
+         * @param {eZ.View} view
          */
         _attachView(err, viewService, view) {
             if ( err ) {
