@@ -78,7 +78,7 @@ YUI.add('ez-googlemapapiloader-tests', function (Y) {
 
             Y.Assert.areEqual(
                 JSONRequestUrl,
-                "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}",
+                "https://maps.googleapis.com/maps/api/js?callback={callback}",
                 "Url argument should be correct"
             );
 
@@ -90,6 +90,23 @@ YUI.add('ez-googlemapapiloader-tests', function (Y) {
             Y.Assert.isObject(
                 JSONRequestConfig.on.failure,
                 "Config argument should contain 'on.failure' entry"
+            );
+        },
+
+        "Should call JSONRequestConstructor with correct arguments while trying to load map API with API key": function () {
+            var JSONRequestUrl = "",
+                JSONPStub = function (requestUrl) {
+                    this.send = function () {};
+                    JSONRequestUrl = requestUrl;
+                };
+
+            this.mapLoader = new Y.eZ.GoogleMapAPILoader(JSONPStub);
+            this.mapLoader.load('234rt34w3vt4');
+
+            Y.Assert.areEqual(
+                JSONRequestUrl,
+                "https://maps.googleapis.com/maps/api/js?callback={callback}&key=234rt34w3vt4",
+                "Url argument should be correct and with api key"
             );
         },
 
