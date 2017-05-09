@@ -129,7 +129,7 @@
 
 {% block notification %}
     {% if hasErrors|length %}
-        <li data-state="error">{{ "form.validation_error"|trans(domain="general") }}</li>
+        <li data-state="error">{{ "form.validation_error"|trans(domain="messages") }}</li>
     {% endif %}
     {{ parent() }}
 {% endblock %}

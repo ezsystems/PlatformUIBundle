@@ -36,7 +36,8 @@ YUI.add('ez-maplocation-view-tests', function (Y) {
         setUp: function () {
             this.loaderMock = new Y.Mock();
             Y.Mock.expect(this.loaderMock, {
-                method: 'load'
+                method: 'load',
+                args: ['']
             });
 
             this.fieldDefinition = {fieldType: 'ezgmaplocation'};
@@ -222,7 +223,8 @@ YUI.add('ez-maplocation-view-tests', function (Y) {
             setUp: function () {
                 this.loaderMock = new Y.Mock();
                 Y.Mock.expect(this.loaderMock, {
-                    method: 'load'
+                    method: 'load',
+                    args: ['4fg334f']
                 });
                 Y.Mock.expect(this.loaderMock, {
                     method: 'on',
@@ -241,7 +243,8 @@ YUI.add('ez-maplocation-view-tests', function (Y) {
                 this.view = new Y.eZ.MapLocationView({
                     fieldDefinition: this.fieldDefinition,
                     field: this.field,
-                    mapAPILoader: this.loaderMock
+                    mapAPILoader: this.loaderMock,
+                    config: {'apiKeys': {'google_map': '4fg334f'}}
                 });
             },
 
