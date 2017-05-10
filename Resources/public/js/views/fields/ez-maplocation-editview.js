@@ -64,7 +64,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          */
         initializer: function () {
             var mapLoader = this.get('mapAPILoader'),
-                apiKey = this.get('config.apiKeys.google_map');
+                apiKey = this.get('config.apiKeys.google_maps');
 
             mapLoader.load(apiKey || '');
             this.after('activeChange', function (e) {
