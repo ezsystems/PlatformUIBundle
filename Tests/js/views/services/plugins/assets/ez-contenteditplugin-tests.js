@@ -216,7 +216,7 @@ YUI.add('ez-contenteditplugin-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.ContentEdit;
-    registerTest.components = ['locationViewViewService'];
+    registerTest.components = ['locationViewViewService', 'dashboardBlocksViewService', 'searchViewService'];
 
     Y.Test.Runner.setName("eZ Content Edit Plugin tests");
     Y.Test.Runner.add(editContentRequestTest);
