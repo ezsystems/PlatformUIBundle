@@ -32,14 +32,14 @@ class PlatformUIController extends Controller
     }
 
     /**
-     * Renders the "shell" page to run the JavaScript application.
+     * Renders the page to run the YUI application.
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function shellAction()
+    public function yuiAppAction()
     {
         return $this->render(
-            'eZPlatformUIBundle:PlatformUI:shell.html.twig',
+            'eZPlatformUIBundle:PlatformUI:ez-yui-app.html.twig',
             ['parameters' => $this->configAggregator->getConfig()]
         );
     }

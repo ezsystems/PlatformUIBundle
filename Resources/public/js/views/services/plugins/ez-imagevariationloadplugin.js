@@ -73,7 +73,7 @@ YUI.add('ez-imagevariationloadplugin', function (Y) {
         Y.eZ.Plugin.ImageVariationLoad, [
             'locationViewViewService', 'universalDiscoveryViewService',
             'contentEditViewService', 'contentCreateViewService',
-            'contentPeekViewService'
+            'contentPeekViewService', 'subitemBoxViewService',
         ]
     );
 });

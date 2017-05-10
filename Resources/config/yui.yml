@@ -182,61 +182,15 @@ system:
                     path: "%ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-locationlink.js"
                 ez-platformuiapp:
                     requires:
-                        - 'app'
-                        - 'app-transitions'
-                        - 'node-screen'
-                        - 'parallel'
-                        - 'history-hash'
+                        - 'app-base'
                         - 'ez-capi'
                         - 'ez-translator'
-                        - 'ez-loginformviewservice'
-                        - 'ez-loginformview'
-                        - 'ez-dashboardblocksview'
-                        - 'ez-dashboardblocksviewservice'
-                        - 'ez-studiopresentationview'
-                        - 'ez-studiopluspresentationview'
-                        - 'ez-contenteditviewservice'
-                        - 'ez-contentcreateviewservice'
-                        - 'ez-contenteditview'
-                        - 'ez-locationviewview'
-                        - 'ez-locationviewviewservice'
-                        - 'ez-trashviewservice'
-                        - 'ez-trashview'
-                        - 'ez-serversideview'
-                        - 'ez-contenttypeeditserversideview'
-                        - 'ez-serversideviewservice'
-                        - 'ez-sectionserversideview'
-                        - 'ez-sectionserversideviewservice'
-                        - 'ez-roleserversideview'
-                        - 'ez-roleserversideviewservice'
-                        - 'ez-navigationhubviewservice'
-                        - 'ez-navigationhubview'
-                        - 'ez-discoverybarviewservice'
-                        - 'ez-discoverybarview'
-                        - 'ez-universaldiscoveryviewservice'
-                        - 'ez-universaldiscoveryview'
-                        - 'ez-contentpeekviewservice'
-                        - 'ez-contentpeekview'
-                        - 'ez-confirmboxviewservice'
-                        - 'ez-confirmboxview'
-                        - 'ez-languageselectionboxviewservice'
-                        - 'ez-languageselectionboxview'
-                        - 'ez-notificationhubviewservice'
-                        - 'ez-notificationhubview'
-                        - 'ez-usermodel'
                         - 'ez-pluginregistry'
                         - 'ez-registerurlhelpersplugin'
                         - 'ez-registerlanguagehelpersplugin'
-                        - 'ez-domstateplugin'
-                        - 'ez-universaldiscoveryplugin'
-                        - 'ez-contentpeekplugin'
-                        - 'ez-confirmboxplugin'
-                        - 'ez-languageselectionboxplugin'
-                        - 'ez-notificationhubplugin'
-                        - 'ez-positionplugin'
                         - 'ez-translateproperty'
-                        - 'ez-searchviewservice'
-                        - 'ez-searchview'
+                        - 'ez-subitemboxview'
+                        - 'ez-subitemboxviewservice'
                     path: "%ez_platformui.public_dir%/js/apps/ez-platformuiapp.js"
                 ez-viewservice:
                     requires: ['base', 'parallel']
@@ -303,6 +257,7 @@ system:
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
+                        - 'ez-updatepriorityplugin'
                         - 'ez-versionsplugin'
                         - 'ez-locationswapplugin'
                         - 'ez-draftconflictview'
@@ -346,6 +301,9 @@ system:
                 ez-roleserversideviewservice:
                     requires: ['ez-serversideviewservice', 'parallel', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-roleserversideviewservice.js"
+                ez-subitemboxviewservice:
+                    requires: ['ez-viewservice', 'ez-searchplugin', 'ez-imagevariationloadplugin', 'ez-updatepriorityplugin']
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-subitemboxviewservice.js"
                 ez-view:
                     requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/views/ez-view.js"
@@ -1404,7 +1362,7 @@ system:
                     requires: ['ez-searchplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-locationsearchplugin.js"
                 ez-searchplugin:
-                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel']
+                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel', 'ez-contenttypemodel']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-searchplugin.js"
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
@@ -1412,6 +1370,9 @@ system:
                 ez-copycontentplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-copycontentplugin.js"
+                ez-updatepriorityplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-translator']
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-updatepriorityplugin.js"
                 ez-discarddraftplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-discarddraftplugin.js"

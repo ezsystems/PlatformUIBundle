@@ -1,8 +1,8 @@
 
 ez:
-    path: /ez
+    path: /webcomponents/ez-yui-app.html
     defaults:
-        _controller: ezsystems.platformui.controller:shellAction
+        _controller: ezsystems.platformui.controller:yuiAppAction
 
 template_yui_module:
     path: /tpl/handlebars/{module}.js

@@ -5,7 +5,7 @@
 YUI.add('ez-registerurlhelpersplugin-tests', function (Y) {
     var pluginTest, registerTest,
         pathHelperTest, assetHelperTest,
-        Assert = Y.Assert;
+        Assert = Y.Assert, Mock = Y.Mock;
 
     pluginTest = new Y.Test.Case({
         name: "eZ Register Partials Plugin test",
@@ -42,61 +42,49 @@ YUI.add('ez-registerurlhelpersplugin-tests', function (Y) {
         name: "eZ Register Partials Plugin path helper test",
 
         setUp: function () {
-            this.app = new Y.Mock();
+            this.routeName = 'testRouteName';
+            this.params = {'id': 1};
+            this.resultUri = '/uri/1/42';
+            this.routing = window.Routing = new Mock();
             this.plugin = new Y.eZ.Plugin.RegisterUrlHelpers({
-                host: this.app
+                host: {},
+            });
+
+            Mock.expect(this.routing, {
+                method: 'generate',
+                args: [this.routeName, Mock.Value.Object],
+                run: Y.bind(function (routeName, p) {
+                    Assert.areSame(
+                        this.params, p,
+                        "The 'params' parameter of 'path' should be passed to routeUri"
+                    );
+                    return this.resultUri;
+                }, this),
             });
         },
 
         tearDown: function () {
             this.plugin.destroy();
             delete this.plugin;
+            delete window.Routing;
         },
 
         "Should build the path using app routeUri method": function () {
-            var name = 'testRouteName', params = {'id': 1},
-                resUri = '#/uri/1/42';
-
-            Y.Mock.expect(this.app, {
-                method: 'routeUri',
-                args: [name, Y.Mock.Value.Object],
-                run: function (routeName, p) {
-                    Assert.areSame(
-                        params, p,
-                        "The 'params' parameter of 'path' should be passed to routeUri"
-                    );
-                    return resUri;
-                }
-            });
             Y.Assert.areEqual(
-                resUri,
-                Y.Handlebars.helpers.path(name, {hash: params}),
+                this.resultUri,
+                Y.Handlebars.helpers.path(this.routeName, {hash: this.params}),
                 "'path' should return the routeUri result"
             );
-            Y.Mock.verify(this.app);
+            Mock.verify(this.routing);
         },
 
         "Should accept the route params as hash": function () {
-            var name = 'testRouteName', params = {'id': 1},
-                resUri = '#/uri/1/42';
-
-            Y.Mock.expect(this.app, {
-                method: 'routeUri',
-                args: [name, Y.Mock.Value.Object],
-                run: function (routeName, p) {
-                    Assert.areSame(
-                        params, p,
-                        "The 'params' parameter of 'path' should be passed to routeUri"
-                    );
-                    return resUri;
-                }
-            });
             Y.Assert.areEqual(
-                resUri,
-                Y.Handlebars.helpers.path(name, params, {hash: {}}),
+                this.resultUri,
+                Y.Handlebars.helpers.path(this.routeName, this.params, {hash: {}}),
                 "'path' should return the routeUri result"
             );
-            Y.Mock.verify(this.app);
+            Mock.verify(this.routing);
         },
     });
 

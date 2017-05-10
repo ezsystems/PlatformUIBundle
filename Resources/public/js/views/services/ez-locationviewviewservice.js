@@ -29,32 +29,9 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             this.on('*:moveAction', this._selectLocation);
             this.on('*:translateContent', this._translateContent);
             this.on('*:sortUpdate', this._updateSorting);
-            this.on('*:updatePriority', this._updatePriority);
             this.after('*:requestChange', this._setLanguageCode);
 
             this._setLanguageCode();
-        },
-
-        /**
-         * Update the priority of the location.
-         *
-         * @protected
-         * @method _updatePriority
-         * @param {Object} e the event facade of the sortUpdate event
-         */
-        _updatePriority: function (e) {
-            var loadOptions = {api: this.get('capi')};
-
-            e.location.updatePriority(loadOptions, e.priority, Y.bind(function (error, response) {
-                if (error) {
-                    this._notify(
-                        Y.eZ.trans('failed.updated.priority', {}, 'locationview'),
-                        'update-priority-' + e.location.get('locationId'),
-                        'error',
-                        0
-                    );
-                }
-            }, this));
         },
 
         /**

@@ -4,8 +4,18 @@ sudo: required
 language: php
 
 env:
-    global:
-        secure: "aNPcXEtgV3Q/GVCH+FvITm/gLXcNyFl7YiOT9JcqZUwYXsT2zi8g4BcwBgDtpbSmi8NSCsEWONNxxDM10BqCPzfkiFD2I0cPHXVxmJ3cmOqySci5JvysEd+RU6gnatCxqzAJYDH2BanfPyu+yPwrSIgWdkPuvNhydNJFUrwsinw="
+  global:
+  - secure: aNPcXEtgV3Q/GVCH+FvITm/gLXcNyFl7YiOT9JcqZUwYXsT2zi8g4BcwBgDtpbSmi8NSCsEWONNxxDM10BqCPzfkiFD2I0cPHXVxmJ3cmOqySci5JvysEd+RU6gnatCxqzAJYDH2BanfPyu+yPwrSIgWdkPuvNhydNJFUrwsinw=
+  - secure: ykdMPWEidiMd/o4XAEThBbHMpsGp9h4PFWBQtcGtqIBnyk5VJ6yOR5WgHPhIiJUYwHRYvdu4JX0awPM6jYlRdGD+o45QjewPwk0rIezeyiRyhCjyXDmlufYg0JI35qTQP7J2IGDqt6jLPX/DCwZshYi7EQSDgA52xlEW1iKtV/Q=
+  - secure: yt7SKe/+GRoR/PFFbx7GkJQ+mHCwUrDvvyhbb5oc/DmhJnIxR5QJyHXvXHkf36C8TQUi0GDyklo1p0nKB+Fj3Tce2czsIYobLlV0+VMGhp/sJw2MA+MKAhYyCRNBB9oAbvQRyVflS7SuZLbUWsdXXwUKZJh94QoRs242Wk+j3iE=
+
+addons:
+  firefox: latest
+  apt:
+    sources:
+      - google-chrome
+    packages:
+      - google-chrome-stable
 
 cache:
   directories:
@@ -14,10 +24,8 @@ cache:
 
 matrix:
     fast_finish: true
-    allow_failures:
+    include:
         # Run behat first as it takes the most time (don't need to specify php version here as we don't really care about version on host)
-        - php: 5.6
-          env: BEFORE="./bin/travis/prepare_behat.sh" TEST_CMD="./bin/travis/runbehat.sh" AFTER_SUCCESS='echo "After success"' RUN_INSTALL=1 COMPOSE_FILE="doc/docker-compose/base-prod.yml:doc/docker-compose/selenium.yml" SYMFONY_ENV=behat SYMFONY_DEBUG=0
         - env: BEFORE="./bin/travis/setupnode.sh" TEST_CMD="./bin/travis/runnode.sh" AFTER_SUCCESS="./bin/travis/generate_apidoc.sh"
         - php: 7.0
           env: BEFORE="./bin/travis/setupphpunit.sh" SYMFONY_VERSION="^2.8" TEST_CMD="./vendor/bin/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'

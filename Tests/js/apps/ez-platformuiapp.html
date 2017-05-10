@@ -7,18 +7,10 @@
 
 <div class="app">
     <div class="view-container"></div>
-    <div class="ez-errorview-container is-hidden"></div>
 </div>
 
-<div class="app-sideviews">
-    <div class="sideview1"></div>
-    <div class="sideview2"></div>
-    <div class="sideview3"></div>
-    <div class="view-container"></div>
-    <div class="ez-errorview-container is-hidden"></div>
-</div>
-
-<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../assets/customevent.polyfill.js"></script>
+<script type="text/javascript" src="../../../bower_components/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../external/assets/capi.js"></script>
 <script type="text/javascript" src="./assets/ez-platformuiapp-tests.js"></script>
 <script type="text/javascript" src="../assets/ez-translator.js"></script>
@@ -39,39 +31,23 @@
         filter: loaderFilter,
         modules: {
             "ez-platformuiapp": {
-                requires: [
-                    'app', 'app-transitions', 'node-screen', 'parallel',
-                    'ez-capi', 'ez-view', 'ez-viewservice', 'ez-usermodel', 'ez-translator',
-                    'ez-pluginregistry', 'ez-translateproperty', 'history-hash'
-                ],
+                requires: ['app-base', 'ez-capi', 'ez-translator', 'ez-pluginregistry', 'ez-translateproperty'],
                 fullpath: "../../../Resources/public/js/apps/ez-platformuiapp.js"
+            },
+            "ez-viewservice": {
+                requires: ['base', 'parallel'],
+                fullpath: "../../../Resources/public/js/views/services/ez-viewservice.js"
+            },
+            "ez-viewservicebaseplugin": {
+                requires: ['plugin'],
+                fullpath: "../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
             },
             "ez-capi": {
                 fullpath: "../../../Resources/public/js/external/ez-capi.js"
             },
-            "ez-viewservice": {
-                requires: ['base'],
-                fullpath: "../../../Resources/public/js/views/services/ez-viewservice.js"
-            },
-            "ez-view": {
-                requires: ['view'],
-                fullpath: "../../../Resources/public/js/views/ez-view.js"
-            },
-            "ez-usermodel": {
-                requires: ['ez-restmodel'],
-                fullpath: "../../../Resources/public/js/models/ez-usermodel.js"
-            },
-            "ez-restmodel": {
-                requires: ['model'],
-                fullpath: "../../../Resources/public/js/models/ez-restmodel.js"
-            },
             "ez-pluginregistry": {
                 requires: ['array-extras'],
                 fullpath: "../../../Resources/public/js/services/ez-pluginregistry.js"
-            },
-            "ez-viewservicebaseplugin": {
-                requires: ['base', 'plugin'],
-                fullpath: "../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
             },
             "ez-translateproperty": {
                 requires: ['base', 'array-extras'],

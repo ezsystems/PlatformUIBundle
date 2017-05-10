@@ -1,11 +1,10 @@
 <div class="ez-subitemgrid-item-content ez-asynchronousview">
     <p class="ez-subitemgrid-item-content-type">
-        <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
-        <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link">
+        <a href="{{path "_ez_content_view" contentId=location.contentInfo.contentId viewType="full" layout="true" locationId=location.locationId }}" class="ez-subitemgrid-item-link ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
             {{ translate_property contentType.names }}
         </a>
     </p>
-    <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link ez-subitemgrid-item-visual ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
+    <a href="{{path "_ez_content_view" contentId=location.contentInfo.contentId viewType="full" layout="true" locationId=location.locationId }}" class="ez-subitemgrid-item-link ez-subitemgrid-item-visual ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
         <img alt="" class="ez-subitemgrid-item-image">
     </a>
     <p class="ez-asynchronousview-error ez-font-icon">
@@ -14,7 +13,7 @@
     </p>
 
     <h3 class="ez-subitemgrid-item-name">
-        <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link">
+        <a href="{{path "_ez_content_view" contentId=location.contentInfo.contentId viewType="full" layout="true" locationId=location.locationId }}" class="ez-subitemgrid-item-link">
             {{content.name}}
         </a>
     </h3>
