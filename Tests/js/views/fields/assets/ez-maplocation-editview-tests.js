@@ -386,7 +386,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 version: version,
                 content: content,
                 contentType: contentType,
-                config: {'apiKeys': {'google_map': '4fg334f'}}
+                config: {'apiKeys': {'google_maps': '4fg334f'}}
             });
 
             this.view.set('fieldDefinition', fieldDefinition);
