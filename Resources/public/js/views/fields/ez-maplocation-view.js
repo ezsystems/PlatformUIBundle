@@ -35,7 +35,7 @@ YUI.add('ez-maplocation-view', function (Y) {
          */
         initializer: function () {
             var mapLoader = this.get('mapAPILoader'),
-                apiKey = this.get('config.apiKeys.google_map');
+                apiKey = this.get('config.apiKeys.google_maps');
 
             if ( !this._isFieldEmpty() && mapLoader ) {
                 mapLoader.load(apiKey || '');

@@ -244,7 +244,7 @@ YUI.add('ez-maplocation-view-tests', function (Y) {
                     fieldDefinition: this.fieldDefinition,
                     field: this.field,
                     mapAPILoader: this.loaderMock,
-                    config: {'apiKeys': {'google_map': '4fg334f'}}
+                    config: {'apiKeys': {'google_maps': '4fg334f'}}
                 });
             },
 
