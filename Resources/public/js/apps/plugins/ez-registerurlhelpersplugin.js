@@ -2,6 +2,7 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+/* global Routing */
 YUI.add('ez-registerurlhelpersplugin', function (Y) {
     "use strict";
     /**
@@ -41,13 +42,11 @@ YUI.add('ez-registerurlhelpersplugin', function (Y) {
          * @protected
          */
         _registerPath: function () {
-            var app = this.get('host');
-
             Y.Handlebars.registerHelper('path', function (routeName, routeParams, options) {
                 if ( !options ) {
                     routeParams = routeParams.hash;
                 }
-                return app.routeUri(routeName, routeParams);
+                return Routing.generate(routeName, routeParams);
             });
         },
 

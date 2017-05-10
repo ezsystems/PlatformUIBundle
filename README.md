@@ -75,8 +75,9 @@ UI application.
 
 ## Developers tasks
 
-Most developer related tasks can be run with [Grunt](http://gruntjs.com/) and
-have several additional dependencies:
+Most developer related tasks can be run with [Grunt](http://gruntjs.com/).
+
+### Dependencies
 
 * Install grunt, yuidoc, bower and grover globally (usually you need to be root):
 
@@ -91,13 +92,17 @@ have several additional dependencies:
   $ bower install
   ```
 
-Once this is done, you can use any tasks registered in Grunt, the most
-interesting are:
+### Unit tests
+
+PlatformUIBundle has somehow 2 codebases. One is based on YUI, the other one is
+provides Custom Elements.
+
+#### YUI code base
 
 * Running the JavaScript unit tests
 
   ```
-  $ grunt test
+  $ grunt test-yui
   ```
 * Running a single JavaScript unit test
 
@@ -109,7 +114,27 @@ interesting are:
   ```
   $ grunt coverage
   ```
-  The HTML coverage report is then available in `Tests/report/lcov-report/index.html`.
+  The HTML coverage report is then available in `Tests/report/coverage/index.html`.
+
+
+#### Custom Elements
+
+* Running unit tests in local browsers
+
+  ```
+  $ grunt test-webcomponents
+  ```
+
+* Running unit tests in supported browsers in [SauceLabs](https://saucelabs.com/).
+First create a SauceLabs account and then excute the following:
+  ```
+  $ export SAUCE_USERNAME="your_sauce_labs_username"
+  $ export SAUCE_ACCESS_KEY="your_sauce_labs_key"
+  $ grunt test-webcomponents-sauce
+  ```
+
+### API documentation
+
 * Generate the JavaScript API doc:
 
   ```
@@ -122,6 +147,9 @@ interesting are:
   ```
   $ grunt livedoc
   ```
+
+### AlloyEditor related tasks
+
 * Update the custom AlloyEditor skin:
 
   ```bash
@@ -131,7 +159,7 @@ interesting are:
   $ cd -
   $ grunt alloy-css
   ```
-  
+
 * To test updating custom AlloyEditor skin against custom platform-ui-assets-bundle builds:
 
   ```bash

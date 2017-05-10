@@ -1,0 +1,34 @@
+<link rel="import" href="../../../assets/ezplatform/polymer/polymer-element.html">
+<link rel="import" href="../../../webcomponents/ez-yui-app.html">
+
+<style>
+ez-subitem {
+    display: block;
+}
+
+ez-subitem .ez-switch-subitemview::after {
+    content: attr(title);
+}
+
+ez-subitem .ez-subitem-priority-validate::after {
+    content: "Save";
+}
+
+ez-subitem .ez-subitem-priority-cancel::after {
+    content: "Reset";
+}
+
+ez-subitem .ez-subitem-priority-edit {
+    display: none;
+}
+
+ez-subitem .ez-asynchronousview-error {
+    display: none;
+}
+
+ez-subitem .is-state-image-error .ez-asynchronousview-error {
+    display: block;
+}
+</style>
+
+<script src="js/ez-subitem.js"></script>

@@ -17,5 +17,10 @@
     "alloyeditor": "~1.2.3",
     "widget": "http://download.ckeditor.com/widget/releases/widget_4.5.9.zip",
     "lineutils": "http://download.ckeditor.com/lineutils/releases/lineutils_4.5.9.zip"
+  },
+  "devDependencies": {
+    "web-component-tester": "^6.0.0-prerelease.5",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0-rc.5",
+    "polymer": "Polymer/polymer#^2.0.0-rc.2"
   }
 }

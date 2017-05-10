@@ -6,7 +6,9 @@ composer.lock
 node_modules/
 .php_cs.cache
 .project
-Resources/public/vendors/
+bower_components/
+/assets/
+/webcomponents/
 Tests/instrument/
 Tests/js/alloyeditor/toolbars/assets/*.js
 Tests/js/alloyeditor/buttons/assets/*.js
