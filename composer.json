@@ -22,19 +22,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/dpobel/ez-field-edit.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/dpobel/hybrid-platformui-assets.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/dpobel/installers.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/dpobel/ez-map.git"
         }
     ],
     "require-dev": {
