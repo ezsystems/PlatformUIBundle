@@ -140,6 +140,11 @@ services:
         arguments: ["@ezpublish.config.resolver"]
         parent: ezsystems.platformui.controller.base
 
+
+    ezsystems.platformui.controller.dashboard:
+        class: "%ezsystems.platformui.controller.dashboard.class%"
+        parent: ezsystems.platformui.controller.base
+
     ezsystems.platformui.controller.webcomponent:
         class: "%ezsystems.platformui.controller.webcomponent.class%"
         arguments:
