@@ -143,6 +143,21 @@ class Role extends PlatformUI
     }
 
     /**
+     * @Then I see a message saying that the name should have :maxLength characters or less
+     */
+    public function nameIsTooLong($maxLength)
+    {
+        $this->iSeeNotification('Form did not validate. Please review errors below.');
+        $element = $this->getElementByText(
+            'This value is too long. It should have ' . $maxLength . ' characters or less.',
+            'li'
+        );
+        if (!$element) {
+            throw new \Exception('Error message not found');
+        }
+    }
+
+    /**
      * @Then I should see a label for the Role Assigments
      */
     public function roleAssigmentLabel()

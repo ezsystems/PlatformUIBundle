@@ -92,6 +92,14 @@ Feature: Create, delete, update and View the Role UI
     When I click on "Save" button
     Then I see a message saying that the name "Organizers" already exists
 
+  @javascript @edge
+  Scenario: creating a Role with an too long identifier fails validation
+    And I am on the Roles page
+    And I create a new role
+    And I fill in "Name" with string longer than 255
+    When I click on "Save" button
+    Then I see a message saying that the name should have 255 characters or less
+
   @javascript @common
   Scenario: cancel the creation of a role
     Given I am on the Roles page
@@ -144,6 +152,14 @@ Feature: Create, delete, update and View the Role UI
     And I fill in "Name" with "Security"
     When I click on "Save" button
     Then I see a message saying that the name "Security" already exists
+
+  @javascript @edge
+  Scenario: Updating a Role with an too long identifier fails validation
+    And I am on the Roles page
+    And I create a new role
+    And I fill in "Name" with string longer than 255
+    When I click on "Save" button
+    Then I see a message saying that the name should have 255 characters or less
 
   @javascript @common
   Scenario: Cancel the update of a role

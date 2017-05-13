@@ -79,6 +79,16 @@ trait CommonActions
     }
 
     /**
+     * @When I fill in :field with string longer than :maxLength
+     *
+     * Spin function make it possible to retry in case of failure
+     */
+    public function fillFieldWithTooLongString($field, $maxLength)
+    {
+        $this->fillFieldWithValue($field, str_repeat('X', $maxLength + 1));
+    }
+
+    /**
      * @Then I (should) see :title title/topic
      */
     public function iSeeTitle($title)
