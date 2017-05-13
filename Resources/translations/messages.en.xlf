@@ -7,8 +7,8 @@
     </header>
     <body>
       <trans-unit id="07ec12f4689ee90ade282338b25b99b9677b0d08" resname="form.validation_error">
-        <source>Invalid form data</source>
-        <target>Invalid form data</target>
+        <source>Form did not validate. Please review errors below.</source>
+        <target>Form did not validate. Please review errors below.</target>
         <note>key: form.validation_error</note>
         <jms:reference-file line="132">Resources/views/ContentType/update_content_type.html.twig</jms:reference-file>
         <jms:reference-file line="49">Resources/views/Role/update_role.html.twig</jms:reference-file>
