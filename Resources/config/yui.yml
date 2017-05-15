@@ -191,6 +191,8 @@ system:
                         - 'ez-translateproperty'
                         - 'ez-subitemboxview'
                         - 'ez-subitemboxviewservice'
+                        - 'ez-universaldiscoveryview'
+                        - 'ez-universaldiscoveryviewservice'
                     path: "%ez_platformui.public_dir%/js/apps/ez-platformuiapp.js"
                 ez-viewservice:
                     requires: ['base', 'parallel']
