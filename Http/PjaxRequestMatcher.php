@@ -15,6 +15,6 @@ final class PjaxRequestMatcher implements RequestMatcherInterface
 {
     public function matches(Request $request)
     {
-        return $request->headers->has('x-pjax');
+        return $request->headers->has('x-pjax') || strpos($request->getRequestUri(), '/pjax') !== false;
     }
 }
