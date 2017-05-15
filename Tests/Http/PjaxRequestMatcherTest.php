@@ -7,6 +7,7 @@ namespace EzSystems\PlatformUIBundle\Tests\Http;
 
 use EzSystems\PlatformUIBundle\Http\PjaxRequestMatcher;
 use PHPUnit_Framework_TestCase;
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class PjaxRequestMatcherTest extends PHPUnit_Framework_TestCase
@@ -21,10 +22,32 @@ class PjaxRequestMatcherTest extends PHPUnit_Framework_TestCase
         $this->requestMatcher = new PjaxRequestMatcher();
     }
 
-    public function testMatch()
+    public function testMatchOnHeader()
     {
         $request = new Request();
-        $request->headers->set('x-pjax', 'true');
+        $request->headers = $this->getMock(HeaderBag::class);
+        $request->headers
+            ->expects($this->once())
+            ->method('has')
+            ->with('x-pjax')
+            ->will($this->returnValue(true));
+
+        $this->assertTrue($this->requestMatcher->matches($request));
+    }
+
+    public function testMatchOnRequestUri()
+    {
+        $request = $this->getMock(Request::class);
+        $request->headers = $this->getMock(HeaderBag::class);
+        $request->headers
+            ->expects($this->once())
+            ->method('has')
+            ->with('x-pjax')
+            ->will($this->returnValue(false));
+        $request
+            ->expects($this->once())
+            ->method('getRequestUri')
+            ->will($this->returnValue('/pjax/request'));
 
         $this->assertTrue($this->requestMatcher->matches($request));
     }
