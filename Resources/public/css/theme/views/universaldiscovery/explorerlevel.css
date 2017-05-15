@@ -7,6 +7,8 @@
     content: "\E605";
     color: #7A7A7A;
     font-size: 140%;
+    position: absolute;
+    right: 0;
 }
 
 .ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list {
@@ -18,6 +20,7 @@
 .ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-list-item {
     padding: 0.2em 0 0.2em 0;
     display: block;
+    position: relative;
 }
 
 .ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item {

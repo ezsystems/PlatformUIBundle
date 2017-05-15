@@ -6,6 +6,15 @@
     min-width: 200px;
 }
 
+.ez-view-universaldiscoveryfinderexplorerlevelview:last-child {
+    width: 100%;
+    min-width: 600px;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview:last-child .ez-explorer-level-item {
+    width: 92.5%;
+}
+
 .ez-view-universaldiscoveryfinderexplorerlevelview .ez-ud-finder-explorerlevel-anchor {
     float: right;
     visibility: hidden;

@@ -100,8 +100,8 @@
 }
 
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-name {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    font-size: 100%;
+    margin-top: 5px;
     min-height: 1em;
+    white-space: normal;
 }
