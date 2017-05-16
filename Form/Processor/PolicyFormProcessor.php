@@ -8,12 +8,12 @@
  */
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
-use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
 use EzSystems\RepositoryForms\Event\RepositoryFormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 class PolicyFormProcessor implements EventSubscriberInterface
@@ -47,7 +47,7 @@ class PolicyFormProcessor implements EventSubscriberInterface
         $this->notify('role.policy.notification.draft_saved', [], 'role');
         // Set a default redirect response to policy edit route, with the new policy draft ID
         $event->setResponse(
-            new FormProcessingDoneResponse(
+            new RedirectResponse(
                 $this->router->generate('admin_policyEdit', [
                     'roleId' => $data->initialRole->id,
                     'policyId' => $data->policyDraft->id,
@@ -61,7 +61,7 @@ class PolicyFormProcessor implements EventSubscriberInterface
         /** @var \EzSystems\RepositoryForms\Data\Role\PolicyCreateData|\EzSystems\RepositoryForms\Data\Role\PolicyUpdateData $data */
         $data = $event->getData();
         $event->setResponse(
-            new FormProcessingDoneResponse(
+            new RedirectResponse(
                 $this->router->generate('admin_roleView', ['roleId' => $data->initialRole->id])
             )
         );
@@ -74,7 +74,7 @@ class PolicyFormProcessor implements EventSubscriberInterface
         /** @var \EzSystems\RepositoryForms\Data\Role\PolicyCreateData|\EzSystems\RepositoryForms\Data\Role\PolicyUpdateData $data */
         $data = $event->getData();
         $event->setResponse(
-            new FormProcessingDoneResponse(
+            new RedirectResponse(
                 $this->router->generate('admin_roleView', ['roleId' => $data->initialRole->id])
             )
         );

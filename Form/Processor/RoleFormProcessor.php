@@ -13,12 +13,12 @@ namespace EzSystems\PlatformUIBundle\Form\Processor;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\RoleService;
 use eZ\Publish\API\Repository\Values\User\RoleDraft;
-use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
 use EzSystems\RepositoryForms\Event\RepositoryFormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 class RoleFormProcessor implements EventSubscriberInterface
@@ -70,7 +70,7 @@ class RoleFormProcessor implements EventSubscriberInterface
 
     public function processSaveRole(FormActionEvent $event)
     {
-        $event->setResponse(new FormProcessingDoneResponse($this->router->generate('admin_roleList')));
+        $event->setResponse(new RedirectResponse($this->router->generate('admin_roleList')));
         $this->notify('role.notification.draft_saved', [], 'role');
         $this->notify('role.notification.published', [], 'role');
     }
@@ -84,7 +84,7 @@ class RoleFormProcessor implements EventSubscriberInterface
         try {
             // This will throw a NotFoundException if a published version doesn't exist for this Role.
             $this->roleService->loadRole($roleDraft->id);
-            $response = new FormProcessingDoneResponse(
+            $response = new RedirectResponse(
                 $this->router->generate(
                     'admin_roleView',
                     ['roleId' => $roleDraft->id]
@@ -93,7 +93,7 @@ class RoleFormProcessor implements EventSubscriberInterface
         } catch (NotFoundException $e) {
             // RoleDraft was newly created, but then discarded.
             // Redirect to the role list view.
-            $response = new FormProcessingDoneResponse($this->router->generate('admin_roleList'));
+            $response = new RedirectResponse($this->router->generate('admin_roleList'));
         }
 
         $event->setResponse($response);

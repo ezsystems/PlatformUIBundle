@@ -8,7 +8,6 @@
  */
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
-use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
@@ -49,7 +48,7 @@ class ContentTypeGroupFormProcessor implements EventSubscriberInterface
         }
 
         $event->setResponse(
-            new FormProcessingDoneResponse($this->router->generate('admin_contenttypeGroupList'))
+            new RedirectResponse($this->router->generate('admin_contenttypeGroupList'))
         );
     }
 }

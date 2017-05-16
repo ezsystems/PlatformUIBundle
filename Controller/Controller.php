@@ -8,9 +8,9 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
-use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use eZ\Bundle\EzPublishCoreBundle\Controller as BaseController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 abstract class Controller extends BaseController
 {
@@ -35,11 +35,11 @@ abstract class Controller extends BaseController
      *
      * @param string $url
      *
-     * @return FormProcessingDoneResponse
+     * @return RedirectResponse
      */
     protected function redirectAfterFormPost($url)
     {
-        return new FormProcessingDoneResponse($url);
+        return new RedirectResponse($url);
     }
 
     /**
@@ -49,7 +49,7 @@ abstract class Controller extends BaseController
      * @param string $routeName
      * @param array $params Hash of parameters to generate the route.
      *
-     * @return FormProcessingDoneResponse
+     * @return RedirectResponse
      */
     protected function redirectToRouteAfterFormPost($routeName, array $params = [])
     {
