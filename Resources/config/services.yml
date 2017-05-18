@@ -133,6 +133,13 @@ services:
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'translationDomains'}
 
+    ezsystems.platformui.application_config.provider.api_keys:
+        class: "%ezsystems.platformui.application_config.provider.value.class%"
+        arguments:
+            - $api_keys$
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'apiKeys'}
+
     ezsystems.platformui.controller.template:
         class: "%ezsystems.platformui.controller.template.class%"
         arguments: ["@ezpublish.config.resolver"]

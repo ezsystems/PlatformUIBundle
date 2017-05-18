@@ -96,6 +96,6 @@ YUI.add('ez-contenteditplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.ContentEdit, ['locationViewViewService', 'dashboardBlocksViewService']
+        Y.eZ.Plugin.ContentEdit, ['locationViewViewService', 'dashboardBlocksViewService', 'searchViewService']
     );
 });
