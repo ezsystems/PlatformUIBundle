@@ -19,7 +19,7 @@
             {{ translate 'viewing.out.of.items' 'subitem' displayCount=displayCount subitemCount=location.childCount }}
         </p>
         <p>
-            <button class="pure-button ez-button ez-loadmorepagination-more ez-font-icon" disabled>
+            <button class="ez-button ez-button-ghost ez-loadmorepagination-more" disabled>
                 {{ translate 'show.more.results' 'subitem' limit=limit }}
             </button>
         </p>

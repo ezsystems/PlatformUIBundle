@@ -9,9 +9,9 @@
             inputmode="numeric"
             value="{{ property.value }}">
         <div class="ez-subitem-priority-buttons">
-            <button class="ez-subitem-priority-button ez-subitem-priority-validate ez-button ez-font-icon pure-button"></button>
-            <button class="ez-subitem-priority-button ez-subitem-priority-cancel ez-button ez-font-icon pure-button"></button>
+            <button class="ez-subitem-priority-button ez-subitem-priority-validate"></button>
+            <button class="ez-subitem-priority-button ez-subitem-priority-cancel"></button>
         </div>
     </form>
-    <button class="ez-subitem-priority-button ez-subitem-priority-edit ez-font-icon"></button>
+    <button class="ez-subitem-priority-button ez-subitem-priority-edit"></button>
 </td>
