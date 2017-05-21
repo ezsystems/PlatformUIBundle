@@ -8,12 +8,12 @@
  */
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
-use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
 use EzSystems\RepositoryForms\Event\RepositoryFormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 class SectionFormProcessor implements EventSubscriberInterface
@@ -49,7 +49,7 @@ class SectionFormProcessor implements EventSubscriberInterface
         }
 
         $event->setResponse(
-            new FormProcessingDoneResponse($this->router->generate('admin_sectionview', ['sectionId' => $sectionData->getId()]))
+            new RedirectResponse($this->router->generate('admin_sectionview', ['sectionId' => $sectionData->getId()]))
         );
     }
 }
