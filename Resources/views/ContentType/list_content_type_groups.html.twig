@@ -35,11 +35,7 @@
                             <td><a href="{{ path("admin_contenttypeGroupView", {"contentTypeGroupId": group.id}) }}">{{ group.identifier }}</a></td>
                             <td>{{ group.id }}</td>
                             <td>
-                            {% if can_edit %}
-                                <a href="{{ path("admin_contenttypeGroupEdit", {'contentTypeGroupId': group.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'content_type.group.edit'|trans }}</a>
-                            {% else %}
-                                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'content_type.group.edit'|trans }}</span>
-                            {% endif %}
+                                <a href="{{ path("admin_contenttypeGroupEdit", {'contentTypeGroupId': group.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.group.edit'|trans }}</a>
                             </td>
                             <td>
                                 {% set deleteForm = delete_forms_by_id[group.id] %}
@@ -50,7 +46,7 @@
                                         deleteForm.delete,
                                         {
                                             "disabled": not can_delete,
-                                            "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
+                                            "attr": {"class": "ez-button ez-button-negative"}
                                         }
                                     )
                                 }}
@@ -61,11 +57,7 @@
                     </tbody>
                 </table>
                 <p class="ez-table-data-buttons">
-                    {% if can_edit %}
-                        <a href="{{ path('admin_contenttypeGroupEdit') }}" class="pure-button ez-button" data-icon="&#xe616;">{{ 'content_type.group.new'|trans }}</a>
-                    {% else %}
-                        <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe616;">{{ 'content_type.group.new'|trans }}</span>
-                    {% endif %}
+                    <a href="{{ path('admin_contenttypeGroupEdit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.group.new'|trans }}</a>
                 </p>
             </div>
         </div>

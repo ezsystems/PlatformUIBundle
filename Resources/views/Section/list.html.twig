@@ -19,11 +19,11 @@
                     data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
                     data-section-rest-id="{{path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
                     data-section-name="{{ section.name }}"
-                    class="ez-section-assign-button ez-button-tree pure-button ez-font-icon ez-button"
+                    class="ez-section-assign-button ez-button"
                     {% if not section.canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
             </td>
             <td>
-                <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button{% if not section.canEdit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'section.edit'|trans }}</a>
+                <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="ez-button" data-icon="&#xe606;"{% if not section.canEdit %} data-disabled{% endif %}>{{ 'section.edit'|trans }}</a>
             </td>
         </tr>
     {% endfor %}
@@ -71,15 +71,11 @@
                                     data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
                                     data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
                                     data-section-name="{{ section.name }}"
-                                    class="ez-section-assign-button ez-button-tree pure-button ez-font-icon ez-button"
+                                    class="ez-button ez-button-secondary"
                                     {% if not canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
                             </td>
                             <td>
-                            {% if canEdit %}
-                                <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'section.edit'|trans }}</a>
-                            {% else %}
-                                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'section.edit'|trans }}</span>
-                            {% endif %}
+                                <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button ez-button-secondary" data-icon="&#xe606;"{% if not canEdit %} data-disabled{% endif %}>{{ 'section.edit'|trans }}</a>
                             </td>
                             <td>
                                 {% set deleteForm = deleteFormsBySectionId[section.id] %}
@@ -90,7 +86,7 @@
                                             deleteForm.delete,
                                             {
                                                 "disabled": deletableSections[section.id] is not defined,
-                                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
+                                                "attr": {"class": "ez-button ez-button-negative"}
                                             }
                                         )
                                     }}
@@ -101,11 +97,7 @@
                     </tbody>
                 </table>
                 <p class="ez-table-data-buttons">
-                {% if canEdit %}
-                    <a href="{{ path('admin_sectionedit') }}" class="pure-button ez-button" data-icon="&#xe616;">{{ 'section.new'|trans }}</a>
-                {% else %}
-                    <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe616;">{{ 'section.new'|trans }}</span>
-                {% endif %}
+                    <a href="{{ path('admin_sectionedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{%if not canEdit %} data-disabled{% endif %}>{{ 'section.new'|trans }}</a>
                 </p>
             </div>
         </div>

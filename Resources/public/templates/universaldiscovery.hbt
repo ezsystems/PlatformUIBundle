@@ -15,7 +15,7 @@
 <div class="ez-universaldiscovery-toolbar">
     <div class="ez-universaldiscovery-confirmed-list-container"></div>
     <div class="ez-universaldiscovery-actions">
-        <a href="#" class="ez-universaldiscovery-cancel">{{ translate 'universaldiscovery.cancel' 'universaldiscovery' }}</a>
-        <button class="ez-universaldiscovery-confirm ez-button pure-button" disabled="disabled">{{ confirmLabel }}</button>
+        <a href="#" class="ez-universaldiscovery-cancel ez-button ez-button-secondary">{{ translate 'universaldiscovery.cancel' 'universaldiscovery' }}</a>
+        <button class="ez-universaldiscovery-confirm ez-button ez-button-primary" disabled="disabled">{{ confirmLabel }}</button>
     </div>
 </div>

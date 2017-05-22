@@ -43,16 +43,11 @@
 
             <div>
                 {{ form_start(deleteForm, {"action": path("admin_languagedelete", {"languageId": language.id, "redirectErrorsTo": "view"})}) }}
-                {% if canEdit %}
                     <a href="{{ path('admin_languageedit', {'languageId': language.id}) }}"
-                       class="pure-button ez-button" data-icon="&#xe606;">
+                       {% if not canEdit %}data-disabled{% endif %}
+                       class="ez-button ez-button-primary" data-icon="&#xe606;">
                         {{ 'language.edit'|trans }}
                     </a>
-                {% else %}
-                    <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">
-                        {{ 'language.edit'|trans }}
-                    </span>
-                {% endif %}
 
                     {{ form_widget(deleteForm.languageId) }}
                     {{
@@ -60,7 +55,7 @@
                             deleteForm.delete,
                             {
                                 "disabled": not canEdit,
-                                "attr": {"class": "pure-button ez-button ez-remove-language-button ez-font-icon ez-button-delete"}
+                                "attr": {"class": "ez-button ez-button-negative"}
                             }
                         )
                     }}

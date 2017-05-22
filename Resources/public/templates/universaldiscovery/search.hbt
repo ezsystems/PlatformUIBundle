@@ -3,7 +3,7 @@
     <div>
         <form class="ez-ud-search-form">
             <input type="text" class="ez-ud-search-text" value="{{searchText}}"/>
-            <button type="submit" class="ez-ud-search-button ez-button pure-button">{{ translate 'universaldiscovery.search' 'universaldiscovery' }}</button>
+            <button type="submit" class="ez-ud-search-button ez-button ez-button-secondary">{{ translate 'universaldiscovery.search' 'universaldiscovery' }}</button>
         </form>
     </div>
 </div>
@@ -45,7 +45,7 @@
                     <td>{{location.contentInfo.name}}</td>
                     <td>{{translate_property contentType.names}}</td>
                     <td>
-                        <button class="ez-ud-searchresult-preview-button"
+                        <button class="ez-ud-searchresult-preview-button ez-button ez-button-secondary"
                             data-location-id="{{location.id}}">{{ translate 'universaldiscovery.preview' 'universaldiscovery' }}</button>
                     </td>
                 </tr>

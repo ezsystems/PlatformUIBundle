@@ -30,27 +30,27 @@
 
 {% block content %}
     <section class="ez-serverside-content">
-        {{ form_start(form, {'action': actionUrl, "attr": {"class": "pure-form pure-form-aligned"}}) }}
+        {{ form_start(form, {'action': actionUrl}) }}
             {{ form_errors(form) }}
 
             <fieldset>
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.name) }}
                     {{ form_errors(form.name) }}
                     {{ form_widget(form.name) }}
                 </div>
 
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.identifier) }}
                     {{ form_errors(form.identifier) }}
                     {{ form_widget(form.identifier) }}
                 </div>
             </fieldset>
 
-            <div class="pure-controls">
+            <div>
                 <a href="{{ section.new ? path("admin_sectionlist") : path("admin_sectionview", {"sectionId": section.id}) }}"
-                   class="pure-button ez-button">{{ "section.cancel"|trans }}</a>
-                {{ form_widget(form.save, {"attr": {"class": "pure-button ez-button"}}) }}
+                   class="ez-button ez-button-secondary">{{ "section.cancel"|trans }}</a>
+                {{ form_widget(form.save, {"attr": {"class": "ez-button ez-button-primary"}}) }}
             </div>
 
         {{ form_end(form) }}

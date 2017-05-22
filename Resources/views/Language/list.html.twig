@@ -40,11 +40,7 @@
                             <td class="ez-table-data-id"><a href="{{ path( "admin_languageview", {"languageId": language.id} ) }}">{{ language.id }}</a></td>
                             <td><input type="checkbox" disabled {% if language.enabled %}checked title="{{ 'language.enabled'|trans }}"{% else %}title="{{ 'language.disabled'|trans }}"{% endif %}></td>
                             <td>
-                            {% if canEdit %}
-                                <a href="{{ path('admin_languageedit', {'languageId': language.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'language.edit'|trans }}</a>
-                            {% else %}
-                                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'language.edit'|trans }}</span>
-                            {% endif %}
+                                <a href="{{ path('admin_languageedit', {'languageId': language.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not canEdit %} data-disabled{% endif %}>{{ 'language.edit'|trans }}</a>
                             </td>
                             <td>
                                 {% set deleteForm = deleteFormsByLanguageId[language.id] %}
@@ -55,7 +51,7 @@
                                             deleteForm.delete,
                                             {
                                                 "disabled": not canEdit,
-                                                "attr": {"class": "pure-button ez-button ez-remove-language-button ez-font-icon ez-button-delete"}
+                                                "attr": {"class": "ez-button ez-button-negative"}
                                             }
                                         )
                                     }}
@@ -66,11 +62,7 @@
                     </tbody>
                 </table>
                 <p class="ez-table-data-buttons">
-                {% if canEdit %}
-                    <a href="{{ path('admin_languageedit') }}" class="pure-button ez-button" data-icon="&#xe616;">{{ 'language.new'|trans }}</a>
-                {% else %}
-                    <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe616;">{{ 'language.new'|trans }}</span>
-                {% endif %}
+                <a href="{{ path('admin_languageedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not canEdit %} data-disabled{% endif %}>{{ 'language.new'|trans }}</a>
                 </p>
             </div>
         </div>

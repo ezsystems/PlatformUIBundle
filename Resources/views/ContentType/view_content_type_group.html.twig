@@ -40,11 +40,7 @@
                             <td>{{ content_type.identifier }}</td>
                             <td>{{ content_type.modificationDate|localizeddate("medium", "medium", app.request.locale) }}</td>
                             <td>
-                            {% if can_edit %}
-                                <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'content_type.edit'|trans }}</a>
-                            {% else %}
-                                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'content_type.edit'|trans }}</span>
-                            {% endif %}
+                                <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.edit'|trans }}</a>
                             </td>
                             <td>
                                 {% set deleteForm = delete_forms_by_id[content_type.id] %}
@@ -55,7 +51,7 @@
                                             deleteForm.delete,
                                             {
                                                 "disabled": not can_delete_by_id[content_type.id],
-                                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete",
+                                                "attr": {"class": "ez-button ez-button-negative",
                                                          "title": not can_delete_by_id[content_type.id] ? 'content_type.is_in_use'|trans}
                                             }
                                         )
@@ -70,7 +66,7 @@
                 <p class="ez-table-data-buttons">
                     {# TODO: We should be able to select a language for ContentType creation #}
                     {{ form_widget(create_form.contentTypeGroupId) }}
-                    <button type="submit" class="pure-button ez-button" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
+                    <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
                             name="{{ create_form.create.vars['full_name'] }}"
                             id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_content_type") }}</button>
                     {% do create_form.create.setRendered() %}
