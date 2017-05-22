@@ -155,6 +155,16 @@ describe('ez-subitem', function () {
             );
         });
 
+        it('should add the ez-js-standard-form class', function () {
+            const view = getViewMock(container);
+
+            renderViewStub = sinon.stub(window.eZ.YUI.app, 'renderView', function (View, Service, params, done) {
+                done(false, 'whatever', view);
+            });
+            document.dispatchEvent(new CustomEvent('ez:yui-app:ready'));
+            assert.isTrue(subitem.classList.contains('ez-js-standard-form'));
+        });
+
         it('should set the YUI view active', function () {
             const view = getViewMock(container);
             const setSpy = sinon.spy(view, 'set').withArgs('active', true);

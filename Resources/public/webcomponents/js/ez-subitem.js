@@ -73,6 +73,7 @@
             this._view = view;
             this.innerHTML = '';
             this.appendChild(view.get('container').getDOMNode());
+            this.classList.add('ez-js-standard-form');
             view.set('active', true);
         }
 
