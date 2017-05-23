@@ -6,7 +6,7 @@
     {% for child in form %}
         {% set section = child.vars.label %}
 
-        <tr class="ez-selection-table-row">
+        <tr>
             <td>
                 {{ form_widget(child, {'disabled': not section.canDelete, 'attr': {'class': 'ez-selection-table-checkbox'} }) }}
             </td>
@@ -47,60 +47,57 @@
 
 {% block content %}
     <section class="ez-serverside-content">
-        <div class="ez-table-data is-flexible">
-            <div class="ez-table-data-container">
-                <table class="pure-table pure-table-striped ez-selection-table" data-selection-buttons=".ez-remove-section-button">
-                    <thead>
-                        <tr>
-                            <th>{{ 'section.name'|trans }}</th>
-                            <th>{{ 'section.identifier'|trans }}</th>
-                            <th>{{ 'section.id'|trans }}</th>
-                            <th>{{ 'section.assigned.content'|trans }}</th>
-                            <th colspan="3"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for section in sectionList %}
-                        <tr class="ez-selection-table-row">
-                            <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.name }}</a></td>
-                            <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.identifier }}</a></td>
-                            <td class="ez-table-data-id"><a href="{{ path( "admin_sectionview", {"sectionId": section.id} ) }}">{{ section.id }}</a></td>
-                            <td class="ez-table-data-count">{{ contentCountBySectionId[section.id] }}</td>
-                            <td>
+        <table class="ez-table-data" data-selection-buttons=".ez-remove-section-button">
+            <thead>
+                <tr>
+                    <th>{{ 'section.name'|trans }}</th>
+                    <th>{{ 'section.identifier'|trans }}</th>
+                    <th>{{ 'section.id'|trans }}</th>
+                    <th>{{ 'section.assigned.content'|trans }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for section in sectionList %}
+                <tr class="ez-selection-table-row">
+                    <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.name }}</a></td>
+                    <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.identifier }}</a></td>
+                    <td class="ez-table-data-id"><a href="{{ path( "admin_sectionview", {"sectionId": section.id} ) }}">{{ section.id }}</a></td>
+                    <td class="ez-table-data-count">{{ contentCountBySectionId[section.id] }}</td>
+                    <td>
+
+                        {% set deleteForm = deleteFormsBySectionId[section.id] %}
+                        {{ form_start(deleteForm, {"action": path("admin_sectiondelete", {"sectionId": section.id, "redirectErrorsTo": "list"})}) }}
+                            {{ form_widget(deleteForm.sectionId) }}
+
                                 <button
+                                    type="button"
                                     data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
                                     data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
                                     data-section-name="{{ section.name }}"
                                     class="ez-button ez-button-secondary"
                                     {% if not canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
-                            </td>
-                            <td>
+
                                 <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button ez-button-secondary" data-icon="&#xe606;"{% if not canEdit %} data-disabled{% endif %}>{{ 'section.edit'|trans }}</a>
-                            </td>
-                            <td>
-                                {% set deleteForm = deleteFormsBySectionId[section.id] %}
-                                {{ form_start(deleteForm, {"action": path("admin_sectiondelete", {"sectionId": section.id, "redirectErrorsTo": "list"})}) }}
-                                    {{ form_widget(deleteForm.sectionId) }}
+
                                     {{
-                                        form_widget(
-                                            deleteForm.delete,
-                                            {
-                                                "disabled": deletableSections[section.id] is not defined,
-                                                "attr": {"class": "ez-button ez-button-negative"}
-                                            }
-                                        )
-                                    }}
-                                {{ form_end(deleteForm) }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <p class="ez-table-data-buttons">
-                    <a href="{{ path('admin_sectionedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{%if not canEdit %} data-disabled{% endif %}>{{ 'section.new'|trans }}</a>
-                </p>
-            </div>
-        </div>
+                                form_widget(
+                                    deleteForm.delete,
+                                    {
+                                        "disabled": deletableSections[section.id] is not defined,
+                                        "attr": {"class": "ez-button ez-button-negative"}
+                                    }
+                                )
+                            }}
+                        {{ form_end(deleteForm) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <p class="ez-table-data-buttons">
+            <a href="{{ path('admin_sectionedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{%if not canEdit %} data-disabled{% endif %}>{{ 'section.new'|trans }}</a>
+        </p>
     </section>
 {% endblock %}
 

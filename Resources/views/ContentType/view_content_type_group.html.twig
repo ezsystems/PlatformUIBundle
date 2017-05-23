@@ -19,61 +19,54 @@
 
 {% block content %}
     <section class="ez-serverside-content">
-        <div class="ez-table-data is-flexible">
-            <div class="ez-table-data-container">
-                <table class="pure-table pure-table-striped ez-selection-table">
-                    <thead>
-                    <tr class="ez-selection-table-row">
-                        <th>{{ 'content_type.id'|trans }}</th>
-                        <th>{{ 'content_type.name'|trans }}</th>
-                        <th>{{ 'content_type.identifier'|trans }}</th>
-                        <th>{{ 'content_type.modified_date'|trans }}</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for content_type in content_types %}
-                        <tr>
-                            <td>{{ content_type.id }}</td>
-                            <td><a class="ez-contenttype-icon ez-contenttype-icon-{{ content_type.identifier }}" href="{{ path('admin_contenttypeView', {'contentTypeId': content_type.id}) }}">{{ ez_trans_prop(content_type, "name") }}</a></td>
-                            <td>{{ content_type.identifier }}</td>
-                            <td>{{ content_type.modificationDate|localizeddate("medium", "medium", app.request.locale) }}</td>
-                            <td>
-                                <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.edit'|trans }}</a>
-                            </td>
-                            <td>
-                                {% set deleteForm = delete_forms_by_id[content_type.id] %}
-                                {{ form_start(deleteForm, {"action": path("admin_contenttypeDelete", {"contentTypeId": content_type.id})}) }}
-                                    {{ form_widget(deleteForm.contentTypeId) }}
-                                    {{
-                                        form_widget(
-                                            deleteForm.delete,
-                                            {
-                                                "disabled": not can_delete_by_id[content_type.id],
-                                                "attr": {"class": "ez-button ez-button-negative",
-                                                         "title": not can_delete_by_id[content_type.id] ? 'content_type.is_in_use'|trans}
-                                            }
-                                        )
-                                    }}
-                                {{ form_end(deleteForm) }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                {{ form_start(create_form, {"action": path("admin_contenttypeCreate", {"contentTypeGroupId": group.id})}) }}
-                <p class="ez-table-data-buttons">
-                    {# TODO: We should be able to select a language for ContentType creation #}
-                    {{ form_widget(create_form.contentTypeGroupId) }}
-                    <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
-                            name="{{ create_form.create.vars['full_name'] }}"
-                            id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_content_type") }}</button>
-                    {% do create_form.create.setRendered() %}
-                </p>
-                {{ form_end(create_form) }}
-            </div>
-        </div>
+        <table class="ez-table-data">
+            <thead>
+                <tr>
+                    <th>{{ 'content_type.id'|trans }}</th>
+                    <th>{{ 'content_type.name'|trans }}</th>
+                    <th>{{ 'content_type.identifier'|trans }}</th>
+                    <th>{{ 'content_type.modified_date'|trans }}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for content_type in content_types %}
+                <tr>
+                    <td>{{ content_type.id }}</td>
+                    <td><a class="ez-contenttype-icon ez-contenttype-icon-{{ content_type.identifier }}" href="{{ path('admin_contenttypeView', {'contentTypeId': content_type.id}) }}">{{ ez_trans_prop(content_type, "name") }}</a></td>
+                    <td>{{ content_type.identifier }}</td>
+                    <td>{{ content_type.modificationDate|localizeddate("medium", "medium", app.request.locale) }}</td>
+                    <td>
+                        {% set deleteForm = delete_forms_by_id[content_type.id] %}
+                        {{ form_start(deleteForm, {"action": path("admin_contenttypeDelete", {"contentTypeId": content_type.id})}) }}
+                            {{ form_widget(deleteForm.contentTypeId) }}
+                            <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.edit'|trans }}</a>
+                            {{
+                                form_widget(
+                                    deleteForm.delete,
+                                    {
+                                        "disabled": not can_delete_by_id[content_type.id],
+                                        "attr": {"class": "ez-button ez-button-negative",
+                                                 "title": not can_delete_by_id[content_type.id] ? 'content_type.is_in_use'|trans}
+                                    }
+                                )
+                            }}
+                        {{ form_end(deleteForm) }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ form_start(create_form, {"action": path("admin_contenttypeCreate", {"contentTypeGroupId": group.id})}) }}
+        <p class="ez-table-data-buttons">
+            {# TODO: We should be able to select a language for ContentType creation #}
+            {{ form_widget(create_form.contentTypeGroupId) }}
+            <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
+                    name="{{ create_form.create.vars['full_name'] }}"
+                    id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_content_type") }}</button>
+            {% do create_form.create.setRendered() %}
+        </p>
+        {{ form_end(create_form) }}
     </section>
 {% endblock %}
 

@@ -17,47 +17,42 @@
 
 {% block content %}
     <section class="ez-serverside-content">
-        <div class="ez-table-data is-flexible">
-            <div class="ez-table-data-container">
-                <table class="pure-table pure-table-striped ez-selection-table">
-                    <thead>
-                    <tr class="ez-selection-table-row">
-                        <th>{{ 'role.name'|trans }}</th>
-                        <th>{{ 'role.id'|trans }}</th>
-                        <th colspan="2"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for role in roles %}
-                        {# @var role \eZ\Publish\API\Repository\Values\User\Role #}
-                        <tr class="ez-role">
-                            <td class="ez-role-name"><a href="{{ path("admin_roleView", {"roleId": role.id}) }}">{{ role.identifier }}</a></td>
-                            <td class="ez-role-id">{{ role.id }}</td>
-                            <td class="ez-role-edit">
-                                <button
-                                    data-universaldiscovery-title="{{ 'role.assign.universaldiscovery.title'|trans({'%roleIdentifier%': role.identifier })|e('html_attr') }}"
-                                    data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
-                                    data-role-name="{{ role.identifier }}"
-                                    class="ez-role-assign-button ez-button ez-button-secondary"
-                                    {% if not can_assign %}disabled="disabled"{% endif %}>{{ 'role.assign.user_or_group'|trans }}</button>
-                            </td>
-                            <td>
-                                <a href="{{ path('admin_roleUpdate', {'roleId': role.id}) }}" class="ez-button ez-button-secondary"{% if not can_edit %} data-disabled{% endif %} data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                {{ form_start(create_form, {"action": path("admin_roleCreate")}) }}
-                <p class="ez-table-data-buttons">
-                    <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
-                            name="{{ create_form.create.vars['full_name'] }}"
-                            id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_role") }}</button>
-                    {% do create_form.create.setRendered() %}
-                </p>
-                {{ form_end(create_form) }}
-            </div>
-        </div>
+        <table class="ez-table-data">
+            <thead>
+            <tr>
+                <th>{{ 'role.name'|trans }}</th>
+                <th>{{ 'role.id'|trans }}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for role in roles %}
+                {# @var role \eZ\Publish\API\Repository\Values\User\Role #}
+                <tr class="ez-role">
+                    <td class="ez-role-name"><a href="{{ path("admin_roleView", {"roleId": role.id}) }}">{{ role.identifier }}</a></td>
+                    <td class="ez-role-id">{{ role.id }}</td>
+                    <td class="ez-role-edit">
+                        <button
+                            type="button"
+                            data-universaldiscovery-title="{{ 'role.assign.universaldiscovery.title'|trans({'%roleIdentifier%': role.identifier })|e('html_attr') }}"
+                            data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
+                            data-role-name="{{ role.identifier }}"
+                            class="ez-role-assign-button ez-button ez-button-secondary"
+                            {% if not can_assign %}disabled="disabled"{% endif %}>{{ 'role.assign.user_or_group'|trans }}</button>
+                        <a href="{{ path('admin_roleUpdate', {'roleId': role.id}) }}" class="ez-button ez-button-secondary"{% if not can_edit %} data-disabled{% endif %} data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {{ form_start(create_form, {"action": path("admin_roleCreate")}) }}
+        <p class="ez-table-data-buttons">
+            <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
+                    name="{{ create_form.create.vars['full_name'] }}"
+                    id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_role") }}</button>
+            {% do create_form.create.setRendered() %}
+        </p>
+        {{ form_end(create_form) }}
     </section>
 {% endblock %}
 
