@@ -20,6 +20,12 @@
 
 {% block content %}
     <section class="ez-serverside-content">
+        <div class="ez-list-toolbar">
+            <h2 class="ez-list-toolbar-label">{{ 'language.list'|trans }}</h2>
+            <div class="ez-list-toolbar-tools">
+                <a href="{{ path('admin_languageedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not canEdit %} data-disabled{% endif %}>{{ 'language.new'|trans }}</a>
+            </div>
+        </div>
         <table class="ez-table-data" data-selection-buttons=".ez-remove-language-button">
             <thead>
                 <tr>
@@ -57,9 +63,6 @@
             {% endfor %}
             </tbody>
         </table>
-        <p class="ez-table-data-buttons">
-            <a href="{{ path('admin_languageedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not canEdit %} data-disabled{% endif %}>{{ 'language.new'|trans }}</a>
-        </p>
     </section>
 {% endblock %}
 

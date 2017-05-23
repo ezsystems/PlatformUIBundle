@@ -17,6 +17,12 @@
 
 {% block content %}
     <section class="ez-serverside-content">
+        <div class="ez-list-toolbar">
+            <h2 class="ez-list-toolbar-label">{{ 'content_type.group.list'|trans }}</h2>
+            <div class="ez-list-toolbar-tools">
+                <a href="{{ path('admin_contenttypeGroupEdit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.group.new'|trans }}</a>
+            </div>
+        </div>
         <table class="ez-table-data">
             <thead>
                 <tr>
@@ -51,9 +57,6 @@
             {% endfor %}
             </tbody>
         </table>
-        <p>
-            <a href="{{ path('admin_contenttypeGroupEdit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.group.new'|trans }}</a>
-        </p>
     </section>
 {% endblock %}
 

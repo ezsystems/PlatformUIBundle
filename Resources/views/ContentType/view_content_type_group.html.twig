@@ -19,6 +19,17 @@
 
 {% block content %}
     <section class="ez-serverside-content">
+        <div class="ez-list-toolbar">
+            <h2 class="ez-list-toolbar-label">{{ 'content_type.list'|trans|desc('List of Content Types') }}</h2>
+            {{ form_start(create_form, {"action": path("admin_contenttypeCreate", {"contentTypeGroupId": group.id}), 'attr': {'class': 'ez-list-toolbar-tools'}}) }}
+                {# TODO: We should be able to select a language for ContentType creation #}
+                {{ form_widget(create_form.contentTypeGroupId) }}
+                <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
+                        name="{{ create_form.create.vars['full_name'] }}"
+                        id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_content_type") }}</button>
+                {% do create_form.create.setRendered() %}
+            {{ form_end(create_form) }}
+        </div>
         <table class="ez-table-data">
             <thead>
                 <tr>
@@ -57,16 +68,6 @@
             {% endfor %}
             </tbody>
         </table>
-        {{ form_start(create_form, {"action": path("admin_contenttypeCreate", {"contentTypeGroupId": group.id})}) }}
-        <p class="ez-table-data-buttons">
-            {# TODO: We should be able to select a language for ContentType creation #}
-            {{ form_widget(create_form.contentTypeGroupId) }}
-            <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
-                    name="{{ create_form.create.vars['full_name'] }}"
-                    id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_content_type") }}</button>
-            {% do create_form.create.setRendered() %}
-        </p>
-        {{ form_end(create_form) }}
     </section>
 {% endblock %}
 

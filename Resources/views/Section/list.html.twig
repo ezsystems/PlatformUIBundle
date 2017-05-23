@@ -47,6 +47,12 @@
 
 {% block content %}
     <section class="ez-serverside-content">
+        <div class="ez-list-toolbar">
+            <h2 class="ez-list-toolbar-label">{{ 'section.list'|trans }}</h2>
+            <div class="ez-list-toolbar-tools">
+                <a href="{{ path('admin_sectionedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{%if not canEdit %} data-disabled{% endif %}>{{ 'section.new'|trans }}</a>
+            </div>
+        </div>
         <table class="ez-table-data" data-selection-buttons=".ez-remove-section-button">
             <thead>
                 <tr>
@@ -95,9 +101,6 @@
             {% endfor %}
             </tbody>
         </table>
-        <p class="ez-table-data-buttons">
-            <a href="{{ path('admin_sectionedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{%if not canEdit %} data-disabled{% endif %}>{{ 'section.new'|trans }}</a>
-        </p>
     </section>
 {% endblock %}
 

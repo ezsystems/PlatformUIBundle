@@ -17,6 +17,15 @@
 
 {% block content %}
     <section class="ez-serverside-content">
+        <div class="ez-list-toolbar">
+            <h2 class="ez-list-toolbar-label">{{ 'role.list'|trans }}</h2>
+            {{ form_start(create_form, {"action": path("admin_roleCreate"), "attr": {'class': 'ez-list-toolbar-tools'}}) }}
+                <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
+                        name="{{ create_form.create.vars['full_name'] }}"
+                        id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_role") }}</button>
+                {% do create_form.create.setRendered() %}
+            {{ form_end(create_form) }}
+        </div>
         <table class="ez-table-data">
             <thead>
             <tr>
@@ -45,14 +54,6 @@
             {% endfor %}
             </tbody>
         </table>
-        {{ form_start(create_form, {"action": path("admin_roleCreate")}) }}
-        <p class="ez-table-data-buttons">
-            <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
-                    name="{{ create_form.create.vars['full_name'] }}"
-                    id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_role") }}</button>
-            {% do create_form.create.setRendered() %}
-        </p>
-        {{ form_end(create_form) }}
     </section>
 {% endblock %}
 
