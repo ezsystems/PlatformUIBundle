@@ -1,5 +1,5 @@
 {{#if location.childCount}}
-    <table class="ez-subitemlist-table">
+    <table class="ez-table-data">
         <thead>
         <tr class="ez-subitem-headline">
             {{#each columns}}
