@@ -75,7 +75,11 @@ YUI.add('ez-float-editview-tests', function (Y) {
                 {value: '-1', valid: true},
 
                 {value: '1,33', valid: true},
-                {value: '-1,44', valid: true}
+                {value: '-1,44', valid: true},
+
+                //Infinity and -Infinity
+                {value: '9'.repeat(500), valid: false},
+                {value: '-' + '9'.repeat(500), valid: false}
             ];
         },
 

@@ -857,6 +857,20 @@
         <note>key: value.should.be.valid.integer</note>
         <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="d85e23987dc9ef6f162a6173ed81f647d9ff9fe1" resname="value.should.be.less.than.infinity">
+        <source>The value should be less than Infinity</source>
+        <target>The value should be less than Infinity</target>
+        <note>key: value.should.be.less.than.infinity</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-float-editview.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="6ec227faf64ef88a3dfb1438fdfcb5050f857f93" resname="value.should.be.more.than.minus.infinity">
+        <source>The value should be more than -Infinity</source>
+        <target>The value should be more than -Infinity</target>
+        <note>key: value.should.be.more.than.minus.infinity</note>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-integer-editview.js</jms:reference-file>
+        <jms:reference-file>./Resources/public/js/views/fields/ez-float-editview.js</jms:reference-file>
+      </trans-unit>
     </body>
   </file>
 </xliff>
