@@ -171,7 +171,7 @@ class PlatformUI extends Context
      *
      * @param $selector selector to match,
      */
-    protected function waitWhileLoading($selector = self::LOADING_SELECTOR, $onlyVisible = true)
+    public function waitWhileLoading($selector = self::LOADING_SELECTOR, $onlyVisible = true)
     {
         $maxTime = time() + self::MAX_WAIT_TIMEOUT;
         do {
@@ -319,7 +319,7 @@ class PlatformUI extends Context
      * @param string    $textSelector   Extra CSS selector for text of the element
      * @param string    $baseElement    Element in which the search is based
      */
-    protected function clickElementByText($text, $selector, $textSelector = null, $baseElement = null, $index = 1)
+    protected function clickElementByText($text, $selector, $textSelector = null, $baseElement = null)
     {
         $element = $this->getElementByText($text, $selector, $textSelector, $baseElement);
         if ($element && $element->isVisible()) {
