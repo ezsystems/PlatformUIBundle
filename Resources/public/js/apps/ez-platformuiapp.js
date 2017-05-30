@@ -31,7 +31,8 @@ YUI.add('ez-platformuiapp', function (Y) {
             Y.eZ.Translator.setPreferredLanguages(this.get('interfaceLanguages'));
 
             this._setGlobals();
-            this._fireAppReadyEvent();
+
+            this.on('initializedChange', this._fireAppReadyEvent, this);
         },
 
         /**

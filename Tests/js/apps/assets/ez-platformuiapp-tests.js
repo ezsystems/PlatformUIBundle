@@ -297,16 +297,17 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
 
         "Should dispatch the `ez:yui-app:ready` event on the document": function () {
             var app,
-                dispatchedEvent = false;
+                dispatchedEvent = false,
+                eventHandler = function (e) {
+                    dispatchedEvent = true;
 
-            document.addEventListener('ez:yui-app:ready', function (e) {
-                dispatchedEvent = true;
+                    Assert.areSame(
+                        document, e.target,
+                        "The event target should be the document"
+                    );
+                };
 
-                Assert.areSame(
-                    document, e.target,
-                    "The event target should be the document"
-                );
-            });
+            document.addEventListener('ez:yui-app:ready', eventHandler);
 
             app = new Y.eZ.PlatformUIApp();
 
@@ -314,7 +315,32 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 dispatchedEvent,
                 "The `ez:yui-app:ready` event should have been dispatched"
             );
-        }
+
+            document.removeEventListener('ez:yui-app:ready', eventHandler);
+        },
+
+        // Regression test for https://jira.ez.no/browse/EZP-27421
+        "Should dispatch the `ez:yui-app:ready` event after plugins are initialized": function () {
+            var app,
+                pluginNS = 'myPlugin',
+                pluginInitialized = false,
+                Plugin = Y.Base.create('myPlugin', Y.Plugin.Base, [], {
+                    initializer: function () {
+                        this.on('initializedChange', function () {
+                            pluginInitialized = true;
+                        });
+                    }
+                }, {NS: pluginNS}),
+                eventHandler = function () {
+                    Assert.isTrue(pluginInitialized, "The plugin should be initialized before `ez:yui-app:ready` event is dispatched");
+                };
+
+            document.addEventListener('ez:yui-app:ready', eventHandler);
+
+            app = new Y.eZ.PlatformUIApp({plugins: [Plugin]});
+
+            document.removeEventListener('ez:yui-app:ready', eventHandler);
+        },
     });
 
     renderViewTest = new Y.Test.Case({
