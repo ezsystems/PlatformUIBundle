@@ -10,12 +10,6 @@ admin_systeminfo:
         _controller: ezsystems.platformui.controller.systeminfo:infoAction
     methods: [GET]
 
-admin_phpinfo:
-    path: /systeminfo/phpinfo
-    defaults:
-        _controller: ezsystems.platformui.controller.systeminfo:phpinfoAction
-    methods: [GET]
-
 admin_sectionlist:
     path: /section/list
     defaults:

@@ -22,3 +22,9 @@ yui_combo_loader:
 
 _bazinga_jstranslation:
     resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"
+
+admin_phpinfo:
+    path: /systeminfo/phpinfo
+    defaults:
+        _controller: ezsystems.platformui.controller.systeminfo:phpinfoAction
+    methods: [GET]
