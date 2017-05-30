@@ -4,10 +4,25 @@
 <style>
 ez-subitem {
     display: block;
+    padding: 1em;
 }
 
 ez-subitem .ez-switch-subitemview::after {
     content: attr(title);
+}
+
+
+ez-subitem .ez-subitembox-viewlist,
+ez-subitem .ez-subitembox-viewlist-item {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: inline-block;
+}
+
+
+ez-subitem .is-view-selected .ez-switch-subitemview {
+    font-weight: bold;
 }
 
 ez-subitem .ez-subitem-priority-validate::after {

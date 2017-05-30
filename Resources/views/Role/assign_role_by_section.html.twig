@@ -31,18 +31,18 @@
             {% endfor %}
         </select>
         <p>
+            <a href="{{ path("admin_roleView", {"roleId": role.id}) }}" class="ez-button ez-button-secondary">
+                {{- 'role.assign_limit_section.cancel'|trans -}}
+            </a>
             <button
                 data-universaldiscovery-limit-section-title="{{ 'role.assign.universaldiscovery.title'|trans({'%roleIdentifier%': role.identifier })|e('html_attr') }}"
                 data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
                 data-role-name="{{ role.identifier }}"
                 data-role-assignment-limitation-type="{{ 'Section' }}"
-                class="ez-role-assign-limit-section-button ez-button-tree pure-button ez-font-icon ez-button">
+                class="ez-role-assign-limit-section-button ez-button ez-button-primary">
                 {% if not can_assign %}disabled{% endif %}
                 {{ 'role.assign_limit_section.user_or_group'|trans }}
             </button>
-            <a href="{{ path("admin_roleView", {"roleId": role.id}) }}" class="ez-role-assign-limit-section-cancel-button pure-button ez-button">
-                {{- 'role.assign_limit_section.cancel'|trans -}}
-            </a>
         </p>
     </section>
 {% endblock %}

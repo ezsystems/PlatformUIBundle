@@ -148,11 +148,7 @@
             </details>
 
             <div class="ez-toolbar">
-            {% if can_edit %}
-                <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'content_type.edit'|trans|desc("Edit") }}</a>
-            {% else %}
-                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'content_type.edit_title'|trans|desc("Edit") }}</span>
-            {% endif %}
+                <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="ez-button ez-button-primary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.edit'|trans|desc("Edit") }}</a>
                 {{ form_start(delete_form, {"action": path("admin_contenttypeDelete", {"contentTypeId": content_type.id}), 'attr': {'class': 'ez-toolbar-action'}}) }}
                     {{ form_widget(delete_form.contentTypeId) }}
                     {{
@@ -160,7 +156,7 @@
                             delete_form.delete,
                             {
                                 "disabled": not can_delete,
-                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete",
+                                "attr": {"class": "ez-button ez-button-negative",
                                          "title": not can_delete ? 'content_type.is_in_use'|trans|desc("The content type cannot be deleted because it has content items, or because you don't have permission.")}
                             }
                         )

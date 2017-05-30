@@ -43,16 +43,11 @@
 
             <div>
                 {{ form_start(deleteForm, {"action": path("admin_sectiondelete", {"sectionId": section.id, "redirectErrorsTo": "view"})}) }}
-                {% if canEdit %}
                     <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}"
-                       class="pure-button ez-button" data-icon="&#xe606;">
+                       {% if not canEdit %}data-disabled{%endif %}
+                       class="ez-button ez-button-primary" data-icon="&#xe606;">
                         {{ 'section.edit'|trans }}
                     </a>
-                {% else %}
-                    <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">
-                        {{ 'section.edit'|trans }}
-                    </span>
-                {% endif %}
 
                     {{ form_widget(deleteForm.sectionId) }}
                     {{
@@ -60,7 +55,7 @@
                             deleteForm.delete,
                             {
                                 "disabled": not deletable,
-                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
+                                "attr": {"class": "ez-button ez-button-negative"}
                             }
                         )
                     }}
@@ -74,7 +69,7 @@
                     data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
                     data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
                     data-section-name="{{ section.name }}"
-                    class="ez-section-assign-button ez-button-tree pure-button ez-font-icon ez-button">
+                    class="ez-button ez-button-primary">
                     {% if not canAssign %}disabled{% endif %}
                     {{ 'section.assign.contents'|trans }}
                 </button>

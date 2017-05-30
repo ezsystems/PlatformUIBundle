@@ -40,59 +40,59 @@
             }}
         </p>
 
-        {{ form_start(form, {"action": action_url, "attr": {"class": "pure-form pure-form-aligned"}}) }}
+        {{ form_start(form, {"action": action_url}) }}
             {{ form_errors(form) }}
 
             <fieldset>
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.name) }}
                     {{ form_errors(form.name) }}
                     {{ form_widget(form.name) }}
                 </div>
 
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.identifier) }}
                     {{ form_errors(form.identifier) }}
                     {{ form_widget(form.identifier) }}
                 </div>
 
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.description) }}
                     {{ form_errors(form.description) }}
                     {{ form_widget(form.description) }}
                 </div>
 
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.nameSchema) }}
                     {{ form_errors(form.nameSchema) }}
                     {{ form_widget(form.nameSchema) }}
                 </div>
 
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.urlAliasSchema) }}
                     {{ form_errors(form.urlAliasSchema) }}
                     {{ form_widget(form.urlAliasSchema) }}
                 </div>
 
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.isContainer) }}
                     {{ form_errors(form.isContainer) }}
                     {{ form_widget(form.isContainer) }}
                 </div>
 
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.defaultSortField) }}
                     {{ form_errors(form.defaultSortField) }}
                     {{ form_widget(form.defaultSortField) }}
                 </div>
 
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.defaultSortOrder) }}
                     {{ form_errors(form.defaultSortOrder) }}
                     {{ form_widget(form.defaultSortOrder) }}
                 </div>
 
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.defaultAlwaysAvailable) }}
                     {{ form_errors(form.defaultAlwaysAvailable) }}
                     {{ form_widget(form.defaultAlwaysAvailable) }}
@@ -107,20 +107,20 @@
                 </fieldset>
             {% endfor %}
 
-            <div class="pure-control-group">
-                {{ form_widget(form.removeFieldDefinition, {"attr": {"class": "pure-button ez-button"}}) }}
+            <div>
+                {{ form_widget(form.removeFieldDefinition, {"attr": {"class": "ez-button ez-button-negative"}}) }}
             </div>
 
-            <div class="pure-control-group">
+            <div>
                 {{ form_label(form.fieldTypeSelection) }}
                 {{ form_widget(form.fieldTypeSelection) }}
-                {{ form_widget(form.addFieldDefinition, {"attr": {"class": "pure-button ez-button"}}) }}
+                {{ form_widget(form.addFieldDefinition, {"attr": {"class": "ez-button ez-button-secondary"}}) }}
             </div>
 
             <div class="pure-controls">
-                {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button", "formnovalidate": "formnovalidate"}}) }}
-                {{ form_widget(form.saveContentType, {"attr": {"class": "pure-button ez-button"}}) }}
-                {{ form_widget(form.publishContentType, {"attr": {"class": "pure-button ez-button"}}) }}
+                {{ form_widget(form.removeDraft, {"attr": {"class": "ez-button ez-button-secondary", "formnovalidate": "formnovalidate"}}) }}
+                {{ form_widget(form.saveContentType, {"attr": {"class": "ez-button ez-button-secondary"}}) }}
+                {{ form_widget(form.publishContentType, {"attr": {"class": "ez-button ez-button-primary"}}) }}
             </div>
 
         {{ form_end(form) }}

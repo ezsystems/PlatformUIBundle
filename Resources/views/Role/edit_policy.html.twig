@@ -32,7 +32,7 @@
             {{ form_errors(form) }}
 
             <fieldset>
-                <div class="pure-control-group">
+                <div>
                     {{ form_label(form.moduleFunction) }}
                     {{ form_errors(form.moduleFunction) }}
                     {{ form_widget(form.moduleFunction, {"disabled": not policy.new}) }}
@@ -44,7 +44,7 @@
             <fieldset>
                 <legend>{{ form_label(form.limitationsData) }}</legend>
                 {% for limitationForm in form.limitationsData %}
-                    <div class="pure-control-group">
+                    <div>
                         {{ include(limitationForm.vars.template, {form: limitationForm}, with_context = false) }}
                     </div>
                 {% endfor %}
@@ -52,11 +52,11 @@
         {% endif %}
 
             <div class="pure-controls">
-                {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button", "formnovalidate": "formnovalidate"}}) }}
+                {{ form_widget(form.removeDraft, {"attr": {"class": "ez-button ez-button-negative", "formnovalidate": "formnovalidate"}}) }}
                 {% if form.saveAndAddLimitation is defined %}
-                    {{ form_widget(form.saveAndAddLimitation, {"attr": {"class": "pure-button ez-button"}}) }}
+                    {{ form_widget(form.saveAndAddLimitation, {"attr": {"class": "ez-button ez-button-secondary"}}) }}
                 {% endif %}
-                {{ form_widget(form.savePolicy, {"attr": {"class": "pure-button ez-button"}}) }}
+                {{ form_widget(form.savePolicy, {"attr": {"class": "ez-button ez-button-primary"}}) }}
             </div>
 
         {{ form_end(form) }}
