@@ -17,4 +17,11 @@ class UserFieldTypeProcessor extends FieldTypeProcessor
 
         return $incomingValueHash;
     }
+
+    public function postProcessValueHash($outgoingValueHash)
+    {
+        unset($outgoingValueHash['passwordHash'], $outgoingValueHash['passwordHashType']);
+
+        return $outgoingValueHash;
+    }
 }
