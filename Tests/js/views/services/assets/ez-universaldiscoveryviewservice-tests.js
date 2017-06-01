@@ -49,42 +49,43 @@ YUI.add('ez-universaldiscoveryviewservice-tests', function (Y) {
         name: "eZ Universal Discovery View Service starting location test",
 
         setUp: function () {
-            var that = this;
             this.virtualRootLocation = {};
-            this.startingLocation = new Mock();
             this.loadError = false;
             this.loadPathError = false;
             this.capi = {};
-            this.startingLocationId = 'startingLocId';
+            this.startingLocationId = 'locationId';
             this.app = new Y.Base();
+            this.loadError = false;
 
             Y.eZ.Location  = Y.Base.create('locationModel', Y.Base, [], {
                 loadFromHash: function () {},
                 loadPath: Y.bind(function (options, callback) {
                     callback(this.loadPathError);
                 }, this),
-                load: function (options, callback) {
-                    if (!that.loadError) {
-                        Assert.areSame(
-                            that.startingLocationId, this.get('id'),
-                            "The location id should be the one provided by the view"
-                        );
-                        Assert.isTrue(
-                            that.app.get('loading'),
-                            "app should be loading"
-                        );
-                        callback(that.loadError);
-                    } else {
-                        callback(that.loadError);
-                    }
-                },
             }, {ATTRS: {id: {}, locationId: {}, contentInfo: {}}});
 
-            this.startingLocationId = 'locationId';
+            this.location = new Y.eZ.Location({id: this.startingLocationId});
+            this.searchResultList = [{location: this.location}];
+
             this.service = new Y.eZ.UniversalDiscoveryViewService({
                 parameters: {startingLocationId: this.startingLocationId},
                 capi: this.capi = {},
                 app: this.app,
+            });
+            this.service.search = new Mock();
+            Mock.expect(this.service.search, {
+                method: 'findLocations',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (search, callback) {
+                    Assert.isFalse(search.loadContent, 'Should NOT load content');
+                    Assert.isFalse(search.loadContentType, 'Should NOT load contentType');
+                    Assert.areSame(search.limit, 1, 'Search limit should be 1');
+                    Assert.areSame(search.offset, 0, 'Search offset should be 0');
+                    Assert.areSame(search.viewName, 'location-' + this.startingLocationId, 'View name should contain the location id');
+                    Assert.areSame(search.query.LocationIdCriterion, this.startingLocationId, 'Query should have a correct location id criterion');
+
+                    callback(this.loadError, this.searchResultList);
+                }, this),
             });
         },
 
