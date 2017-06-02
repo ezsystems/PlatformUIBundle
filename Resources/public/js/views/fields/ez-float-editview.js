@@ -65,7 +65,12 @@ YUI.add('ez-float-editview', function (Y) {
                     'errorStatus',
                     Y.eZ.trans('float.value.should.be.more.than', config, 'fieldedit')
                 );
-
+            } else if ( Infinity === Math.abs(this._getFieldValue()) ) {
+                var key = Infinity === this._getFieldValue() ? 'value.should.be.less.than.infinity' : 'value.should.be.more.than.minus.infinity';
+                this.set(
+                    'errorStatus',
+                    Y.eZ.trans(key, {}, 'fieldedit')
+                );
             } else {
                 this.set('errorStatus', false);
             }

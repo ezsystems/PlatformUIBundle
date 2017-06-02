@@ -73,7 +73,11 @@ YUI.add('ez-integer-editview-tests', function (Y) {
                 {value: '1', valid: true},
                 {value: '-1', valid: true},
                 {value: '10', valid: true},
-                {value: '-10', valid: true}
+                {value: '-10', valid: true},
+
+                //Infinity and -Infinity
+                {value: '9'.repeat(500), valid: false},
+                {value: '-' + '9'.repeat(500), valid: false}
             ];
         },
 
