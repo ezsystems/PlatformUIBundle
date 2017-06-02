@@ -38,7 +38,7 @@ YUI.add('ez-integer-editview', function (Y) {
         validate: function () {
             var validity = this._getInputValidity(),
                 config = this._variables(),
-                inputValue = this.get('container').one('.ez-integer-input-ui input').get('value');
+                inputValue = this._getFieldValue();
 
             if ( validity.valueMissing ) {
                 this.set('errorStatus', Y.eZ.trans('this.field.is.required', {}, 'fieldedit'));
@@ -59,7 +59,12 @@ YUI.add('ez-integer-editview', function (Y) {
                     'errorStatus',
                     Y.eZ.trans('value.should.be.more.than', config, 'fieldedit')
                 );
-
+            } else if ( Infinity === Math.abs(inputValue) ) {
+                var key = Infinity === inputValue ? 'value.should.be.less.than.infinity' : 'value.should.be.more.than.minus.infinity';
+                this.set(
+                    'errorStatus',
+                    Y.eZ.trans(key, {}, 'fieldedit')
+                );
             } else {
                 this.set('errorStatus', false);
             }
