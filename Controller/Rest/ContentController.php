@@ -97,6 +97,15 @@ class ContentController extends Content
             $this->mapRequestToUserUpdateStruct($request)
         );
 
+        /*
+         * EZP-27050: Deleting the draft automatically created when entering the proxy.
+         * When updating the user with the API a new draft is created and used.
+         * This is a workaround until the user service allows to update a given version and
+         * not create a new draft.
+         */
+        $extraContentVersion = $this->repository->getContentService()->loadContent($contentId, null, $versionNumber);
+        $this->repository->getContentService()->deleteVersion($extraContentVersion->versionInfo);
+
         return $this->mapUserToVersion($updatedUser, $request);
     }
 
