@@ -297,6 +297,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              * @type {eZ.UniversalDiscoveryMethodBaseView|Null}
              */
             this._visibleMethodView = null;
+
             Y.Array.each(this.get('methods'), function (method) {
                 var visible = (visibleMethod === method.get('identifier'));
 
