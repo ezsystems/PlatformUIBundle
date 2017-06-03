@@ -10,31 +10,10 @@
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
 use EzSystems\BehatBundle\Helper\EzAssertion;
+use Exception;
 
 trait CommonActions
 {
-    /**
-     * @Given I clicked on/at (the) :link link
-     * @When  I click on/at (the) :link link
-     *
-     * Click a link with text ':link'
-     */
-    public function iClickAtLink($link)
-    {
-        $this->clickElementByText($link, 'a');
-    }
-
-    /**
-     * @Given I clicked on/at (the) :button button
-     * @When I click on/at (the) :button button
-     *
-     * Clicks the button identified by ':button'
-     */
-    public function iClickAtButton($button)
-    {
-        $this->clickElementByText($button, 'button');
-    }
-
     /**
      * @When I fill in :field with :value
      * @When I set :field as empty
@@ -47,7 +26,7 @@ trait CommonActions
             function () use ($field) {
                 $fieldNode = $this->getSession()->getPage()->findField($field);
                 if ($fieldNode == null) {
-                    throw new \Exception('Field not found');
+                    throw new Exception('Field not found');
                 }
 
                 return $fieldNode;
@@ -70,7 +49,7 @@ trait CommonActions
                 $this->sleep();
                 $check = $this->getSession()->getPage()->findField($field)->getValue();
                 if ($check != $value) {
-                    throw new \Exception('Failed to set the field value: ' . $check);
+                    throw new Exception('Failed to set the field value: ' . $check);
                 }
 
                 return true;
@@ -93,7 +72,7 @@ trait CommonActions
                         return $titleElement;
                     }
                 }
-                throw new \Exception("Title '$title' not found");
+                throw new Exception("Title '$title' not found");
             }
         );
     }
@@ -105,7 +84,7 @@ trait CommonActions
     {
         $field = $this->getSession()->getPage()->findField($label);
         if (!$field) {
-            throw new \Exception("Field '$label' not found");
+            throw new Exception("Field '$label' not found");
         }
     }
 
@@ -144,17 +123,6 @@ trait CommonActions
     }
 
     /**
-     * @Given I click (on) the tab :tab
-     * Clicks on a PlatformUI tab
-     *
-     * @param   string  $tab    Text of the element to click
-     */
-    public function clickTab($tab)
-    {
-        $this->clickElementByText($tab, '.ez-tabs-label a[href]');
-    }
-
-    /**
      * @Given I click (on) the navigation zone :zone
      * Click on a PlatformUI menu zone
      *
@@ -162,24 +130,25 @@ trait CommonActions
      */
     public function clickNavigationZone($zone)
     {
-        $this->clickElementByText($zone, '.ez-zone-name');
+        $dataNavigation = [
+            'Content' => 'platform',
+            'Page' => 'studio',
+            'Performance' => 'studioplus',
+            'Admin Panel' => 'admin',
+        ];
+
+        if (!isset($dataNavigation[$zone])) {
+            throw new Exception("Navigation zone $zone does not exist");
+        }
+
+        $dataNavigationValue = $dataNavigation[$zone];
+        $navigationZoneElement = $this->findWithWait(".ez-zone[data-navigation='$dataNavigationValue']");
+        $navigationZoneElement->click();
         $this->waitWhileLoading();
         // Clicking navigation zone triggers load of first item,
         // we must wait before interacting with the page (see EZP-25128)
         // this method sleeps for a default amount (see EzSystems\PlatformUIBundle\Features\Context\PlaformUI)
         $this->sleep();
-    }
-
-    /**
-     * @Given I click on the :button button number :index
-     * Click on a PlatformUI button
-     *
-     * @param  string   $button     Text of the element to click
-     * @param  string   $index      WHAT IS THIS?!
-     */
-    public function clickButtonWithIndex($button, $index)
-    {
-        $this->clickElementByText($button, 'button', $index);
     }
 
     /**
@@ -190,7 +159,24 @@ trait CommonActions
      */
     public function clickNavigationItem($item)
     {
-        $this->clickElementByText($item, '.ez-navigation-item');
+        $dataNavigationIdentifier = [
+            'Content structure' => 'content-structure',
+            'Media library' => 'media-library',
+            'Administration dashboard' => 'admin-dashboard',
+            'System information' => 'admin-systeminfo',
+            'Sections' => 'admin-sections',
+            'Content types' => 'admin-contenttypes',
+            'Languages' => 'admin-languages',
+            'Users' => 'admin-users',
+            'Roles' => 'admin-roles',
+
+        ];
+
+        $item = $dataNavigationIdentifier[$item];
+        $navigationZoneElement = $this->findWithWait(
+            ".ez-view-navigationitemview[data-navigation-item-identifier='$item'] .ez-navigation-item"
+        );
+        $navigationZoneElement->click();
         $this->waitWhileLoading();
     }
 
@@ -202,7 +188,20 @@ trait CommonActions
      */
     public function clickDiscoveryBar($button)
     {
-        $this->clickElementByText($button, '.ez-view-discoverybarview .ez-action', '.action-label');
+        $dataAction = [
+            'Minimize' => 'minimizeDiscoveryBar',
+            'Content tree' => 'tree',
+            'Trash' => 'viewTrash',
+        ];
+
+        if (!isset($dataAction[$button])) {
+            throw new Exception("Discovery bar button $button does not exist");
+        }
+
+        $button = $dataAction[$button];
+        $buttonElement = $this->findWithWait(".ez-view-discoverybarview .ez-action[data-action='$button']");
+        $this->waitWhileLoading();
+        $buttonElement->click();
         $this->waitWhileLoading();
     }
 
@@ -214,7 +213,22 @@ trait CommonActions
      */
     public function clickActionBar($button)
     {
-        $this->clickElementByText($button, '.ez-actionbar-container .ez-action', '.action-label');
+        $dataAction = [
+            'Minimize' => 'minimizeActionBar',
+            'Create' => 'createContent',
+            'Edit' => 'edit',
+            'Move' => 'move',
+            'Copy' => 'copy',
+            'Send to Trash' => 'sendToTrash',
+        ];
+
+        if (!isset($dataAction[$button])) {
+            throw new Exception("Action bar button $button does not exist");
+        }
+
+        $button = $dataAction[$button];
+        $buttonElement = $this->findWithWait(".ez-actionbar-container .ez-action[data-action='$button']");
+        $buttonElement->click();
         $this->waitWhileLoading();
     }
 
@@ -226,7 +240,19 @@ trait CommonActions
      */
     public function clickEditActionBar($button)
     {
-        $this->clickElementByText($button, '.ez-editactionbar-container .ez-action', '.action-label');
+        $dataAction = [
+            'Publish' => 'publish',
+            'Save' => 'save',
+            'Discard changes' => 'discard',
+        ];
+
+        if (!isset($dataAction[$button])) {
+            throw new Exception("Edit Action bar button $button does not exist");
+        }
+
+        $button = $dataAction[$button];
+        $buttonElement = $this->findWithWait(".ez-editactionbar-container .ez-action[data-action='$button']");
+        $buttonElement->click();
         $this->waitWhileLoading();
     }
 
@@ -242,6 +268,7 @@ trait CommonActions
         $node = $this->findWithWait('.ez-view-discoverybarview');
         $this->clickDiscoveryBar('Content tree');
         $this->openTreePath($path, $node);
+        $this->waitWhileLoading();
     }
 
     /**
@@ -252,25 +279,11 @@ trait CommonActions
      */
     public function clickContentType($contentType)
     {
-        $this->clickElementByText($contentType, '.ez-contenttypeselector-types .ez-selection-filter-item ');
+        $contentTypeElement = $this->findWithWait(
+            ".ez-contenttypeselector-types .ez-selection-filter-item[data-text='$contentType']"
+        );
+        $contentTypeElement->click();
         $this->waitWhileLoading();
-    }
-
-    /**
-     * @Given I create a content of content type :type with:
-     */
-    public function iCreateContentType($type, TableNode $fields)
-    {
-        $this->clickNavigationZone('Platform');
-        $this->iClickAtLink('Content structure');
-        $this->clickActionBar('Create a content');
-        $this->clickContentType($type);
-        foreach ($fields as $fieldArray) {
-            $keys = array_keys($fieldArray);
-            for ($i = 0; $i < count($keys); ++$i) {
-                $this->fillFieldWithValue($keys[$i], $fieldArray[$keys[$i]]);
-            }
-        }
     }
 
     /**
@@ -291,7 +304,8 @@ trait CommonActions
      */
     public function confirmSelection()
     {
-        $this->clickElementByText('Confirm selection', '.ez-universaldiscovery-confirm');
+        $confirmElement = $this->findWithWait('.ez-universaldiscovery-confirm');
+        $confirmElement->click();
     }
 
     /**
@@ -336,12 +350,12 @@ trait CommonActions
         $found = true;
         try {
             $this->clickOnTreePath($path);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $found = false;
         }
 
         if ($found) {
-            throw new \Exception("Tree path '$path' was found");
+            throw new Exception("Tree path '$path' was found");
         }
 
         return true;
@@ -365,10 +379,10 @@ trait CommonActions
      */
     public function iSeeNotification($message)
     {
-        $this->sleep();
-        $result = $this->getElementByText($message, '.ez-notification-text');
+        // @TODO check notification content
+        $result = $this->findWithWait('.ez-notification-text');
         if (!$result) {
-            throw new \Exception("The notification with message '$message' was not shown");
+            throw new Exception("The notification with message '$message' was not shown");
         }
     }
 
@@ -379,23 +393,10 @@ trait CommonActions
     {
         try {
             $this->iSeeNotification($message);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return;
         }
-        throw new \Exception("Unexpected notification shown with message '$message'");
-    }
-
-    /**
-     * @Then I should see elements with the following names:
-     */
-    public function iSeeElements(TableNode $elements)
-    {
-        foreach ($elements as $element) {
-            $found = false;
-            $name = array_values($element)[0];
-            $found = $this->getElementByText($name, '.ez-selection-filter-item');
-            Assertion::assertNotNull($found, "Element: $name not found");
-        }
+        throw new Exception("Unexpected notification shown with message '$message'");
     }
 
     /**
@@ -418,8 +419,7 @@ trait CommonActions
      */
     public function iShouldBeOnTheDashboard()
     {
-        $this->waitWhileLoading();
-        $this->findWithWait('.ez-dashboard-content');
+        $this->assertSession()->elementExists('css', '.ez-view-dashboardblocksview');
     }
 
     /**

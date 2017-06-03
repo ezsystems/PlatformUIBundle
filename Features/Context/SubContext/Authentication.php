@@ -35,7 +35,7 @@ trait Authentication
         $this->waitWhileLoading();
         $this->fillFieldWithValue('username', $username);
         $this->fillFieldWithValue('password', $password);
-        $this->iClickAtButton('Login');
+        $this->findWithWait('.ez-loginform-button')->click();
         $this->iShouldBeLoggedIn();
         $this->shouldBeLoggedIn = true;
     }
@@ -69,7 +69,9 @@ trait Authentication
         $this->waitWhileLoading();
         $el->click();
         $this->waitWhileLoading();
-        $this->iClickAtLink('Logout');
+        $this
+            ->findWithWait('.ez-view-usermenuitemfireeventview[data-event-name="logOut"] .ez-user-menu-item')
+            ->click();
     }
 
     /**
