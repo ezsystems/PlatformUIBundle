@@ -10,9 +10,87 @@
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use EzSystems\PlatformBehatBundle\Context\RepositoryContext;
+use eZ\Publish\API\Repository\Repository;
+use eZ\Publish\API\Repository\UserService;
+use eZ\Publish\API\Repository\ContentService;
 
 class Users extends PlatformUI
 {
+    const USERGROUP_ROOT_CONTENT_ID = 4;
+    const DEFAULT_LANGUAGE = 'eng-GB';
+
+    use RepositoryContext;
+
+    /**
+     * @var eZ\Publish\API\Repository\ContentService
+     */
+    protected $userService;
+
+    /**
+     * @var eZ\Publish\API\Repository\ContentService
+     */
+    protected $contentService;
+
+    /**
+     * @var eZ\Publish\API\Repository\Values\User\User
+     */
+    protected $userDefault;
+
+    /**
+     * @injectService $repository @ezpublish.api.repository
+     * @injectService $userService @ezpublish.api.service.user
+     * @injectService $contentService @ezpublish.api.service.content
+     */
+    public function __construct(Repository $repository, UserService $userService, ContentService $contentService)
+    {
+        parent::__construct();
+        $this->setRepository($repository);
+        $this->userService = $userService;
+        $this->contentService = $contentService;
+        $this->userDefault = null;
+    }
+
+    /**
+     * Return the default user, if there is none one is created.
+     */
+    protected function getDefaultUser()
+    {
+        if (!$this->userDefault) {
+            $username = $password = 'User#' . uniqid();
+            $email = $username . '@ez.no';
+            $this->userDefault = $this->createUser($username, $email, $password);
+        }
+
+        return $this->userDefault;
+    }
+
+    /**
+     * Create user inside given User Group.
+     *
+     * @param $username username of the user to create
+     * @param $email email address of user to create
+     * @param $password account password for user to create
+     *
+     * @return eZ\Publish\API\Repository\Values\User\User
+     */
+    protected function createUser($username, $email, $password)
+    {
+        $repository = $this->getRepository();
+
+        $userCreateStruct = $this->userService->newUserCreateStruct(
+            $username,
+            $email,
+            $password,
+            self::DEFAULT_LANGUAGE
+        );
+        $userCreateStruct->setField('first_name', $username);
+        $userCreateStruct->setField('last_name', $username);
+        $parentGroup = $this->userService->loadUserGroup(self::USERGROUP_ROOT_CONTENT_ID);
+
+        return $this->userService->createUser($userCreateStruct, array($parentGroup));
+    }
+
     /**
      * @When I create a new User
      * @When I fill a new User fields with:
@@ -36,12 +114,43 @@ class Users extends PlatformUI
     }
 
     /**
+     * @When I go to (the) User :username page
+     * @When I go to a valid User page
+     */
+    public function goToUserPage($username = null)
+    {
+        if ($username) {
+            $user = $this->userService->loadUserByLogin($username);
+        } else {
+            $user = $this->getDefaultUser();
+        }
+        $userObject = $this->contentService->loadContent($user->getUserId());
+        $firstName = $userObject->getFieldValue('first_name');
+        $lastName = $userObject->getFieldValue('last_name');
+
+        $this->iAmOnPage('Users');
+        $this->waitWhileLoading();
+        $this->clickOnTreePath("$firstName $lastName");
+        $this->sleep(); //safeguard for application delays
+    }
+
+    /**
      * @When I edit user :username
      */
     public function editUserUser($username)
     {
-        $this->clickOnTreePath("$username $username");
-        $this->sleep(); //safegaurd for application delays
+        if ($username) {
+            $user = $this->userService->loadUserByLogin($username);
+        } else {
+            $user = $this->getDefaultUser();
+        }
+
+        $userObject = $this->contentService->loadContent($user->getUserId());
+        $firstName = $userObject->getFieldValue('first_name');
+        $lastName = $userObject->getFieldValue('last_name');
+
+        $this->clickOnTreePath("$firstName $lastName");
+        $this->sleep(); //safeguard for application delays
         $this->waitWhileLoading();
         $this->clickActionBar('Edit');
     }
@@ -51,7 +160,7 @@ class Users extends PlatformUI
      */
     public function iSeeUsersPage()
     {
-        $this->sleep(); // safegaurd for application delays
+        $this->sleep(); // safeguard for application delays
         $this->iSeeTitle('Users');
     }
 

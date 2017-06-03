@@ -67,3 +67,9 @@ Feature: Use the eZ Users field
         And I fill in "Password" with "12345"
         And I fill in "Confirm password" with "123456"
         Then I should see error messages
+
+    @javascript @edge
+    Scenario: Validate "Send to trash" button is replaced with "Delete" when browsing users
+        When I go to a valid User page
+        Then I should not see a "Send to trash" action bar button
+        And I should see a "Delete" action bar button

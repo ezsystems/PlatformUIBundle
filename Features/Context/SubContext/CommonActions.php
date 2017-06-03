@@ -314,6 +314,28 @@ trait CommonActions
     }
 
     /**
+     * @Then I should see a :button action bar button
+     *
+     * @param  string   $buttonText     Text of the element in the action bar
+     */
+    public function iShouldSeeActionBarButton($buttonText)
+    {
+        $element = $this->getElementByText($buttonText, '.ez-actionbar-container .ez-action', '.action-label');
+        EzAssertion::assertSingleElement($buttonText, $element, null, 'Action bar button');
+    }
+
+    /**
+     * @Then I should not see a :button action bar button
+     *
+     * @param  string   $buttonText     Text of the element in the action bar
+     */
+    public function iShouldNotSeeActionBarButton($buttonText)
+    {
+        $element = $this->getElementByText($buttonText, '.ez-actionbar-container .ez-action', '.action-label');
+        EzAssertion::assertElementNotFound($buttonText, $element, null, 'Action bar button');
+    }
+
+    /**
      * @Then I am on the :name location view
      */
     public function onLocationView($name)
