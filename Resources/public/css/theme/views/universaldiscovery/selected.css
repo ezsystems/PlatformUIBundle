@@ -97,7 +97,7 @@
     white-space: normal;
     font-size: 100%;
     font-weight: bold;
-    margin-top: 5px;
+    margin-top: 0.5em;
     margin-bottom: 0;
 }
 
@@ -106,22 +106,21 @@
 }
 
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-contenttype {
-    margin-top: 0.5em;
+    margin-top: 0.333em;
     margin-bottom: 0.15em;
 }
 
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-infos {
     margin-left: 2em;
     margin-top: 1.5em;
+    font-size: 0.8em;
 }
 
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-infos .ez-ud-selected-infos-title {
     font-weight: bold;
-    font-size: 0.8em;
 }
 
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-infos .ez-ud-selected-info {
     margin-bottom: 0.5em;
     margin-left: 0;
-    font-size: 0.8em;
 }
