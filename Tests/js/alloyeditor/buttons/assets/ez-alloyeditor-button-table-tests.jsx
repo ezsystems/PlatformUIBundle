@@ -88,16 +88,22 @@ YUI.add('ez-alloyeditor-button-table-tests', function (Y) {
         },
 
         "Should generate table context menu on click": function () {
-            var button;
+            var button,
+                exclusive = false;
+                requestExclusive = function () {
+                    exclusive = true;
+                };
 
             button = ReactDOM.render(
-                <AlloyEditor.EzButtonTable editor={this.editor} />,
+                <AlloyEditor.EzButtonTable editor={this.editor} requestExclusive={requestExclusive} />,
                 this.container.getDOMNode()
             );
 
             this.container.one('button').simulate('click');
-
-            // @todo Does not generate a toolbar at this point, missing something here.
+            Assert.isTrue(
+                exclusive,
+                "The button should have requested the exclusive state"
+            );
         },
     });
 
