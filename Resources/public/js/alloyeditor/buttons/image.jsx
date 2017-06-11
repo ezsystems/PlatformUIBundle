@@ -44,18 +44,6 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
         },
 
         /**
-         * Lifecycle. Invoked once before the component is mounted.
-         * The return value will be used as the initial value of this.state.
-         *
-         * @method getInitialState
-         */
-        getInitialState: function() {
-            return {
-                isDisabled: false,
-            };
-        },
-
-        /**
          * Returns the UDW title to pick a Content to embed.
          *
          * @method _getUDWTitle
@@ -76,11 +64,8 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
             var path = this.props.editor.get('nativeEditor').elementPath();
 
             // http://docs.ckeditor.com/#!/api/CKEDITOR.dom.elementPath
-            // There is also isContextFor( tag ), so if there is a way to specify where embeds
-            // are valid that would potentially be cleaner
-            this.state.isDisabled = path && path.contains('table', true) !== null;
-
-            return this.state.isDisabled;
+            // There is also isContextFor( tag ) which potential could have been used.
+            return path && path.contains('table', true) !== null;
         },
 
         /**
@@ -106,7 +91,7 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
         },
 
         render: function () {
-            var css = "ae-button ez-ae-labeled-button" + this.getStateClasses(), disabled = this.state.isDisabled;
+            var css = "ae-button ez-ae-labeled-button" + this.getStateClasses(), disabled = this.isDisabled();
 
             return (
                 <button className={css} disabled={disabled} onClick={this._chooseContent} tabIndex={this.props.tabIndex}>

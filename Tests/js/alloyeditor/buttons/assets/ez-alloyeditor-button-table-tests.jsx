@@ -7,7 +7,7 @@ YUI.add('ez-alloyeditor-button-table-tests', function (Y) {
         AlloyEditor = Y.eZ.AlloyEditor,
         ReactDOM = Y.eZ.ReactDOM,
         React = Y.eZ.React,
-        Assert = Y.Assert, Mock = Y.Mock;
+        Assert = Y.Assert;
 
     renderTest = new Y.Test.Case({
         name: "eZ AlloyEditor table button render test",
@@ -26,7 +26,7 @@ YUI.add('ez-alloyeditor-button-table-tests', function (Y) {
             var button;
 
             button = ReactDOM.render(
-                <AlloyEditor.EzButtonTable editor={this.editor} />,
+                <AlloyEditor.ButtonTable editor={this.editor} />,
                 this.container
             );
 
@@ -45,7 +45,7 @@ YUI.add('ez-alloyeditor-button-table-tests', function (Y) {
             var node;
 
             node = ReactDOM.render(
-                <AlloyEditor.EzButtonTable
+                <AlloyEditor.ButtonTable
                     editor={this.editor}
                     renderExclusive={true}
                     cancelExclusive={function () {}} />,
@@ -89,13 +89,13 @@ YUI.add('ez-alloyeditor-button-table-tests', function (Y) {
 
         "Should generate table context menu on click": function () {
             var button,
-                exclusive = false;
+                exclusive = false,
                 requestExclusive = function () {
                     exclusive = true;
                 };
 
             button = ReactDOM.render(
-                <AlloyEditor.EzButtonTable editor={this.editor} requestExclusive={requestExclusive} />,
+                <AlloyEditor.ButtonTable editor={this.editor} requestExclusive={requestExclusive} />,
                 this.container.getDOMNode()
             );
 

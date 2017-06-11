@@ -12,19 +12,20 @@ YUI.add('ez-alloyeditor-button-table', function (Y) {
 
     var AlloyEditor = Y.eZ.AlloyEditor,
         React = Y.eZ.React,
-        EzButtonTable;
+        ButtonTable;
 
     /**
-     * The ButtonTable component represents a button to add a table.
+     * The ButtonTable class provides functionality for creating and editing a table in a document. ButtonTable
+     * renders in two different modes:
+     *
+     * - Normal: Just a button that allows to switch to the edition mode
+     * - Exclusive: The ButtonTableEdit UI with all the table edition controls.
      *
      * This component is a copy of AlloyEditor.ButtonTable, with slightly different render() logic.
      *
-     * @uses AlloyEditor.ButtonCommand
-     * @uses AlloyEditor.ButtonStateClasses
-     *
-     * @class eZ.AlloyEditor.ButtonTable
+     * @class ButtonTable
      */
-    EzButtonTable = React.createClass({displayName: "EzButtonTable",
+    ButtonTable = React.createClass({displayName: "ButtonTable",
         propTypes: {
             editor: React.PropTypes.object.isRequired,
             label: React.PropTypes.string,
@@ -32,7 +33,7 @@ YUI.add('ez-alloyeditor-button-table', function (Y) {
         },
 
         statics: {
-            key: 'eztable',
+            key: 'eztable'
         },
 
         render: function () {
@@ -53,5 +54,5 @@ YUI.add('ez-alloyeditor-button-table', function (Y) {
         },
     });
 
-    AlloyEditor.Buttons[EzButtonTable.key] = AlloyEditor.EzButtonTable = EzButtonTable;
+    AlloyEditor.Buttons[ButtonTable.key] = AlloyEditor.ButtonTable = ButtonTable;
 });

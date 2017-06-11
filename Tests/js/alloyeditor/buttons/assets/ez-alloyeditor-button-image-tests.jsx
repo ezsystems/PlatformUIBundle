@@ -11,7 +11,7 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
-        name: "eZ AlloyEditor image button render (mock) test",
+        name: "eZ AlloyEditor image button render test",
 
         setUp: function () {
             this.container = Y.one('.container').getDOMNode();
@@ -93,7 +93,7 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
     });
 
     clickTest = new Y.Test.Case({
-        name: "eZ AlloyEditor image button click (functional) test",
+        name: "eZ AlloyEditor image button click test",
 
         "async:init": function () {
             var startTest = this.callback();
