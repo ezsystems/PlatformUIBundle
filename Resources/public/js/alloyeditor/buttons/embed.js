@@ -62,11 +62,7 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
          * @return {Boolean} True if the command is disabled, false otherwise.
          */
         isDisabled: function () {
-            var path = this.props.editor.get('nativeEditor').elementPath();
-
-            // http://docs.ckeditor.com/#!/api/CKEDITOR.dom.elementPath
-            // There is also isContextFor( tag ) which potential could have been used.
-            return path && path.contains('table', true) !== null;
+            return !this.props.editor.get('nativeEditor').ezembed.canBeAdded();
         },
 
         /**

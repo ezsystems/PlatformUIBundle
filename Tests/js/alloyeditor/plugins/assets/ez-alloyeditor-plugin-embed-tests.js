@@ -16,10 +16,22 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         setUp: function () {
             this.editor = {};
             this.editor.widgets = new Mock();
+            this.elementPath = new Mock();
         },
 
         tearDown: function () {
             delete this.editor;
+            delete this.elementPath;
+        },
+
+        _initWithMock: function() {
+            var plugin = CKEDITOR.plugins.get('ezembed');
+
+            Mock.expect(this.editor.widgets, {
+                method: 'add',
+                args: ['ezembed', Mock.Value.Object],
+            });
+            plugin.init(this.editor);
         },
 
         "Should define the embed plugin": function () {
@@ -37,15 +49,53 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         },
 
         "Should define the ezembed widget": function () {
-            var plugin = CKEDITOR.plugins.get('ezembed');
-
-            Mock.expect(this.editor.widgets, {
-                method: 'add',
-                args: ['ezembed', Mock.Value.Object],
-            });
-            plugin.init(this.editor);
+            this._initWithMock();
             Mock.verify(this.editor.widgets);
         },
+
+        "Should define the ezembed.canBeAdded function": function () {
+            this._initWithMock();
+
+            Assert.isObject(this.editor.ezembed, "this.editor.ezembed should be an object");
+            Assert.isFunction(this.editor.ezembed.canBeAdded, "this.editor.ezembed.canBeAdded should be a Function");
+        },
+
+
+        "ezembed.canBeAdded() should return true when there is no table": function () {
+            this._initWithMock();
+
+            Mock.expect(this.editor, {
+                method: 'elementPath',
+                returns: this.elementPath,
+            });
+
+            Mock.expect(this.elementPath, {
+                method: 'contains',
+                args: ['table', true],
+                returns: null,
+            });
+
+            Assert.isTrue(this.editor.ezembed.canBeAdded(), "Should be able to add ezembed with *no* table in path");
+        },
+
+
+        "ezembed.canBeAdded() should return false when there is a table": function () {
+            this._initWithMock();
+
+            Mock.expect(this.editor, {
+                method: 'elementPath',
+                returns: this.elementPath,
+            });
+
+            Mock.expect(this.elementPath, {
+                method: 'contains',
+                args: ['table', true],
+                returns: [],
+            });
+
+            Assert.isFalse(this.editor.ezembed.canBeAdded(), "Should be able to add ezembed with *a* table in path");
+        },
+
     });
 
     embedWidgetTest = new Y.Test.Case({

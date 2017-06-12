@@ -17,31 +17,28 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
             this.container = Y.one('.container').getDOMNode();
             this.editor = new Mock();
             this.nativeEditor = new Mock();
-            this.elementPath = new Mock();
+            this.nativeEditor.ezembed = new Mock();
 
             Mock.expect(this.editor, {
                 method: 'get',
                 args: ['nativeEditor'],
                 returns: this.nativeEditor
             });
-            Mock.expect(this.nativeEditor, {
-                method: 'elementPath',
-                returns: this.elementPath,
-            });
         },
 
         tearDown: function () {
             ReactDOM.unmountComponentAtNode(this.container);
             delete this.editor;
+            delete this.nativeEditor;
         },
 
         "Should render a enabled button": function () {
             var button;
 
-            Mock.expect(this.elementPath, {
-                method: 'contains',
-                args: ['table', true],
-                returns: null,
+            Mock.expect(this.nativeEditor.ezembed, {
+                method: 'canBeAdded',
+                args: [],
+                returns: true,
             });
 
             button = ReactDOM.render(
@@ -66,10 +63,10 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
         "Should render a disabled button": function () {
             var button;
 
-            Mock.expect(this.elementPath, {
-                method: 'contains',
-                args: ['table', true],
-                returns: [],
+            Mock.expect(this.nativeEditor.ezembed, {
+                method: 'canBeAdded',
+                args: [],
+                returns: false,
             });
 
             button = ReactDOM.render(
