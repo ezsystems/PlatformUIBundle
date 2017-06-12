@@ -40,7 +40,7 @@ class Users extends PlatformUI
      */
     public function editUserUser($username)
     {
-        $this->clickOnTreePath("$username $username");
+        $this->clickOnBrowsePath("$username $username");
         $this->sleep(); //safegaurd for application delays
         $this->waitWhileLoading();
         $this->clickActionBar('Edit');

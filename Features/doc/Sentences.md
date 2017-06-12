@@ -9,7 +9,6 @@ PlatformUI available sentences:
         Given I click (on) the navigation item :subMenu
         Given I click (on) the actionbar action :sideMenuOption
         Given I click (on) the content type :contentType
-        Given I click (on) the content tree with path :path
         Given I fill in :field subform with:
         Given I upload the image :path
         Given I upload the file :path

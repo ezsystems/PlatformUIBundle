@@ -14,7 +14,7 @@ cache:
 
 matrix:
     fast_finish: true
-    allow_failures:
+    include:
         # Run behat first as it takes the most time (don't need to specify php version here as we don't really care about version on host)
         - php: 5.6
           env: BEFORE="./bin/travis/prepare_behat.sh" TEST_CMD="./bin/travis/runbehat.sh" AFTER_SUCCESS='echo "After success"' RUN_INSTALL=1 COMPOSE_FILE="doc/docker-compose/base-prod.yml:doc/docker-compose/selenium.yml" SYMFONY_ENV=behat SYMFONY_DEBUG=0

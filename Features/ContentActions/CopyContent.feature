@@ -18,7 +18,7 @@ Feature: Copy content
         And I select the "eZ Platform/Destination" folder in the Universal Discovery Widget
         And I confirm the selection
         Then I am notified that "News Flash" has been copied under "Destination"
-        And I see "Destination/News Flash" in the content tree
+        And the content item was copied to "Destination/News Flash"
 
 #    @javascript
 #    Scenario: Copy one object that has children objects using the "Copy Subtree" button
