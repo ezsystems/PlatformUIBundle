@@ -231,17 +231,36 @@ trait CommonActions
     }
 
     /**
-     * @Given I click (on) the content tree with path :path
-     * @Then I see :path in the content tree
-     * Explores the content tree, expanding it and click on the desired element
+     * @Then :path content item does not exists
+     * @Then :path content item doesn't exists
+     * @Then the content item :path was removed
+     * @Then the content item :path was sent to trash
+     * Explores the finder of the UDW, verify the desired element doesn't exist and close the UDW.
      *
-     * @param   string  $path    The content tree path such as 'Content1/Content2/ContentIWantToClick'
+     * @param string $path The content browse path such as 'Content1/Content2/ContentIWantToClick'
      */
-    public function clickOnTreePath($path)
+    public function thereIsNoContent($path)
     {
-        $node = $this->findWithWait('.ez-view-discoverybarview');
-        $this->clickDiscoveryBar('Content tree');
-        $this->openTreePath($path, $node);
+        $this->clickNavigationItem('Content structure');
+        $this->dontSeeBrowsePath($path);
+        $this->cancelSelection();
+    }
+
+    /**
+     * @Then :path content item exists
+     * @Then the content item :path was not removed
+     * @Then the content item :path was not sent to trash
+     * @Then the content item was moved to :path
+     * @Then the content item was copied to :path
+     * Explores the finder of the UDW, find the desired element and close the UDW.
+     *
+     * @param string $path The content browse path such as 'Content1/Content2/ContentIWantToClick'
+     */
+    public function thereIsAContent($path)
+    {
+        $this->clickNavigationItem('Content structure');
+        $this->clickOnBrowsePath($path);
+        $this->confirmSelection();
     }
 
     /**
@@ -286,15 +305,6 @@ trait CommonActions
     }
 
     /**
-     * @When I confirm the selection
-     * Confirm selection in Universal descovery.
-     */
-    public function confirmSelection()
-    {
-        $this->clickElementByText('Confirm selection', '.ez-universaldiscovery-confirm');
-    }
-
-    /**
      * @Given I am on :name full view
      */
     public function onFullView($name)
@@ -306,11 +316,12 @@ trait CommonActions
     /**
      * Opens a content in PlatformUi.
      */
-    private function goToContentWithPath($path)
+    public function goToContentWithPath($path)
     {
         $this->clickNavigationZone('Content');
         $this->clickNavigationItem('Content structure');
-        $this->clickOnTreePath($path);
+        $this->clickOnBrowsePath($path);
+        $this->confirmSelection();
     }
 
     /**
@@ -322,29 +333,6 @@ trait CommonActions
         // for now only verifies if the title matches
         $this->waitWhileLoading();
         $this->iSeeTitle($name);
-    }
-
-    /**
-     * @Then I don't see :path in the content tree
-     * @Then I do not see :path in the content tree
-     * Explores the content tree, expanding it and click on the desired element.
-     *
-     * @param   string  $path    The content tree path such as 'Content1/Content2/ContentIWantToClick'
-     */
-    public function dontSeeTreePath($path)
-    {
-        $found = true;
-        try {
-            $this->clickOnTreePath($path);
-        } catch (\Exception $e) {
-            $found = false;
-        }
-
-        if ($found) {
-            throw new \Exception("Tree path '$path' was found");
-        }
-
-        return true;
     }
 
     /**

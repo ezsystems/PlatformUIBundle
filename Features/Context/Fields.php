@@ -89,7 +89,8 @@ class Fields extends PlatformUI
 
         $this->clickNavigationZone('Content');
         $this->clickNavigationItem('Content structure');
-        $this->clickOnTreePath($name);
+        $this->clickOnBrowsePath($name);
+        $this->confirmSelection();
         $this->clickActionBar('Edit');
         $this->platformStatus = self::WAITING_FOR_PUBLISHING;
         // assert
@@ -229,7 +230,8 @@ class Fields extends PlatformUI
 
         $this->clickNavigationZone('Content');
         $this->clickNavigationItem('Content structure');
-        $this->clickOnTreePath($name);
+        $this->clickOnBrowsePath($name);
+        $this->confirmSelection();
     }
 
     /**
