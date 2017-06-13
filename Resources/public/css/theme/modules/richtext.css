@@ -9,3 +9,11 @@
 .ez-richtext-content table:not([border]) th {
     border: 1px dotted #888;
 }
+
+/* To get rid of the 3d effect on outer border and make it "flat" */
+.ez-richtext-content table[border="1"],
+.ez-richtext-content table[border="1"] tr,
+.ez-richtext-content table[border="1"] td,
+.ez-richtext-content table[border="1"] th {
+    border: 1px solid #888;
+}

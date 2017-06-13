@@ -142,6 +142,12 @@
         <jms:reference-file>Resources/public/js/alloyeditor/toolbars/config/heading.js</jms:reference-file>
         <jms:reference-file>Resources/public/js/alloyeditor/toolbars/config/paragraph.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="6e5d0fc246621e17c8804d0304662f7791e58dec" resname="table">
+        <source>Table</source>
+        <target>Table</target>
+        <note>key: table</note>
+        <jms:reference-file>Resources/public/js/alloyeditor/buttons/table.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="c5ef10db9a6a48b85cd15ce1050f42933a4305ae" resname="remove.this.block">
         <source>Remove this block</source>
         <target>Remove this block</target>

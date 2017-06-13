@@ -25,6 +25,14 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
         requires: 'widget,ezaddcontent',
 
         init: function (editor) {
+            editor.ezembed = {
+                canBeAdded: function () {
+                    var path = editor.elementPath();
+
+                    return !path || path.contains('table', true) === null;
+                }
+            };
+
             editor.widgets.add('ezembed', {
                 defaults: {
                     href: "ezcontent://57",

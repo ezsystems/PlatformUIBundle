@@ -15,16 +15,31 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
 
         setUp: function () {
             this.container = Y.one('.container').getDOMNode();
-            this.editor = {};
+            this.editor = new Mock();
+            this.nativeEditor = new Mock();
+            this.nativeEditor.ezembed = new Mock();
+
+            Mock.expect(this.editor, {
+                method: 'get',
+                args: ['nativeEditor'],
+                returns: this.nativeEditor
+            });
         },
 
         tearDown: function () {
             ReactDOM.unmountComponentAtNode(this.container);
             delete this.editor;
+            delete this.nativeEditor;
         },
 
-        "Should render a button": function () {
+        "Should render a enabled button": function () {
             var button;
+
+            Mock.expect(this.nativeEditor.ezembed, {
+                method: 'canBeAdded',
+                args: [],
+                returns: true,
+            });
 
             button = ReactDOM.render(
                 <AlloyEditor.ButtonImage editor={this.editor} />,
@@ -38,6 +53,38 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
             Assert.areEqual(
                 "BUTTON", ReactDOM.findDOMNode(button).tagName,
                 "The component should generate a button"
+            );
+            Assert.areEqual(
+                false, ReactDOM.findDOMNode(button).disabled,
+                "The button should not be disabled"
+            );
+        },
+
+        "Should render a disabled button": function () {
+            var button;
+
+            Mock.expect(this.nativeEditor.ezembed, {
+                method: 'canBeAdded',
+                args: [],
+                returns: false,
+            });
+
+            button = ReactDOM.render(
+                <AlloyEditor.ButtonImage editor={this.editor} />,
+                this.container
+            );
+
+            Assert.isNotNull(
+                ReactDOM.findDOMNode(button),
+                "The button should be rendered"
+            );
+            Assert.areEqual(
+                "BUTTON", ReactDOM.findDOMNode(button).tagName,
+                "The component should generate a button"
+            );
+            Assert.areEqual(
+                true, ReactDOM.findDOMNode(button).disabled,
+                "The button should be disabled"
             );
         },
     });

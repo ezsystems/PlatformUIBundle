@@ -24,6 +24,7 @@ YUI.add('ez-alloyeditor-toolbar-config-table', function (Y) {
         buttons: [
             'ezmoveup',
             'ezmovedown',
+            'tableHeading',
             'tableRow',
             'tableColumn',
             'tableCell',

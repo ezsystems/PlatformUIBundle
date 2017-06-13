@@ -7,3 +7,9 @@
     margin: 1em 0;
     line-height: 1.4;
 }
+
+/* To be able to put cursor in empty cells during edit, and more clearly see empty cells in view */
+.ez-richtext-content table td,
+.ez-richtext-content table th {
+    padding: 3px;
+}
