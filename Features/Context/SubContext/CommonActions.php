@@ -226,8 +226,17 @@ trait CommonActions
      */
     public function clickEditActionBar($button)
     {
-        $this->clickElementByText($button, '.ez-editactionbar-container .ez-action', '.action-label');
-        $this->waitWhileLoading();
+        $actionBarElements = $this->findAllWithWait('.ez-editactionbar-container .ez-action .action-label');
+        foreach ($actionBarElements as $element) {
+            if ($element->isVisible() && $element->getText() === $button) {
+                $element->click();
+                $this->waitWhileLoading();
+
+                return;
+            }
+        }
+
+        throw new \Exception("Couldn't click element {$button}");
     }
 
     /**
@@ -302,6 +311,17 @@ trait CommonActions
         $node = $this->findWithWait('.ez-view-universaldiscoveryview');
         $node = $this->findWithWait('.ez-view-universaldiscoveryfinderview .ez-ud-finder-explorerlevel', $node);
         $this->openFinderExplorerPath($path, $node);
+    }
+
+    /**
+     * @Given I switch to :tabName UDW tab
+     * Switches the selected tab of Universal Discovery Widget.
+     *
+     * @param $tabName Name of the tab
+     */
+    public function switchContentBrowserTab($tabName)
+    {
+        $this->clickElementByText($tabName, '.ez-view-universaldiscoveryview .ez-tabs-label');
     }
 
     /**
