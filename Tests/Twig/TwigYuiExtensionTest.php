@@ -134,8 +134,8 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
      */
     protected function getEnvironmentMock()
     {
-        $envMock = $this->getMock('Twig_Environment');
-        $functionMock = $this->getMock('Twig_Function');
+        $envMock = $this->getMockBuilder('Twig_Environment')->disableOriginalConstructor()->getMock();
+        $functionMock = $this->getMockBuilder('Twig_Function')->disableOriginalConstructor()->getMock();
         $envMock->expects($this->any())->method('getFunction')->will($this->returnValue($functionMock));
         $functionMock
             ->expects($this->any())
