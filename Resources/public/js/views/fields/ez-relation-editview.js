@@ -133,12 +133,23 @@ YUI.add('ez-relation-editview', function (Y) {
          * @param {EventFacade} e
          */
         _runUniversalDiscovery: function (e) {
+            var that = this;
+
             e.preventDefault();
             this.fire('contentDiscover', {
                 config: {
                     contentDiscoveredHandler: Y.bind(this._selectRelation, this),
                     cancelDiscoverHandler: Y.bind(this.validate, this),
                     startingLocationId: this.get('fieldDefinition').fieldSettings.selectionRootHref,
+                    isSelectable: function (contentStruct) {
+                        var selectionContentTypes = that.get('fieldDefinition').fieldSettings.selectionContentTypes,
+                            contentTypeIdentifier = contentStruct.contentType.get('identifier');
+
+                        return (
+                            (selectionContentTypes.length === 0)
+                            || (selectionContentTypes.indexOf(contentTypeIdentifier) > -1)
+                        );
+                   },
                 },
             });
         },
