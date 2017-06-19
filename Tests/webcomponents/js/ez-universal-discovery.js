@@ -42,17 +42,7 @@ describe('ez-universal-discovery', function () {
         };
     }
 
-    function getModelMock() {
-        const Model = function () {
-            this.toObject = function () {
-                return modelObject;
-            };
-        };
-
-        return new Model();
-    }
-
-    function dispatchEvent(handlerName, selection) {
+    function runUDWEventHandler(handlerName, selection) {
         const container = document.createElement('div');
         const view = getViewMock(container);
 
@@ -112,14 +102,13 @@ describe('ez-universal-discovery', function () {
             );
         });
         describe('`multiple` property', function () {
-            it('should have a `multiple` property', function () {
-                assert.equal(
-                    universalDiscoveryMultiple.hasAttribute('multiple'),
+            it('should be defined', function () {
+                assert.isTrue(
                     universalDiscoveryMultiple.multiple
                 );
             });
 
-            it('`multiple` property should be false by default', function () {
+            it('should be false by default', function () {
                 assert.isFalse(
                     universalDiscovery.multiple
                 );
@@ -176,15 +165,29 @@ describe('ez-universal-discovery', function () {
     describe('YUI Universal Discovery Widget', function () {
         let renderViewStub;
         const container = document.createElement('div');
-        const location = getModelMock();
-        const content = getModelMock();
-        const contentType = getModelMock();
+        const locationObject = {};
+        const contentObject = {};
+        const contentTypeObject = {};
 
-        function assertEventParam(e) {
-            assert.equal(e.detail.selection.content, modelObject);
-            assert.equal(e.detail.selection.location, modelObject);
-            assert.equal(e.detail.selection.contentType, modelObject);
-            assert.isFalse(e.bubbles);
+        const location = getModelMock(locationObject);
+        const content = getModelMock(contentObject);
+        const contentType = getModelMock(contentTypeObject);
+
+
+        function getModelMock(object) {
+            const Model = function () {
+                this.toObject = function () {
+                    return object;
+                };
+            };
+
+            return new Model();
+        }
+
+        function assertEventSelection(e) {
+            assert.strictEqual(e.detail.selection.content, contentObject);
+            assert.strictEqual(e.detail.selection.location, locationObject);
+            assert.strictEqual(e.detail.selection.contentType, contentTypeObject);
         }
 
         beforeEach(function () {
@@ -204,7 +207,7 @@ describe('ez-universal-discovery', function () {
                 done(false, 'whatever', view);
             });
             document.dispatchEvent(new CustomEvent('ez:yui-app:ready'));
-            assert.equal(
+            assert.strictEqual(
                 container.parentNode,
                 universalDiscovery
             );
@@ -310,16 +313,15 @@ describe('ez-universal-discovery', function () {
         });
 
         describe('events', function () {
-
             describe('`ez:cancel`', function () {
                 it('should be dispatched', function() {
                     let isDispatched = false;
 
                     universalDiscovery.addEventListener('ez:cancel', function (e) {
-                        assert.isFalse(e.bubbles);
+                        assert.isFalse(e.bubbles, 'The event should not bubble');
                         isDispatched = true;
                     });
-                    dispatchEvent('cancelDiscoverHandler', {});
+                    runUDWEventHandler('cancelDiscoverHandler');
                     assert.isTrue(isDispatched);
                 });
             });
@@ -330,20 +332,29 @@ describe('ez-universal-discovery', function () {
                     let isDispatched = false;
 
                     universalDiscovery.addEventListener('ez:select', function (e) {
-                        assertEventParam(e);
+                        assertEventSelection(e);
+                        assert.isFalse(e.bubbles, 'The event should not bubble');
                         isDispatched = true;
                     });
-                    dispatchEvent('isSelectable', selection);
+                    runUDWEventHandler('isSelectable', selection);
                     assert.isTrue(isDispatched);
                 });
 
                 it('should allow to prevent the selection', function() {
                     const selection = {location: location, content: content, contentType: contentType};
+                    const container = document.createElement('div');
+                    const view = getViewMock(container);
 
                     universalDiscovery.addEventListener('ez:select', function (e) {
+                        e.preventDefault();
                         assert.isTrue(e.cancelable);
                     });
-                    dispatchEvent('isSelectable', selection);
+
+                    renderViewStub = sinon.stub(window.eZ.YUI.app, 'renderSideView', function (View, Service, params, done) {
+                        assert.isFalse(params.isSelectable(selection));
+                        done(false, 'whatever', view);
+                    });
+                    document.dispatchEvent(new CustomEvent('ez:yui-app:ready'));
                 });
             });
 
@@ -353,10 +364,11 @@ describe('ez-universal-discovery', function () {
                     let isDispatched = false;
 
                     universalDiscovery.addEventListener('ez:confirm', function (e) {
-                        assertEventParam(e);
+                        assertEventSelection(e);
+                        assert.isFalse(e.bubbles, 'The event should not bubble');
                         isDispatched = true;
                     });
-                    dispatchEvent('contentDiscoveredHandler', fakeEventFacade);
+                    runUDWEventHandler('contentDiscoveredHandler', fakeEventFacade);
                     assert.isTrue(isDispatched);
                 });
 
@@ -366,12 +378,12 @@ describe('ez-universal-discovery', function () {
 
                     universalDiscovery.multiple = true;
                     universalDiscovery.addEventListener('ez:confirm', function (e) {
-                        assert.equal(e.detail.selection[0].content, modelObject);
-                        assert.equal(e.detail.selection[0].location, modelObject);
-                        assert.equal(e.detail.selection[0].contentType, modelObject);
+                        assert.strictEqual(e.detail.selection[0].content, contentObject);
+                        assert.strictEqual(e.detail.selection[0].location, locationObject);
+                        assert.strictEqual(e.detail.selection[0].contentType, contentTypeObject);
                         isDispatched = true;
                     });
-                    dispatchEvent('contentDiscoveredHandler', fakeEventFacade);
+                    runUDWEventHandler('contentDiscoveredHandler', fakeEventFacade);
                     assert.isTrue(isDispatched);
                 });
             });

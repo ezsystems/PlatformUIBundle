@@ -1127,16 +1127,8 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         name: "eZ location Model toObject test",
 
         setUp: function () {
-            this.contentInfoObject = {id: 42, name: 'aspirine'};
-            this.contentInfo = new Y.Mock({Content: {alwaysAvailable: false}});
-            Mock.expect(this.contentInfo, {
-                method: 'toObject',
-                returns: this.contentInfoObject
-            });
-
             this.location = new Y.eZ.Location({
                 locationId: 42,
-                contentInfo: this.contentInfo
             });
         },
 
@@ -1145,13 +1137,26 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         },
 
         "Should return an object based on the content": function () {
-            var object = this.location.toObject();
+            var loadResponse = {
+                    "Location": {
+                        "ContentInfo": {
+                            "Content": {
+                                "_id": 42,
+                                "Name": "aspirine",
+                            }
+                        },
 
-            Assert.areEqual(
+                    }
+                },
+                object;
+
+            this.location.set('contentInfo', loadResponse.Location.ContentInfo);
+            object = this.location.toObject();
+            Assert.areSame(
                 object.id, this.location.get('locationId'),
                 "The object should have an id"
             );
-            Assert.areSame(
+            Assert.areEqual(
                 object.contentInfo.id, this.location.get('contentInfo').toObject().id,
                 "The object should have a contentInfo with an id"
             );

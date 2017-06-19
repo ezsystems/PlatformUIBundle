@@ -223,7 +223,7 @@ YUI.add('ez-restmodel', function (Y) {
         },
 
         /**
-         * Returns an object which exposes the basical informations of the model.
+         * Returns an object which exposes the informations of the model.
          * Should be overrided.
          *
          * @method toObject

@@ -604,11 +604,11 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
         "Should return an object based on the content": function () {
             var object = this.contentType.toObject();
 
-            Assert.areEqual(
+            Assert.areSame(
                 object.names, this.contentType.get('names'),
                 "The object should have names"
             );
-            Assert.areEqual(
+            Assert.areSame(
                 object.fieldDefinitions, this.contentType.get('fieldDefinitions'),
                 "The object should have fieldDefinitions"
             );

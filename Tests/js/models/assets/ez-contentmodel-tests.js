@@ -792,7 +792,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                     }
                 }
             };
-            
+
             this.query = new Y.Mock();
             Mock.expect(this.query, {
                 method: 'setFilter',
@@ -934,7 +934,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             var options = {api: this.capi},
                 callbackCalled = false,
                 error = false;
-            
+
             Y.eZ.Section = this._getSectionModel(error, options);
 
             this.model.loadSection(options, Y.bind(function (err, section) {
@@ -1552,17 +1552,9 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         name: "eZ Content Model toObject test",
 
         setUp: function () {
-            this.fieldsByLanguage = {fields: 'paracétamole'};
-            this.currentVersion = new Y.Mock({Version: {VersionInfo: {},Fields: {field :[]}}});
-            Mock.expect(this.currentVersion, {
-                method: 'get',
-                args: ['fieldsByLanguage'],
-                returns: this.fieldsByLanguage
-            });
             this.content = new Y.eZ.Content({
                 contentId: 42,
                 name: 'nurofen',
-                currentVersion: this.currentVersion,
             });
         },
 
@@ -1571,17 +1563,21 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
 
         "Should return an object based on the content": function () {
-            var object = this.content.toObject();
+            var currentVersionStruct = loadResponse.Content.CurrentVersion,
+                object;
 
-            Assert.areEqual(
+            this.content.set('currentVersion', currentVersionStruct);
+            object = this.content.toObject();
+
+            Assert.areSame(
                 object.id, this.content.get('contentId'),
                 "The object should have an id"
             );
-            Assert.areEqual(
+            Assert.areSame(
                 object.name, this.content.get('name'),
                 "The object should have a name"
             );
-            Assert.areEqual(
+            Assert.areSame(
                 object.fields, this.content.get('currentVersion').get('fieldsByLanguage'),
                 "The object should have some fields"
             );

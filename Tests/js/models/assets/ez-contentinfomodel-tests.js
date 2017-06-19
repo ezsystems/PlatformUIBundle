@@ -92,11 +92,11 @@ YUI.add('ez-contentinfomodel-tests', function (Y) {
         "Should return an object based on the content": function () {
             var object = this.contentInfo.toObject();
 
-            Assert.areEqual(
+            Assert.areSame(
                 object.id, this.contentInfo.get('contentId'),
                 "The object should have an id"
             );
-            Assert.areEqual(
+            Assert.areSame(
                 object.name, this.contentInfo.get('name'),
                 "The object should have a name"
             );

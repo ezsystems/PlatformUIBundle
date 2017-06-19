@@ -3,22 +3,6 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-universaldiscovery-container {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 2% 3%;
-    top: 0;
-    left: 0;
-    z-index: 20000;
-}
-
-.is-universaldiscovery-hidden .ez-universaldiscovery-container {
-    display: none;
-    z-index: -10;
-}
-
 .ez-universaldiscovery-container .ez-view-universaldiscoveryview {
     height: 100%;
 }

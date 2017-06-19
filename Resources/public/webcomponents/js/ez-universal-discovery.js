@@ -1,5 +1,4 @@
 (function () {
-
     /**
      * `<ez-universal-discovery>` generates the universal discovery widget.
      *
