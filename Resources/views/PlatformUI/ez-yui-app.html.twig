@@ -7,8 +7,6 @@
     <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
 
-<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-
 {% for domain in parameters.translationDomains %}
     <script src="{{ url('bazinga_jstranslation_js', {'domain': domain}) }}?locales={{ parameters.interfaceLanguages|join(',') }}"></script>
 {% endfor %}
