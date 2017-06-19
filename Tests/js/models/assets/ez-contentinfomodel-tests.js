@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentinfomodel-tests', function (Y) {
-    var modelTest, loadResponse;
+    var modelTest, loadResponse, toObjectTest,
+        Assert = Y.Assert;
 
     loadResponse = {
         "Content": {
@@ -75,6 +76,34 @@ YUI.add('ez-contentinfomodel-tests', function (Y) {
         },
     }));
 
+    toObjectTest = new Y.Test.Case({
+        name: "eZ ContentInfo Model toObject test",
+
+        setUp: function () {
+            this.contentInfo = new Y.eZ.ContentInfo({
+                contentId: 42, name: 'doliprane'
+            });
+        },
+
+        tearDown: function () {
+            this.contentInfo.destroy();
+        },
+
+        "Should return an object based on the content": function () {
+            var object = this.contentInfo.toObject();
+
+            Assert.areEqual(
+                object.id, this.contentInfo.get('contentId'),
+                "The object should have an id"
+            );
+            Assert.areEqual(
+                object.name, this.contentInfo.get('name'),
+                "The object should have a name"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ ContentInfo Model tests");
     Y.Test.Runner.add(modelTest);
+    Y.Test.Runner.add(toObjectTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentinfomodel', 'ez-restmodel']});

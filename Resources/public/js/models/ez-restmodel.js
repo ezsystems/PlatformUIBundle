@@ -221,6 +221,17 @@ YUI.add('ez-restmodel', function (Y) {
             });
             return attrs;
         },
+
+        /**
+         * Returns an object which exposes the basical informations of the model.
+         * Should be overrided.
+         *
+         * @method toObject
+         * @return {Object}
+         */
+        toObject: function () {
+            return {};
+        },
     }, {
         /**
          * Root element in the REST API response where the data is located.

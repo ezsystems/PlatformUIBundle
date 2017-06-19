@@ -45,6 +45,9 @@ YUI.add('ez-contentinfomodel', function (Y) {
             }
         },
 
+        toObject: function () {
+            return {id: this.get('contentId'), name: this.get('name')};
+        },
     }, {
         REST_STRUCT_ROOT: "Content",
         ATTRS_REST_MAP: [

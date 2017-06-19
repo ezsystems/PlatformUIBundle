@@ -5,7 +5,7 @@
 YUI.add('ez-locationmodel-tests', function (Y) {
     var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest,
         toJSONTest, updateSortingTest, updatePriorityTest, isRootTest, swapTest,
-        getSortClauseTest,
+        getSortClauseTest, toObjectTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -1123,6 +1123,45 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         },
     });
 
+    toObjectTest = new Y.Test.Case({
+        name: "eZ location Model toObject test",
+
+        setUp: function () {
+            this.contentInfoObject = {id: 42, name: 'aspirine'};
+            this.contentInfo = new Y.Mock({Content: {alwaysAvailable: false}});
+            Mock.expect(this.contentInfo, {
+                method: 'toObject',
+                returns: this.contentInfoObject
+            });
+
+            this.location = new Y.eZ.Location({
+                locationId: 42,
+                contentInfo: this.contentInfo
+            });
+        },
+
+        tearDown: function () {
+            this.location.destroy();
+        },
+
+        "Should return an object based on the content": function () {
+            var object = this.location.toObject();
+
+            Assert.areEqual(
+                object.id, this.location.get('locationId'),
+                "The object should have an id"
+            );
+            Assert.areSame(
+                object.contentInfo.id, this.location.get('contentInfo').toObject().id,
+                "The object should have a contentInfo with an id"
+            );
+            Assert.areSame(
+                object.contentInfo.name, this.location.get('contentInfo').toObject().name,
+                "The object should have a contentInfo with a name"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(trashTest);
@@ -1136,4 +1175,5 @@ YUI.add('ez-locationmodel-tests', function (Y) {
     Y.Test.Runner.add(isRootTest);
     Y.Test.Runner.add(swapTest);
     Y.Test.Runner.add(getSortClauseTest);
+    Y.Test.Runner.add(toObjectTest);
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});

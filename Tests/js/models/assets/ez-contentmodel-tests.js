@@ -6,7 +6,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
         getFieldsOfTypeTest, createDraftTest, currentVersionTest, fieldAttributeTest,
-        getFieldTest, getFieldsInTest, loadSectionTest,
+        getFieldTest, getFieldsInTest, loadSectionTest, toObjectTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -1548,6 +1548,46 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    toObjectTest = new Y.Test.Case({
+        name: "eZ Content Model toObject test",
+
+        setUp: function () {
+            this.fieldsByLanguage = {fields: 'paracétamole'};
+            this.currentVersion = new Y.Mock({Version: {VersionInfo: {},Fields: {field :[]}}});
+            Mock.expect(this.currentVersion, {
+                method: 'get',
+                args: ['fieldsByLanguage'],
+                returns: this.fieldsByLanguage
+            });
+            this.content = new Y.eZ.Content({
+                contentId: 42,
+                name: 'nurofen',
+                currentVersion: this.currentVersion,
+            });
+        },
+
+        tearDown: function () {
+            this.content.destroy();
+        },
+
+        "Should return an object based on the content": function () {
+            var object = this.content.toObject();
+
+            Assert.areEqual(
+                object.id, this.content.get('contentId'),
+                "The object should have an id"
+            );
+            Assert.areEqual(
+                object.name, this.content.get('name'),
+                "The object should have a name"
+            );
+            Assert.areEqual(
+                object.fields, this.content.get('currentVersion').get('fieldsByLanguage'),
+                "The object should have some fields"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
@@ -1565,4 +1605,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(getFieldTest);
     Y.Test.Runner.add(getFieldsInTest);
     Y.Test.Runner.add(loadSectionTest);
+    Y.Test.Runner.add(toObjectTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

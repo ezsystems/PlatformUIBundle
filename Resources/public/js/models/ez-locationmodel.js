@@ -418,6 +418,10 @@ YUI.add('ez-locationmodel', function (Y) {
             }
             return clause;
         },
+
+        toObject: function () {
+            return {id: this.get('locationId'), contentInfo: this.get('contentInfo').toObject()};
+        },
     }, {
         REST_STRUCT_ROOT: "Location",
         ATTRS_REST_MAP: [
