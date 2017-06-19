@@ -52,7 +52,7 @@ YUI.add('ez-universaldiscoveryviewservice', function (Y) {
                         }, this));
                     } else {
                         this.set('startingLocation', false);
-                        console.log('Could not load the startingLocation');
+                        console.warn('Could not load the startingLocation');
                         callback();
                     }
                 }, this));
