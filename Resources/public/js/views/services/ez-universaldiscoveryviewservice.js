@@ -30,31 +30,20 @@ YUI.add('ez-universaldiscoveryviewservice', function (Y) {
          * @param {Function} callback
          */
         _load: function (callback) {
-            var parameters = this.get('parameters'),
+            var startingLocation,
+                parameters = this.get('parameters'),
                 app = this.get('app');
 
             if ( parameters.startingLocationId ) {
-                this.search.findLocations({
-                    viewName: 'location-' + parameters.startingLocationId,
-                    loadContent: false,
-                    loadContentType: false,
-                    query: {
-                        "LocationIdCriterion": parameters.startingLocationId,
-                    },
-                    limit: 1,
-                    offset: 0
-                }, Y.bind(function (error, result) {
-                    if (!error && result.length) {
-                        this._loadStartingLocationPath(result[0].location, Y.bind(function(startingLoc) {
-                            this.set('startingLocation', startingLoc);
-                            app.set('loading', false);
-                            callback();
-                        }, this));
-                    } else {
-                        this.set('startingLocation', false);
-                        console.log('Could not load the startingLocation');
-                        callback();
-                    }
+                startingLocation = new Y.eZ.Location();
+                startingLocation.set('id', parameters.startingLocationId);
+                app.set('loading', true);
+
+                this._loadStartingLocationPath(startingLocation, Y.bind(function(startingLoc) {
+                    this.set('startingLocation', startingLoc);
+                    app.set('loading', false);
+
+                    callback();
                 }, this));
             } else {
                 this.set('startingLocation', false);
@@ -74,9 +63,15 @@ YUI.add('ez-universaldiscoveryviewservice', function (Y) {
         _loadStartingLocationPath: function (startingLocation, callback) {
             var options = {api: this.get('capi')};
 
-            startingLocation.loadPath(options, function (error) {
+            startingLocation.load(options, function (error) {
                 if (!error) {
-                    callback(startingLocation);
+                    startingLocation.loadPath(options, function (error) {
+                        if (!error) {
+                            callback(startingLocation);
+                        } else {
+                            callback(false);
+                        }
+                    });
                 } else {
                     callback(false);
                 }
