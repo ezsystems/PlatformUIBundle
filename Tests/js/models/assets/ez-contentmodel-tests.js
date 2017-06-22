@@ -6,7 +6,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
         getFieldsOfTypeTest, createDraftTest, currentVersionTest, fieldAttributeTest,
-        getFieldTest, getFieldsInTest, loadSectionTest,
+        getFieldTest, getFieldsInTest, loadSectionTest, toObjectTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -792,7 +792,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                     }
                 }
             };
-            
+
             this.query = new Y.Mock();
             Mock.expect(this.query, {
                 method: 'setFilter',
@@ -934,7 +934,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             var options = {api: this.capi},
                 callbackCalled = false,
                 error = false;
-            
+
             Y.eZ.Section = this._getSectionModel(error, options);
 
             this.model.loadSection(options, Y.bind(function (err, section) {
@@ -1548,6 +1548,42 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    toObjectTest = new Y.Test.Case({
+        name: "eZ Content Model toObject test",
+
+        setUp: function () {
+            this.content = new Y.eZ.Content({
+                contentId: 42,
+                name: 'nurofen',
+            });
+        },
+
+        tearDown: function () {
+            this.content.destroy();
+        },
+
+        "Should return an object based on the content": function () {
+            var currentVersionStruct = loadResponse.Content.CurrentVersion,
+                object;
+
+            this.content.set('currentVersion', currentVersionStruct);
+            object = this.content.toObject();
+
+            Assert.areSame(
+                object.id, this.content.get('contentId'),
+                "The object should have an id"
+            );
+            Assert.areSame(
+                object.name, this.content.get('name'),
+                "The object should have a name"
+            );
+            Assert.areSame(
+                object.fields, this.content.get('currentVersion').get('fieldsByLanguage'),
+                "The object should have some fields"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
@@ -1565,4 +1601,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(getFieldTest);
     Y.Test.Runner.add(getFieldsInTest);
     Y.Test.Runner.add(loadSectionTest);
+    Y.Test.Runner.add(toObjectTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

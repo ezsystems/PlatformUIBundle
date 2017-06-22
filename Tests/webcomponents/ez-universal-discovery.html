@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+        <title>ez-universal-discovery test</title>
+
+        <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../web-component-tester/browser.js"></script>
+
+        <link rel="import" href="/Resources/public/webcomponents/ez-universal-discovery.html">
+    </head>
+    <body>
+
+        <test-fixture id="BasicTestFixture">
+            <template>
+                <ez-universal-discovery title="UDTitle" confirm-label="confirm" visible-method="finder" starting-location-id="2" min-discover-depth="0"></ez-universal-discovery>
+            </template>
+        </test-fixture>
+        <test-fixture id="MultipleTestFixture">
+            <template>
+                <ez-universal-discovery title="UDTitle" confirm-label="confirm" visible-method="finder" starting-location-id="2" multiple min-discover-depth="0"></ez-universal-discovery>
+            </template>
+        </test-fixture>
+
+        <script src="js/ez-universal-discovery.js"></script>
+    </body>
+</html>

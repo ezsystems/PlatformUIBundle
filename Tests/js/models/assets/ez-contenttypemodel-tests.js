@@ -4,7 +4,7 @@
  */
 YUI.add('ez-contenttypemodel-tests', function (Y) {
     var modelTest, hasFieldTypeTest, getFieldDefinitionIdentifiersTest,
-        belongToTest, loadGroupsFlagTest,
+        belongToTest, loadGroupsFlagTest, toObjectTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -587,10 +587,39 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
         },
     });
 
+    toObjectTest = new Y.Test.Case({
+        name: "eZ ContentType Model toObject test",
+
+        setUp: function () {
+            this.contentType = new Y.eZ.ContentType({
+                names: {value: 'ketoprophen'},
+                fieldDefinitions: {_href: 'mal/a/la/tete'}
+            });
+        },
+
+        tearDown: function () {
+            this.contentType.destroy();
+        },
+
+        "Should return an object based on the content": function () {
+            var object = this.contentType.toObject();
+
+            Assert.areSame(
+                object.names, this.contentType.get('names'),
+                "The object should have names"
+            );
+            Assert.areSame(
+                object.fieldDefinitions, this.contentType.get('fieldDefinitions'),
+                "The object should have fieldDefinitions"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ ContentType Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(hasFieldTypeTest);
     Y.Test.Runner.add(getFieldDefinitionIdentifiersTest);
     Y.Test.Runner.add(belongToTest);
     Y.Test.Runner.add(loadGroupsFlagTest);
+    Y.Test.Runner.add(toObjectTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contenttypemodel', 'ez-restmodel']});

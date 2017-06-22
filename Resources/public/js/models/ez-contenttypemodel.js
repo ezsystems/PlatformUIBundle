@@ -184,6 +184,10 @@ YUI.add('ez-contenttypemodel', function (Y) {
         belongTo: function (contentTypeGroupId) {
             return this.get('contentTypeGroupIds').indexOf(contentTypeGroupId) !== -1;
         },
+
+        toObject: function () {
+            return {names: this.get('names'), fieldDefinitions: this.get('fieldDefinitions')};
+        },
     }, {
         REST_STRUCT_ROOT: 'ContentType',
         ATTRS_REST_MAP: [

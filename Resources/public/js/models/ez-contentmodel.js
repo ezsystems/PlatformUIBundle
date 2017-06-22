@@ -464,6 +464,14 @@ YUI.add('ez-contentmodel', function (Y) {
             }
             contentService.deleteContent(this.get('id'), callback);
         },
+
+        toObject: function () {
+            return {
+                id: this.get('contentId'),
+                name: this.get('name'),
+                fields: this.get('currentVersion').get('fieldsByLanguage')
+            };
+        },
     }, {
         REST_STRUCT_ROOT: "Content",
         ATTRS_REST_MAP: [
