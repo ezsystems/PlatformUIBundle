@@ -1127,8 +1127,30 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         name: "eZ location Model toObject test",
 
         setUp: function () {
+            this.locationId = 42;
+            this.contentId = 42;
             this.location = new Y.eZ.Location({
-                locationId: 42,
+                locationId: this.locationId,
+            });
+            this.routeName = '_ez_content_view';
+            this.params = {locationId: this.locationId, contentId: this.contentId};
+            this.resultUri = '/uri/1/42';
+            this.routing = window.Routing = new Mock();
+
+            Mock.expect(this.routing, {
+                method: 'generate',
+                args: [this.routeName, Mock.Value.Object],
+                run: Y.bind(function (routeName, p) {
+                    Assert.areSame(
+                        this.params.locationId, p.locationId,
+                        "params should have the locationId"
+                    );
+                    Assert.areSame(
+                        this.params.contentId, p.contentId,
+                        "params should have the contentId"
+                    );
+                    return this.resultUri;
+                }, this),
             });
         },
 
@@ -1141,7 +1163,7 @@ YUI.add('ez-locationmodel-tests', function (Y) {
                     "Location": {
                         "ContentInfo": {
                             "Content": {
-                                "_id": 42,
+                                "_id": this.contentId,
                                 "Name": "aspirine",
                             }
                         },
@@ -1155,6 +1177,10 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             Assert.areSame(
                 object.id, this.location.get('locationId'),
                 "The object should have an id"
+            );
+            Assert.areSame(
+                object.url, this.resultUri,
+                "The object should have an url"
             );
             Assert.areEqual(
                 object.contentInfo.id, this.location.get('contentInfo').toObject().id,
