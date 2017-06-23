@@ -15,6 +15,27 @@ final class PjaxRequestMatcher implements RequestMatcherInterface
 {
     public function matches(Request $request)
     {
-        return $request->headers->has('x-pjax') || strpos($request->getRequestUri(), '/pjax') !== false;
+        return $this->hasPjaxHeader($request)
+            || $this->hasPjaxInRequestUri($request);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return bool
+     */
+    private function hasPjaxHeader(Request $request)
+    {
+        return $request->headers->has('x-pjax');
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
+     * @return bool
+     */
+    private function hasPjaxInRequestUri(Request $request)
+    {
+        return strpos($request->getRequestUri(), '/pjax') !== false;
     }
 }
