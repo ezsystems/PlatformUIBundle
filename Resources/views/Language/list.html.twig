@@ -26,7 +26,7 @@
                 <a href="{{ path('admin_languageedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not canEdit %} data-disabled{% endif %}>{{ 'language.new'|trans }}</a>
             </div>
         </div>
-        <table class="ez-table-data" data-selection-buttons=".ez-remove-language-button">
+        <table class="ez-table-data ez-table-data-row-tool" data-selection-buttons=".ez-remove-language-button">
             <thead>
                 <tr>
                     <th>{{ 'language.name'|trans }}</th>

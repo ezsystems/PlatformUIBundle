@@ -53,7 +53,7 @@
                 <a href="{{ path('admin_sectionedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{%if not canEdit %} data-disabled{% endif %}>{{ 'section.new'|trans }}</a>
             </div>
         </div>
-        <table class="ez-table-data" data-selection-buttons=".ez-remove-section-button">
+        <table class="ez-table-data ez-table-data-row-tool" data-selection-buttons=".ez-remove-section-button">
             <thead>
                 <tr>
                     <th>{{ 'section.name'|trans }}</th>
