@@ -2,6 +2,7 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+ /* global Routing */
 YUI.add('ez-locationmodel', function (Y) {
     "use strict";
     /**
@@ -420,7 +421,14 @@ YUI.add('ez-locationmodel', function (Y) {
         },
 
         toObject: function () {
-            return {id: this.get('locationId'), contentInfo: this.get('contentInfo').toObject()};
+            var locationId = this.get('locationId'),
+                contentInfoObject = this.get('contentInfo').toObject(),
+                url = Routing.generate('_ez_content_view', {
+                      locationId: locationId,
+                      contentId: contentInfoObject.id,
+                });
+
+              return {id: this.get('locationId'), contentInfo: this.get('contentInfo').toObject(), url: url};
         },
     }, {
         REST_STRUCT_ROOT: "Location",
