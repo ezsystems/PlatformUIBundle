@@ -198,7 +198,7 @@ class PlatformUI extends Context
      *  if an exception is thrown or the result is false wait and retry
      *  until a max timeout is reached.
      */
-    protected function spin($lambda)
+    public function spin($lambda)
     {
         $e = null;
         $timeLimit = time() + self::SPIN_TIMEOUT;
@@ -291,7 +291,7 @@ class PlatformUI extends Context
      * @param int       $iteration      Iteration number, used to control number of executions
      * @return array
      */
-    protected function getElementByText($text, $selector, $textSelector = null, $baseElement = null)
+    public function getElementByText($text, $selector, $textSelector = null, $baseElement = null)
     {
         if ($baseElement == null) {
             $baseElement = $this->getSession()->getPage();
@@ -299,7 +299,11 @@ class PlatformUI extends Context
         $elements = $this->findAllWithWait($selector, $baseElement);
         foreach ($elements as $element) {
             if ($textSelector != null) {
-                $elementText = $this->findWithWait($textSelector, $element)->getText();
+                try {
+                    $elementText = $this->findWithWait($textSelector, $element)->getText();
+                } catch (\Exception $e) {
+                    continue;
+                }
             } else {
                 $elementText = $element->getText();
             }
@@ -319,7 +323,7 @@ class PlatformUI extends Context
      * @param string    $textSelector   Extra CSS selector for text of the element
      * @param string    $baseElement    Element in which the search is based
      */
-    protected function clickElementByText($text, $selector, $textSelector = null, $baseElement = null)
+    public function clickElementByText($text, $selector, $textSelector = null, $baseElement = null)
     {
         $element = $this->getElementByText($text, $selector, $textSelector, $baseElement);
         if ($element && $element->isVisible()) {
