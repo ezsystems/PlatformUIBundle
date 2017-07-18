@@ -3,7 +3,11 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-relation-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest, getEmptyFieldTest,
+    var viewTest,
+        registerTest,
+        getFieldTest,
+        getEmptyFieldTest,
+        universalDiscoveryRelationTest,
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -442,6 +446,214 @@ YUI.add('ez-relation-editview-tests', function (Y) {
         })
     );
     Y.Test.Runner.add(getEmptyFieldTest);
+
+    universalDiscoveryRelationTest = new Y.Test.Case({
+        name: "eZ Relation universal discovery relation test",
+
+        _getFieldDefinition: function (required) {
+            return {
+                isRequired: required,
+                fieldSettings: {},
+            };
+        },
+
+        setUp: function () {
+            this.relatedContents = [];
+            this.fieldDefinitionIdentifier= "relationField";
+            this.fieldDefinition = {
+                fieldType: "ezobjectrelation",
+                identifier: this.fieldDefinitionIdentifier,
+                isRequired: false,
+                fieldSettings: {
+                    selectionContentTypes: ['allowed_content_type_identifier']
+                }
+            };
+            this.field = {fieldValue: {destinationContentId: 45}};
+
+            this.jsonContent = {};
+            this.jsonContentType = {};
+            this.jsonVersion = {};
+            this.content = new Y.Mock();
+            this.version = new Y.Mock();
+            this.contentType = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: this.jsonContent
+            });
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: this.jsonVersion
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: this.jsonContentType
+            });
+
+            this.view = new Y.eZ.RelationEditView({
+                container: '.container',
+                field: this.field,
+                fieldDefinition: this.fieldDefinition,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType,
+                relatedContents: this.relatedContents,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should validate when the universal discovery is canceled (empty relation)": function () {
+            var that = this,
+                fieldDefinition = this._getFieldDefinition(true);
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view._set('destinationContentId', null);
+
+            this.view.on('contentDiscover', function (e) {
+                that.resume(function () {
+                    e.config.cancelDiscoverHandler.call(this);
+                    Y.Assert.areSame(
+                        this.view.get('errorStatus'),
+                        'this.field.is.required domain=fieldedit',
+                        'errorStatus should be true'
+                    );
+                });
+            });
+
+            this.view.get('container').one('.ez-relation-discover').simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should validate when the universal discovery is canceled": function () {
+            var that = this,
+                fieldDefinition = this._getFieldDefinition(false);
+
+            this.view.set('fieldDefinition', fieldDefinition);
+
+            this.view.on('contentDiscover', function (e) {
+                that.resume(function () {
+                    e.config.cancelDiscoverHandler.call(this);
+                    Y.Assert.isFalse(this.view.get('errorStatus'),'errorStatus should be false');
+                });
+            });
+            this.view.get('container').one('.ez-relation-discover').simulateGesture('tap');
+            this.wait();
+        },
+
+
+        "Should fill the relation with the universal discovery widget selection": function () {
+            var that = this,
+                contentInfoMock1 = new Y.Mock(),
+                contentInfoMock2 = new Y.Mock(),
+                fakeEventFacade = {selection: [{contentInfo: contentInfoMock1}, {contentInfo: contentInfoMock2}]},
+                contentId;
+            this.view._set('destinationContentId', 51);
+            Y.Mock.expect(contentInfoMock1, {
+                method: 'toJSON',
+                returns: {name: 'me', publishedDate: 'yesterday', lastModificationDate: 'tomorrow'}
+            });
+
+            Y.Mock.expect(contentInfoMock1, {
+                method: 'get',
+                args: ['contentId'],
+                returns: 42
+            });
+
+            Y.Mock.expect(contentInfoMock2, {
+                method: 'toJSON',
+                returns: {name: 'me', publishedDate: 'yesterday', lastModificationDate: 'tomorrow'}
+            });
+
+            Y.Mock.expect(contentInfoMock2, {
+                method: 'get',
+                args: ['contentId'],
+                returns: 51
+            });
+            this.view.on('contentDiscover', function (e) {
+                that.resume(function () {
+                    Y.Array.each(fakeEventFacade.selection, function (selection) {
+                        if ( that.view.get('destinationContentId') === selection.contentInfo.get('contentId')) {
+                            contentId = selection.contentInfo.get('contentId');
+                        }
+                    });
+                    e.config.contentDiscoveredHandler.call(this, fakeEventFacade);
+                    Y.ArrayAssert.itemsAreEqual(
+                        contentId,
+                        51,
+                        'destinationContentId should match the contentId of the selected relation'
+                    );
+                });
+            });
+
+            this.view.get('container').one('.ez-relation-discover').simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should run the UniversalDiscoveryWidget": function () {
+            var that = this,
+                allowedContentType = new Y.Mock(),
+                notAllowedContentType = new Y.Mock();
+
+            Y.Mock.expect(allowedContentType, {
+                method: 'get',
+                args: ['identifier'],
+                returns: this.fieldDefinition.fieldSettings.selectionContentTypes[0]
+            });
+            Y.Mock.expect(notAllowedContentType, {
+                method: 'get',
+                args: ['identifier'],
+                returns: 'not_allowed_content_type_identifier'
+            });
+
+            this.view.on('contentDiscover', function (e) {
+                that.resume(function () {
+                    Y.Assert.isObject(e.config, "contentDiscover config should be an object");
+                    Y.Assert.isFunction(e.config.contentDiscoveredHandler, "config should have a function named contentDiscoveredHandler");
+                    Y.Assert.isFunction(e.config.cancelDiscoverHandler, "config should have a function named cancelDiscoverHandler");
+                    Y.Assert.isFunction(e.config.isSelectable, "config should have a function named isSelectable");
+                    Y.Assert.isTrue(
+                        e.config.isSelectable({contentType: allowedContentType}),
+                        "isSelectable should return TRUE if selected content's content type is on allowed content types list"
+                    );
+                    Y.Assert.isFalse(
+                        e.config.isSelectable({contentType: notAllowedContentType}),
+                        "isSelectable should return FALSE if selected content's content type is not on allowed content types list"
+                    );
+                    Assert.isUndefined(
+                        e.config.startingLocationId,
+                        "The starting Location id parameter should not be set"
+                    );
+                });
+            });
+
+            this.view.get('container').one('.ez-relation-discover').simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should run the UniversalDiscoveryWidget starting at selectionRoot": function () {
+            var locationId = 'whatever/location/id';
+
+            this.fieldDefinition.fieldSettings.selectionContentTypes = [];
+            this.fieldDefinition.fieldSettings.selectionRootHref = locationId;
+
+            this.view.on('contentDiscover', this.next(function (e) {
+                Assert.areEqual(
+                    locationId,
+                    e.config.startingLocationId,
+                    "The starting Location id parameter should be set"
+                );
+            }, this));
+
+            this.view.get('container').one('.ez-relation-discover').simulateGesture('tap');
+            this.wait();
+
+        },
+    });
+
+    Y.Test.Runner.add(universalDiscoveryRelationTest);
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Relation Edit View registration test";
