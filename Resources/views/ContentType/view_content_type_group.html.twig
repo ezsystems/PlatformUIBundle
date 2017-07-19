@@ -51,17 +51,26 @@
                         {% set deleteForm = delete_forms_by_id[content_type.id] %}
                         {{ form_start(deleteForm, {"action": path("admin_contenttypeDelete", {"contentTypeId": content_type.id})}) }}
                             {{ form_widget(deleteForm.contentTypeId) }}
-                            <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.edit'|trans }}</a>
+
+                            {% set dialogId = 'confirm-contenttype-removal-' ~ content_type.id %}
                             {{
-                                form_widget(
-                                    deleteForm.delete,
-                                    {
-                                        "disabled": not can_delete_by_id[content_type.id],
-                                        "attr": {"class": "ez-button ez-button-negative",
-                                                 "title": not can_delete_by_id[content_type.id] ? 'content_type.is_in_use'|trans}
-                                    }
-                                )
+                                include('@EzSystemsHybridPlatformUi/components/confirm_dialog.html.twig', {
+                                    'dialogId': dialogId,
+                                    'message': 'confirm.remove.contenttype'|trans()|desc('Are you sure you want to delete this content type?'),
+                                    'confirmButton': deleteForm.delete,
+                                })
                             }}
+
+                            <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.edit'|trans }}</a>
+
+                            <button type="button" value="#{{ dialogId }}"
+                                class="ez-button ez-button-negative ez-js-open-modal"
+                                {% if not can_delete_by_id[content_type.id] %}
+                                    disabled
+                                    title="{{ 'content_type.is_in_use'|trans|desc("The content type cannot be deleted because it has content items, or because you don't have permission.") }}"
+                                {% endif %}>
+                                {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
+                            </button>
                         {{ form_end(deleteForm) }}
                     </td>
                 </tr>
