@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-07-19T13:57:52Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-07-19T14:02:40Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -25,25 +25,25 @@
         <source>This role is not assigned to any users or user groups.</source>
         <target>This role is not assigned to any users or user groups.</target>
         <note>key: assignment.none</note>
-        <jms:reference-file line="173">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="182">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="70dd3723bde281857912354e3abdb2611345e1a1" resname="assignment.role_limitation">
         <source>Limitation</source>
         <target>Limitation</target>
         <note>key: assignment.role_limitation</note>
-        <jms:reference-file line="125">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="134">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="9d40ec6ea2a69dc31d986dd760c5c4d1e58274a0" resname="assignment.role_limitation_none">
         <source>No limitations</source>
         <target>No limitations</target>
         <note>key: assignment.role_limitation_none</note>
-        <jms:reference-file line="152">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="161">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="a94d773d3ca19d453ea28717e3a8e00c0c239c32" resname="assignment.user_or_group">
         <source>User/group</source>
         <target>User/group</target>
         <note>key: assignment.user_or_group</note>
-        <jms:reference-file line="124">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="133">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="507cd080bead04f2b94f397dd7a3791ac7548e3c" resname="assignment.user_or_group_using">
         <source><![CDATA[Users and groups using the <%role%> role (%count%)]]></source>
@@ -51,11 +51,17 @@
         <note>key: assignment.user_or_group_using</note>
         <jms:reference-file line="24">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
+      <trans-unit id="db5c88f954351b4e3412634a49659fc99f8c5f4f" resname="confirm.remove.policy">
+        <source>Are you sure you want to delete this policy?</source>
+        <target state="new">Are you sure you want to delete this policy?</target>
+        <note>key: confirm.remove.policy</note>
+        <jms:reference-file line="77">Resources/views/Role/view_role.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="195d6a4756d2a26f2d44fbf011e9fa92238193e5" resname="confirm.remove.role">
         <source>Are you sure you want to delete this role?</source>
-        <target state="new">Are you sure you want to delete this role?</target>
+        <target>Are you sure you want to delete this role?</target>
         <note>key: confirm.remove.role</note>
-        <jms:reference-file line="101">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="110">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="ca65309bef9a375c91388358cc8304dae5032ca1" resname="failed.assigned.role">
         <source>Role has not been assigned to "%name%": %message%</source>
@@ -113,7 +119,7 @@
         <target>Role</target>
         <note>key: role</note>
         <jms:reference-file line="50">Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
-        <jms:reference-file line="206">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="215">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="1fd015af1b28cdbb8999ea2fe2dc08e181f8836e" resname="role.assign.universaldiscovery.title">
         <source>Pick the users/groups to assign the role "%roleIdentifier%" to</source>
@@ -121,15 +127,15 @@
         <note>key: role.assign.universaldiscovery.title</note>
         <jms:reference-file line="38">Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
         <jms:reference-file line="46">Resources/views/Role/list_roles.html.twig</jms:reference-file>
-        <jms:reference-file line="180">Resources/views/Role/view_role.html.twig</jms:reference-file>
         <jms:reference-file line="189">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="198">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="75fb0347cd4923218126c0696153902dbb14fb96" resname="role.assign.user_or_group">
         <source>Assign to users/groups</source>
         <target>Assign to users/groups</target>
         <note>key: role.assign.user_or_group</note>
         <jms:reference-file line="50">Resources/views/Role/list_roles.html.twig</jms:reference-file>
-        <jms:reference-file line="186">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="195">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e8925242d54f54b2dca206c8ca6ea2c28bc145e0" resname="role.assign_limit_section.cancel">
         <source>Cancel</source>
@@ -142,7 +148,7 @@
         <target>Assign to users/groups with section limitation</target>
         <note>key: role.assign_limit_section.user_or_group</note>
         <jms:reference-file line="44">Resources/views/Role/assign_role_by_section.html.twig</jms:reference-file>
-        <jms:reference-file line="199">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="208">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="eebd438037da98a4efa23f2c3d87080e2b40a957" resname="role.assign_limit_section.user_or_group.pagetitle">
         <source>Assign role "%roleIdentifier%" to users/groups with limitation on section</source>
@@ -154,13 +160,13 @@
         <source>Pick the location to use as subtree limitation when assigning the role "%roleIdentifier%"</source>
         <target>Pick the location to use as subtree limitation when assigning the role "%roleIdentifier%"</target>
         <note>key: role.assign_limit_subtree.universaldiscovery.title</note>
-        <jms:reference-file line="190">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="199">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="8211a64763ecf5a6a1e5d0e2386357c0bc2e7c89" resname="role.assign_limit_subtree.user_or_group">
         <source>Assign to users/groups with subtree limitation</source>
         <target>Assign to users/groups with subtree limitation</target>
         <note>key: role.assign_limit_subtree.user_or_group</note>
-        <jms:reference-file line="196">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="205">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="0ce0a34c38d96440f735fd742c5bec62cc5f5ca4" resname="role.assign_role_limit_section">
         <source>Assign role with section limitation</source>
@@ -222,7 +228,7 @@
         <target>Edit role name</target>
         <note>key: role.edit</note>
         <jms:reference-file line="51">Resources/views/Role/list_roles.html.twig</jms:reference-file>
-        <jms:reference-file line="108">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="117">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e9e10ddeb169d59d94b54912d0422481a0a0b140" resname="role.edit_title">
         <source><![CDATA[Edit <%roleName%>]]></source>
@@ -288,7 +294,7 @@
         <source>Add a new policy</source>
         <target>Add a new policy</target>
         <note>key: role.policy.add</note>
-        <jms:reference-file line="107">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="116">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="bc75703d2446d97b0b9cefd67cd89db4848e9fae" resname="role.policy.create.title">
         <source>New policy</source>
@@ -312,7 +318,7 @@
         <source>Edit limitations</source>
         <target>Edit limitations</target>
         <note>key: role.policy.edit_limitations</note>
-        <jms:reference-file line="75">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="87">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="692ee66b1323dc62c0d79062c789fa8657ea997b" resname="role.policy.error.delete">
         <source>An error occurred when trying to delete policy #%policyId% for role "%roleIdentifier%".</source>
@@ -336,7 +342,7 @@
         <source>There are no policies set up for this role.</source>
         <target>There are no policies set up for this role.</target>
         <note>key: role.policy_none</note>
-        <jms:reference-file line="90">Resources/views/Role/view_role.html.twig</jms:reference-file>
+        <jms:reference-file line="99">Resources/views/Role/view_role.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="2d54315058102bcb341f1907e5567cefeed78316" resname="selected.content.not.user.group">
         <source>Selected content is not a user or group.</source>

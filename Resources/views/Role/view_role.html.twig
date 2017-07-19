@@ -70,18 +70,27 @@
                         <td>
                             {% set policyDeleteForm = deleteFormsByPolicyId[policy.id] %}
                             {{ form_start(policyDeleteForm, {"action": path("admin_policyDelete", {"roleId": role.id, "policyId": policy.id})}) }}
-                            {{ form_widget(policyDeleteForm.policyId) }}
-                            {{ form_widget(policyDeleteForm.roleId) }}
-                            <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit or editablePolicies[policy.id] is not defined %} data-disabled{% endif %}>{{ 'role.policy.edit_limitations'|trans }}</a>
-                            {{
-                                form_widget(
-                                    policyDeleteForm.delete,
-                                    {
-                                        "disabled": not can_edit,
-                                        "attr": {"class": "ez-button ez-button-negative"}
-                                    }
-                                )
-                            }}
+                                {% set dialogId = 'confirm-policy-removal-' ~ policy.id %}
+                                {{
+                                    include('@EzSystemsHybridPlatformUi/components/confirm_dialog.html.twig', {
+                                        'dialogId': dialogId,
+                                        'message': 'confirm.remove.policy'|trans()|desc('Are you sure you want to delete this policy?'),
+                                        'confirmButton': policyDeleteForm.delete,
+                                    })
+                                }}
+
+                                {{ form_widget(policyDeleteForm.policyId) }}
+                                {{ form_widget(policyDeleteForm.roleId) }}
+                                <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}"
+                                    class="ez-button ez-button-secondary" data-icon="&#xe606;"
+                                    {% if not can_edit or editablePolicies[policy.id] is not defined %} data-disabled{% endif %}>
+                                        {{ 'role.policy.edit_limitations'|trans }}
+                                </a>
+                                <button type="button" value="#{{ dialogId }}"
+                                    class="ez-button ez-button-negative ez-js-open-modal"
+                                    {% if not can_edit %} disabled{% endif %}>
+                                    {{ policyDeleteForm.delete.vars.label|trans({}, policyDeleteForm.delete.vars.translation_domain) }}
+                                </button>
                             {{ form_end(policyDeleteForm) }}
                         </td>
                     </tr>
