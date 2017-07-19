@@ -164,16 +164,22 @@
                         <td>
                             {% set deleteForm = deleteFormsByAssignment[role_assignment.id] %}
                             {{ form_start(deleteForm, {"action": path("admin_roleAssignmentDelete", {"roleAssignmentId": role_assignment.id, "redirectErrorsTo": "view"})}) }}
-                            {{ form_widget(deleteForm.assignmentId) }}
-                            {{
-                                form_widget(
-                                    deleteForm.delete,
-                                    {
-                                        "disabled": not can_assign,
-                                        "attr": {"class": "ez-button ez-button-negative"}
-                                    }
-                                )
-                            }}
+                                {{ form_widget(deleteForm.assignmentId) }}
+
+                                {% set dialogId = 'confirm-assignment-removal-' ~ role_assignment.id %}
+                                {{
+                                    include('@EzSystemsHybridPlatformUi/components/confirm_dialog.html.twig', {
+                                        'dialogId': dialogId,
+                                        'message': 'confirm.remove.role-assignment'|trans()|desc('Are you sure you want to delete this assignment?'),
+                                        'confirmButton': deleteForm.delete,
+                                    })
+                                }}
+
+                                <button type="button" value="#{{ dialogId }}"
+                                    class="ez-button ez-button-negative ez-js-open-modal"
+                                    {% if not can_assign %} disabled{% endif %}>
+                                    {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
+                                </button>
                             {{ form_end(deleteForm) }}
                         </td>
                     </tr>
