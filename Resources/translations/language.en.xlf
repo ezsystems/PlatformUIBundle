@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-01-31T10:50:08Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-07-19T12:22:06Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
     </header>
     <body>
+      <trans-unit id="5a536c1b4c7b2e8b9c651cb80d0b41de546044df" resname="confirm.remove.language">
+        <source>Are you sure you want to delete this language?</source>
+        <target state="new">Are you sure you want to delete this language?</target>
+        <note>key: confirm.remove.language</note>
+        <jms:reference-file line="55">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="50">Resources/views/Language/view.html.twig</jms:reference-file>
+      </trans-unit>
       <trans-unit id="a8cb5d2bb95aba25c1f2f82dc92eee8614e3e867" resname="language.cancel">
         <source>Cancel</source>
         <target>Cancel</target>
@@ -16,7 +23,7 @@
         <source>Language code</source>
         <target>Language code</target>
         <note>key: language.code</note>
-        <jms:reference-file line="29">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="33">Resources/views/Language/list.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="670884ed109bd22b18847ccb016a0faf72470640" resname="language.code.label">
         <source>Language code:</source>
@@ -40,17 +47,15 @@
         <source>Disabled</source>
         <target>Disabled</target>
         <note>key: language.disabled</note>
-        <jms:reference-file line="41">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="45">Resources/views/Language/list.html.twig</jms:reference-file>
         <jms:reference-file line="40">Resources/views/Language/view.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="67f5b766ec64104c9936dc826adf45bdf55f38f9" resname="language.edit">
         <source>Edit</source>
         <target>Edit</target>
         <note>key: language.edit</note>
-        <jms:reference-file line="44">Resources/views/Language/list.html.twig</jms:reference-file>
-        <jms:reference-file line="46">Resources/views/Language/list.html.twig</jms:reference-file>
-        <jms:reference-file line="49">Resources/views/Language/view.html.twig</jms:reference-file>
-        <jms:reference-file line="53">Resources/views/Language/view.html.twig</jms:reference-file>
+        <jms:reference-file line="60">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="58">Resources/views/Language/view.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="f0bb8e1a1b26634c005357a45b948b0b28ae6d03" resname="language.edit.title">
         <source>Editing the language "%languageName%"</source>
@@ -62,8 +67,8 @@
         <source>Enabled</source>
         <target>Enabled</target>
         <note>key: language.enabled</note>
-        <jms:reference-file line="31">Resources/views/Language/list.html.twig</jms:reference-file>
-        <jms:reference-file line="41">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="35">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="45">Resources/views/Language/list.html.twig</jms:reference-file>
         <jms:reference-file line="40">Resources/views/Language/view.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="11f29ad3c27254c1fea1d685b1961546d4949553" resname="language.enabled.label">
@@ -76,7 +81,7 @@
         <source>Language ID</source>
         <target>Language ID</target>
         <note>key: language.id</note>
-        <jms:reference-file line="30">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="34">Resources/views/Language/list.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="60c35c78d83e0e32173bc6eda1bd696d223b49bd" resname="language.id.label">
         <source>Language ID:</source>
@@ -92,14 +97,15 @@
         <jms:reference-file line="14">Resources/views/Language/edit.html.twig</jms:reference-file>
         <jms:reference-file line="12">Resources/views/Language/list.html.twig</jms:reference-file>
         <jms:reference-file line="18">Resources/views/Language/list.html.twig</jms:reference-file>
-        <jms:reference-file line="80">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="24">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="75">Resources/views/Language/list.html.twig</jms:reference-file>
         <jms:reference-file line="8">Resources/views/Language/view.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="c0ccfb7e7bc6d434ca93e998637fe775ba4a2de0" resname="language.name">
         <source>Language name</source>
         <target>Language name</target>
         <note>key: language.name</note>
-        <jms:reference-file line="28">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="32">Resources/views/Language/list.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e033c3bb99a4c1b19b1aaa80c637751afe1f474d" resname="language.name.label">
         <source>Language name:</source>
@@ -111,8 +117,7 @@
         <source>Create a new language</source>
         <target>Create a new language</target>
         <note>key: language.new</note>
-        <jms:reference-file line="70">Resources/views/Language/list.html.twig</jms:reference-file>
-        <jms:reference-file line="72">Resources/views/Language/list.html.twig</jms:reference-file>
+        <jms:reference-file line="26">Resources/views/Language/list.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="7381072fc89347233cac4530d637e9fe98dedf38" resname="language.notification.created">
         <source>The language "%languageName%" was correctly created.</source>
