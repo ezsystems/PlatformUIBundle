@@ -45,7 +45,7 @@
                 {{ form_start(deleteForm, {"action": path("admin_languagedelete", {"languageId": language.id, "redirectErrorsTo": "view"})}) }}
                     {% set dialogId = 'confirm-language-removal' %}
                     {{
-                        include('@EzSystemsHybridPlatformUi/components/confirm_dialog.html.twig', {
+                        include('@EzSystemsHybridPlatformUi/components/confirm_delete_dialog.html.twig', {
                             'dialogId': dialogId,
                             'message': 'confirm.remove.language'|trans()|desc('Are you sure you want to delete this language?'),
                             'confirmButton': deleteForm.delete,

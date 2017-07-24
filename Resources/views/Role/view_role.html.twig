@@ -72,7 +72,7 @@
                             {{ form_start(policyDeleteForm, {"action": path("admin_policyDelete", {"roleId": role.id, "policyId": policy.id})}) }}
                                 {% set dialogId = 'confirm-policy-removal-' ~ policy.id %}
                                 {{
-                                    include('@EzSystemsHybridPlatformUi/components/confirm_dialog.html.twig', {
+                                    include('@EzSystemsHybridPlatformUi/components/confirm_delete_dialog.html.twig', {
                                         'dialogId': dialogId,
                                         'message': 'confirm.remove.policy'|trans()|desc('Are you sure you want to delete this policy?'),
                                         'confirmButton': policyDeleteForm.delete,
@@ -105,7 +105,7 @@
             {{ form_start(deleteForm, {"action": path("admin_roleDelete", {"roleId": role.id})}) }}
                 {% set dialogId = 'confirm-role-removal' %}
                 {{
-                    include('@EzSystemsHybridPlatformUi/components/confirm_dialog.html.twig', {
+                    include('@EzSystemsHybridPlatformUi/components/confirm_delete_dialog.html.twig', {
                         'dialogId': dialogId,
                         'message': 'confirm.remove.role'|trans()|desc('Are you sure you want to delete this role?'),
                         'confirmButton': deleteForm.delete,
@@ -168,7 +168,7 @@
 
                                 {% set dialogId = 'confirm-assignment-removal-' ~ role_assignment.id %}
                                 {{
-                                    include('@EzSystemsHybridPlatformUi/components/confirm_dialog.html.twig', {
+                                    include('@EzSystemsHybridPlatformUi/components/confirm_delete_dialog.html.twig', {
                                         'dialogId': dialogId,
                                         'message': 'confirm.remove.role-assignment'|trans()|desc('Are you sure you want to delete this assignment?'),
                                         'confirmButton': deleteForm.delete,
