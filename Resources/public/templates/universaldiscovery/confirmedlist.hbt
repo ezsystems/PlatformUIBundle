@@ -6,6 +6,7 @@
             <div class="ez-ud-full-list-item" data-content-id="{{ contentInfo.id }}">
                 <div class="ez-ud-full-list-item-actions">
                     <button
+                        type="button"
                         class="ez-ud-full-list-item-action ez-ud-full-list-item-remove"
                         data-content-id="{{ contentInfo.id }}"
                         data-icon="&#xe600;"></button>

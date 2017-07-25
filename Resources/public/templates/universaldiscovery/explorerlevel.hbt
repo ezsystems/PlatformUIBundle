@@ -2,7 +2,7 @@
 <div class="ez-ud-finder-explorerlevel-content ez-asynchronousview">
     {{#if loadingError}}
         <p class="ez-asynchronousview-error ez-font-icon">
-            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button"></button>
+            <button type="button" class="ez-asynchronousview-retry ez-button ez-font-icon pure-button"></button>
         </p>
     {{else}}
         <ul class="ez-explorer-level-list">
