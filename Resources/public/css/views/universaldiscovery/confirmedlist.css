@@ -49,9 +49,11 @@
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list {
     position: absolute;
     bottom: 100%;
-    left: -2em;
+    left: 0;
     width: 40em;
     display: none;
+
+    background: #fff;
 }
 
 .ez-view-universaldiscoveryconfirmedlistview.is-full-list-visible .ez-ud-full-list {
