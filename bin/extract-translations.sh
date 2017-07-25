@@ -3,7 +3,7 @@ echo 'Translation extraction';
 cd ../../..;
 # Extract string for default locale
 echo '# Extract PlatformUIBundle';
-./app/console translation:extract en -v \
+./bin/console translation:extract en -v \
   --dir=./vendor/ezsystems/platform-ui-bundle \
   --exclude-dir=Tests \
   --exclude-dir=Features \

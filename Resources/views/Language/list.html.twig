@@ -47,16 +47,22 @@
                         {% set deleteForm = deleteFormsByLanguageId[language.id] %}
                         {{ form_start(deleteForm, {"action": path("admin_languagedelete", {"languageId": language.id, "redirectErrorsTo": "list"})}) }}
                             {{ form_widget(deleteForm.languageId) }}
-                            <a href="{{ path('admin_languageedit', {'languageId': language.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not canEdit %} data-disabled{% endif %}>{{ 'language.edit'|trans }}</a>
+
+                            {% set dialogId = 'confirm-section-removal-' ~ language.id %}
                             {{
-                                form_widget(
-                                    deleteForm.delete,
-                                    {
-                                        "disabled": not canEdit,
-                                        "attr": {"class": "ez-button ez-button-negative"}
-                                    }
-                                )
+                                include('@EzSystemsHybridPlatformUi/components/confirm_delete_dialog.html.twig', {
+                                    'dialogId': dialogId,
+                                    'message': 'confirm.remove.language'|trans()|desc('Are you sure you want to delete this language?'),
+                                    'confirmButton': deleteForm.delete,
+                                })
                             }}
+
+                            <a href="{{ path('admin_languageedit', {'languageId': language.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not canEdit %} data-disabled{% endif %}>{{ 'language.edit'|trans }}</a>
+                            <button type="button" value="#{{ dialogId }}"
+                                class="ez-button ez-button-negative ez-js-open-modal"
+                                {% if not canEdit %} disabled{% endif %}>
+                                {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
+                            </button>
                         {{ form_end(deleteForm) }}
                     </td>
                 </tr>

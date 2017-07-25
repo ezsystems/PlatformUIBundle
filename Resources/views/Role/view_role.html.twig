@@ -70,18 +70,27 @@
                         <td>
                             {% set policyDeleteForm = deleteFormsByPolicyId[policy.id] %}
                             {{ form_start(policyDeleteForm, {"action": path("admin_policyDelete", {"roleId": role.id, "policyId": policy.id})}) }}
-                            {{ form_widget(policyDeleteForm.policyId) }}
-                            {{ form_widget(policyDeleteForm.roleId) }}
-                            <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit or editablePolicies[policy.id] is not defined %} data-disabled{% endif %}>{{ 'role.policy.edit_limitations'|trans }}</a>
-                            {{
-                                form_widget(
-                                    policyDeleteForm.delete,
-                                    {
-                                        "disabled": not can_edit,
-                                        "attr": {"class": "ez-button ez-button-negative"}
-                                    }
-                                )
-                            }}
+                                {% set dialogId = 'confirm-policy-removal-' ~ policy.id %}
+                                {{
+                                    include('@EzSystemsHybridPlatformUi/components/confirm_delete_dialog.html.twig', {
+                                        'dialogId': dialogId,
+                                        'message': 'confirm.remove.policy'|trans()|desc('Are you sure you want to delete this policy?'),
+                                        'confirmButton': policyDeleteForm.delete,
+                                    })
+                                }}
+
+                                {{ form_widget(policyDeleteForm.policyId) }}
+                                {{ form_widget(policyDeleteForm.roleId) }}
+                                <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}"
+                                    class="ez-button ez-button-secondary" data-icon="&#xe606;"
+                                    {% if not can_edit or editablePolicies[policy.id] is not defined %} data-disabled{% endif %}>
+                                        {{ 'role.policy.edit_limitations'|trans }}
+                                </a>
+                                <button type="button" value="#{{ dialogId }}"
+                                    class="ez-button ez-button-negative ez-js-open-modal"
+                                    {% if not can_edit %} disabled{% endif %}>
+                                    {{ policyDeleteForm.delete.vars.label|trans({}, policyDeleteForm.delete.vars.translation_domain) }}
+                                </button>
                             {{ form_end(policyDeleteForm) }}
                         </td>
                     </tr>
@@ -94,20 +103,25 @@
             </table>
 
             {{ form_start(deleteForm, {"action": path("admin_roleDelete", {"roleId": role.id})}) }}
+                {% set dialogId = 'confirm-role-removal' %}
+                {{
+                    include('@EzSystemsHybridPlatformUi/components/confirm_delete_dialog.html.twig', {
+                        'dialogId': dialogId,
+                        'message': 'confirm.remove.role'|trans()|desc('Are you sure you want to delete this role?'),
+                        'confirmButton': deleteForm.delete,
+                    })
+                }}
+
                 <p class="ez-table-data-buttons">
                     <a href="{{ path('admin_policyEdit', {"roleId": role.id}) }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_edit %} data-disabled{% endif %}>{{ 'role.policy.add'|trans }}</a>
                     <a href="{{ path('admin_roleUpdate', {"roleId": role.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'role.edit'|trans }}</a>
 
                     {{ form_widget(deleteForm.roleId) }}
-                    {{
-                        form_widget(
-                            deleteForm.delete,
-                            {
-                                "disabled": not can_delete,
-                                "attr": {"class": "ez-button ez-button-negative"}
-                            }
-                        )
-                    }}
+                    <button type="button" value="#{{ dialogId }}"
+                        class="ez-button ez-button-negative ez-js-open-modal" {% if not can_delete %} disabled{% endif %}>
+                        {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
+                    </button>
+
                 </p>
             {{ form_end(deleteForm) }}
         </div>
@@ -150,16 +164,22 @@
                         <td>
                             {% set deleteForm = deleteFormsByAssignment[role_assignment.id] %}
                             {{ form_start(deleteForm, {"action": path("admin_roleAssignmentDelete", {"roleAssignmentId": role_assignment.id, "redirectErrorsTo": "view"})}) }}
-                            {{ form_widget(deleteForm.assignmentId) }}
-                            {{
-                                form_widget(
-                                    deleteForm.delete,
-                                    {
-                                        "disabled": not can_assign,
-                                        "attr": {"class": "ez-button ez-button-negative"}
-                                    }
-                                )
-                            }}
+                                {{ form_widget(deleteForm.assignmentId) }}
+
+                                {% set dialogId = 'confirm-assignment-removal-' ~ role_assignment.id %}
+                                {{
+                                    include('@EzSystemsHybridPlatformUi/components/confirm_delete_dialog.html.twig', {
+                                        'dialogId': dialogId,
+                                        'message': 'confirm.remove.role-assignment'|trans()|desc('Are you sure you want to delete this assignment?'),
+                                        'confirmButton': deleteForm.delete,
+                                    })
+                                }}
+
+                                <button type="button" value="#{{ dialogId }}"
+                                    class="ez-button ez-button-negative ez-js-open-modal"
+                                    {% if not can_assign %} disabled{% endif %}>
+                                    {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
+                                </button>
                             {{ form_end(deleteForm) }}
                         </td>
                     </tr>

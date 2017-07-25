@@ -43,6 +43,15 @@
 
             <div>
                 {{ form_start(deleteForm, {"action": path("admin_sectiondelete", {"sectionId": section.id, "redirectErrorsTo": "view"})}) }}
+                    {% set dialogId = 'confirm-section-removal' %}
+                    {{
+                        include('@EzSystemsHybridPlatformUi/components/confirm_delete_dialog.html.twig', {
+                            'dialogId': dialogId,
+                            'message': 'confirm.remove.section'|trans()|desc('Are you sure you want to delete this section?'),
+                            'confirmButton': deleteForm.delete,
+                        })
+                    }}
+
                     <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}"
                        {% if not canEdit %}data-disabled{%endif %}
                        class="ez-button ez-button-primary" data-icon="&#xe606;">
@@ -50,15 +59,11 @@
                     </a>
 
                     {{ form_widget(deleteForm.sectionId) }}
-                    {{
-                        form_widget(
-                            deleteForm.delete,
-                            {
-                                "disabled": not deletable,
-                                "attr": {"class": "ez-button ez-button-negative"}
-                            }
-                        )
-                    }}
+
+                    <button type="button" value="#{{ dialogId }}"
+                        class="ez-button ez-button-negative ez-js-open-modal" {% if not deletable %} disabled{% endif %}>
+                        {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
+                    </button>
                 {{ form_end(deleteForm) }}
             </div>
         </div>

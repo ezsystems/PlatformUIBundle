@@ -76,25 +76,29 @@
                         {{ form_start(deleteForm, {"action": path("admin_sectiondelete", {"sectionId": section.id, "redirectErrorsTo": "list"})}) }}
                             {{ form_widget(deleteForm.sectionId) }}
 
-                                <button
-                                    type="button"
-                                    data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
-                                    data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
-                                    data-section-name="{{ section.name }}"
-                                    class="ez-button ez-button-secondary"
-                                    {% if not canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
-
-                                <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button ez-button-secondary" data-icon="&#xe606;"{% if not canEdit %} data-disabled{% endif %}>{{ 'section.edit'|trans }}</a>
-
-                                    {{
-                                form_widget(
-                                    deleteForm.delete,
-                                    {
-                                        "disabled": deletableSections[section.id] is not defined,
-                                        "attr": {"class": "ez-button ez-button-negative"}
-                                    }
-                                )
+                            {% set dialogId = 'confirm-section-removal-' ~ section.id %}
+                            {{
+                                include('@EzSystemsHybridPlatformUi/components/confirm_delete_dialog.html.twig', {
+                                    'dialogId': dialogId,
+                                    'message': 'confirm.remove.section'|trans()|desc('Are you sure you want to delete this section?'),
+                                    'confirmButton': deleteForm.delete,
+                                })
                             }}
+
+                            <button
+                                type="button"
+                                data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
+                                data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
+                                data-section-name="{{ section.name }}"
+                                class="ez-button ez-button-secondary"
+                                {% if not canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
+
+                            <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button ez-button-secondary" data-icon="&#xe606;"{% if not canEdit %} data-disabled{% endif %}>{{ 'section.edit'|trans }}</a>
+                            <button type="button" value="#{{ dialogId }}"
+                                class="ez-button ez-button-negative ez-js-open-modal"
+                                {% if deletableSections[section.id] is not defined %} disabled{% endif %}>
+                                {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
+                            </button>
                         {{ form_end(deleteForm) }}
                     </td>
                 </tr>
