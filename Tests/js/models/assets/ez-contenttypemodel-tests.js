@@ -592,7 +592,9 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
 
         setUp: function () {
             this.contentType = new Y.eZ.ContentType({
-                names: {value: 'ketoprophen'},
+                names: {value: 'Ketoprophen'},
+                identifier: 'ketoprophen',
+                isContainer: true,
                 fieldDefinitions: {_href: 'mal/a/la/tete'}
             });
         },
@@ -601,7 +603,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
             this.contentType.destroy();
         },
 
-        "Should return an object based on the content": function () {
+        "Should return an object based on the content type": function () {
             var object = this.contentType.toObject();
 
             Assert.areSame(
@@ -611,6 +613,14 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
             Assert.areSame(
                 object.fieldDefinitions, this.contentType.get('fieldDefinitions'),
                 "The object should have fieldDefinitions"
+            );
+            Assert.areEqual(
+                object.identifier, this.contentType.get('identifier'),
+                'The object should have the identifier'
+            );
+            Assert.areSame(
+                object.isContainer, this.contentType.get('isContainer'),
+                'The object should have the isContainer flag'
             );
         },
     });

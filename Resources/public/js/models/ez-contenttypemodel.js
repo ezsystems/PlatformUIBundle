@@ -186,7 +186,12 @@ YUI.add('ez-contenttypemodel', function (Y) {
         },
 
         toObject: function () {
-            return {names: this.get('names'), fieldDefinitions: this.get('fieldDefinitions')};
+            return {
+                names: this.get('names'),
+                fieldDefinitions: this.get('fieldDefinitions'),
+                identifier: this.get('identifier'),
+                isContainer: this.get('isContainer'),
+            };
         },
     }, {
         REST_STRUCT_ROOT: 'ContentType',
