@@ -253,8 +253,9 @@ class PlatformUI extends Context
      * to find one element that might still be loading.
      *
      * @param   string      $selector       css selector for the element
-     * @param   NodeElement $baseElement    base Mink node element from where the find should be called
-     * @return  NodeElement
+     * @param   \Behat\Mink\Element\NodeElement $baseElement    base Mink node element from where the find should be called
+     *
+     * @return  \Behat\Mink\Element\NodeElement
      */
     public function findWithWait($selector, $baseElement = null, $checkVisibility = true)
     {
