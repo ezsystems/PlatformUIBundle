@@ -10,7 +10,7 @@
 
             <p class="ez-asynchronousview-error ez-font-icon">
                 {{ translate 'universaldiscovery.error.loading.image' 'universaldiscovery' }}
-                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{ translate 'universaldiscovery.retry' 'universaldiscovery' }}</button>
+                <button type="button" class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{ translate 'universaldiscovery.retry' 'universaldiscovery' }}</button>
             </p>
             <div class="ez-ud-selected-name-container">
                 <h3 class="ez-ud-selected-name" title="{{contentInfo.name}}">{{ contentInfo.name }}</h3>
@@ -18,7 +18,7 @@
 
             {{#if addConfirmButton}}
             <p>
-                <button class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>
+                <button type="button" class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>
                     {{ translate 'universaldiscovery.choose.this.content' 'universaldiscovery' }}
                 </button>
             </p>

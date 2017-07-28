@@ -45,7 +45,7 @@
                     <td>{{location.contentInfo.name}}</td>
                     <td>{{translate_property contentType.names}}</td>
                     <td>
-                        <button class="ez-ud-searchresult-preview-button ez-button ez-button-secondary"
+                        <button type="button" class="ez-ud-searchresult-preview-button ez-button ez-button-secondary"
                             data-location-id="{{location.id}}">{{ translate 'universaldiscovery.preview' 'universaldiscovery' }}</button>
                     </td>
                 </tr>
