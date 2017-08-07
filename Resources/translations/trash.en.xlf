@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2016-11-29T11:49:06Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-03-07T14:24:01Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -72,11 +72,23 @@
         <note>key: restoring.trash.items</note>
         <jms:reference-file>./Resources/public/js/views/services/ez-trashviewservice.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="a97f5d20007194640d4a0f86e05bccd2463d9642" resname="trash.ancestor.to.select">
+        <source>Select a new parent location for the item</source>
+        <target>Select a new parent location for the item</target>
+        <note>key: trash.ancestor.to.select</note>
+        <jms:reference-file>Resources/public/js/views/ez-trashview.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="bdaee6eee47e0c028566b056680e5f7488772428" resname="trash.ancestors">
         <source>Item's ancestors are in Trash</source>
         <target>Item's ancestors are in Trash</target>
         <note>key: trash.ancestors</note>
         <jms:reference-file>./Resources/public/templates/trash.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="ef15335cc7bc4c4bb04a558b3e7346fb2be24795" resname="trash.ancestors.button">
+        <source>Restore under a new parent</source>
+        <target>Restore under a new parent</target>
+        <note>key: trash.ancestors.button</note>
+        <jms:reference-file>Resources/public/templates/trash.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="7883128cdfb813826271abe90b3a1f3190833ce6" resname="trash.empty">
         <source>The trash is empty</source>
