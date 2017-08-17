@@ -12,6 +12,12 @@
         <note>key: actionbar.copy</note>
         <jms:reference-file>Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="86d34b127ee3fbd1c895919f820416d4152b0939" resname="actionbar.copySubtree">
+        <source>Copy subtree</source>
+        <target>Copy subtree</target>
+        <note>key: actionbar.copySubtree</note>
+        <jms:reference-file>Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="e9ce61047248bb9c85bb0984cf597dbfbcc7633b" resname="actionbar.createContent">
         <source>Create</source>
         <target>Create</target>
@@ -131,6 +137,12 @@
         <note>key: error.occurred.copying</note>
         <jms:reference-file>Resources/public/js/views/services/plugins/ez-copycontentplugin.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="d8f0e1c3ff9c78586299fa892784136d4997254b" resname="error.occurred.copying.exceededSubtreeSize">
+        <source>Unable to copy subtree: exceeded maximum number of content objects allowed to copy at once</source>
+        <target>Unable to copy subtree: exceeded maximum number of content objects allowed to copy at once</target>
+        <note>key: error.occurred.copying.exceededSubtreeSize</note>
+        <jms:reference-file>Resources/public/js/views/services/plugins/ez-copysubtreeplugin.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="e3215cb818603963b4e6b318ed9874ba881ca5bb" resname="error.occurred.loading">
         <source>An error occurred while loading your content</source>
         <target>An error occurred while loading your content</target>
@@ -196,6 +208,12 @@
         <target>Select the location you want to copy your content into</target>
         <note>key: select.location.to.copy</note>
         <jms:reference-file>Resources/public/js/views/services/plugins/ez-copycontentplugin.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="5691bfbb7e0b179f4497233d594de19e690e8b1a" resname="select.location.to.copySubtree">
+        <source>Select the location you want to copy your subtree into</source>
+        <target>Select the location you want to copy your subtree into</target>
+        <note>key: select.location.to.copySubtree</note>
+        <jms:reference-file>Resources/public/js/views/ez-actionbarview.js</jms:reference-file>
       </trans-unit>
       <trans-unit id="303fa8448e329ecb88341279a1a17b044549270a" resname="select.location.to.create.new.location">
         <source>Select the location where you want to create new location</source>

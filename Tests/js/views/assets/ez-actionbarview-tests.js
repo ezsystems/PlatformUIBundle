@@ -5,7 +5,7 @@
 YUI.add('ez-actionbarview-tests', function (Y) {
     var Assert = Y.Assert,
         Mock = Y.Mock,
-        viewTest, userViewTest, rootLocationTest;
+        viewTest, userViewTest, containerTest, rootLocationTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Action Bar View test",
@@ -34,8 +34,20 @@ YUI.add('ez-actionbarview-tests', function (Y) {
                 returns: false
             });
 
+            Mock.expect(this.contentTypeMock, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: false,
+            });
+
             Mock.expect(this.locationMock, {
                 method: 'isRootLocation'
+            });
+
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: ['childCount'],
+                returns: 0
             });
 
             this.view = new Y.eZ.ActionBarView({
@@ -119,6 +131,10 @@ YUI.add('ez-actionbarview-tests', function (Y) {
 
         "Should not instantiate deleteActionView": function () {
             this._isNotActionCreated('deleteContent', {});
+        },
+
+        "Should not instantiate copySubtreeView": function () {
+            this._isNotActionCreated('copySubtree', {});
         }
     });
 
@@ -126,7 +142,7 @@ YUI.add('ez-actionbarview-tests', function (Y) {
         name: "eZ Action Bar View For Users test ",
 
         setUp: function () {
-            this.location = {};
+            this.locationMock = new Mock();
             this.content = {};
             this.contentTypeMock = new Mock();
 
@@ -143,14 +159,36 @@ YUI.add('ez-actionbarview-tests', function (Y) {
                 location: {}
             });
 
+            Mock.expect(this.locationMock, {
+                method: 'isRootLocation'
+            });
+
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: ['childCount'],
+                returns: 0
+            });
+
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: ['childCount'],
+                returns: 0
+            });
+
             Mock.expect(this.contentTypeMock, {
                 method: 'hasFieldType',
                 args: ['ezuser'],
                 returns: true
             });
 
+            Mock.expect(this.contentTypeMock, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: false,
+            });
+
             this.view = new Y.eZ.ActionBarView({
-                location: this.location,
+                location: this.locationMock,
                 content: this.content,
                 contentType: this.contentTypeMock
             });
@@ -233,6 +271,121 @@ YUI.add('ez-actionbarview-tests', function (Y) {
         },
     });
 
+    containerTest = new Y.Test.Case({
+        name: "eZ Action Bar View container location test",
+
+        setUp: viewTest.setUp,
+
+        tearDown: viewTest.tearDown,
+
+        _isActionCreated: function (actionId, testedAttributes) {
+            var actionFound;
+
+            actionFound = Y.Array.find(this.view.get('actionsList'), function (actionView) {
+                return actionView.get('actionId') === actionId;
+            });
+
+            if (!!actionFound) {
+                Y.Object.each(testedAttributes, function (attrValue, attrName) {
+                    Assert.areSame(
+                        attrValue,
+                        actionFound.get(attrName),
+                        'The ' + attrName + ' should have been set to ' + actionId + 'ActionView'
+                    );
+                });
+            }
+
+            Assert.isTrue(
+                !!actionFound,
+                'The ActionBarView should contain ' + actionId + ' action'
+            );
+        },
+
+        _isNotActionCreated: function (actionId, testedAttributes) {
+            var actionFound;
+
+            actionFound = Y.Array.find(this.view.get('actionsList'), function (actionView) {
+                return actionView.get('actionId') === actionId;
+            });
+
+            Assert.isFalse(
+                !!actionFound,
+                'The ActionBarView should not contain ' + actionId + ' action'
+            );
+        },
+
+        "Should instantiate copySubtreeView if location is none-empty container": function () {
+            Mock.expect(this.contentTypeMock, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: true
+            });
+
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: ['childCount'],
+                returns: 2
+            });
+
+            this.view = new Y.eZ.ActionBarView({
+                location: this.locationMock,
+                content: this.content,
+                contentType: this.contentTypeMock
+            });
+
+            this._isActionCreated('copySubtree', {});
+        },
+
+        "Should not instantiate copySubtreeView if location is empty container": function () {
+            Mock.expect(this.contentTypeMock, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: true
+            });
+
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: ['childCount'],
+                returns: 0
+            });
+
+            this.view = new Y.eZ.ActionBarView({
+                location: this.locationMock,
+                content: this.content,
+                contentType: this.contentTypeMock
+            });
+
+            this._isNotActionCreated('copySubtree', {});
+        },
+
+        "Should not instantiate copySubtreeView if location is root": function() {
+            Mock.expect(this.contentTypeMock, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: true
+            });
+
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: ['childCount'],
+                returns: 10
+            });
+
+            Mock.expect(this.locationMock, {
+                method: 'isRootLocation',
+                returns: true
+            });
+
+            this.view = new Y.eZ.ActionBarView({
+                location: this.locationMock,
+                content: this.content,
+                contentType: this.contentTypeMock
+            });
+
+            this._isNotActionCreated('copySubtree', {});
+        },
+    });
+
     rootLocationTest = new Y.Test.Case({
         name: "eZ Action Bar View root location test",
 
@@ -288,5 +441,6 @@ YUI.add('ez-actionbarview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Action Bar View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(userViewTest);
+    Y.Test.Runner.add(containerTest);
     Y.Test.Runner.add(rootLocationTest);
 }, '', {requires: ['test', 'ez-actionbarview']});

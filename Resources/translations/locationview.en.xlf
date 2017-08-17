@@ -36,6 +36,12 @@
         <note>key: confirm.set.main.location</note>
         <jms:reference-file>Resources/public/js/views/services/plugins/ez-contentsetmainlocationplugin.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="f4e95cfd9e3501b72d0ef88fc7e051890947bd2c" resname="confirmed.copySubtree">
+        <source>Are you sure you want to copy subtree (%size%)?</source>
+        <target>Are you sure you want to copy subtree (%size%)?</target>
+        <note>key: confirmed.copySubtree</note>
+        <jms:reference-file>Resources/public/js/views/services/plugins/ez-copysubtreeplugin.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="8a2fbb282605f72d531c11a15b621a9edc4913db" resname="confirmed.delete">
         <source>Are you sure you want to delete this content?</source>
         <target>Are you sure you want to delete this content?</target>

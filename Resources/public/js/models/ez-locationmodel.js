@@ -103,6 +103,19 @@ YUI.add('ez-locationmodel', function (Y) {
         },
 
         /**
+         * Copy the location under the given parenLocationId.
+         *
+         * @method copy
+         * @param {Object} options the options for the copy.
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {String} parentLocationId the location id where we should copy the content
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        copy: function(options, parentLocationId, callback) {
+            options.api.getContentService().copySubtree(this.get('id'), parentLocationId, callback);
+        },
+
+        /**
          * Updates the sortfield and sortOrder of the location
          *
          * @method _updateSorting
@@ -319,6 +332,26 @@ YUI.add('ez-locationmodel', function (Y) {
                 query,
                 callback
             );
+        },
+
+        /**
+         * Gets the subtree size.
+         *
+         * @method getSubtreeSize
+         * @param {Object} options
+         * @param {Object} options.api the JS REST client instance
+         * @param {Function} callback
+         */
+        getSubtreeSize: function (options, callback) {
+            var contentService = options.api.getContentService(),
+                query = contentService.newViewCreateStruct('subtree-size-' + this.get('locationId'), 'LocationQuery');
+
+            query.setLimitAndOffset(0, 0);
+            query.setFilter({
+                SubtreeCriterion: this.get('pathString')
+            });
+
+            contentService.createView(query, callback);
         },
 
         /**

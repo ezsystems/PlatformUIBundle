@@ -20,6 +20,24 @@ YUI.add('ez-actionbarview', function (Y) {
      * @extends eZ.BarView
      */
     Y.eZ.ActionBarView = Y.Base.create('actionBarView', Y.eZ.BarView, [], {
+        /**
+         * Returns true if copy subtree is available
+         *
+         * @method _isCopySubtreeActionAvailable
+         * @protected
+         * @return {boolean}
+         */
+        _isCopySubtreeActionAvailable: function() {
+            var location = this.get('location'),
+                contentType = this.get('contentType'),
+                limit = this.get('config').copySubtree.limit;
+
+            if (limit === 0 || location.isRootLocation() || location.get('childCount') === 0) {
+                return false;
+            }
+
+            return contentType.get('isContainer');
+        },
     }, {
         ATTRS: {
             /**
@@ -93,6 +111,15 @@ YUI.add('ez-actionbarview', function (Y) {
                                 priority: 10
                             })
                         );
+                    }
+
+                    if (this._isCopySubtreeActionAvailable()) {
+                        actionList.push(new Y.eZ.ButtonActionView({
+                            actionId: "copySubtree",
+                            disabled: false,
+                            label: Y.eZ.trans('actionbar.copySubtree', {}, 'bar'),
+                            priority: 180
+                        }));
                     }
 
                     return actionList;
