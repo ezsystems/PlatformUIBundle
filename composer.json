@@ -14,7 +14,7 @@
         "ezsystems/ezpublish-kernel": "^6.6",
         "ezsystems/ez-support-tools": "^0.1",
         "ezsystems/hybrid-platform-ui-assets": "~0.2",
-        "ezsystems/hybrid-platform-ui": "dev-master as 1.0.x-dev",
+        "ezsystems/hybrid-platform-ui": "dev-composer_installer as 1.0.x-dev",
         "zetacomponents/system-information": "^1.1",
         "willdurand/js-translation-bundle": "^2.5",
         "jms/translation-bundle": "^1.3",
