@@ -41,10 +41,6 @@ YUI.add('ez-asynchronoussubitemview', function (Y) {
                 ['sortOrderChange', 'sortFieldChange'],
                 Y.bind(this._fillSortConditionWithLocation, this)
             );
-            this.after(
-                'sortConditionChange',
-                Y.bind(this._refresh, this)
-            );
         },
 
         /**
@@ -78,10 +74,9 @@ YUI.add('ez-asynchronoussubitemview', function (Y) {
          * Refreshes the view if it's active. The subitems are reloaded and then
          * rerendered.
          *
-         * @method _refresh
-         * @protected
+         * @method refresh
          */
-        _refresh: function () {
+        refresh: function () {
             if ( this._getChildCount() ) {
                 if ( this.get('active') ) {
                     this.set('items', [], {reset: true});

@@ -52,6 +52,21 @@ YUI.add('ez-subitemboxviewservice', function (Y) {
             }, this));
         },
 
+        /**
+         * Reloads the Location used as a parent Location for the subitems.
+         *
+         * @method reload
+         * @param {Function} next
+         */
+        reload: function(next) {
+            this.get('location').load({api: this.get('capi')}, Y.bind(function (err) {
+                if (err ) {
+                    return this._error(Y.eZ.trans('subitem.error.loading.list', {}, 'subitem'));
+                }
+                next();
+            }, this));
+        },
+
         _getViewParameters: function () {
             return {
                 content: this.get('content'),

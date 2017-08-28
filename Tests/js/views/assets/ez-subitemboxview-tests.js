@@ -5,7 +5,7 @@
 YUI.add('ez-subitemboxview-tests', function (Y) {
     var renderTest, addSubitemViewTest, forwardActiveTest, subitemViewChangeTest,
         switchViewTest, subitemViewsDefaultTest, expandTest, collapseClassTest,
-        subitemViewIdentifierTest,
+        subitemViewIdentifierTest, refreshTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -584,6 +584,35 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         },
     });
 
+    refreshTest = new Y.Test.Case({
+        name: "eZ Subitem Box View refresh test",
+
+        setUp: function () {
+            this.subitemView1 = new Mock(new Y.View({'identifier': 'whatever'}));
+            this.subitemView2 = new Mock();
+            this.view = new Y.eZ.SubitemBoxView({
+                container: '.container',
+                subitemViews: [this.subitemView1, this.subitemView2],
+                subitemViewIdentifier: this.subitemView1.get('identifier'),
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.subitemView1;
+            delete this.subitemView2;
+        },
+
+        "Should refresh the currently selected subitem view": function () {
+            Mock.expect(this.subitemView1, {
+                method: 'refresh',
+            });
+
+            this.view.refresh();
+            Mock.verify(this.subitemView1);
+        }
+    });
+
     Y.Test.Runner.setName("eZ Subitem Box View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(addSubitemViewTest);
@@ -594,4 +623,5 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
     Y.Test.Runner.add(expandTest);
     Y.Test.Runner.add(collapseClassTest);
     Y.Test.Runner.add(subitemViewIdentifierTest);
+    Y.Test.Runner.add(refreshTest);
 }, '', {requires: ['view', 'test', 'node-event-simulate', 'ez-subitemboxview']});

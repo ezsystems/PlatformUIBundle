@@ -50,7 +50,7 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
                 if ( this._isSortedByPriority() ) {
                     this._set('loading', true);
                     this._disableLoadMore();
-                    e.location.onceAfter('priorityChange', Y.bind(this._refresh, this));
+                    e.location.onceAfter('priorityChange', Y.bind(this.refresh, this));
                 }
             });
 
@@ -153,6 +153,7 @@ YUI.add('ez-subitemlistmoreview', function (Y) {
                 sortField: sortField,
                 sortOrder: sortOrder,
             });
+            this.refresh();
         },
 
         /**

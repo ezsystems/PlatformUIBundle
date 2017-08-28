@@ -40,6 +40,17 @@
                 this._attachView.bind(this)
             );
         }
+
+        /**
+         * Refreshes the subitem list.
+         */
+        refresh() {
+            if ( this._viewService ) {
+                this._viewService.reload(() => {
+                    this._view.refresh();
+                });
+            }
+        }
     }
 
     window.customElements.define(Subitem.is, Subitem);

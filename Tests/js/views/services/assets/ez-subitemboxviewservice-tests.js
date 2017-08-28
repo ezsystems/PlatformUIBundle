@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-subitemboxviewservice-tests', function (Y) {
-    var getViewParametersTest, loadTest,
+    var getViewParametersTest, loadTest, reloadTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     loadTest = new Y.Test.Case({
@@ -34,7 +34,7 @@ YUI.add('ez-subitemboxviewservice-tests', function (Y) {
             this.service.destroy();
             delete this.service;
         },
-        
+
         "Should set the content, contentType and location": function () {
             var callbackCalled = false;
 
@@ -158,8 +158,79 @@ YUI.add('ez-subitemboxviewservice-tests', function (Y) {
         },
     });
 
+    reloadTest = new Y.Test.Case({
+        name: "eZ Subitem Box View Service reload tests",
+
+        setUp: function () {
+            this.location = new Mock();
+            this.capi = {};
+            this.service = new Y.eZ.SubitemBoxViewService({
+                capi: this.capi,
+                location: this.location,
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        _configureLocationMock: function (err) {
+            Mock.expect(this.location, {
+                method: 'load',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
+                    Assert.areSame(
+                        this.capi,
+                        options.api,
+                        "The capi should be provided"
+                    );
+                    callback(err);
+                }, this),
+            });
+        },
+
+        "Should load the location": function () {
+            var nextCalled = false;
+
+            this._configureLocationMock(false);
+            this.service.reload(function () {
+                nextCalled = true;
+            });
+
+            Assert.isTrue(
+                nextCalled,
+                "`reload` callback should have been called"
+            );
+            Mock.verify(this.location);
+        },
+
+        "Should handle error": function () {
+            var errorEvt = false;
+
+            this._configureLocationMock(true);
+
+            this.service.once('error', function (e) {
+                errorEvt = true;
+                Assert.areEqual(
+                    'subitem.error.loading.list domain=subitem',
+                    e.message,
+                    'The error message should be set'
+                );
+            });
+            this.service.reload(function () {
+                Assert.fail('`reload` callback should not be called');
+            });
+            Mock.verify(this.location);
+            Assert.isTrue(
+                errorEvt,
+                'The error event should have been fired'
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Subitem Box  View Service tests");
     Y.Test.Runner.add(getViewParametersTest);
     Y.Test.Runner.add(loadTest);
-
+    Y.Test.Runner.add(reloadTest);
 }, '', {requires: ['test', 'ez-subitemboxviewservice']});

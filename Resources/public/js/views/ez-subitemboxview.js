@@ -164,6 +164,15 @@ YUI.add('ez-subitemboxview', function (Y) {
         },
 
         /**
+         * Refreshes the currently used subitem view.
+         *
+         * @method refresh
+         */
+        refresh: function () {
+            this._getSubitemView(this.get('subitemViewIdentifier')).refresh();
+        },
+
+        /**
          * Renders the subitem view `view`
          *
          * @method _renderSubitemView

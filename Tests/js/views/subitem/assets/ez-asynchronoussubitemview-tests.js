@@ -220,40 +220,34 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
             }, this));
         },
 
-        _resetView: function (updateFunction) {
-            var initialItemCount = 10;
+        "Should update sortCondition when Location sortField is changed": function () {
+            var field = 'MODIFIED',
+                origSortCondition = this.view.get('sortCondition');
 
-            this.view.set('items', this._getSubItemStructs(initialItemCount));
-            this.view.set('active', false);
-            this.view.set('offset', initialItemCount);
-
-            this.view.on('locationSearch', function (e) {
-                Assert.fail('The locationSearch event should have been fired');
-            });
-
-            updateFunction();
-
-            Assert.areSame(
-                0,
-                this.view.get('items').length,
-                "The items attribute should have been emptied"
+            this.location.set('sortField', field);
+            Assert.areEqual(
+                field, this.view.get('sortCondition').sortField,
+                'The sortCondition attr should have been updated'
             );
-            Assert.isTrue(
-                this.view.get('offset') < 0,
-                "The offset should have been reset"
+            Assert.areNotSame(
+                origSortCondition, this.view.get('sortCondition'),
+                'The sortCondition attr should hold a new object'
             );
         },
 
-        "Should reset the view state when Location sortField is changed": function () {
-            this._resetView(Y.bind(function () {
-                this.location.set('sortField', 'MODIFIED');
-            },this));
-        },
+        "Should update sortCondition when Location sortOrder is changed": function () {
+            var order = 'DESC',
+                origSortCondition = this.view.get('sortCondition');
 
-        "Should reset the view state when Location sortOrder is changed": function () {
-            this._resetView(Y.bind(function () {
-                this.location.set('sortOrder', 'DESC');
-            },this));
+            this.location.set('sortOrder', order);
+            Assert.areEqual(
+                order, this.view.get('sortCondition').sortOrder,
+                'The sortCondition attr should have been updated'
+            );
+            Assert.areNotSame(
+                origSortCondition, this.view.get('sortCondition'),
+                'The sortCondition attr should hold a new object'
+            );
         },
 
         _noReloadItems: function (updateFunction) {
@@ -285,7 +279,7 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
             },this));
         },
 
-        _reloadItems: function (updateFunction, expectField, expectOrder) {
+        _reloadItems: function (updateFunction) {
             var initialItems = this.view.get('items'),
                 locationSearchFired = false;
 
@@ -323,15 +317,9 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
                     "The search event should contain the view offset + view limit as the limit"
                 );
                 Assert.areSame(
-                    expectField,
-                    evt.search.sortCondition.sortField,
-                    "The current Location's sortField should be used to sort the subitems"
-                );
-
-                Assert.areSame(
-                    expectOrder,
-                    evt.search.sortCondition.sortOrder,
-                    "The current Location's sortOrder should be used to sort the subitems"
+                    this.view.get('sortCondition'),
+                    evt.search.sortCondition,
+                    'The sortCondition attr should be used to sort'
                 );
             }, this));
 
@@ -362,19 +350,7 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
 
         _getSubItemStructs: getSubItemStructs,
 
-        "Should reload the items when Location sortOrder is changed": function () {
-            this._reloadItems(Y.bind(function () {
-                this.location.set('sortOrder', 'DESC');
-            },this), 'PRIORITY', 'DESC');
-        },
-
-        "Should reload the items when Location sortField is changed": function () {
-            this._reloadItems(Y.bind(function () {
-                this.location.set('sortField', 'MODIFIED');
-            },this), 'MODIFIED', 'ASC');
-        },
-
-        _destroyAfterUpdate: function (updateFunction, expectField, expectOrder) {
+        _destroyAfterUpdate: function (updateFunction) {
             var initialItemCount = 10,
                 destroyed = 0;
 
@@ -382,7 +358,7 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
             this.view.after('itemView:destroy', function (e) {
                 destroyed++;
             });
-            this._reloadItems(updateFunction, expectField, expectOrder);
+            this._reloadItems(updateFunction);
             this.view.set('items', this._getSubItemStructs(this.view.get('offset') + this.view.get('limit')));
 
             Assert.areEqual(
@@ -392,16 +368,31 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
             );
         },
 
-        "Should destroys the items view when receiving the items after sortField change": function () {
+        "Should destroys the item views when receiving the new items": function () {
             this._destroyAfterUpdate(Y.bind(function () {
-                this.location.set('sortOrder', 'DESC');
-            },this), 'PRIORITY', 'DESC');
+                this.view.refresh();
+            },this));
         },
 
-        "Should destroys the items view when receiving the items after sortOrder change": function () {
-            this._destroyAfterUpdate(Y.bind(function () {
-                this.location.set('sortField', 'MODIFIED');
-            },this), 'MODIFIED', 'ASC');
+        "Should reload items": function () {
+            this._reloadItems(Y.bind(function () {
+                this.view.refresh();
+            }, this));
+        },
+
+        "Should reset the view if not active": function () {
+            this.view.set('items', this._getSubItemStructs(10));
+            this.view.set('offset', 0);
+
+            this.view.refresh();
+            Assert.areNotEqual(
+                0, this.view.get('offset'),
+                'The offset should have been reset'
+            );
+            Assert.areEqual(
+                0, this.view.get('items').length,
+                'The view should not hold any items'
+            );
         },
     };
 });

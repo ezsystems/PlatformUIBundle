@@ -29,6 +29,7 @@ window.eZ = window.eZ || {};
                     return;
                 }
                 this._view = view;
+                this._viewService = viewService;
                 this.innerHTML = '';
                 this.appendChild(view.get('container').getDOMNode());
                 this.classList.add('ez-js-standard-form');

@@ -21,9 +21,18 @@ describe('ez-subitem', function () {
                 };
             };
             this.destroy = function () {};
+            this.refresh = function () {};
         };
 
         return new View();
+    }
+
+    function getViewServiceMock() {
+        const Service = function () {
+            this.reload = function (next) {next();};
+        };
+
+        return new Service();
     }
 
     function defineGlobals() {
@@ -175,6 +184,54 @@ describe('ez-subitem', function () {
             document.dispatchEvent(new CustomEvent('ez:yui-app:ready'));
 
             assert.ok(setSpy.calledOnce);
+        });
+    });
+
+    describe('refresh', function () {
+        const view = getViewMock(document.createElement('div'));
+        const viewService = getViewServiceMock();
+
+        beforeEach(function () {
+            subitem = fixture('BasicTestFixture');
+            defineGlobals();
+            sinon.stub(window.eZ.YUI.app, 'renderView', function (View, Service, params, done) {
+                done(false, viewService, view);
+            });
+            sinon.spy(view, 'refresh');
+            sinon.spy(viewService, 'reload');
+        });
+
+        afterEach(function () {
+            delete window.eZ;
+            view.refresh.restore();
+            viewService.reload.restore();
+        });
+
+        it('should reload the view service and refresh the view', function () {
+            document.dispatchEvent(new CustomEvent('ez:yui-app:ready'));
+            subitem.refresh();
+
+            assert.isTrue(
+                viewService.reload.calledOnce,
+                '`reload` should have been called on the YUI view service'
+            );
+            assert.isTrue(
+                view.refresh.calledOnce,
+                '`refresh` should have been called on the YUI view'
+            );
+        });
+
+        it('should ignore the refresh call if not already rendered', function () {
+            subitem.refresh();
+
+            assert.isFalse(
+                viewService.reload.called,
+                '`reload` should not have been called'
+            );
+            assert.isFalse(
+                view.refresh.called,
+                '`refresh` should not have been called'
+            );
         });
     });
 

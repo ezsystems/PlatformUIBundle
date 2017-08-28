@@ -376,12 +376,6 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
         tearDown: function () {
             this.view.destroy();
         },
-
-        "Should reset the view state when Location sortField is changed for a non sortable field": function () {
-            this._resetView(Y.bind(function () {
-                this.location.set('sortField', 'PATH');
-            },this));
-        },
     }));
 
     updatePriorityTest = new Y.Test.Case({
