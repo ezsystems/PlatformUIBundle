@@ -1,7 +1,7 @@
 Feature: Use the eZ Users field
 
     Background:
-        Given I am logged in as an Administrator in PlatformUI
+        Given I am logged in as admin on PlatformUI
 
     @javascript @common
     Scenario: Verify the existence of Users page and it's content
