@@ -15,7 +15,8 @@
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe921;">
+    <h1 class="ez-page-header-name">
+        {{ ez_ui_icon('roles') }}
         {{- 'role.assign_limit_section.user_or_group.pagetitle'|trans({'%roleIdentifier%': role.identifier}) -}}
     </h1>
 {% endblock %}
@@ -39,8 +40,9 @@
                 data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
                 data-role-name="{{ role.identifier }}"
                 data-role-assignment-limitation-type="{{ 'Section' }}"
-                class="ez-role-assign-limit-section-button ez-button ez-button-primary">
-                {% if not can_assign %}disabled{% endif %}
+                class="ez-role-assign-limit-section-button ez-button ez-button-primary"
+                {% if not can_assign %}disabled{% endif %}>
+                {{ ez_ui_icon('relations') }}
                 {{ 'role.assign_limit_section.user_or_group'|trans }}
             </button>
         </p>

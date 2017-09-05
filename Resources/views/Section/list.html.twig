@@ -42,7 +42,10 @@
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe925;">{{ 'section.list'|trans }}</h1>
+    <h1 class="ez-page-header-name">
+        {{ ez_ui_icon('sections') }}
+        {{ 'section.list'|trans }}
+    </h1>
 {% endblock %}
 
 {% block content %}
@@ -50,7 +53,7 @@
         <div class="ez-list-toolbar">
             <h2 class="ez-list-toolbar-label">{{ 'section.list'|trans }}</h2>
             <div class="ez-list-toolbar-tools">
-                <a href="{{ path('admin_sectionedit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{%if not canEdit %} data-disabled{% endif %}>{{ 'section.new'|trans }}</a>
+                <a href="{{ path('admin_sectionedit') }}" class="ez-button ez-button-primary"{%if not canEdit %} data-disabled{% endif %}>{{ ez_ui_icon('create') }} {{ 'section.new'|trans }}</a>
             </div>
         </div>
         <table class="ez-table-data ez-table-data-row-tool" data-selection-buttons=".ez-remove-section-button">
@@ -91,12 +94,13 @@
                                 data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
                                 data-section-name="{{ section.name }}"
                                 class="ez-button ez-button-secondary"
-                                {% if not canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
+                                {% if not canAssign %}disabled="disabled"{% endif %}>{{ ez_ui_icon('relations') }} {{ 'section.assign.contents'|trans }}</button>
 
-                            <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button ez-button-secondary" data-icon="&#xe606;"{% if not canEdit %} data-disabled{% endif %}>{{ 'section.edit'|trans }}</a>
+                            <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button ez-button-secondary"{% if not canEdit %} data-disabled{% endif %} title="{{ 'section.edit'|trans }}">{{ ez_ui_icon('edit') }}</a>
                             <button type="button" value="#{{ dialogId }}"
                                 class="ez-button ez-button-negative ez-js-open-modal"
                                 {% if deletableSections[section.id] is not defined %} disabled{% endif %}>
+                                {{ ez_ui_icon('trash') }}
                                 {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
                             </button>
                         {{ form_end(deleteForm) }}

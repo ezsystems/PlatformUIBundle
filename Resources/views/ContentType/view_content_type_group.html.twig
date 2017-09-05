@@ -14,7 +14,10 @@
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe91f;">{{ 'content_type.group'|trans({'%name%': group.identifier}) }}</h1>
+    <h1 class="ez-page-header-name">
+        {{ ez_ui_icon('content-types') }}
+        {{ 'content_type.group'|trans({'%name%': group.identifier}) }}
+    </h1>
 {% endblock %}
 
 {% block content %}
@@ -24,9 +27,12 @@
             {{ form_start(create_form, {"action": path("admin_contenttypeCreate", {"contentTypeGroupId": group.id}), 'attr': {'class': 'ez-list-toolbar-tools'}}) }}
                 {# TODO: We should be able to select a language for ContentType creation #}
                 {{ form_widget(create_form.contentTypeGroupId) }}
-                <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
+                <button type="submit" class="ez-button ez-button-primary"{% if not can_create %} disabled="disabled"{% endif %}
                         name="{{ create_form.create.vars['full_name'] }}"
-                        id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_content_type") }}</button>
+                        id="{{ create_form.create.vars['id'] }}">
+                    {{ ez_ui_icon('create') }}
+                    {{ create_form.create.vars['label']|trans(domain="ezrepoforms_content_type") }}
+                </button>
                 {% do create_form.create.setRendered() %}
             {{ form_end(create_form) }}
         </div>
@@ -61,7 +67,9 @@
                                 })
                             }}
 
-                            <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.edit'|trans }}</a>
+                            <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="ez-button ez-button-secondary"{% if not can_edit %} data-disabled{% endif %}>
+                                {{ ez_ui_icon('edit') }}
+                            </a>
 
                             <button type="button" value="#{{ dialogId }}"
                                 class="ez-button ez-button-negative ez-js-open-modal"
@@ -69,6 +77,7 @@
                                     disabled
                                     title="{{ 'content_type.is_in_use'|trans|desc("The content type cannot be deleted because it has content items, or because you don't have permission.") }}"
                                 {% endif %}>
+                                {{ ez_ui_icon('trash') }}
                                 {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
                             </button>
                         {{ form_end(deleteForm) }}

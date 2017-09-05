@@ -12,7 +12,10 @@
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe924;">{{ 'system.information'|trans }}</h1>
+    <h1 class="ez-page-header-name">
+        {{ ez_ui_icon('system-information') }}
+        {{ 'system.information'|trans }}
+    </h1>
 {% endblock %}
 
 {% block content %}

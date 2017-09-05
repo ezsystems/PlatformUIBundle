@@ -13,7 +13,10 @@
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe925;">{{ 'section.view.title'|trans({'%sectionName%': section.name}) }}</h1>
+    <h1 class="ez-page-header-name">
+        {{ ez_ui_icon('sections') }}
+        {{ 'section.view.title'|trans({'%sectionName%': section.name}) }}
+    </h1>
 {% endblock %}
 
 {% block content %}
@@ -54,7 +57,8 @@
 
                     <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}"
                        {% if not canEdit %}data-disabled{%endif %}
-                       class="ez-button ez-button-primary" data-icon="&#xe606;">
+                       class="ez-button ez-button-primary">
+                        {{ ez_ui_icon('edit') }}
                         {{ 'section.edit'|trans }}
                     </a>
 
@@ -62,6 +66,7 @@
 
                     <button type="button" value="#{{ dialogId }}"
                         class="ez-button ez-button-negative ez-js-open-modal" {% if not deletable %} disabled{% endif %}>
+                        {{ ez_ui_icon('trash') }}
                         {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
                     </button>
                 {{ form_end(deleteForm) }}
@@ -74,8 +79,9 @@
                     data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
                     data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
                     data-section-name="{{ section.name }}"
-                    class="ez-button ez-button-primary">
-                    {% if not canAssign %}disabled{% endif %}
+                    class="ez-button ez-button-primary"
+                    {% if not canAssign %}disabled{% endif %}>
+                    {{ ez_ui_icon('relations') }}
                     {{ 'section.assign.contents'|trans }}
                 </button>
             </p>

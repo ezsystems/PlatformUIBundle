@@ -18,7 +18,7 @@
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name ez-contenttype-icon ez-contenttype-icon-{{ content_type.identifier }}">{{ content_type_name }}</h1>
+    <h1 class="ez-page-header-name">{{ content_type_name }}</h1>
 {% endblock %}
 
 {% block content %}
@@ -150,7 +150,8 @@
             <div class="ez-toolbar">
                 {{ form_start(delete_form, {"action": path("admin_contenttypeDelete", {"contentTypeId": content_type.id}), 'attr': {'class': 'ez-toolbar-action'}}) }}
                     <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}"
-                        class="ez-button ez-button-primary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>
+                        class="ez-button ez-button-primary"{% if not can_edit %} data-disabled{% endif %}>
+                        {{ ez_ui_icon('edit') }}
                         {{ 'content_type.edit'|trans|desc("Edit") }}
                     </a>
                     {% set dialogId = 'confirm-contenttype-removal' %}
@@ -169,6 +170,7 @@
                             disabled
                             title="{{ 'content_type.is_in_use'|trans|desc("The content type cannot be deleted because it has content items, or because you don't have permission.") }}"
                         {% endif %}>
+                        {{ ez_ui_icon('trash') }}
                         {{ delete_form.delete.vars.label|trans({}, delete_form.delete.vars.translation_domain) }}
                     </button>
                 {{ form_end(delete_form) }}

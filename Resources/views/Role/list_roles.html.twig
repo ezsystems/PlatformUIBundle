@@ -12,7 +12,10 @@
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe921;">{{ 'role.list'|trans }}</h1>
+    <h1 class="ez-page-header-name">
+        {{ ez_ui_icon('roles') }}
+        {{ 'role.list'|trans }}
+    </h1>
 {% endblock %}
 
 {% block content %}
@@ -20,9 +23,12 @@
         <div class="ez-list-toolbar">
             <h2 class="ez-list-toolbar-label">{{ 'role.list'|trans }}</h2>
             {{ form_start(create_form, {"action": path("admin_roleCreate"), "attr": {'class': 'ez-list-toolbar-tools'}}) }}
-                <button type="submit" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
-                        name="{{ create_form.create.vars['full_name'] }}"
-                        id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_role") }}</button>
+                <button type="submit" class="ez-button ez-button-primary"{% if not can_create %} disabled="disabled"{% endif %}
+                    name="{{ create_form.create.vars['full_name'] }}"
+                    id="{{ create_form.create.vars['id'] }}">
+                    {{ ez_ui_icon('create') }}
+                    {{ create_form.create.vars['label']|trans(domain="ezrepoforms_role") }}
+                </button>
                 {% do create_form.create.setRendered() %}
             {{ form_end(create_form) }}
         </div>
@@ -47,8 +53,14 @@
                             data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
                             data-role-name="{{ role.identifier }}"
                             class="ez-role-assign-button ez-button ez-button-secondary"
-                            {% if not can_assign %}disabled="disabled"{% endif %}>{{ 'role.assign.user_or_group'|trans }}</button>
-                        <a href="{{ path('admin_roleUpdate', {'roleId': role.id}) }}" class="ez-button ez-button-secondary"{% if not can_edit %} data-disabled{% endif %} data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
+                            {% if not can_assign %}disabled="disabled"{% endif %}>
+                            {{ ez_ui_icon('relations') }}
+                            {{ 'role.assign.user_or_group'|trans }}
+                        </button>
+                        <a href="{{ path('admin_roleUpdate', {'roleId': role.id}) }}" class="ez-button ez-button-secondary"{% if not can_edit %} data-disabled{% endif %}>
+                            {{ ez_ui_icon('edit') }}
+                            {{ 'role.edit'|trans }}
+                        </a>
                     </td>
                 </tr>
             {% endfor %}

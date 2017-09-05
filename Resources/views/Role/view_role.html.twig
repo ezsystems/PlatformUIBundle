@@ -14,7 +14,10 @@
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe921;">{{ role.identifier }}</h1>
+    <h1 class="ez-page-header-name">
+        {{ ez_ui_icon('roles') }}
+        {{ role.identifier }}
+    </h1>
 {% endblock %}
 
 {% block content %}
@@ -82,13 +85,15 @@
                                 {{ form_widget(policyDeleteForm.policyId) }}
                                 {{ form_widget(policyDeleteForm.roleId) }}
                                 <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}"
-                                    class="ez-button ez-button-secondary" data-icon="&#xe606;"
+                                    class="ez-button ez-button-secondary"
                                     {% if not can_edit or editablePolicies[policy.id] is not defined %} data-disabled{% endif %}>
-                                        {{ 'role.policy.edit_limitations'|trans }}
+                                    {{ ez_ui_icon('edit') }}
+                                    {{ 'role.policy.edit_limitations'|trans }}
                                 </a>
                                 <button type="button" value="#{{ dialogId }}"
                                     class="ez-button ez-button-negative ez-js-open-modal"
                                     {% if not can_edit %} disabled{% endif %}>
+                                    {{ ez_ui_icon('trash') }}
                                     {{ policyDeleteForm.delete.vars.label|trans({}, policyDeleteForm.delete.vars.translation_domain) }}
                                 </button>
                             {{ form_end(policyDeleteForm) }}
@@ -113,12 +118,19 @@
                 }}
 
                 <p class="ez-table-data-buttons">
-                    <a href="{{ path('admin_policyEdit', {"roleId": role.id}) }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_edit %} data-disabled{% endif %}>{{ 'role.policy.add'|trans }}</a>
-                    <a href="{{ path('admin_roleUpdate', {"roleId": role.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'role.edit'|trans }}</a>
+                    <a href="{{ path('admin_policyEdit', {"roleId": role.id}) }}" class="ez-button ez-button-primary"{% if not can_edit %} data-disabled{% endif %}>
+                        {{ ez_ui_icon('create') }}
+                        {{ 'role.policy.add'|trans }}
+                    </a>
+                    <a href="{{ path('admin_roleUpdate', {"roleId": role.id}) }}" class="ez-button ez-button-secondary"{% if not can_edit %} data-disabled{% endif %}>
+                        {{ ez_ui_icon('edit') }}
+                        {{ 'role.edit'|trans }}
+                    </a>
 
                     {{ form_widget(deleteForm.roleId) }}
                     <button type="button" value="#{{ dialogId }}"
                         class="ez-button ez-button-negative ez-js-open-modal" {% if not can_delete %} disabled{% endif %}>
+                        {{ ez_ui_icon('trash') }}
                         {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
                     </button>
 
@@ -178,6 +190,7 @@
                                 <button type="button" value="#{{ dialogId }}"
                                     class="ez-button ez-button-negative ez-js-open-modal"
                                     {% if not can_assign %} disabled{% endif %}>
+                                    {{ ez_ui_icon('trash') }}
                                     {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
                                 </button>
                             {{ form_end(deleteForm) }}

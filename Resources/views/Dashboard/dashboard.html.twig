@@ -3,7 +3,10 @@
 {% trans_default_domain "dashboard" %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe618;">{{ 'dashboard.title'|trans }}</h1>
+    <h1 class="ez-page-header-name">
+        {{ ez_ui_icon('dashboard') }}
+        {{ 'dashboard.title'|trans }}
+    </h1>
 {% endblock %}
 
 {% block content %}

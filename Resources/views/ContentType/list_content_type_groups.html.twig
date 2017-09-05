@@ -12,7 +12,10 @@
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe91f;">{{ 'content_type.group.list'|trans }}</h1>
+    <h1 class="ez-page-header-name">
+        {{ ez_ui_icon('content-types') }}
+        {{ 'content_type.group.list'|trans }}
+    </h1>
 {% endblock %}
 
 {% block content %}
@@ -20,7 +23,10 @@
         <div class="ez-list-toolbar">
             <h2 class="ez-list-toolbar-label">{{ 'content_type.group.list'|trans }}</h2>
             <div class="ez-list-toolbar-tools">
-                <a href="{{ path('admin_contenttypeGroupEdit') }}" class="ez-button ez-button-primary" data-icon="&#xe616;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.group.new'|trans }}</a>
+                <a href="{{ path('admin_contenttypeGroupEdit') }}" class="ez-button ez-button-primary"{% if not can_edit %} data-disabled{% endif %}>
+                    {{ ez_ui_icon('create') }}
+                    {{ 'content_type.group.new'|trans }}
+                </a>
             </div>
         </div>
         <table class="ez-table-data ez-table-data-row-tool">
@@ -50,12 +56,15 @@
                                 })
                             }}
 
-                            <a href="{{ path("admin_contenttypeGroupEdit", {'contentTypeGroupId': group.id}) }}" class="ez-button ez-button-secondary" data-icon="&#xe606;"{% if not can_edit %} data-disabled{% endif %}>{{ 'content_type.group.edit'|trans }}</a>
+                            <a href="{{ path("admin_contenttypeGroupEdit", {'contentTypeGroupId': group.id}) }}" class="ez-button ez-button-secondary"{% if not can_edit %} data-disabled{% endif %}>
+                                {{ ez_ui_icon('edit') }}
+                            </a>
                             {{ form_widget(deleteForm.contentTypeGroupId) }}
 
                             <button type="button" value="#{{ dialogId }}"
                                 class="ez-button ez-button-negative ez-js-open-modal"
                                 {% if not can_delete %} disabled{% endif %}>
+                                {{ ez_ui_icon('trash') }}
                                 {{ deleteForm.delete.vars.label|trans({}, deleteForm.delete.vars.translation_domain) }}
                             </button>
                         {{ form_end(deleteForm) }}
