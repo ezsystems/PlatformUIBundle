@@ -12,9 +12,6 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
     Y.namespace('eZ');
 
     var events = {
-        '.ez-create-draft-from-archived-button': {
-            'tap': '_createDraftFromArchivedVersion'
-        },
         '.ez-archived-version-checkbox': {
             'change': '_setArchivedButtonsState'
         },
@@ -136,14 +133,7 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
         _setArchivedButtonsState: function () {
             var c = this.get('container'),
                 checked = c.all('.ez-archived-version-checkbox:checked'),
-                createDraftButton = c.one('.ez-create-draft-from-archived-button'),
                 deleteButton = c.one('.ez-delete-archived-button');
-
-            if (checked.size() === 1) {
-                createDraftButton.set('disabled', false);
-            } else {
-                createDraftButton.set('disabled', true);
-            }
 
             if (checked.size() >= 1) {
                 deleteButton.set('disabled', false);
@@ -182,9 +172,13 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
          *
          * @method _createDraftFromArchivedVersion
          * @protected
+         * @deprecated since version 1.12
          */
         _createDraftFromArchivedVersion: function () {
             var versions = this._getSelectedArchived();
+
+            console.log('[DEPRECATED] `_createDraftFromArchivedVersion` is deprecated');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
 
             if (versions.length === 1) {
                 this._disableVersionsCheckboxes();
