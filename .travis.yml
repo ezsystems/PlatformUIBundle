@@ -31,6 +31,7 @@ branches:
     only:
         - master
         - /^\d.\d+$/
+        - feature/EZP-25684_Improve_Version_Mngt_Multilingual_Content
 
 before_install:
     - phpenv config-rm xdebug.ini
