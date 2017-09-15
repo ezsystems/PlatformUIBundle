@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-versioninfomodel-tests', function (Y) {
-    var loadFromHashTest, removeTest,
+    var loadFromHashTest, removeTest, languageCodeListTest,
         Assert = Y.Assert;
 
     loadFromHashTest = new Y.Test.Case({
@@ -244,8 +244,55 @@ YUI.add('ez-versioninfomodel-tests', function (Y) {
         },
     });
 
+    languageCodeListTest = new Y.Test.Case({
+        name: "eZ Version Model languageCodeList attribute tests",
+
+        setUp: function () {
+            this.version = new Y.eZ.VersionInfo();
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should return the languages as an array": function () {
+            var languages = ['fre-FR', 'eng-GB'],
+                list;
+
+            this.version.set('languageCodes', languages.join(','));
+            list = this.version.get('languageCodeList');
+
+            Assert.isArray(
+                list,
+                "The list should be an array"
+            );
+            Assert.areEqual(
+                languages.length, list.length,
+                "The list should contain the language codes"
+            );
+            Y.Array.each(list, function (lang, i) {
+                Assert.areEqual(languages[i], lang);
+            });
+        },
+
+        "Should return an empty array": function () {
+            var list = this.version.get('languageCodeList');
+
+            Assert.isArray(
+                list,
+                "The list should be an array"
+            );
+            Assert.areEqual(
+                0, list.length,
+                "The list should be an empty array"
+            );
+        },
+
+    });
+
     Y.Test.Runner.setName("eZ Version Info Model tests");
     Y.Test.Runner.add(loadFromHashTest);
     Y.Test.Runner.add(removeTest);
-
+    Y.Test.Runner.add(languageCodeListTest);
 }, '', {requires: ['test', 'json', 'model-tests', 'ez-versioninfomodel', 'ez-restmodel']});
