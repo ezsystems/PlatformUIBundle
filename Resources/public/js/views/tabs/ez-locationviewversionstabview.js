@@ -102,6 +102,8 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
         /**
          * Tap event handler to restore a version in a given language.
          *
+         * @method _restoreVersionInLanguage
+         * @protected
          * @param {EventFacade} e
          */
         _restoreVersionInLanguage: function (e) {
