@@ -7,7 +7,6 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
         renderTest,
         changeEventTest,
         fireLoadVersionsEventTest,
-        fireCreateDraftEventTest,
         fireDeleteVersionEventTest,
         fireEditVersionEventTest,
         selectArchivedVersionTest,
@@ -282,109 +281,6 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
         },
     });
 
-    fireCreateDraftEventTest = new Y.Test.Case({
-        name: "ViewVersionsTabView fire `createDraft` event test",
-        setUp: function () {
-            this.contentMock = new Mock();
-            this.versions = {'ARCHIVED': []};
-
-            this.view = new Y.eZ.LocationViewVersionsTabView({
-                content: this.contentMock,
-                container: '.container'
-            });
-        },
-
-        tearDown: function () {
-            this.view.destroy();
-            delete this.view;
-        },
-
-        _createArchivedVersionMock: function (nbOfChecked) {
-            for (var i = 1; i <= nbOfChecked; i++) {
-                this.versions.ARCHIVED.push(
-                    createCheckableVersionMock("/version/" + i, i, true)
-                );
-            }
-
-            //creating an item that is not checked
-            this.versions.ARCHIVED.push(
-                createCheckableVersionMock("/version/" + 42, 42, false)
-            );
-        },
-
-        "Should fire the `createDraft` event": function () {
-            var eventFired = false,
-                createButton;
-
-            this._createArchivedVersionMock(1);
-
-            this.view.set('versions', this.versions);
-
-            this.view.on('*:createDraft', Y.bind(function (e) {
-                var checkbox = this.view.get('container').one('.ez-archived-version-checkbox[data-version-id="/version/1"]');
-
-                eventFired = true;
-                Assert.areSame(
-                    this.contentMock,
-                    e.content,
-                    "The event facade should contain the content"
-                );
-                Assert.areSame(
-                    1,
-                    e.versionNo,
-                    "The event facade should contain the versionNo"
-                );
-                Assert.isTrue(
-                    checkbox.get('disabled'),
-                    "The checkbox should be disabled"
-                );
-            }, this));
-
-            this.view.render();
-
-            createButton = this.view.get('container').one('.ez-create-draft-from-archived-button');
-            createButton.set('disabled', false);
-
-            createButton.simulateGesture('tap', Y.bind(function () {
-                this.resume(function (e) {
-                    Assert.isTrue(
-                        eventFired,
-                        "The `createDraft` event should have been fired"
-                    );
-                });
-            }, this));
-            this.wait();
-        },
-
-        "Should not fire the `createDraft` event if more than one version": function () {
-            var eventFired = false,
-                createButton;
-
-            this._createArchivedVersionMock(2);
-
-            this.view.set('versions', this.versions);
-
-            this.view.on('*:createDraft', Y.bind(function (e) {
-                eventFired = true;
-            }, this));
-
-            this.view.render();
-
-            createButton = this.view.get('container').one('.ez-create-draft-from-archived-button');
-            createButton.set('disabled', false);
-
-            createButton.simulateGesture('tap', Y.bind(function () {
-                this.resume(function (e) {
-                    Assert.isFalse(
-                        eventFired,
-                        "The `createDraft` event should not have been fired"
-                    );
-                });
-            }, this));
-            this.wait();
-        },
-    });
-
     fireEditVersionEventTest = new Y.Test.Case({
         name: "ViewVersionsTabView fire `editDraft` event test",
         setUp: function () {
@@ -589,19 +485,6 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
                     createCheckableVersionMock("/version/" + i, i, false)
                 );
             }
-        },
-
-        "Should enable the create button when only an item is selected": function () {
-            this._createArchivedVersionMock(4);
-
-            this.view.set('versions', this.versions);
-            this.view.render();
-
-            assertOnlyOneItem(
-                this.view.get('container').one('.ez-create-draft-from-archived-button'),
-                this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/1']"),
-                this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/2']")
-            );
         },
 
         "Should enable the delete button when at least an item is selected": function () {
@@ -881,7 +764,6 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(changeEventTest);
     Y.Test.Runner.add(fireLoadVersionsEventTest);
-    Y.Test.Runner.add(fireCreateDraftEventTest);
     Y.Test.Runner.add(selectArchivedVersionTest);
     Y.Test.Runner.add(selectDeleteDraftVersionTest);
     Y.Test.Runner.add(fireDeleteVersionEventTest);

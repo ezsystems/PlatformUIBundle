@@ -164,12 +164,6 @@
             </table>
 
             <div class="ez-versions-list-table-tools">
-                <button class="ez-create-draft-from-archived-button ez-button pure-button"
-                        data-version-id="{{id}}"
-                        disabled="disabled"
-                >
-                    {{ translate 'locationview.versions.new.draft.selected.version' 'locationview' }}
-                </button>
                 <button class="ez-delete-archived-button ez-button pure-button"
                         data-version-id="{{id}}"
                         disabled="disabled"
