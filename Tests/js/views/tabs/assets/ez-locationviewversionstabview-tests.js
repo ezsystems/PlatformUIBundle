@@ -11,6 +11,7 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
         fireEditVersionEventTest,
         selectArchivedVersionTest,
         selectDeleteDraftVersionTest,
+        restoreVersionInLanguageTest,
         Assert = Y.Assert,
         Mock = Y.Mock,
         createCheckableVersionMock = function (versionId, versionNo, checked) {
@@ -759,6 +760,45 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
         },
     });
 
+    restoreVersionInLanguageTest = new Y.Test.Case({
+        name: "ViewVersionsTabView restore version in language test",
+        setUp: function () {
+            this.contentMock = new Mock();
+
+            this.view = new Y.eZ.LocationViewVersionsTabView({
+                content: {},
+                container: '.container',
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should fire the `restoreVersionInLanguage` event": function () {
+            var link = this.view.get('container').one('.ez-version-in-language-restore');
+
+            this.view.on('restoreVersionInLanguage', this.next(function (e) {
+                Assert.areSame(
+                    this.view.get('content'), e.content,
+                    "The content should be provided"
+                );
+                Assert.areEqual(
+                    link.getAttribute('data-version'), e.versionNo,
+                    "The version number should be provided"
+                );
+                Assert.areEqual(
+                    link.getAttribute('data-version-language-code'), e.languageCode,
+                    "The language code should be provided"
+                );
+            }, this));
+            link.simulateGesture('tap');
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View Versions Tab View tests");
     Y.Test.Runner.add(attributesTest);
     Y.Test.Runner.add(renderTest);
@@ -768,4 +808,5 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
     Y.Test.Runner.add(selectDeleteDraftVersionTest);
     Y.Test.Runner.add(fireDeleteVersionEventTest);
     Y.Test.Runner.add(fireEditVersionEventTest);
+    Y.Test.Runner.add(restoreVersionInLanguageTest);
 }, '', {requires: ['test', 'ez-locationviewversionstabview', 'node-event-simulate']});

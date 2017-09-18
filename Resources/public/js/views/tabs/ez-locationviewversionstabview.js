@@ -27,6 +27,9 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
         '.ez-draft-version-checkbox': {
             'change': '_setDraftButtonsState'
         },
+        '.ez-version-in-language-restore': {
+            'tap': '_restoreVersionInLanguage',
+        }
     };
 
     /**
@@ -94,6 +97,22 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
             }
 
             return versionsToDisplay;
+        },
+
+        /**
+         * Tap event handler to restore a version in a given language.
+         *
+         * @param {EventFacade} e
+         */
+        _restoreVersionInLanguage: function (e) {
+            var versionNo = e.target.getAttribute('data-version'),
+                languageCode = e.target.getAttribute('data-version-language-code');
+
+            this.fire('restoreVersionInLanguage', {
+                content: this.get('content'),
+                versionNo: versionNo,
+                languageCode: languageCode,
+            });
         },
 
         /**
