@@ -38,6 +38,11 @@ YUI.add('ez-versionsplugin', function (Y) {
             this.onHostEvent('*:createDraft', this._createDraftFromArchivedVersion);
             this.onHostEvent('*:deleteVersion', this._confirmDeleteVersion);
             this.onHostEvent('*:editVersion', this._redirectToEditVersion);
+            this.onHostEvent('*:restoreVersionInLanguage', this._restoreVersionInLanguage);
+        },
+
+        _restoreVersionInLanguage: function (e) {
+            console.log('No API yet to do that', e);
         },
 
         /**

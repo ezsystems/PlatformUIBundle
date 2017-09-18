@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:jms="urn:jms:translation" version="1.2">
-  <file date="2017-03-09T16:35:22Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
+  <file date="2017-09-18T15:09:42Z" source-language="en" target-language="en" datatype="plaintext" original="not.available">
     <header>
       <tool tool-id="JMSTranslationBundle" tool-name="JMSTranslationBundle" tool-version="1.1.0-DEV"/>
       <note>The source node in most cases contains the sample message as written by the developer. If it looks like a dot-delimitted string such as "form.label.firstname", then the developer has not provided a default message.</note>
@@ -516,6 +516,12 @@
         <source>Remove selected archived version(s)</source>
         <target>Remove selected archived version(s)</target>
         <note>key: locationview.versions.remove.selected.archived.version</note>
+        <jms:reference-file>Resources/public/templates/tabs/versions.hbt</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="375d6b33f75515f798fc72ae01d58a73dbb8bd15" resname="locationview.versions.restore">
+        <source>restore</source>
+        <target>restore</target>
+        <note>key: locationview.versions.restore</note>
         <jms:reference-file>Resources/public/templates/tabs/versions.hbt</jms:reference-file>
       </trans-unit>
       <trans-unit id="199990450f06a84725d61f91a899166d0d3305c4" resname="locationview.versions.version">

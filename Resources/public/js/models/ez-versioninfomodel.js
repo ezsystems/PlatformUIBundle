@@ -21,8 +21,6 @@ YUI.add('ez-versioninfomodel', function (Y) {
      * @extends eZ.RestModel
      */
     Y.eZ.VersionInfo = Y.Base.create('versionInfoModel', Y.eZ.RestModel, [], {
-
-
         /**
          * sync implementation for the VersionInfo. For now, it supports deleting it.
          *
@@ -200,6 +198,23 @@ YUI.add('ez-versioninfomodel', function (Y) {
              */
             languageCodes: {
                 value: ""
+            },
+
+            /**
+             * The language code list.
+             *
+             * @readOnly
+             * @attribute languageCodeList
+             * @type Array
+             */
+            languageCodeList: {
+                readOnly: true,
+                getter: function () {
+                    if ( this.get('languageCodes') ) {
+                        return this.get('languageCodes').split(',');
+                    }
+                    return [];
+                }
             },
 
             /**
