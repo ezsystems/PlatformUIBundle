@@ -238,13 +238,12 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         );
         $this->assertFalse($this->container->hasParameter('ez_platformui.sa2.yui.modules.ez-capi.path'));
         $this->assertFalse($this->container->hasParameter('ez_platformui.sa2.yui.modules.ez-capi.type'));
-        
-   
+
         $this->markTestIncomplete(
-          "This test needs to rather use ConfigResolver as the internal compiled format for paramters where improved in 6.11\n"
+          "This test needs to rather use ConfigResolver as the internal compiled format for paramters where improved in 6.11\n" .
           'see: https://github.com/ezsystems/ezpublish-kernel/pull/2009'
         );
-        
+
         $this->assertContainerBuilderHasParameter('ez_platformui.sa2.yui.modules.ez-capi.requires', []);
         $this->assertContainerBuilderHasParameter('ez_platformui.sa2.yui.modules.ez-capi.dependencyOf', $ezcapiGroupDepOf);
         $this->assertContainerBuilderHasParameter('ez_platformui.sa2.yui.modules.module-sa2.path', $moduleSa2Path);
