@@ -192,7 +192,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
 
             if (error) {
                 this._notify(
-                    Y.eZ.trans('failed.sending.to.trash', {name: contentName}, 'locationview'),
+                    Y.eZ.trans('failed.sending.to.trash', {contentName: contentName}, 'locationview'),
                     'send-to-trash-' + locationId,
                     'error',
                     0
