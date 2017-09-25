@@ -18,7 +18,7 @@ YUI.add('ez-alloyeditor-tests', function (Y) {
 
         "Should import the React object": function () {
             Assert.areSame(
-                window.AlloyEditor.React,
+                window.React,
                 Y.eZ.React,
                 "The React object should have been imported in the sandbox"
             );
@@ -26,7 +26,7 @@ YUI.add('ez-alloyeditor-tests', function (Y) {
 
         "Should import the ReactDOM object": function () {
             Assert.areSame(
-                window.AlloyEditor.ReactDOM,
+                window.ReactDOM,
                 Y.eZ.ReactDOM,
                 "The ReactDOM object should have been imported in the sandbox"
             );
