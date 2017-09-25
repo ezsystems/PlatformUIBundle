@@ -378,7 +378,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
         "Should set the priority of the view tab view": function () {
             Assert.areSame(
-                1000,
+                4000,
                 this.view.get('tabs')[0].get('priority'),
                 'The priority should have been set to the view tab view'
             );
@@ -429,7 +429,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
         "Should set the priority of the details tab view": function () {
             Assert.areSame(
-                2000,
+                3000,
                 this.view.get('tabs')[1].get('priority'),
                 'The priority should have been set to the details tab view'
             );
