@@ -55,20 +55,22 @@
                                     {%- endif -%}
                                 </td>
                                 <td>
-                                    {%- for limitation in policy.limitations -%}
-                                        {# @var limitation \eZ\Publish\API\Repository\Values\User\Limitation #}
-                                        {{- limitation.identifier -}}
-                                        {%- for limitationValue in limitation.limitationValues -%}
-                                            {%- if loop.first -%}( {% endif -%}
-                                            {# TODO: https://jira.ez.no/browse/EZP-24699 Enrich Role limitations view with links and human readable names #}
-                                            {{- limitationValue -}}
-                                            {%- if not loop.last -%}, {% endif -%}
-                                            {%- if loop.last %} ){%- endif -%}
-                                        {%- endfor -%}
-                                        {%- if not loop.last -%}, {% endif -%}
+                                    {%- if policy.limitations is not empty -%}
+                                        <ul class="ez-policy-limitation">
+                                            {%- for limitation in policy.limitations -%}
+                                            <li>
+                                                <span class="ez-limitation-identifier" title="{{ limitation.identifier }}">
+                                                    {{ ('policy.limitation_' ~ limitation.identifier | lower) | trans }}:
+                                                </span>
+                                                <span class="ez-limitation-values">
+                                                    {{ ez_render_limitation_value(limitation) }}
+                                                </span>
+                                            </li>
+                                            {%- endfor -%} 
+                                        </ul>
                                     {%- else -%}
                                         {{- 'policy.limitation_none'|trans -}}
-                                    {%- endfor -%}
+                                    {%- endif -%}
                                 </td>
                                 <td>
                                 {% if can_edit and editablePolicies[policy.id] is defined %}
@@ -151,15 +153,18 @@
                                     {%- endif -%}
                                 </td>
                                 <td>
-                                    {%- if role_assignment.rolelimitation -%}
-                                        {{- role_assignment.rolelimitation.identifier -}}
-                                        {%- for limitationValue in role_assignment.rolelimitation.limitationValues -%}
-                                            {%- if loop.first -%}( {% endif -%}
-                                            {# TODO: https://jira.ez.no/browse/EZP-24699 Enrich Role limitations view with links and human readable names #}
-                                            {{- limitationValue -}}
-                                            {%- if not loop.last -%}, {% endif -%}
-                                            {%- if loop.last %} ){%- endif -%}
-                                        {%- endfor -%}
+                                    {%- set limitation = role_assignment.rolelimitation -%}
+                                    {%- if limitation -%}
+                                        <ul class="ez-policy-limitation">
+                                            <li>
+                                                <span class="ez-limitation-identifier" title="{{ limitation.identifier }}">
+                                                    {{ ('policy.limitation_' ~ limitation.identifier | lower) | trans }}:
+                                                </span>
+                                                <span class="ez-limitation-values">
+                                                    {{ ez_render_limitation_value(limitation) }}
+                                                </span>
+                                            </li>
+                                        </ul>
                                     {%- else -%}
                                         {{- 'assignment.role_limitation_none'|trans -}}
                                     {%- endif -%}
