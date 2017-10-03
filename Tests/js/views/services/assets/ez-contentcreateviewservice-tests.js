@@ -273,7 +273,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             Assert.isTrue(errorFired, "The error should have been fired");
         },
 
-        "Should initialize the redirection attributes": function () {
+        "Should initialize the redirection attributes when no custom redirection URLs are provided": function () {
             var content,
                 mainLocationId = 'good-bad-times',
                 mainLanguageCode = 'fre-FR',
@@ -317,6 +317,60 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 "THe publishRedirectionUrl should be the main location view url"
             );
         },
+
+        "Should not initialize the redirection attributes when custom redirection URLs are already provided": function () {
+            var content,
+                customDiscardUrl = 'bad-to-the-bones',
+                customCloseUrl = 'rock-you-like-a-hurricane',
+                customPublishUrl = 'final-countdown',
+                mainLanguageCode = 'pl-PL',
+                mainLocationId = 'good-bad-times',
+                viewMainLocation = '/view/' + mainLocationId + "/" + mainLanguageCode;
+
+            this.service.setAttrs({
+                discardRedirectionUrl: customDiscardUrl,
+                closeRedirectionUrl: customCloseUrl,
+                publishRedirectionUrl: customPublishUrl
+            });
+
+            this["Should initialize a new content and a new version"]();
+
+            content = this.service.get('content');
+            content.set('resources', {MainLocation: mainLocationId});
+            content.set('mainLanguageCode', mainLanguageCode);
+
+            Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Mock.Value.Object],
+                run: function (route, params) {
+                    Assert.areEqual(
+                        mainLocationId, params.id,
+                        "The main location id should be passed to routeUri"
+                    );
+                    Assert.areEqual(
+                        mainLanguageCode, params.languageCode,
+                        "The main language code should be passed to routeUri"
+                    );
+
+                    return viewMainLocation;
+                }
+            });
+            Assert.areEqual(
+                customDiscardUrl,
+                this.service.get('discardRedirectionUrl'),
+                "The `discardRedirectionUrl` should be the custom url"
+            );
+            Assert.areEqual(
+                customCloseUrl,
+                this.service.get('closeRedirectionUrl'),
+                "The `closeRedirectionUrl` should be the custom url"
+            );
+            Assert.areEqual(
+                customPublishUrl,
+                this.service.get('publishRedirectionUrl'),
+                "THe `publishRedirectionUrl` should be the custom url"
+            );
+        }
     });
 
     changeLanguageTest = new Y.Test.Case({
