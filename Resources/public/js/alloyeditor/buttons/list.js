@@ -58,8 +58,8 @@ YUI.add('ez-alloyeditor-button-list', function (Y) {
             var css = "ae-button ez-ae-labeled-button" + this.getStateClasses();
 
             return (
-                React.createElement("button", {className: css, onClick: this._addList, tabIndex: this.props.tabIndex},
-                    React.createElement("span", {className: "ez-ae-icon ae-icon-bulleted-list"}),
+                React.createElement("button", {className: css, onClick: this._addList, tabIndex: this.props.tabIndex}, 
+                    React.createElement("span", {className: "ez-ae-icon ae-icon-bulleted-list"}), 
                     React.createElement("p", {className: "ez-ae-label"}, Y.eZ.trans('list', {}, 'onlineeditor'))
                 )
             );
@@ -74,7 +74,7 @@ YUI.add('ez-alloyeditor-button-list', function (Y) {
      *
      * @class eZ.AlloyEditor.ButtonList
      */
-    ButtonList = React.createClass({displayName: "ButtonListIndexed",
+    ButtonListIndexed = React.createClass({displayName: "ButtonListIndexed",
         mixins: [
             AlloyEditor.ButtonCommand,
             AlloyEditor.ButtonStateClasses,
@@ -110,8 +110,8 @@ YUI.add('ez-alloyeditor-button-list', function (Y) {
             var css = "ae-button ez-ae-labeled-button" + this.getStateClasses();
 
             return (
-                React.createElement("button", {className: css, onClick: this._addList, tabIndex: this.props.tabIndex},
-                    React.createElement("span", {className: "ez-ae-icon ae-icon-numbered-list"}),
+                React.createElement("button", {className: css, onClick: this._addList, tabIndex: this.props.tabIndex}, 
+                    React.createElement("span", {className: "ez-ae-icon ae-icon-numbered-list"}), 
                     React.createElement("p", {className: "ez-ae-label"}, Y.eZ.trans('list', {}, 'onlineeditor'))
                 )
             );
