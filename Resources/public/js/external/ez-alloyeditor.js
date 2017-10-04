@@ -9,6 +9,6 @@ YUI.add('ez-alloyeditor', function (Y) {
     Y.namespace('eZ');
 
     Y.eZ.AlloyEditor = AlloyEditor;
-    Y.eZ.React = Y.eZ.AlloyEditor.React;
-    Y.eZ.ReactDOM = Y.eZ.AlloyEditor.ReactDOM;
+    Y.eZ.React = window.React;
+    Y.eZ.ReactDOM = window.ReactDOM;
 });
