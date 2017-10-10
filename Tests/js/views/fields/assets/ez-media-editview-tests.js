@@ -818,12 +818,12 @@ YUI.add('ez-media-editview-tests', function (Y) {
                 "The 'is-media-being-updated' class should be removed from the container"
             );
             Assert.areEqual(
-                videoWidth, width.getAttribute('placeholder'),
-                "The width input should have the placeholder attribute filled with the video width"
+                videoWidth, width.getAttribute('value'),
+                "The width input should have the value attribute filled with the video width"
             );
             Assert.areEqual(
-                videoHeight, height.getAttribute('placeholder'),
-                "The height input should have the placeholder attribute filled with the video height"
+                videoHeight, height.getAttribute('value'),
+                "The height input should have the value attribute filled with the video height"
             );
         },
 
@@ -868,12 +868,12 @@ YUI.add('ez-media-editview-tests', function (Y) {
                 "The 'is-media-unsupported' class should be added on the container"
             );
             Assert.areEqual(
-                "", width.getAttribute('placeholder'),
-                "The width placeholder should be empty"
+                "", width.getAttribute('value'),
+                "The width value should be empty"
             );
             Assert.areEqual(
-                "", height.getAttribute('placeholder'),
-                "The height placeholder should be empty"
+                "", height.getAttribute('value'),
+                "The height value should be empty"
             );
         },
 
@@ -924,12 +924,12 @@ YUI.add('ez-media-editview-tests', function (Y) {
                 "The 'is-media-unsupported' class should not be added on the container"
             );
             Assert.areNotEqual(
-                "", width.getAttribute('placeholder'),
-                "The width placeholder should be kept"
+                "", width.getAttribute('value'),
+                "The width value should be kept"
             );
             Assert.areNotEqual(
-                "", height.getAttribute('placeholder'),
-                "The height placeholder should be kept"
+                "", height.getAttribute('value'),
+                "The height value should be kept"
             );
         },
     });
