@@ -13,7 +13,7 @@ EZPLATFORM_BRANCH=`php -r 'echo json_decode(file_get_contents("./composer.json")
 
 cd "$HOME/build"
 
-git clone --depth 1 --single-branch --branch "$EZPLATFORM_BRANCH" https://github.com/ezsystems/ezplatform.git
+git clone --depth 1 --single-branch --branch "$EZPLATFORM_BRANCH" https://github.com/mnocon/ezplatform.git
 cd ezplatform
 
 # Install everything needed for behat testing, using our local branch of this repo
