@@ -74,7 +74,9 @@ YUI.add('ez-media-editview', function (Y) {
 
             this._attachedViewEvents.push(player.on('loadedmetadata', function () {
                 container.removeClass(IS_BEING_UPDATED);
-                that._updateWidthHeightFieldValue(player.get('videoWidth'), player.get('videoHeight'));
+                if (!that.get('width') || !that.get('height')) {
+                    that._updateWidthHeightFieldValue(player.get('videoWidth'), player.get('videoHeight'));
+                }
             }));
             this._attachedViewEvents.push(player.on('error', function () {
                 container.removeClass(IS_BEING_UPDATED);
@@ -98,6 +100,8 @@ YUI.add('ez-media-editview', function (Y) {
             if ( width && height ) {
                 width.setAttribute('value', widthValue);
                 height.setAttribute('value', heightValue);
+                this._set('width', widthValue);
+                this._set('height', heightValue);
             }
         },
 

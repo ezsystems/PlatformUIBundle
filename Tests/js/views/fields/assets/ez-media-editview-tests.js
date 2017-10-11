@@ -807,8 +807,6 @@ YUI.add('ez-media-editview-tests', function (Y) {
             this.view.render();
 
             video = c.one('.ez-media-player');
-            width = c.one('input[name=width]');
-            height = c.one('input[name=height]');
             video.getDOMNode().videoWidth =  videoWidth;
             video.getDOMNode().videoHeight = videoHeight;
             c.addClass('is-media-being-updated');
@@ -816,14 +814,6 @@ YUI.add('ez-media-editview-tests', function (Y) {
             Assert.isFalse(
                 c.hasClass('is-media-being-updated'),
                 "The 'is-media-being-updated' class should be removed from the container"
-            );
-            Assert.areEqual(
-                videoWidth, width.getAttribute('value'),
-                "The width input should have the value attribute filled with the video width"
-            );
-            Assert.areEqual(
-                videoHeight, height.getAttribute('value'),
-                "The height input should have the value attribute filled with the video height"
             );
         },
 
@@ -849,8 +839,6 @@ YUI.add('ez-media-editview-tests', function (Y) {
 
             this["Should track the loadedmetadata event"]();
             video = c.one('.ez-media-player');
-            width = c.one('input[name=width]');
-            height = c.one('input[name=height]');
 
             c.addClass('is-media-being-updated');
             video.getDOMNode().error = {
@@ -866,14 +854,6 @@ YUI.add('ez-media-editview-tests', function (Y) {
             Assert.isTrue(
                 c.hasClass('is-media-unsupported'),
                 "The 'is-media-unsupported' class should be added on the container"
-            );
-            Assert.areEqual(
-                "", width.getAttribute('value'),
-                "The width value should be empty"
-            );
-            Assert.areEqual(
-                "", height.getAttribute('value'),
-                "The height value should be empty"
             );
         },
 
@@ -905,8 +885,6 @@ YUI.add('ez-media-editview-tests', function (Y) {
 
             this["Should track the loadedmetadata event"]();
             video = c.one('.ez-media-player');
-            width = c.one('input[name=width]');
-            height = c.one('input[name=height]');
 
             c.addClass('is-media-being-updated');
             video.getDOMNode().error = {
@@ -922,14 +900,6 @@ YUI.add('ez-media-editview-tests', function (Y) {
             Assert.isFalse(
                 c.hasClass('is-media-unsupported'),
                 "The 'is-media-unsupported' class should not be added on the container"
-            );
-            Assert.areNotEqual(
-                "", width.getAttribute('value'),
-                "The width value should be kept"
-            );
-            Assert.areNotEqual(
-                "", height.getAttribute('value'),
-                "The height value should be kept"
             );
         },
     });
