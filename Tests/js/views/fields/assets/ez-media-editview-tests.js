@@ -802,7 +802,7 @@ YUI.add('ez-media-editview-tests', function (Y) {
         "Should track the loadedmetadata event": function () {
             var c = this.view.get('container'),
                 videoWidth = 200, videoHeight = 100,
-                video, width, height;
+                video;
 
             this.view.render();
 
@@ -835,7 +835,7 @@ YUI.add('ez-media-editview-tests', function (Y) {
 
         "Should track the error event": function () {
             var c = this.view.get('container'),
-                video, width, height;
+                video;
 
             this["Should track the loadedmetadata event"]();
             video = c.one('.ez-media-player');
@@ -881,7 +881,7 @@ YUI.add('ez-media-editview-tests', function (Y) {
 
         "Should ignore error other than unsupported file format": function () {
             var c = this.view.get('container'),
-                video, width, height;
+                video;
 
             this["Should track the loadedmetadata event"]();
             video = c.one('.ez-media-player');
