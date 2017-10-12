@@ -69,7 +69,7 @@ class SystemInfoHelper implements SystemInfoHelperInterface
             'cpuSpeed' => $info->cpuSpeed,
             'cpuCount' => $info->cpuCount,
             'memorySize' => $info->memorySize,
-            'phpVersion' => phpversion(),
+            'phpVersion' => PHP_VERSION,
             'phpAccelerator' => $accelerator,
             'database' => [
                 'type' => $this->connection->getDatabasePlatform()->getName(),
