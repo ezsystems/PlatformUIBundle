@@ -197,7 +197,6 @@ system:
                         - 'ez-dashboardblocksview'
                         - 'ez-dashboardblocksviewservice'
                         - 'ez-studiopresentationview'
-                        - 'ez-studiopluspresentationview'
                         - 'ez-contenteditviewservice'
                         - 'ez-contentcreateviewservice'
                         - 'ez-contenteditview'
@@ -556,12 +555,6 @@ system:
                 studiopresentationview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/studiopresentation.hbt"
-                ez-studiopluspresentationview:
-                    requires: ['ez-templatebasedview', 'studiopluspresentationview-ez-template', 'ez-height-fit', 'event-resize']
-                    path: "%ez_platformui.public_dir%/js/views/ez-studiopluspresentationview.js"
-                studiopluspresentationview-ez-template:
-                    type: 'template'
-                    path: "%ez_platformui.public_dir%/templates/studiopluspresentation.hbt"
                 ez-universaldiscoveryview:
                     requires:
                         - 'ez-tabs'

@@ -309,7 +309,6 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                 userAvatar: this.get('userAvatar'),
                 platformNavigationItems: this.get('platformNavigationItems'),
                 studioNavigationItems: this.get('studioNavigationItems'),
-                studioplusNavigationItems: this.get('studioplusNavigationItems'),
                 adminNavigationItems: this.get('adminNavigationItems'),
                 matchedRoute: this._matchedRoute(),
             };
@@ -388,7 +387,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
          * @return {Object}
          */
         getNavigationItem: function(identifier) {
-            var zones = ['platform', 'studio', 'studioplus', 'admin'],
+            var zones = ['platform', 'studio', 'admin'],
                 items = [];
 
             Y.Array.each(zones, function (zone) {
@@ -466,38 +465,6 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                     ];
 
                     this._set('platformNavigationItems', val);
-                    return val;
-                },
-                readOnly: true,
-            },
-
-            /**
-             * Stores the navigation item objects for the 'studioplus' zone. Each
-             * object must contain a `Constructor` property referencing
-             * the constructor function to use to build the navigation item
-             * view and a `config` property will be used as a configuration
-             * object for the navigation item view. This configuration must
-             * contain a `title` and an `identifier` properties.
-             *
-             * @attribute studioplusNavigationItems
-             * @type Array
-             * @default empty array
-             * @readOnly
-             */
-            studioplusNavigationItems: {
-                getter: function (val) {
-                    if (val) {
-                        return val;
-                    }
-
-                    val = [
-                        this._getNavigationItem(
-                            "eZ Studio Plus presentation", "studioplus-presentation",
-                            "studioPlusPresentation", {}
-                        ),
-                    ];
-
-                    this._set('studioplusNavigationItems', val);
                     return val;
                 },
                 readOnly: true,
