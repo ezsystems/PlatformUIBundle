@@ -107,3 +107,11 @@
 .ez-view-serversideview .ez-contenttype-view .ez-fielddefinition-setting-value {
     background: #f3f3f3;
 }
+
+.ez-view-serversideview .ez-policy-limitation {
+    list-style-type: none;
+}
+
+.ez-view-serversideview .ez-policy-limitation .ez-limitation-identifier {
+    font-weight: bold;
+}

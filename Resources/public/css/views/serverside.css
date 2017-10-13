@@ -101,3 +101,7 @@
 .ez-view-serversideview .ez-toolbar .ez-toolbar-action {
     display: inline;
 }
+
+.ez-view-serversideview .ez-policy-limitation {
+    padding: 0;
+}
