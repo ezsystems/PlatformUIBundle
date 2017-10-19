@@ -61,7 +61,7 @@ YUI.add('ez-media-editview', function (Y) {
 
         /**
          * Sets the event handler on the video/audio element to handle the
-         * *being updated* state, the width/height placeholder and a potential
+         * *being updated* state, the width/height field value and a potential
          * file format error
          *
          * @method _watchPlayerEvents
@@ -74,7 +74,9 @@ YUI.add('ez-media-editview', function (Y) {
 
             this._attachedViewEvents.push(player.on('loadedmetadata', function () {
                 container.removeClass(IS_BEING_UPDATED);
-                that._updateWidthHeightPlaceholder(player.get('videoWidth'), player.get('videoHeight'));
+                if (!that.get('width') || !that.get('height')) {
+                    that._updateWidthHeightFieldValue(player.get('videoWidth'), player.get('videoHeight'));
+                }
             }));
             this._attachedViewEvents.push(player.on('error', function () {
                 container.removeClass(IS_BEING_UPDATED);
@@ -83,26 +85,28 @@ YUI.add('ez-media-editview', function (Y) {
         },
 
         /**
-         * Sets the placeholder attribute on the width and height input with the
+         * Sets the value on the width and height input with the
          * given values
          *
-         * @method _updateWidthHeightPlaceholder
+         * @method _updateWidthHeightFieldValue
          * @param {String|Number} widthValue
          * @param {String|Number} heightValue
          */
-        _updateWidthHeightPlaceholder: function (widthValue, heightValue) {
+        _updateWidthHeightFieldValue: function (widthValue, heightValue) {
             var container = this.get('container'),
                 width = container.one('input[name=width]'),
                 height = container.one('input[name=height]');
 
             if ( width && height ) {
-                width.setAttribute('placeholder', widthValue);
-                height.setAttribute('placeholder', heightValue);
+                width.setAttribute('value', widthValue);
+                height.setAttribute('value', heightValue);
+                this._set('width', widthValue);
+                this._set('height', heightValue);
             }
         },
 
         /**
-         * Adds the unsupported class and resets the width/height placeholder
+         * Adds the unsupported class and resets the width/height field value
          * when the file can not read by the browser
          *
          * @method _mediaError
@@ -112,7 +116,7 @@ YUI.add('ez-media-editview', function (Y) {
             var error = player.get('error');
 
             if ( error && error.code === error.MEDIA_ERR_SRC_NOT_SUPPORTED ) {
-                this._updateWidthHeightPlaceholder("", "");
+                this._updateWidthHeightFieldValue("", "");
                 this.get('container').addClass(IS_UNSUPPORTED);
             }
         },
