@@ -102,12 +102,6 @@
         <note>key: navigationhub.zone.studio</note>
         <jms:reference-file>Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
       </trans-unit>
-      <trans-unit id="6ab1d96fc11727d94958674d980864844202f89a" resname="navigationhub.zone.studioplus">
-        <source>Performance</source>
-        <target>Performance</target>
-        <note>key: navigationhub.zone.studioplus</note>
-        <jms:reference-file>Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
-      </trans-unit>
     </body>
   </file>
 </xliff>

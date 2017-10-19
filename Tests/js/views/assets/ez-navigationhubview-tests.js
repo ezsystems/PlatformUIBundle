@@ -102,10 +102,6 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this._testRenderNavigationItems('platform');
         },
 
-        "Should render the studioplus navigation items": function () {
-            this._testRenderNavigationItems('studioplus');
-        },
-
         "Should render the admin navigation items": function () {
             this._testRenderNavigationItems('admin');
         },
@@ -152,7 +148,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 userProfileView: this.userProfileView,
                 container: '.container',
                 user: this.userMock,
-                studioplusNavigationItems: [
+                studioNavigationItems: [
                     new Y.eZ.NavigationItemView(),
                     new Y.eZ.NavigationItemView(),
                 ],
@@ -199,7 +195,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         "Should show the navigation menu with some items": function () {
             var container = this.view.get('container'),
-                optZone = container.one('.ez-studioplus-zone'),
+                optZone = container.one('.ez-studio-zone'),
                 navigationIdentifier = optZone.getAttribute('data-navigation'),
                 that = this;
 
@@ -240,12 +236,12 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         "Should switch to the correct zone": function () {
             var container = this.view.get('container'),
-                optZone = container.one('.ez-studioplus-zone'),
+                optZone = container.one('.ez-studio-zone'),
                 navigationIdentifier = optZone.getAttribute('data-navigation');
 
             this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             this.view.set('activeNavigation', 'studio');
-            this.view.set('activeNavigation', 'studioplus');
             this._testShowNavigationMenu(optZone, navigationIdentifier);
         },
 
@@ -291,7 +287,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 Assert.fail("The navigateTo event should not be fired");
             });
             this.view.set('active', true);
-            this.view.set('activeNavigation', 'studioplus');
+            this.view.set('activeNavigation', 'studio');
         },
 
         "Should not fire the navigateTo event without items": function () {
@@ -784,18 +780,6 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this._testView('platformNavigationItems');
         },
 
-        "Test studioplusNavigationItems setter (struct, no config)": function () {
-            this._testStructNoConfig('studioplusNavigationItems');
-        },
-
-        "Test studioplusNavigationItems setter (struct, config)": function () {
-            this._testStructConfig('studioplusNavigationItems');
-        },
-
-        "Test studioplusNavigationItems setter (view)": function () {
-            this._testView('studioplusNavigationItems');
-        },
-
         "Test adminNavigationItems setter (struct, no config)": function () {
             this._testStructNoConfig('adminNavigationItems');
         },
@@ -867,7 +851,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view = new Y.eZ.NavigationHubView({
                 userProfileView: this.userProfileView,
                 platformNavigationItems: [this.item1, this.item2],
-                studioplusNavigationItems: [this.item3],
+                studioNavigationItems: [this.item3],
             });
         },
 
@@ -910,8 +894,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view.set('matchedRoute', this.route3);
 
             Assert.areEqual(
-                'studioplus', this.view.get('activeNavigation'),
-                "The studioplus should be active"
+                'studio', this.view.get('activeNavigation'),
+                "The studio should be active"
             );
         },
 
@@ -941,7 +925,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view = new Y.eZ.NavigationHubView({
                 userProfileView: this.userProfileView,
                 platformNavigationItems: [this.item1, this.item2],
-                studioplusNavigationItems: [this.item3],
+                studioNavigationItems: [this.item3],
                 container: '.container',
                 user: user,
             });
@@ -964,15 +948,15 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
             Assert.isTrue(
                 this.item1.get('active'),
-                "The navigation item should be active"
+                "The navigation item1 should be active"
             );
             Assert.isTrue(
                 this.item2.get('active'),
-                "The navigation item should be active"
+                "The navigation item2 should be active"
             );
             Assert.isTrue(
                 this.item3.get('active'),
-                "The navigation item should be active"
+                "The navigation item3 should be active"
             );
         },
     });

@@ -113,10 +113,6 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this._testNavigationItems('platform');
         },
 
-        "Should return an object containing the 'studioplus' navigation items": function () {
-            this._testNavigationItems('studioplus');
-        },
-
         "Should return an object containing the 'admin' navigation items": function () {
             this._testNavigationItems('admin');
         },
@@ -336,25 +332,6 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             );
         },
 
-        "'studioplus' zone": function () {
-            var value = this.service.get('studioplusNavigationItems');
-
-            Assert.isArray(value, "The studioplusNavigationItems should contain an array");
-            Assert.areEqual(
-                1, value.length,
-                "studio plus zone should contain only one element"
-            );
-
-            this._assertNavigationItem(
-                value[0], "eZ Studio Plus presentation", "studioplus-presentation", "studioPlusPresentation"
-            );
-
-            Assert.areEqual(
-                0, Y.Object.keys(value[0].config.route.params),
-                "List of param should be empty"
-            );
-        },
-
         "'studio' zone": function () {
             var value = this.service.get('studioNavigationItems');
 
@@ -462,10 +439,6 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this._testAttribute('platform');
         },
 
-        "Should add the navigation item to the 'studioplus' zone": function () {
-            this._testAttribute('studioplus');
-        },
-
         "Should add the navigation item to the 'admin' zone": function () {
             this._testAttribute('admin');
         },
@@ -484,7 +457,6 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
                 rootMediaLocation: {},
             });
             this.platformIdentifier = 'peppa-pig';
-            this.studioplusIdentifier = 'ben-et-holly';
             this.studioIdentifier = 'paw-patrol';
             this.adminIdentifier = 'dora';
             this.service.addNavigationItem(
@@ -494,10 +466,6 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this.service.addNavigationItem(
                 {config: {identifier: this.studioIdentifier}},
                 'studio'
-            );
-            this.service.addNavigationItem(
-                {config: {identifier: this.studioplusIdentifier}},
-                'studioplus'
             );
             this.service.addNavigationItem(
                 {config: {identifier: this.adminIdentifier}},
@@ -596,10 +564,6 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this.service._set('rootMediaLocation', this.rootMediaLocation);
 
             this._testLocationAttribute('platform');
-        },
-
-        "Should remove the navigation item to the 'studioplus' zone": function () {
-            this._testAttribute('studioplus');
         },
 
         "Should remove the navigation item to the 'admin' zone": function () {
