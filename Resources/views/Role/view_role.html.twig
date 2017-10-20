@@ -60,7 +60,7 @@
                                             {%- for limitation in policy.limitations -%}
                                             <li>
                                                 <span class="ez-limitation-identifier" title="{{ limitation.identifier }}">
-                                                    {{ ('policy.limitation_' ~ limitation.identifier | lower) | trans }}:
+                                                    {{ ('policy.limitation.identifier.' ~ (limitation.identifier | lower)) | trans({}, 'ezrepoforms_policies') }}:
                                                 </span>
                                                 <span class="ez-limitation-values">
                                                     {{ ez_render_limitation_value(limitation) }}
@@ -158,7 +158,7 @@
                                         <ul class="ez-policy-limitation">
                                             <li>
                                                 <span class="ez-limitation-identifier" title="{{ limitation.identifier }}">
-                                                    {{ ('policy.limitation_' ~ limitation.identifier | lower) | trans }}:
+                                                    {{ ('policy.limitation.identifier.' ~ (limitation.identifier | lower)) | trans({}, 'ezrepoforms_policies') }}:
                                                 </span>
                                                 <span class="ez-limitation-values">
                                                     {{ ez_render_limitation_value(limitation) }}
