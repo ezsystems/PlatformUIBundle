@@ -2,6 +2,7 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+/*jshint esversion: 6 */
 YUI.add('ez-navigationhubviewservice', function (Y) {
     "use strict";
     /**
@@ -10,6 +11,8 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
      * @module ez-navigationhubviewservice
      */
     Y.namespace('eZ');
+
+    const IDENTIFIER_CONTENT_STRUCTURE = 'content-structure';
 
     /**
      * Navigation hub view service.
@@ -23,6 +26,38 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         initializer: function () {
             this.on('*:logOut', this._logOut);
             this.after('*:activeNavigationChange', this._navigateToFirstItemRoute);
+            this.get('app').on('*:resetContentNavigationItem', this._resetContentNavigationItem, this);
+        },
+
+        /**
+         * Updates content link in 'Content' navigation zone for current selected content
+         *
+         * @method _resetContentNavigationItem
+         * @protected
+         * @param {Event} event
+         */
+        _resetContentNavigationItem: function () {
+            const contentItem = this.getNavigationItem(IDENTIFIER_CONTENT_STRUCTURE);
+
+            if (contentItem) {
+                const matchedRoute = this._matchedRoute();
+                const rootLocation = this.get('rootLocation');
+                const rootLocationId = rootLocation.get('id');
+                const rootLocationLang = rootLocation.get('contentInfo').get('mainLanguageCode');
+
+                contentItem.set('route.params.id', rootLocationId);
+                contentItem.set('route.params.languageCode', rootLocationLang);
+
+                matchedRoute.parameters.id = rootLocationId;
+                matchedRoute.parameters.languageCode = rootLocationLang;
+
+                /**
+                 * Simulating matched route change event (the event from the navigation hub view)
+                 *
+                 * @event matchedRouteChange
+                 */
+                this.fire('matchedRouteChange', {newVal: matchedRoute});
+            }
         },
 
         /**
@@ -136,7 +171,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                     params.id = service.get('rootLocation').get('id');
                     params.languageCode = service.get('rootLocation').get('contentInfo').get('mainLanguageCode');
 
-                    service.getNavigationItem('content-structure').set(
+                    service.getNavigationItem(IDENTIFIER_CONTENT_STRUCTURE).set(
                         'route',
                         {name: 'viewLocation', params: params}
                     );

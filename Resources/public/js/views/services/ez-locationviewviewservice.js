@@ -2,6 +2,7 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+/*jshint esversion: 6 */
 YUI.add('ez-locationviewviewservice', function (Y) {
     "use strict";
     /**
@@ -273,53 +274,92 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * @param {EventFacade} e
          */
         _moveContent: function (e) {
-            var app = this.get('app'),
-                initialActiveView = app.get('activeView'),
-                parentLocationId = e.selection.location.get('id'),
-                oldParentLocationId = this.get('location').get('id'),
-                locationId = this.get('location').get('id'),
-                that = this,
-                content = this.get('content'),
-                contentName =  content.get('name'),
-                parentContentName = e.selection.contentInfo.get('name'),
-                notificationIdentifier =  'move-notification-' + parentLocationId + '-' + locationId;
+            const parentLocationId = e.selection.location.get('id');
+            const locationId = this.get('location').get('id');
+            const identifier =  'move-notification-' + parentLocationId + '-' + locationId;
+            const initialActiveView = this.get('app').get('activeView');
+            const names = {
+                name: this.get('content').get('name'),
+                parentName: e.selection.contentInfo.get('name')
+            };
 
-            this._notify(
-                Y.eZ.trans('being.moved.under', {name: contentName, parentName: parentContentName}, 'locationview'),
-                notificationIdentifier,
-                'started', 5
+            this._notify(Y.eZ.trans('being.moved.under', names, 'locationview'), identifier, 'started', 5);
+
+            this.get('location').move(
+                {api: this.get('capi')},
+                parentLocationId,
+                this._handleAfterContentMoved.bind(this, {identifier, names, initialActiveView})
             );
+        },
 
-            this.get('location').move({api: this.get('capi')},  parentLocationId, function (error, response) {
-                if (error) {
-                    that._notify(
-                        Y.eZ.trans('failed.moving', {}, 'locationview'),
-                        notificationIdentifier, 'error', 0
-                    );
-                    return;
-                }
+        /**
+         * Handles action after moving a content into a new location
+         *
+         * @method _handleAfterContentMoved
+         * @protected
+         * @param {Object} config config hash containing: identifier, names and initialActiveView properties
+         * @param {Boolean} error
+         * @param {Object} response
+         */
+        _handleAfterContentMoved: function ({identifier, names, initialActiveView}, error, response) {
+            const app = this.get('app');
+            const location = this.get('location');
 
-                that._notify(
-                    Y.eZ.trans('moved.under', {name: contentName, parentName: parentContentName}, 'locationview'),
-                    notificationIdentifier,
-                    'done',
-                    5
-                );
-                /**
-                 * Fired when the content is moved
-                 *
-                 * @event movedContent
-                 * @param {eZ.Location} location
-                 * @param {String} oldParentLocationId
-                 */
-                that.fire('movedContent', {location: that.get('location'), oldParentLocationId: oldParentLocationId});
-                if ( app.get('activeView') === initialActiveView ) {
-                    app.navigateTo(
-                        'viewLocation',
-                        {id: response.getHeader('location'), languageCode: content.get('mainLanguageCode')}
-                    );
-                }
+            if (error) {
+                this._notify(Y.eZ.trans('failed.moving', {}, 'locationview'), identifier, 'error', 0);
+
+                return;
+            }
+
+            this._notify(Y.eZ.trans('moved.under', names, 'locationview'), identifier, 'done', 5);
+
+            /**
+             * Fired when the content is moved
+             *
+             * @event movedContent
+             * @param {eZ.Location} location
+             * @param {String} oldParentLocationId
+             */
+            this.fire('movedContent', {
+                location,
+                oldParentLocationId: location.get('id')
             });
+
+            if (app.get('activeView') === initialActiveView) {
+                const params = {
+                    id: response.getHeader('location'),
+                    languageCode: this.get('content').get('mainLanguageCode')
+                };
+
+                this._updatePrevHistory(params, () => {
+                    /**
+                     * Resets content navigation item link, in the top navigation bar - 'Content Structure'.
+                     * Listened by Y.eZ.NavigationHubViewService
+                     *
+                     * @event updateContentNavigationItem
+                     */
+                    this.fire('resetContentNavigationItem');
+
+                    app.navigateTo('viewLocation', params);
+                });
+            }
+        },
+
+        /**
+         * Updates the browser history by removing a reference to a previous,
+         * already non-existent location of moved content.
+         *
+         * @method _updatePrevHistory
+         * @protected
+         * @param {Object} params params hash containing: id {String} and languageCode {String}
+         * @param {Function} callback
+         */
+        _updatePrevHistory({id, languageCode}, callback) {
+            id = id.substr(0, id.lastIndexOf('/'));
+
+            window.location.replace(this.get('app').routeUri('viewLocation', {id, languageCode}));
+
+            callback();
         },
 
         /**
