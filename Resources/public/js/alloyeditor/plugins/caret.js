@@ -20,7 +20,7 @@ YUI.add('ez-alloyeditor-plugin-caret', function (Y) {
     function findCaretElement(element) {
         var child = element.getChild(0);
 
-        if ( child.type !== CKEDITOR.NODE_TEXT ) {
+        if ( child && child.type !== CKEDITOR.NODE_TEXT ) {
             return findCaretElement(child);
         }
         return element;
