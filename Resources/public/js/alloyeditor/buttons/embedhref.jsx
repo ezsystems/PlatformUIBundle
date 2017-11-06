@@ -61,10 +61,12 @@ YUI.add('ez-alloyeditor-button-embedhref', function (Y) {
          * @protected
          */
         _updateEmbed: function (e) {
-            var contentInfo = e.selection.contentInfo;
+            var contentInfo = e.selection.contentInfo,
+                widget = this._getWidget();
 
             this._setContentInfo(contentInfo);
-            this._getWidget().setWidgetContent("");
+            widget.focus();
+            widget.setWidgetContent("");
             this._fireUpdatedEmbed(e.selection);
         },
 
