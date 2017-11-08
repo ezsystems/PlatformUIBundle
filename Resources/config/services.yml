@@ -36,6 +36,9 @@ parameters:
     # override of the REST content controller
     ezpublish_rest.controller.content.class: EzSystems\PlatformUIBundle\Controller\Rest\ContentController
 
+    # Maximum number of content object allowed to copy at once. Possible values are:
+    # -1 to disable limiting, 0 to disable this feature, > 0 enable limiting
+    ezsystems.platformui.application_config.copy_subtree.limit: 100
 services:
     ezsystems.platformui.twig.yui_extension:
         class: "%ezsystems.platformui.twig.yui_extension.class%"
@@ -137,6 +140,13 @@ services:
             - $api_keys$
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'apiKeys'}
+
+    ezsystems.platformui.application_config.provider.copy_subtree:
+        class: "%ezsystems.platformui.application_config.provider.value.class%"
+        arguments:
+            - {limit: '%ezsystems.platformui.application_config.copy_subtree.limit%'}
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'copySubtree'}
 
     ezsystems.platformui.controller.template:
         class: "%ezsystems.platformui.controller.template.class%"

@@ -305,6 +305,7 @@ system:
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
+                        - 'ez-copysubtreeplugin'
                         - 'ez-versionsplugin'
                         - 'ez-locationswapplugin'
                         - 'ez-draftconflictview'
@@ -1409,6 +1410,9 @@ system:
                 ez-copycontentplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-copycontentplugin.js"
+                ez-copysubtreeplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-translator']
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-copysubtreeplugin.js"
                 ez-discarddraftplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-discarddraftplugin.js"
