@@ -9,7 +9,7 @@
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-copy": "^0.8.0",
-    "grunt-contrib-jshint": "~0.11.2",
+    "grunt-contrib-jshint": "^1.1.0",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-contrib-yuidoc": "~0.10.0",
     "grunt-istanbul": "~0.2.1",
@@ -18,7 +18,8 @@
     "grunt-shell": "~0.3.1",
     "grunt-text-replace": "^0.4.0",
     "gulp": "^3.9.0",
-    "rework-plugin-url": "^1.0.1"
+    "rework-plugin-url": "^1.0.1",
+    "jshint": "^2.9.5"
   },
   "scripts": {
     "test": "grunt test"
