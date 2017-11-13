@@ -464,6 +464,25 @@ YUI.add('ez-contentmodel', function (Y) {
             }
             contentService.deleteContent(this.get('id'), callback);
         },
+
+        /**
+         * Removes translation
+         *
+         * @method removeTranslation
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {String} languageCode
+         * @param {Function} callback
+         */
+        removeTranslation: function (options, languageCode, callback) {
+            var capi = options.api,
+                contentService = capi.getContentService();
+
+            if ( !this.get('id') ) {
+                return callback(false);
+            }
+            contentService.removeTranslation(this.get('contentId'), languageCode, callback);
+        },
     }, {
         REST_STRUCT_ROOT: "Content",
         ATTRS_REST_MAP: [

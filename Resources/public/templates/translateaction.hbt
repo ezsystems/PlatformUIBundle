@@ -24,6 +24,9 @@
                     <a class="ez-contenttranslation-edit-link" href="{{ path "editContent" id=../content.id languageCode=this }}">
                         {{translate 'translateaction.edit' 'bar'}}
                     </a>
+                    <a class="ez-contenttranslation-delete-link" data-translation="{{.}}" href="{{ path "editContent" id=../content.id languageCode=this }}">
+                        {{translate 'translateaction.delete' 'bar'}}
+                    </a>
                 </li>
                 {{/each}}
             </ul>
