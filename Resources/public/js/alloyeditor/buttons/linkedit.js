@@ -126,9 +126,14 @@ YUI.add('ez-alloyeditor-button-linkedit', function (Y) {
          * @protected
          */
         _focusEditedLink: function () {
-            var editor = this.props.editor.get('nativeEditor');
+            var editor = this.props.editor.get('nativeEditor'),
+                scrollX = window.pageXOffset || document.documentElement.scrollLeft,
+                scrollY = window.pageYOffset || document.documentElement.scrollTop;
 
             editor.focus();
+            // Workaround for https://jira.ez.no/browse/EZP-28078
+            window.scrollTo(scrollX, scrollY);
+
             editor.eZ.moveCaretToElement(editor, this.state.element);
             editor.fire('actionPerformed', this);
         },

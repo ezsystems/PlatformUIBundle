@@ -78,9 +78,14 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
          * @protected
          */
         _addImage: function (e) {
-            var widget;
+            var scrollX = window.pageXOffset || document.documentElement.scrollLeft,
+                scrollY = window.pageYOffset || document.documentElement.scrollTop,
+                widget;
 
             this.execCommand();
+            // Workaround for https://jira.ez.no/browse/EZP-28078
+            window.scrollTo(scrollX, scrollY);
+
             this._setContentInfo(e.selection.contentInfo);
 
             widget = this._getWidget()
