@@ -120,6 +120,12 @@
         <note>key: trash.type.label</note>
         <jms:reference-file>Resources/public/templates/trash.hbt</jms:reference-file>
       </trans-unit>
+      <trans-unit id="5a8c83bfcf9a445fd732feb7cea464ce7c59660a" resname="trash.show_only_readable">
+        <source>Note: This list includes only content that you have read access to.</source>
+        <target>Note: This list includes only content that you have read access to.</target>
+        <note>key: trash.show_only_readable</note>
+        <jms:reference-file>Resources/public/templates/trash.hbt</jms:reference-file>
+      </trans-unit>
     </body>
   </file>
 </xliff>
