@@ -57,6 +57,7 @@
             {{else}}
                 <p class="ez-trashview-no-content">{{translate 'trash.empty' 'trash'}}</p>
             {{/if}}
+            <p class="ez-trashview-info-message">{{translate 'trash.show_only_readable' 'trash'}}</p>
         </div>
     </div>
     <div class="ez-trashbar-container pure-u"></div>
