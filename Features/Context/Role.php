@@ -134,7 +134,22 @@ class Role extends PlatformUI
     {
         $this->iSeeNotification('Form did not validate. Please review errors below.');
         $element = $this->getElementByText(
-            'Identifier "' . $name . '" already exists. Role identifier must be unique.',
+            'The role identifier "' . $name . '" is used by another role. You must enter a unique identifier.',
+            'li'
+        );
+        if (!$element) {
+            throw new \Exception('Error message not found');
+        }
+    }
+
+    /**
+     * @Then I see a message saying that the name should have :maxLength characters or less
+     */
+    public function nameIsTooLong($maxLength)
+    {
+        $this->iSeeNotification('Form did not validate. Please review errors below.');
+        $element = $this->getElementByText(
+            'This value is too long. It should have ' . $maxLength . ' characters or less.',
             'li'
         );
         if (!$element) {
