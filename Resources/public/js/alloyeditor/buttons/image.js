@@ -78,13 +78,16 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
          * @protected
          */
         _addImage: function (e) {
-            var scrollX = window.pageXOffset || document.documentElement.scrollLeft,
-                scrollY = window.pageYOffset || document.documentElement.scrollTop,
-                widget;
+            var widget;
 
-            this.execCommand();
-            // Workaround for https://jira.ez.no/browse/EZP-28078
-            window.scrollTo(scrollX, scrollY);
+            if (CKEDITOR.env.chrome) {
+                // Workaround for https://jira.ez.no/browse/EZP-28078
+                var scrollY = window.pageYOffset;
+                this.execCommand();
+                window.scroll(window.pageXOffset, scrollY);
+            } else {
+                this.execCommand();
+            }
 
             this._setContentInfo(e.selection.contentInfo);
 

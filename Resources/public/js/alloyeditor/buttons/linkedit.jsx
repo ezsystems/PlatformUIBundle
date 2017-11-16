@@ -121,13 +121,16 @@ YUI.add('ez-alloyeditor-button-linkedit', function (Y) {
          * @protected
          */
         _focusEditedLink: function () {
-            var editor = this.props.editor.get('nativeEditor'),
-                scrollX = window.pageXOffset || document.documentElement.scrollLeft,
-                scrollY = window.pageYOffset || document.documentElement.scrollTop;
+            var editor = this.props.editor.get('nativeEditor');
 
-            editor.focus();
-            // Workaround for https://jira.ez.no/browse/EZP-28078
-            window.scrollTo(scrollX, scrollY);
+           if (CKEDITOR.env.chrome) {
+               // Workaround for https://jira.ez.no/browse/EZP-28078
+                var scrollY = window.pageYOffset;
+                editor.focus();
+                window.scroll(window.pageXOffset, scrollY);
+            } else {
+                editor.focus();
+            }
 
             editor.eZ.moveCaretToElement(editor, this.state.element);
             editor.fire('actionPerformed', this);
