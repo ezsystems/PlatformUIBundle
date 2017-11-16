@@ -77,7 +77,7 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
             var contentInfo = e.selection.contentInfo,
                 widget;
 
-            if (CKEDITOR.env.chrome) {
+            if (navigator.userAgent.indexOf('Chrome') > -1 ) {
                 // Workaround for https://jira.ez.no/browse/EZP-28078
                 var scrollY = window.pageYOffset;
                 this.execCommand();

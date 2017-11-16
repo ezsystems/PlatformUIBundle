@@ -80,7 +80,7 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
         _addImage: function (e) {
             var widget;
 
-            if (CKEDITOR.env.chrome) {
+            if (navigator.userAgent.indexOf('Chrome') > -1 ) {
                 // Workaround for https://jira.ez.no/browse/EZP-28078
                 var scrollY = window.pageYOffset;
                 this.execCommand();
