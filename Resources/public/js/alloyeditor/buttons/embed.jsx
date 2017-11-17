@@ -70,9 +70,18 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
          */
         _addEmbed: function (e) {
             var contentInfo = e.selection.contentInfo,
-                widget;
+                widget,
+                scrollY;
 
-            this.execCommand();
+            if (navigator.userAgent.indexOf('Chrome') > -1) {
+                // Workaround for https://jira.ez.no/browse/EZP-28078
+                scrollY = window.pageYOffset;
+                this.execCommand();
+                window.scroll(window.pageXOffset, scrollY);
+            } else {
+                this.execCommand();
+            }
+
             this._setContentInfo(contentInfo);
             widget = this._getWidget().setWidgetContent('');
             this._fireUpdatedEmbed(e.selection);
