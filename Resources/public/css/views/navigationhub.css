@@ -12,6 +12,11 @@
     padding: 0;
 }
 
+.ez-view-navigationhubview .ez-zones-navigation,
+.ez-view-navigationhubview .ez-view-userprofileview {
+    display: none;
+}
+
 .ez-view-navigationhubview .ez-zones-navigation li {
     display: inline-block;
     overflow: hidden;

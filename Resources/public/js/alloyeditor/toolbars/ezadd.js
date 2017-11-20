@@ -56,10 +56,10 @@ YUI.add('ez-alloyeditor-toolbar-ezadd', function (Y) {
         className = this._getToolbarClassName();
         return (
             React.createElement("div", {
-                "aria-label": AlloyEditor.Strings.add, className: className, 
-                "data-tabindex": this.props.config.tabIndex || 0, onFocus: this.focus, 
-                onKeyDown: this.handleKey, role: "toolbar", tabIndex: "-1"}, 
-                React.createElement("div", {className: "ae-container"}, 
+                "aria-label": AlloyEditor.Strings.add, className: className,
+                "data-tabindex": this.props.config.tabIndex || 0, onFocus: this.focus,
+                onKeyDown: this.handleKey, role: "toolbar", tabIndex: "-1"},
+                React.createElement("div", {className: "ae-container"},
                     buttons
                 )
             )

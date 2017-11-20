@@ -31,7 +31,6 @@ YUI.add('ez-positionplugin', function (Y) {
                 var mainViews = app.get('container').one('.ez-mainviews'),
                     activeView = app.get('activeView');
 
-                plugin._setPositionProperty(mainViews, 'marginTop', e.height.offset);
                 if ( activeView && activeView.refreshTopPosition ) {
                     activeView.refreshTopPosition(e.height.offset);
                 }

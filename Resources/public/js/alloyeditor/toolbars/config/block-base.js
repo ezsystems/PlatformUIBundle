@@ -60,7 +60,7 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
             blockRect.top + block.getWindow().getScrollPosition().y - outlineWidth,
             CKEDITOR.SELECTION_BOTTOM_TO_TOP
         );
-
+console.log('dom',ReactDOM.version)
         domElement = new CKEDITOR.dom.element(ReactDOM.findDOMNode(this));
         domElement.addClass('ae-toolbar-transition');
         domElement.setStyles({
@@ -104,6 +104,7 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
             if ( !block ) {
                 block = new CKEDITOR.dom.element(payload.editorEvent.data.nativeEvent.target);
             }
+
             return setPositionFor.call(this, block, editor);
         },
     };

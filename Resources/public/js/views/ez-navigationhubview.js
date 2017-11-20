@@ -398,6 +398,8 @@ YUI.add('ez-navigationhubview', function (Y) {
             if ( this.get('activeNavigation') && this._hasNavigation(this.get('activeNavigation')) ) {
                 this._getNavigationNode(this.get('activeNavigation')).removeClass(NAVIGATION_HIDDEN);
             }
+
+            this._getNavigationNode('studio').removeClass(NAVIGATION_HIDDEN);
         },
 
         /**

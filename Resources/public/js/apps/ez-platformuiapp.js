@@ -382,7 +382,11 @@ YUI.add('ez-platformuiapp', function (Y) {
                 return null;
             }
 
-            return prefix + route.path.replace(/(:[a-z0-9]+)/gi, function (matched, placeholder) {
+            if (prefix[0] === '/') {
+                prefix = prefix.substring(1);
+            }
+
+            return this.get('apiRoot') + prefix + route.path.replace(/(:[a-z0-9]+)/gi, function (matched, placeholder) {
                 var paramName = placeholder.substr(1);
 
                 if ( !params[paramName] ) {
@@ -484,10 +488,8 @@ YUI.add('ez-platformuiapp', function (Y) {
                 anonymousUserId = this.get('anonymousUserId'),
                 userId = this.get('user').get('id');
 
-            if ( userId === anonymousUserId ) {
-                callback(true, false);
-                return;
-            }
+            this.get('user').set('id', this.get('userId'));
+
             capi.isLoggedIn(function (error, response) {
                 if ( error || response.document.Session.User._href === anonymousUserId ) {
                     callback(true, response);
@@ -495,6 +497,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                 }
                 callback(false, response);
             });
+        },
+
+        storeSessionInfoInCapi: function (callback) {
+            this.get('user').set('id', this.get('userId'));
+            this.get('capi').storeSessionInfo(this.get('sessionInfo'));
+
+            callback();
         },
 
         /**
