@@ -42,6 +42,11 @@ parameters:
 
     # Default config if css should be combined even if in debug mode (set to '%kernel.debug%' to get pre 1.13 behaviour)
     ezsystems.platformui.application_config.css_combine: true
+
+    # As combo loader does not have cache busting we set a low default cache time for use in non debug mode
+    # NOTE: value is only used for proxy cache, and staleness is set to be allowed for up to same time as ttl.
+    # To disable set to 0.
+    ezsystems.platformui.application_config.combo_loader.cache_ttl: 300
 services:
     ezsystems.platformui.twig.yui_extension:
         class: "%ezsystems.platformui.twig.yui_extension.class%"
@@ -62,6 +67,7 @@ services:
         arguments:
             - "@ezsystems.platformui.application_config.aggregator"
             - "@ezsystems.platformui.loader.combo_loader"
+            - "@=container.getParameter('kernel.debug') ? 0 : parameter('ezsystems.platformui.application_config.combo_loader.cache_ttl')"
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.application_config.aggregator:
