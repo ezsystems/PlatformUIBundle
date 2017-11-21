@@ -24,12 +24,10 @@ YUI.add('ez-positionplugin', function (Y) {
      */
     Y.eZ.Plugin.Position = Y.Base.create('positionPlugin', Y.Plugin.Base, [], {
         initializer: function () {
-            var app = this.get('host'),
-                plugin = this;
+            var app = this.get('host');
 
             app.after('*:heightChange', function (e) {
-                var mainViews = app.get('container').one('.ez-mainviews'),
-                    activeView = app.get('activeView');
+                var activeView = app.get('activeView');
 
                 if ( activeView && activeView.refreshTopPosition ) {
                     activeView.refreshTopPosition(e.height.offset);

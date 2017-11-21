@@ -317,10 +317,14 @@ YUI.add('ez-platformuiapp', function (Y) {
             this._set('localesMap', config.localesMap);
 
             this._set('capi', new Y.eZ.CAPI(
-                this.get('apiRoot').replace(/\/{1,}$/, ''),
+                '',
                 new Y.eZ.SessionAuthAgent(
                     (config.sessionInfo && config.sessionInfo.isStarted) ? config.sessionInfo : undefined
-                )
+                ),
+                {
+                    siteAccess: document.querySelector('meta[name="SiteAccess"]').content,
+                    token: document.querySelector('meta[name="CSRF-Token"]').content
+                }
             ));
             delete config.sessionInfo;
 
@@ -485,8 +489,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          */
         isLoggedIn: function (callback) {
             var capi = this.get('capi'),
-                anonymousUserId = this.get('anonymousUserId'),
-                userId = this.get('user').get('id');
+                anonymousUserId = this.get('anonymousUserId');
 
             this.get('user').set('id', this.get('userId'));
 
