@@ -489,8 +489,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          */
         isLoggedIn: function (callback) {
             var capi = this.get('capi'),
-                anonymousUserId = this.get('anonymousUserId'),
-                userId = this.get('user').get('id');
+                anonymousUserId = this.get('anonymousUserId');
 
             this.get('user').set('id', this.get('userId'));
 
