@@ -39,6 +39,9 @@ parameters:
     # Maximum number of content object allowed to copy at once. Possible values are:
     # -1 to disable limiting, 0 to disable this feature, > 0 enable limiting
     ezsystems.platformui.application_config.copy_subtree.limit: 100
+
+    # Default config if css should be combined even if in debug mode (set to '%kernel.debug%' to get pre 1.13 behaviour)
+    ezsystems.platformui.application_config.css_combine: true
 services:
     ezsystems.platformui.twig.yui_extension:
         class: "%ezsystems.platformui.twig.yui_extension.class%"
@@ -88,6 +91,13 @@ services:
             - "%ezpublish.fieldType.ezcountry.data%"
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'countriesInfo'}
+
+    ezsystems.platformui.application_config.provider.css_combine:
+        class: '%ezsystems.platformui.application_config.provider.value.class%'
+        arguments:
+            - { combine: '%ezsystems.platformui.application_config.css_combine%'}
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'css'}
 
     ezsystems.platformui.application_config.provider.locales_map:
         class: "%ezsystems.platformui.application_config.provider.locales_map.class%"
