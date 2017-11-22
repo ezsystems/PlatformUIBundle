@@ -15,9 +15,15 @@
         </script>
         <script type="text/javascript" src="//cdn.crowdin.com/jipt/jipt.js"></script>
     {% endif %}
-{% stylesheets '$css.files;ez_platformui$' filter='cssrewrite' %}
-    <link rel="stylesheet" href="{{ asset_url }}"/>
-{% endstylesheets %}
+    {% if parameters.css.combine %}
+        {% stylesheets '$css.files;ez_platformui$' filter='cssrewrite' combine=true %}
+            <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% else %}
+        {% stylesheets '$css.files;ez_platformui$' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endif %}
     <style>
         .ez-loading-message {
             display: none;

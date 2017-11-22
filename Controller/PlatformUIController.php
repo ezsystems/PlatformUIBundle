@@ -25,10 +25,14 @@ class PlatformUIController extends Controller
     /** @var \EzSystems\PlatformUIBundle\Loader\Loader */
     private $loader;
 
-    public function __construct(Provider $configAggregator, Loader $loader)
+    /** @var int */
+    private $comboCacheTtl;
+
+    public function __construct(Provider $configAggregator, Loader $loader, $comboCacheTtl = 0)
     {
         $this->configAggregator = $configAggregator;
         $this->loader = $loader;
+        $this->comboCacheTtl = $comboCacheTtl;
     }
 
     /**
@@ -64,10 +68,16 @@ class PlatformUIController extends Controller
             throw new BadRequestHttpException($e->getMessage());
         }
 
+        $headers = ['Content-Type' => $type];
+        if ($this->comboCacheTtl) {
+            $ttl = $this->comboCacheTtl;
+            $headers['Cache-Control'] = "public, s-maxage=$ttl, stale-while-revalidate=$ttl, stale-if-error=$ttl";
+        }
+
         return new Response(
             $content,
             Response::HTTP_OK,
-            ['Content-Type' => $type]
+            $headers
         );
     }
 
