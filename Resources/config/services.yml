@@ -40,7 +40,8 @@ parameters:
     # -1 to disable limiting, 0 to disable this feature, > 0 enable limiting
     ezsystems.platformui.application_config.copy_subtree.limit: 100
 
-    # Default config if css should be combined even if in debug mode (set to '%kernel.debug%' to get pre 1.13 behaviour)
+    # Default config if css should be combined even if in debug mode.
+    # Set to false to get pre 1.13 behaviour which depends on assetic config (by default using %kernel.debug%).
     ezsystems.platformui.application_config.css_combine: true
 
     # As combo loader does not have cache busting we set a low default cache time for use in non debug mode

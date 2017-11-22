@@ -20,7 +20,7 @@
             <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
     {% else %}
-        {% stylesheets '$css.files;ez_platformui$' filter='cssrewrite' combine=false %}
+        {% stylesheets '$css.files;ez_platformui$' filter='cssrewrite' %}
             <link rel="stylesheet" href="{{ asset_url }}"/>
         {% endstylesheets %}
     {% endif %}
