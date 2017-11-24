@@ -32,6 +32,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
         },
 
         initializer: function () {
+
             var fieldValue = this.get('field').fieldValue;
 
             this._fireMethod = this._fireLoadObjectRelations;
@@ -40,6 +41,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 this._set('destinationContentsIds', fieldValue.destinationContentIds);
             }
             this.after('relatedContentsChange', function (e) {
+
                 this._syncDestinationContentsIds(e);
                 if (e.src === "remove") {
                     if (this.get('destinationContentsIds').length !== 0) {
@@ -50,7 +52,39 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 } else {
                     this.render();
                 }
+
+                this._makeListSortable();
+
             });
+
+        },
+        
+        _makeListSortable: function(){
+
+            var that = this;
+
+            var sortable = new Y.Sortable({
+                container: '.ez-relation-input-ui tbody',
+                nodes: 'tr',
+                opacity: '.1'
+            });
+
+            sortable.delegate.after('drag:end', function (e) {
+                that._setSortedDestionationContentIds(e);
+            });
+
+        },
+
+        _setSortedDestionationContentIds: function(e){
+
+            var rows = this.get('container').all('tbody tr');
+
+            var destinationContentsIds = rows._nodes.map(function(row){
+                return row.getAttribute('data-content-id').split('/').pop();
+            });
+
+            this._set('destinationContentsIds', destinationContentsIds);
+
         },
 
         /**
@@ -89,6 +123,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
             Y.Array.each(e.newVal, function (value) {
                 destinationContentsIds.push(value.get('contentId'));
             });
+
             this._set('destinationContentsIds', destinationContentsIds);
         },
 
