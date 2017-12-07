@@ -82,7 +82,9 @@ class NotificationPool implements NotificationPoolInterface, EventSubscriberInte
     public function onKernelResponse(FilterResponseEvent $event)
     {
         if ($this->notifications) {
-            $this->session->getFlashBag()->set('notification', $this->notifications);
+            foreach ($this->notifications as $notification) {
+                $this->session->getFlashBag()->add($notification->state, $notification->message);
+            }
         }
     }
 }
