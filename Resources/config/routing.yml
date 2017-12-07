@@ -11,10 +11,6 @@ template_yui_module:
         _format: js
     methods: [GET]
 
-ez_pjax:
-    resource: "@eZPlatformUIBundle/Resources/config/routing_pjax.yml"
-    prefix:   /pjax
-
 yui_combo_loader:
     path: /_ezcombo
     defaults:

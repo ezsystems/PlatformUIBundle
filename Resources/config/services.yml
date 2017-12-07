@@ -2,19 +2,9 @@ parameters:
     ezsystems.platformui.twig.yui_extension.class: EzSystems\PlatformUIBundle\Twig\TwigYuiExtension
     ezsystems.platformui.controller.base.class: EzSystems\PlatformUIBundle\Controller\Controller
     ezsystems.platformui.controller.class: EzSystems\PlatformUIBundle\Controller\PlatformUIController
-    ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
     ezsystems.platformui.helper.systeminfo.class: EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
-    ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
-    ezsystems.platformui.controller.language.class: EzSystems\PlatformUIBundle\Controller\LanguageController
-    ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
     ezsystems.platformui.controller.template.class: EzSystems\PlatformUIBundle\Controller\TemplateController
-    ezsystems.platformui.controller.content_type.class: EzSystems\PlatformUIBundle\Controller\ContentTypeController
     ezsystems.platforui.notification_pool.class: EzSystems\PlatformUIBundle\Notification\NotificationPool
-    ezsystems.platformui.form_processor.content_type.class: EzSystems\PlatformUIBundle\Form\Processor\ContentTypeFormProcessor
-    ezsystems.platformui.form_processor.content_type_group.class: EzSystems\PlatformUIBundle\Form\Processor\ContentTypeGroupFormProcessor
-    ezsystems.platformui.controller.role.class: EzSystems\PlatformUIBundle\Controller\RoleController
-    ezsystems.platformui.form_processor.role.class: EzSystems\PlatformUIBundle\Form\Processor\RoleFormProcessor
-    ezsystems.platformui.form_processor.policy.class: EzSystems\PlatformUIBundle\Form\Processor\PolicyFormProcessor
     ezsystems.platformui.application_config.provider.session_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\SessionInfo
     ezsystems.platformui.application_config.provider.value.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\Value
     ezsystems.platformui.application_config.provider.anonymous_user_id.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\AnonymousUserId
@@ -23,8 +13,6 @@ parameters:
     ezsystems.platformui.application_config.provider.root_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo
     ezsystems.platformui.application_config.provider.languages.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\Languages
     ezsystems.platformui.application_config.provider.interface_languages.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\InterfaceLanguages
-    ezsystems.platformui.form_processor.language.class: EzSystems\PlatformUIBundle\Form\Processor\LanguageFormProcessor
-    ezsystems.platformui.form_processor.section.class: EzSystems\PlatformUIBundle\Form\Processor\SectionFormProcessor
     ezsystems.platformui.exception_listener.class: EzSystems\PlatformUIBundle\EventListener\ExceptionListener
     ezsystems.platformui.exception_controller: "ezsystems.platformui.controller.exception:showAction"
     ezsystems.platformui.controller.exception.class: EzSystems\PlatformUIBundle\Controller\ExceptionController
@@ -153,72 +141,9 @@ services:
         arguments: ["@ezpublish.config.resolver"]
         parent: ezsystems.platformui.controller.base
 
-    ezsystems.platformui.controller.dashboard:
-        class: "%ezsystems.platformui.controller.dashboard.class%"
-        parent: ezsystems.platformui.controller.base
-
-    ezsystems.platformui.helper.systeminfo:
-        class: "%ezsystems.platformui.helper.systeminfo.class%"
-        arguments:
-            - "@database_connection"
-            - "%kernel.bundles%"
-
-    ezsystems.platformui.controller.systeminfo:
-        class: "%ezsystems.platformui.controller.systeminfo.class%"
-        arguments:
-            - "@support_tools.system_info.collector_registry"
-        parent: ezsystems.platformui.controller.base
-
-    ezsystems.platformui.controller.content_type:
-        class: "%ezsystems.platformui.controller.content_type.class%"
-        parent: ezsystems.platformui.controller.base
-        arguments:
-            - "@ezpublish.api.service.content_type"
-            - "@ezpublish.api.service.search"
-            - "@ezpublish.api.service.user"
-            - "@ezrepoforms.action_dispatcher.content_type.group"
-            - "@ezrepoforms.action_dispatcher.content_type"
-            - "@ezrepoforms.field_type_form_mapper.registry"
-        calls:
-            - [setPrioritizedLanguages, ["$languages$"]]
-
     ezsystems.platformui.notification_pool:
         class: "%ezsystems.platforui.notification_pool.class%"
         arguments: ["@translator", "@session"]
-        tags:
-            - { name: kernel.event_subscriber }
-
-    ezsystems.platformui.form_processor.content_type:
-        class: "%ezsystems.platformui.form_processor.content_type.class%"
-        arguments: ["@router", "@ezsystems.platformui.notification_pool", "@ezpublish.api.service.content_type"]
-        tags:
-            - { name: kernel.event_subscriber }
-
-    ezsystems.platformui.form_processor.content_type_group:
-        class: "%ezsystems.platformui.form_processor.content_type_group.class%"
-        arguments: ["@ezsystems.platformui.notification_pool", "@router"]
-        tags:
-            - { name: kernel.event_subscriber }
-
-    ezsystems.platformui.controller.role:
-        class: "%ezsystems.platformui.controller.role.class%"
-        parent: ezsystems.platformui.controller.base
-        arguments:
-            - "@ezpublish.api.service.role"
-            - "@ezpublish.api.service.section"
-            - "@ezrepoforms.action_dispatcher.role"
-            - "@ezrepoforms.action_dispatcher.policy"
-            - "@translator"
-
-    ezsystems.platformui.form_processor.role:
-        class: "%ezsystems.platformui.form_processor.role.class%"
-        arguments: ["@router", "@ezsystems.platformui.notification_pool", "@ezpublish.api.service.role"]
-        tags:
-            - { name: kernel.event_subscriber }
-
-    ezsystems.platformui.form_processor.policy:
-        class: "%ezsystems.platformui.form_processor.policy.class%"
-        arguments: ["@router", "@ezsystems.platformui.notification_pool"]
         tags:
             - { name: kernel.event_subscriber }
 
@@ -239,36 +164,6 @@ services:
         class: EzSystems\PlatformUIBundle\Rest\UserFieldTypeProcessor
         tags:
             - { name: ezpublish_rest.field_type_processor, alias: ezuser }
-
-    ## Section related services
-    ezsystems.platformui.controller.section:
-        class: "%ezsystems.platformui.controller.section.class%"
-        arguments:
-            - "@ezrepoforms.action_dispatcher.section"
-            - "@ezpublish.api.service.section"
-            - "@ezsystems.platformui.notification_pool"
-        parent: ezsystems.platformui.controller.base
-
-    ezsystems.platformui.form_processor.section:
-        class: "%ezsystems.platformui.form_processor.section.class%"
-        arguments: ["@ezsystems.platformui.notification_pool", "@router"]
-        tags:
-            - { name: kernel.event_subscriber }
-
-    ## Language related services
-    ezsystems.platformui.controller.language:
-        class: "%ezsystems.platformui.controller.language.class%"
-        arguments:
-            - "@ezrepoforms.action_dispatcher.language"
-            - "@ezpublish.api.service.language"
-            - "@ezsystems.platformui.notification_pool"
-        parent: ezsystems.platformui.controller.base
-
-    ezsystems.platformui.form_processor.language:
-        class: "%ezsystems.platformui.form_processor.language.class%"
-        arguments: ["@ezsystems.platformui.notification_pool", "@router"]
-        tags:
-            - { name: kernel.event_subscriber }
 
     ezsystems.platformui.loader.combo_loader:
         class: "%ezsystems.platformui.loader.combo_loader.class%"
