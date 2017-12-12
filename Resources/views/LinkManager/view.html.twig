@@ -1,0 +1,129 @@
+{% extends 'eZPlatformUIBundle::pjax_admin.html.twig' %}
+
+{% trans_default_domain "linkmanager" %}
+
+{%- block header_breadcrumbs -%}
+    {% set breadcrumb_items = [
+        { link: path('admin_link_manager_list'), label: 'url.list'|trans },
+        { link: '', label: 'url.detail'|trans }
+    ] %}
+
+    {{ parent() }}
+{%- endblock -%}
+
+{%- block header_title -%}
+    <h1 class="ez-page-header-name">
+        {{ 'url.view'|trans({'%url%': url.url|truncate(60) }) }}
+    </h1>
+{%- endblock -%}
+
+{%- block content -%}
+    <section class="ez-tabs ez-serverside-content">
+        <ul class="ez-tabs-list">
+            <li class="ez-tabs-label is-tab-selected">
+                <a href="#ez-tabs-link-info">
+                    {{ 'url.tab.information'|trans }}
+                </a>
+            </li>
+            <li class="ez-tabs-label">
+                <a href="#ez-tabs-related-content">
+                    {{ 'url.tab.usages'|trans({'%count%': usages.nbResults }) }}
+                </a>
+            </li>
+        </ul>
+
+        <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-link-info">
+            <ul>
+                <li>
+                    <strong>{{ 'url.label.address'|trans }}</strong>
+                    <a href="{{ url.url }}" target="_blank">{{ url.url }}</a>
+                </li>
+                <li>
+                    <strong>{{ 'url.label.status'|trans }}</strong>
+                    {{ url.isValid ? 'url.status.valid'|trans : 'url.status.invalid'|trans }}
+                </li>
+                <li>
+                    <strong>{{ 'url.label.last_checked'|trans }}</strong>
+                    {% if url.lastChecked %}
+                        {{ url.lastChecked | date('d M Y, h:i') }}
+                    {% else %}
+                        {{ 'url.label.last_checked.never'|trans }}
+                    {% endif %}
+                </li>
+                <li>
+                    <strong>{{ 'url.label.created'|trans }}</strong>
+                    {{ url.created | date('d M Y, h:i') }}
+                </li>
+                <li>
+                    <strong>{{ 'url.label.modified'|trans }}</strong>
+                    {{ url.modified | date('d M Y, h:i') }}
+                </li>
+            </ul>
+
+            {% if can_edit %}
+                <a href="{{ path('admin_link_manager_edit', { urlId: url.id }) }}" class="pure-button ez-button" data-icon="&#xe606;">
+                    {{ 'url.edit'|trans }}
+                </a>
+            {% else %}
+                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">
+                    {{ 'url.edit'|trans }}
+                </span>
+            {% endif %}
+        </div>
+
+        <div class="ez-tabs-panel" id="ez-tabs-related-content">
+            <div class="ez-table-data is-flexible">
+                <div class="ez-table-data-container">
+                    <table class="pure-table pure-table-striped ez-selection-table">
+                        <thead>
+                        <tr>
+                            <th>{{ 'url.usages.column.name'|trans }}</th>
+                            <th>{{ 'url.usages.column.status'|trans }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for content in usages %}
+                            {# TODO: Should be handled by ServerSideView #}
+                            {% set view_url = '' %}
+                            {% set edit_url = '#/edit/' ~ (('/api/ezp/v2/content/objects/' ~ content.id)  | url_encode) ~ '/' ~ content.mainLanguageCode %}
+
+                            <tr>
+                                <td>
+                                    <a href="{{ view_url }}">
+                                        {{ ez_content_name(content) }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {% if content.published %}
+                                        {{ 'url.usages.content_status.published'|trans }}
+                                    {% else %}
+                                        {{ 'url.usages.content_status.draft'|trans }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ edit_url }}" class="pure-button ez-button" data-icon="&#xe606;">
+                                         {{ 'url.usages.content.edit'|trans }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% if usages.haveToPaginate %}
+                    <div class="ez-pagination">
+                        {{ pagerfanta(usages, null, {
+                            'page_template': '<a class="ez-pagination-item" href="%href%"%rel%>%text%</a>',
+                            'span_template': '<span class="ez-pagination-item %class%">%text%</span>'
+                        }) }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{%- endblock -%}
+
+{% block title %}{{ 'url.view'|trans({'%url%': url.url|truncate(60) }) }}{% endblock %}
+

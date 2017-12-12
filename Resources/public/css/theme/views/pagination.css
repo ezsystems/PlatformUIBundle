@@ -1,0 +1,10 @@
+.ez-pagination {
+    text-align: center;
+}
+
+.ez-pagination .ez-pagination-item {
+    background: #e6e6e6;
+    background: linear-gradient(to bottom, #fff 0%, #e6e6e6 100%);
+    border: 1px solid #bbb;
+    border-radius: 2px;
+}

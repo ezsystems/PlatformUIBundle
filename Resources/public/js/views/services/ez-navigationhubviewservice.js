@@ -497,6 +497,10 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                             this.get('rootMediaLocation').get('id'),
                             this.get('rootMediaLocation').get('contentInfo').get('mainLanguageCode')
                         ),
+                        this._getNavigationItem(
+                            Y.eZ.trans('navigationhub.linkmanager.list', {}, 'navigationhub'), "navigationhub",
+                            'adminGenericRoute', {uri: "pjax/link-management"}
+                        ),
                     ];
 
                     this._set('platformNavigationItems', val);

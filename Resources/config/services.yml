@@ -1,4 +1,5 @@
 parameters:
+    ezsystems.platformui.twig.text_extension.class: Twig_Extensions_Extension_Text
     ezsystems.platformui.twig.yui_extension.class: EzSystems\PlatformUIBundle\Twig\TwigYuiExtension
     ezsystems.platformui.controller.base.class: EzSystems\PlatformUIBundle\Controller\Controller
     ezsystems.platformui.controller.class: EzSystems\PlatformUIBundle\Controller\PlatformUIController
@@ -32,6 +33,7 @@ parameters:
     ezsystems.platformui.event_subscriber.request_locale.class: EzSystems\PlatformUIBundle\EventListener\RequestLocaleSubscriber
     ezsystems.platformui.pjax.request_matcher.class: EzSystems\PlatformUIBundle\Http\PjaxRequestMatcher
     ezsystems.platformui.view_matcher.pjax_request.class: EzSystems\PlatformUIBundle\Matcher\PjaxRequest
+    ezsystems.platformui.controller.link_management.class: EzSystems\PlatformUIBundle\Controller\LinkManagerController
 
     # override of the REST content controller
     ezpublish_rest.controller.content.class: EzSystems\PlatformUIBundle\Controller\Rest\ContentController
@@ -49,6 +51,11 @@ parameters:
     # To disable set to 0.
     ezsystems.platformui.application_config.combo_loader.cache_ttl: 604800
 services:
+    ezsystems.platformui.twig.text_extension:
+        class: '%ezsystems.platformui.twig.text_extension.class%'
+        tags:
+            - { name: twig.extension }
+
     ezsystems.platformui.twig.yui_extension:
         class: "%ezsystems.platformui.twig.yui_extension.class%"
         arguments: ["@ezpublish.config.resolver", "@router", "@?logger"]
@@ -286,6 +293,12 @@ services:
         arguments: ["@ezsystems.platformui.notification_pool", "@router"]
         tags:
             - { name: kernel.event_subscriber }
+
+    ezsystems.platformui.controller.link_management:
+        class: '%ezsystems.platformui.controller.link_management.class%'
+        arguments:
+            - '@ezpublish.api.service.url'
+        parent: 'ezsystems.platformui.controller.base'
 
     ezsystems.platformui.loader.combo_loader:
         class: "%ezsystems.platformui.loader.combo_loader.class%"

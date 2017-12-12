@@ -1,0 +1,110 @@
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% trans_default_domain "linkmanager" %}
+
+{%- block header_breadcrumbs -%}
+    {% set breadcrumb_items = [
+        { link: null, label: 'url.list'|trans },
+    ] %}
+
+    {{ parent() }}
+{%- endblock -%}
+
+{%- block header_title -%}
+    <h1 class="ez-page-header-name">{{ 'url.list'|trans }}</h1>
+{%- endblock -%}
+
+{%- block content -%}
+    <section class="ez-serverside-content">
+        <div class="ez-table-data is-flexible">
+            <div class="ez-table-data-container">
+                {{ form_start(form, {"attr": {"class": "pure-form pure-form-aligned"}}) }}
+                    <fieldset class="ez-linkmanager-filters">
+                        <span class="ez-linkmanager-filter-search">
+                            {{ form_widget(form.searchQuery, {
+                                id: 'ez-linkmanager-filter-searchquery',
+                                attr: { 'placeholder': 'url.search.placeholder'|trans }
+                            }) }}
+
+                            <button id="ezplatformlinkmanager-apply-fitlers" class="pure-button ez-button">
+                                {{ 'url.search'|trans }}
+                            </button>
+                        </span>
+
+                        <span class="ez-linkmanager-filter-status">
+                            {{ form_label(form.status) }}
+                            {# TODO: Should be handled by ServerSideView #}
+                            {{ form_widget(form.status, { attr: {
+                                'onchange': 'document.getElementById("ezplatformlinkmanager-apply-fitlers").click()'
+                            }}) }}
+                        </span>
+                    </fieldset>
+
+                    {{ form_widget(form.page, { attr: { value: '1' }}) }}
+                {{ form_end(form) }}
+
+                <table class="pure-table pure-table-striped ez-selection-table ez-linkmanager-link-list">
+                    <thead>
+                        <tr>
+                            <th>{{ 'url.label.address'|trans }}</th>
+                            <th>{{ 'url.label.status'|trans }}</th>
+                            <th>{{ 'url.label.last_checked'|trans }}</th>
+                            <th>{{ 'url.label.modified'|trans }}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for url in urls %}
+                        {% set edit_url = path('admin_link_manager_edit', {urlId: url.id}) %}
+                        {% set view_url = path('admin_link_manager_view', {urlId: url.id}) %}
+                        <tr>
+                            <td>
+                                <a href="{{ view_url }}">{{ url.url|truncate(60) }}</a>
+                                (<a href="{{ url.url }}" target="_blank">{{ 'url.open'|trans }}</a>)
+                            </td>
+                            <td>{{ url.isValid ? 'url.status.valid'|trans : 'url.status.invalid'|trans }}</td>
+                            <td>
+                                {% if url.lastChecked %}
+                                    {{ url.lastChecked | date('d M Y, h:i') }}
+                                {% else %}
+                                    {{ 'url.last_checked.never'|trans  }}
+                                {% endif %}
+                            </td>
+                            <td>{{ url.modified | date('d M Y, h:i') }}</td>
+                            <td>
+                                {% if can_edit %}
+                                    <a href="{{ edit_url }}" class="pure-button ez-button" data-icon="&#xe606;">
+                                        {{ 'url.edit'|trans }}
+                                    </a>
+                                {% else %}
+                                    <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">
+                                        {{ 'url.edit'|trans }}
+                                    </span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">
+                                <p><i>{{ 'url.list.no_urls'|trans }}</i></p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {% if urls.haveToPaginate %}
+                <div class="ez-pagination">
+                    {{ pagerfanta(urls, null, {
+                        'page_template': '<a class="ez-pagination-item" href="%href%"%rel%>%text%</a>',
+                        'span_template': '<span class="ez-pagination-item %class%">%text%</span>'
+                    }) }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{%- endblock -%}
+
+{% block title %}{{ 'url.list'|trans }}{% endblock %}
+

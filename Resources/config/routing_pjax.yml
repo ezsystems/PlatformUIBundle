@@ -190,3 +190,22 @@ admin_roleAssignSection:
     path: /role/assignrolebysection/{roleId}
     defaults:
         _controller: ezsystems.platformui.controller.role:assignRoleBySectionLimitationAction
+
+admin_link_manager_list:
+    path: /link-management
+    defaults:
+        _controller: ezsystems.platformui.controller.link_management:listAction
+
+admin_link_manager_edit:
+    path: /link-management/edit/{urlId}
+    defaults:
+        _controller: ezsystems.platformui.controller.link_management:editAction
+    requirements:
+        urlId: \d+
+
+admin_link_manager_view:
+    path: /link-management/view/{urlId}
+    defaults:
+        _controller: ezsystems.platformui.controller.link_management:viewAction
+    requirements:
+        urlId: \d+
