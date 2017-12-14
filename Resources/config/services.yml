@@ -47,7 +47,7 @@ parameters:
     # As combo loader does not have cache busting we set a low default cache time for use in non debug mode
     # NOTE: value is only used for proxy cache, and staleness is set to be allowed for up to same time as ttl.
     # To disable set to 0.
-    ezsystems.platformui.application_config.combo_loader.cache_ttl: 300
+    ezsystems.platformui.application_config.combo_loader.cache_ttl: 604800
 services:
     ezsystems.platformui.twig.yui_extension:
         class: "%ezsystems.platformui.twig.yui_extension.class%"
