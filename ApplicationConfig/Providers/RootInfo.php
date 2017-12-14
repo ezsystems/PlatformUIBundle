@@ -56,7 +56,7 @@ class RootInfo implements Provider
     /**
      * Returns asset URL without version (if any).
      *
-     * @param $path
+     * @param string $path
      * @return string
      */
     private function getAssetUrl($path)
