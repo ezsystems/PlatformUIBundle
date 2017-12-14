@@ -113,16 +113,13 @@ YUI.add('ez-contentcreateplugin', function (Y) {
          */
         _handleCreateContentAction: function (event) {
             var service = this.get('host'),
-                languageCode = event.languageCode ? event.languageCode : this.get('languageCode'),
-                app = service.get('app');
+                languageCode = event.languageCode ? event.languageCode : this.get('languageCode');
 
-            this.setAttrs({
-                contentType: event.contentType,
-                languageCode: languageCode,
-                parentLocation: service.get('location'),
-                parentContent: service.get('content')
-            });
-            app.navigate(app.routeUri('createContent'));
+            document.querySelector(`#content_create_content_type_${event.contentType.get('identifier')}`).checked = true;
+            document.querySelector(`#content_create_language option[value="${languageCode}"]`).selected = true;
+            document.querySelector('#content_create_parent_location').value = service.get('location').get('locationId');
+
+            document.querySelector('#content_create_create').click();
         },
     }, {
         NS: 'contentCreate',
