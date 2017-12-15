@@ -27,7 +27,7 @@ interface Loader
      *
      * @throws \eZ\Publish\Core\Base\Exceptions\NotFoundException
      */
-    public function combineFilesContent(array $files, $version);
+    public function combineFilesContent(array $files, $version = '');
 
     /**
      * Returns content type.
@@ -40,5 +40,5 @@ interface Loader
      * @throws \eZ\Publish\Core\Base\Exceptions\InvalidArgumentException
      * @throws \eZ\Publish\Core\Base\Exceptions\NotFoundException
      */
-    public function getCombinedFilesContentType(array $files, $version);
+    public function getCombinedFilesContentType(array $files, $version = '');
 }

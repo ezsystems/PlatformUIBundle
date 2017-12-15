@@ -47,7 +47,7 @@ class ComboLoader implements Loader
         $this->webDirectory = $webDirectory;
     }
 
-    public function combineFilesContent(array $files, $version)
+    public function combineFilesContent(array $files, $version = '')
     {
         $content = '';
 
@@ -77,7 +77,7 @@ class ComboLoader implements Loader
         return $content;
     }
 
-    public function getCombinedFilesContentType(array $files, $version)
+    public function getCombinedFilesContentType(array $files, $version = '')
     {
         $files = $this->sanitizeFilenames($files, $version);
 
