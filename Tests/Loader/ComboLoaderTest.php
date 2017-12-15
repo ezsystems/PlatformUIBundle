@@ -37,6 +37,8 @@ class ComboLoaderTest extends PHPUnit_Framework_TestCase
             ->method('render')
             ->willReturn('template');
 
+        $this->version = 'v01';
+
         $this->comboLoader = new ComboLoader($this->configResolver, $this->templating, '/yui/', 'Tests/fixtures');
     }
 
@@ -79,7 +81,7 @@ class ComboLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testCombineFilesContent($content, $files)
     {
-        $this->assertEquals($content, $this->comboLoader->combineFilesContent($files));
+        $this->assertEquals($content, $this->comboLoader->combineFilesContent($files, $this->version));
     }
 
     /**
@@ -88,7 +90,7 @@ class ComboLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testCombineFilesContentNonExistingFile()
     {
-        $this->comboLoader->combineFilesContent(['script_js']);
+        $this->comboLoader->combineFilesContent(['script_js'], $this->version);
     }
 
     /**
@@ -97,7 +99,7 @@ class ComboLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testCombineFilesContentUnknownFileType()
     {
-        $this->comboLoader->combineFilesContent(['/script_php']);
+        $this->comboLoader->combineFilesContent(['/script_php'], $this->version);
     }
 
     public function getCombinedFilesContentTypeData()
@@ -133,7 +135,7 @@ class ComboLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testGetCombinedFilesContentType($type, $files)
     {
-        $this->assertEquals($type, $this->comboLoader->getCombinedFilesContentType($files));
+        $this->assertEquals($type, $this->comboLoader->getCombinedFilesContentType($files, $this->version));
     }
 
     /**
@@ -142,7 +144,7 @@ class ComboLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testGetCombinedFilesContentTypeUnknownFileType()
     {
-        $this->comboLoader->getCombinedFilesContentType(['/script_php']);
+        $this->comboLoader->getCombinedFilesContentType(['/script_php'], $this->version);
     }
 
     /**
@@ -151,6 +153,6 @@ class ComboLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testGetCombinedFilesContentTypeNoFiles()
     {
-        $this->comboLoader->getCombinedFilesContentType([]);
+        $this->comboLoader->getCombinedFilesContentType([], $this->version);
     }
 }

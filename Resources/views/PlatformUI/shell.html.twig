@@ -15,9 +15,15 @@
         </script>
         <script type="text/javascript" src="//cdn.crowdin.com/jipt/jipt.js"></script>
     {% endif %}
-{% stylesheets '$css.files;ez_platformui$' %}
-    <link rel="stylesheet" href="{{ asset_url }}"/>
-{% endstylesheets %}
+    {% if parameters.css.combine %}
+        {% stylesheets '$css.files;ez_platformui$' filter='cssrewrite' combine=true %}
+            <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% else %}
+        {% stylesheets '$css.files;ez_platformui$' filter='cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}"/>
+        {% endstylesheets %}
+    {% endif %}
     <style>
         .ez-loading-message {
             display: none;
@@ -70,7 +76,7 @@
     <script>
         {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
 
-        var CKEDITOR_BASEPATH = ALLOYEDITOR_BASEPATH = "{{ asset("bundles/ezplatformuiassets/vendors/alloy-editor/dist/alloy-editor/") }}";
+        var CKEDITOR_BASEPATH = ALLOYEDITOR_BASEPATH = "/bundles/ezplatformuiassets/vendors/alloy-editor/dist/alloy-editor/";
 
         YUI().use('ez-platformuiapp', function (Y) {
             var app = new Y.eZ.PlatformUIApp({

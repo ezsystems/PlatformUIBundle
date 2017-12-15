@@ -25,10 +25,14 @@ class PlatformUIController extends Controller
     /** @var \EzSystems\PlatformUIBundle\Loader\Loader */
     private $loader;
 
-    public function __construct(Provider $configAggregator, Loader $loader)
+    /** @var int */
+    private $comboCacheTtl;
+
+    public function __construct(Provider $configAggregator, Loader $loader, $comboCacheTtl = 0)
     {
         $this->configAggregator = $configAggregator;
         $this->loader = $loader;
+        $this->comboCacheTtl = $comboCacheTtl;
     }
 
     /**
@@ -55,19 +59,27 @@ class PlatformUIController extends Controller
     {
         $files = array_keys($request->query->all());
 
+        $version = $this->get('assets.packages')->getVersion('/');
+
         try {
-            $type = $this->loader->getCombinedFilesContentType($files);
-            $content = $this->loader->combineFilesContent($files);
+            $type = $this->loader->getCombinedFilesContentType($files, $version);
+            $content = $this->loader->combineFilesContent($files, $version);
         } catch (NotFoundException $e) {
             throw new NotFoundHttpException($e->getMessage());
         } catch (InvalidArgumentValue $e) {
             throw new BadRequestHttpException($e->getMessage());
         }
 
+        $headers = ['Content-Type' => $type];
+        if ($this->comboCacheTtl) {
+            $ttl = $this->comboCacheTtl;
+            $headers['Cache-Control'] = "public, s-maxage=$ttl, stale-while-revalidate=$ttl, stale-if-error=$ttl";
+        }
+
         return new Response(
             $content,
             Response::HTTP_OK,
-            ['Content-Type' => $type]
+            $headers
         );
     }
 

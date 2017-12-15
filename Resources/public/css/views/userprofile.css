@@ -7,6 +7,11 @@
     position: absolute;
     top: 5px;
     right: 0;
+    height: 100%;
+}
+
+.ez-view-userprofileview.is-menu-displayed {
+    height: auto;
 }
 
 .ez-view-userprofileview .ez-user-profile {
