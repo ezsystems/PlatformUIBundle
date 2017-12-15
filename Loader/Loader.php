@@ -21,22 +21,24 @@ interface Loader
      * It combines a valid list of files (array must have at least one element)
      *
      * @param array $files File name array
+     * @param string $version Version
      *
      * @return string The content of the combined files
      *
      * @throws \eZ\Publish\Core\Base\Exceptions\NotFoundException
      */
-    public function combineFilesContent(array $files);
+    public function combineFilesContent(array $files, $version = '');
 
     /**
      * Returns content type.
      *
      * @param array $files File name array
+     * @param string $version Version
      *
      * @return string The content type of the combined files
      *
      * @throws \eZ\Publish\Core\Base\Exceptions\InvalidArgumentException
      * @throws \eZ\Publish\Core\Base\Exceptions\NotFoundException
      */
-    public function getCombinedFilesContentType(array $files);
+    public function getCombinedFilesContentType(array $files, $version = '');
 }

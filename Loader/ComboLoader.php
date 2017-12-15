@@ -47,9 +47,11 @@ class ComboLoader implements Loader
         $this->webDirectory = $webDirectory;
     }
 
-    public function combineFilesContent(array $files)
+    public function combineFilesContent(array $files, $version = '')
     {
         $content = '';
+
+        $files = $this->sanitizeFilenames($files, $version);
 
         foreach ($files as $file) {
             $ext = $this->findFileExtension($file);
@@ -75,8 +77,10 @@ class ComboLoader implements Loader
         return $content;
     }
 
-    public function getCombinedFilesContentType(array $files)
+    public function getCombinedFilesContentType(array $files, $version = '')
     {
+        $files = $this->sanitizeFilenames($files, $version);
+
         $this->assertAtLeastOneFile($files);
 
         $file = $files[0];
@@ -204,5 +208,26 @@ class ComboLoader implements Loader
     private function getModuleSetting($module, $setting)
     {
         return $this->configResolver->getParameter("yui.modules.$module.$setting", 'ez_platformui');
+    }
+
+    /**
+     * Removes version string (if any) from file paths.
+     *
+     * @param array $files
+     * @param string $version
+     *
+     * @return array
+     */
+    private function sanitizeFilenames(array $files, $version)
+    {
+        $filesWithoutVersion = array_map(function ($file) use ($version) {
+            if (preg_match('/\?' . $version . '$/', $file)) {
+                return substr($file, 0, -(strlen($version) + 1));
+            }
+
+            return $file;
+        }, $files);
+
+        return $filesWithoutVersion;
     }
 }
