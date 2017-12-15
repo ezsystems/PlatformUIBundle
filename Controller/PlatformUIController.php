@@ -55,9 +55,11 @@ class PlatformUIController extends Controller
     {
         $files = array_keys($request->query->all());
 
+        $version = $this->get('assets.packages')->getVersion('/');
+
         try {
-            $type = $this->loader->getCombinedFilesContentType($files);
-            $content = $this->loader->combineFilesContent($files);
+            $type = $this->loader->getCombinedFilesContentType($files, $version);
+            $content = $this->loader->combineFilesContent($files, $version);
         } catch (NotFoundException $e) {
             throw new NotFoundHttpException($e->getMessage());
         } catch (InvalidArgumentValue $e) {

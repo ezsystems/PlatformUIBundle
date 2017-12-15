@@ -48,8 +48,25 @@ class RootInfo implements Provider
         return [
             'root' => $this->requestStack->getMasterRequest()->attributes->get('semanticPathinfo'),
             'apiRoot' => $this->getApiRoot(),
-            'assetRoot' => $this->assetsPackages->getUrl('/'),
-            'ckeditorPluginPath' => $this->assetsPackages->getUrl($this->externalAssetsDirectory) . '/vendors/',
+            'assetRoot' => $this->getAssetUrl('/'),
+            'ckeditorPluginPath' => $this->getAssetUrl($this->externalAssetsDirectory) . '/vendors/',
         ];
+    }
+
+    /**
+     * Returns asset URL without version (if any).
+     *
+     * @param $path
+     * @return string
+     */
+    private function getAssetUrl($path)
+    {
+        $url = $this->assetsPackages->getUrl($path);
+        if (!$url) {
+            return $path;
+        }
+        $version = $this->assetsPackages->getVersion($path);
+
+        return preg_replace('/\?' . $version . '/', '', $url);
     }
 }
