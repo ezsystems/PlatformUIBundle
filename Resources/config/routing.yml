@@ -1,8 +1,10 @@
-
+# Block /ez and redirect it to new /admin
 ez:
     path: /ez
+    controller: FrameworkBundle:Redirect:urlRedirect
     defaults:
-        _controller: ezsystems.platformui.controller:shellAction
+        path: /admin
+        permanent: true
 
 template_yui_module:
     path: /tpl/handlebars/{module}.js
