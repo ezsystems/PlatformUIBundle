@@ -71,9 +71,8 @@ class PlatformUIController extends Controller
         }
 
         $headers = ['Content-Type' => $type];
-        if ($this->comboCacheTtl) {
-            $ttl = $this->comboCacheTtl;
-            $headers['Cache-Control'] = "public, s-maxage=$ttl, stale-while-revalidate=$ttl, stale-if-error=$ttl";
+        if ($this->comboCacheTtl && $version != '') {
+            $headers['Cache-Control'] = "public, s-maxage=$this->comboCacheTtl";
         }
 
         return new Response(
