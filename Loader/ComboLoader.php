@@ -224,8 +224,10 @@ class ComboLoader implements Loader
             if (preg_match('/\?' . $version . '$/', $file)) {
                 return substr($file, 0, -(strlen($version) + 1));
             }
+
             return $file;
         }, $files);
+
         return $filesWithoutVersion;
     }
 }
