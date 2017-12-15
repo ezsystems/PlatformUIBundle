@@ -1,0 +1,38 @@
+.ez-linkmanager-link-list {
+    min-width: 1024px;
+    clear: both;
+}
+
+.ez-linkmanager-filters {
+    clear: both;
+}
+
+.ez-linkmanager-filter-search {
+    float: left;
+    width: 50%;
+}
+
+.ez-linkmanager-filter-status {
+    float: right;
+    width: 50%;
+    text-align: right;
+}
+
+#ez-linkmanager-filter-searchquery {
+    line-height: 33px;
+    height: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 350px;
+}
+
+#ez-linkmanager-filter-searchquery::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}
+
+#ezplatformlinkmanager-apply-fitlers {
+    line-height: 33px;
+    height: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+}

@@ -1,0 +1,52 @@
+{% extends 'eZPlatformUIBundle::pjax_admin.html.twig' %}
+
+{% trans_default_domain "linkmanager" %}
+
+{%- block header_breadcrumbs -%}
+    {% set breadcrumb_items = [
+        { link: path('admin_link_manager_list'), label: 'url.list'|trans },
+        { link: path('admin_link_manager_view', {urlId: url.id}), label: 'url.detail'|trans},
+        { link: '', label: 'url.edit'|trans }
+    ] %}
+
+    {{ parent() }}
+{%- endblock -%}
+
+{%- block header_title -%}
+    <h1 class="ez-page-header-name">
+        {{ 'url.editing'|trans({'%url%': url.url|truncate(60) }) }}
+    </h1>
+{%- endblock -%}
+
+{%- block content -%}
+    <section class="ez-serverside-content">
+        {{ form_start(form, {"attr": {"class": "pure-form pure-form-aligned"}}) }}
+            {{ form_errors(form) }}
+
+            <fieldset>
+                <div class="pure-control-group">
+                    {{ form_label(form.url) }}
+                    {{ form_errors(form.url) }}
+                    {{ form_widget(form.url) }}
+                </div>
+            </fieldset>
+
+            <div class="pure-controls">
+                <a href="{{ path('admin_link_manager_list') }}" class="pure-button ez-button">
+                     {{ 'url.edit.cancel'|trans }}
+                </a>
+
+                <button class="pure-button ez-button">{{ 'url.edit.save'|trans }}</button>
+            </div>
+        {{ form_end(form) }}
+    </section>
+{%- endblock -%}
+
+{% block title %}{{ 'url.editing'|trans({'%url%': url.url|truncate(60) }) }}{% endblock %}
+
+{% block notification %}
+    {% if not form.vars.valid %}
+        <li data-state="error">{{ "form.validation_error"|trans(domain="messages") }}</li>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}

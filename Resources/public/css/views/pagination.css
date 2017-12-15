@@ -1,0 +1,10 @@
+.ez-pagination {
+    margin: 10px 0;
+}
+
+.ez-pagination .ez-pagination-item {
+    display: inline-block;
+    margin: 0 3px;
+    min-width: 20px;
+    padding: 3px;
+}

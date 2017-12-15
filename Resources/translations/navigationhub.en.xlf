@@ -102,6 +102,12 @@
         <note>key: navigationhub.zone.studio</note>
         <jms:reference-file>Resources/public/js/views/ez-navigationhubview.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="6a7e8372aebbd558cab8c19c5caecc1deee66024" resname="navigationhub.linkmanager.list">
+        <source>Link manager</source>
+        <target>Link manager</target>
+        <note>key: navigationhub.language.list</note>
+        <jms:reference-file>Resources/public/js/views/services/ez-navigationhubviewservice.js</jms:reference-file>
+      </trans-unit>
     </body>
   </file>
 </xliff>
