@@ -146,7 +146,13 @@ YUI.add('ez-universaldiscoveryfinderexplorerview', function (Y) {
          * @protected
          */
         _renderLevelView: function (levelView) {
-            this.get('container').one('.ez-ud-finder-explorerlevel').append(levelView.render().get('container'));
+            var levelViewContainer = levelView.render().get('container'),
+                scrollLeft = levelViewContainer.get('scrollLeft'),
+                scrollTop = levelViewContainer.get('scrollTop');
+
+            this.get('container').one('.ez-ud-finder-explorerlevel').append(levelViewContainer);
+            // Workaround for https://jira.ez.no/browse/EZP-28552
+            levelViewContainer.getDOMNode().scroll(scrollLeft, scrollTop);
         },
 
         render: function () {
