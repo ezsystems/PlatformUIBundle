@@ -84,13 +84,11 @@
                         </thead>
                         <tbody>
                         {% for content in usages %}
-                            {# TODO: Should be handled by ServerSideView #}
-                            {% set view_url = '' %}
-                            {% set edit_url = '#/edit/' ~ (('/api/ezp/v2/content/objects/' ~ content.id)  | url_encode) ~ '/' ~ content.mainLanguageCode %}
-
+                            {% set content_rest_id = '/api/ezp/v2/content/objects/' ~ content.id %}
                             <tr>
                                 <td>
-                                    <a href="{{ view_url }}">
+                                    <a href="#" class="ez-view-link-usage"
+                                       data-content-id="{{ content_rest_id }}" data-language-code="{{ content.mainLanguageCode }}">
                                         {{ ez_content_name(content) }}
                                     </a>
                                 </td>
@@ -102,7 +100,8 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <a href="{{ edit_url }}" class="pure-button ez-button" data-icon="&#xe606;">
+                                    <a href="#" class="ez-edit-link-usage pure-button ez-button" data-icon="&#xe606;"
+                                       data-content-id="{{ content_rest_id }}" data-language-code="{{ content.mainLanguageCode }}">
                                          {{ 'url.usages.content.edit'|trans }}
                                     </a>
                                 </td>

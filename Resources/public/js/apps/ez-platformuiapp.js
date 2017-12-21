@@ -132,6 +132,9 @@ YUI.add('ez-platformuiapp', function (Y) {
             contentTypeEditServerSideView: {
                 type: Y.eZ.ContentTypeEditServerSideView,
             },
+            linkViewServerSideView: {
+                type: Y.eZ.LinkViewServerSideView,
+            },
         },
 
         /**
@@ -978,6 +981,15 @@ YUI.add('ez-platformuiapp', function (Y) {
                     view: "searchView",
                     sideViews: {'navigationHub': true, 'discoveryBar': true},
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView'],
+                }, {
+                    name: "viewLink",
+                    regex: /\/admin\/(pjax%2Flink-management%2Fview%2F.*)/,
+                    keys: ['uri'],
+                    path: "/admin/:uri",
+                    sideViews: {'navigationHub': true, 'discoveryBar': false},
+                    service: Y.eZ.LinkViewServerSideViewService,
+                    view: "linkViewServerSideView",
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "adminSection",
                     regex: /\/admin\/(pjax%2Fsection%2F.*)/,
