@@ -211,6 +211,8 @@ system:
                         - 'ez-sectionserversideviewservice'
                         - 'ez-roleserversideview'
                         - 'ez-roleserversideviewservice'
+                        - 'ez-linkviewserversideview'
+                        - 'ez-linkviewserversideviewservice'
                         - 'ez-navigationhubviewservice'
                         - 'ez-navigationhubview'
                         - 'ez-discoverybarviewservice'
@@ -349,6 +351,9 @@ system:
                 ez-roleserversideviewservice:
                     requires: ['ez-serversideviewservice', 'parallel', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-roleserversideviewservice.js"
+                ez-linkviewserversideviewservice:
+                    requires: ['ez-serversideviewservice', 'parallel', 'ez-translator']
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-linkviewserversideviewservice.js"
                 ez-view:
                     requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/views/ez-view.js"
@@ -1295,6 +1300,9 @@ system:
                 ez-roleserversideview:
                     requires: ['ez-serversideview', 'event-tap']
                     path: "%ez_platformui.public_dir%/js/views/serverside/ez-roleserversideview.js"
+                ez-linkviewserversideview:
+                    requires: ['ez-serversideview', 'event-tap']
+                    path: "%ez_platformui.public_dir%/js/views/serverside/ez-linkviewserversideview.js"
                 ez-texthelper:
                     requires: ['handlebars']
                     path: "%ez_platformui.public_dir%/js/helpers/ez-texthelper.js"
