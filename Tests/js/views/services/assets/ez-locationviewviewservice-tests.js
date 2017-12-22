@@ -618,11 +618,13 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
             this.app = new Y.Mock();
             this.activeView = new Y.View({});
+
             Y.Mock.expect(this.app, {
                 method: 'get',
                 args: ['activeView'],
                 returns: this.activeView
             });
+
             Y.Mock.expect(this.app, {
                 method: 'navigateTo',
                 args: ['viewLocation', Y.Mock.Value.Object],
@@ -684,6 +686,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
         tearDown: function () {
             this.service.destroy();
+
             delete this.service;
             delete this.app;
             delete this.locationMock;
@@ -847,6 +850,20 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 returns: this.parentContentName
             });
 
+            Y.Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Y.Mock.Value.Object],
+                returns: 'test-string'
+            });
+
+            Y.Mock.expect(this.service, {
+                method: '_replaceWindowLocation',
+                args: [Y.Mock.Value.String],
+                run: function (string) {
+                    return string;
+                }
+            });
+
             this.service.on('contentDiscover', function (e) {
                 e.config.contentDiscoveredHandler.call(this, fakeEventFacade);
             });
@@ -875,6 +892,20 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 method: 'get',
                 args: ['name'],
                 returns: this.parentContentName
+            });
+
+            Y.Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Y.Mock.Value.Object],
+                returns: 'test-string'
+            });
+
+            Y.Mock.expect(this.service, {
+                method: '_replaceWindowLocation',
+                args: [Y.Mock.Value.String],
+                run: function (string) {
+                    return string;
+                }
             });
 
             this.service.on('contentDiscover', function (e) {

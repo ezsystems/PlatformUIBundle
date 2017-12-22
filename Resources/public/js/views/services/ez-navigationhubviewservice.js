@@ -2,7 +2,6 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-/*jshint esversion: 6 */
 YUI.add('ez-navigationhubviewservice', function (Y) {
     "use strict";
     /**
@@ -12,7 +11,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
      */
     Y.namespace('eZ');
 
-    const IDENTIFIER_CONTENT_STRUCTURE = 'content-structure';
+    var IDENTIFIER_CONTENT_STRUCTURE = 'content-structure';
 
     /**
      * Navigation hub view service.
@@ -37,14 +36,13 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
          * @param {Event} event
          */
         _resetContentNavigationItem: function () {
-            const contentItem = this.getNavigationItem(IDENTIFIER_CONTENT_STRUCTURE);
+            var contentItem = this.getNavigationItem(IDENTIFIER_CONTENT_STRUCTURE),
+                matchedRoute = this._matchedRoute(),
+                rootLocation = this.get('rootLocation'),
+                rootLocationId = rootLocation.get('id'),
+                rootLocationLang = rootLocation.get('contentInfo').get('mainLanguageCode');
 
             if (contentItem) {
-                const matchedRoute = this._matchedRoute();
-                const rootLocation = this.get('rootLocation');
-                const rootLocationId = rootLocation.get('id');
-                const rootLocationLang = rootLocation.get('contentInfo').get('mainLanguageCode');
-
                 contentItem.set('route.params.id', rootLocationId);
                 contentItem.set('route.params.languageCode', rootLocationLang);
 
