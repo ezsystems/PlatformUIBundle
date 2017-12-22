@@ -26,6 +26,13 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
                 args: ['user'],
                 returns: this.user
             });
+
+            Y.Mock.expect(this.app, {
+                method: 'on',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function, Y.Mock.Value.Object],
+                returns: this.app
+            });
+
             this.request = {
                 params: {},
                 route: {
@@ -68,7 +75,6 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
                     }
                 }
             });
-
             this.service = new Y.eZ.NavigationHubViewService({
                 app: this.app,
                 request: this.request,
@@ -157,10 +163,12 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
         setUp: function () {
             this.app = new Y.Mock();
+
             Y.Mock.expect(this.app, {
                 method: 'set',
                 args: ['loading', true],
             });
+
             Y.Mock.expect(this.app, {
                 method: 'logOut',
                 args: [Y.Mock.Value.Function],
@@ -168,9 +176,16 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
                     cb();
                 },
             });
+
             Y.Mock.expect(this.app, {
                 method: 'navigateTo',
                 args: ['loginForm']
+            });
+
+            Y.Mock.expect(this.app, {
+                method: 'on',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function, Y.Mock.Value.Object],
+                returns: this.app
             });
 
             this.service = new Y.eZ.NavigationHubViewService({
@@ -195,7 +210,16 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         name: "eZ Navigation Hub View Service default navigation items",
 
         setUp: function () {
+            this.app = new Y.Mock();
+
+            Y.Mock.expect(this.app, {
+                method: 'on',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function, Y.Mock.Value.Object],
+                returns: this.app
+            });
+
             this.service = new Y.eZ.NavigationHubViewService({
+                app: this.app,
                 rootLocation: {},
                 rootMediaLocation: {},
             });
@@ -355,7 +379,16 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         name: "eZ Navigation Hub View Service add navigation item tests",
 
         setUp: function () {
+            this.app = new Y.Mock();
+
+            Y.Mock.expect(this.app, {
+                method: 'on',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function, Y.Mock.Value.Object],
+                returns: this.app
+            });
+
             this.service = new Y.eZ.NavigationHubViewService({
+                app: this.app,
                 rootLocation: {},
                 rootMediaLocation: {},
             });
@@ -452,7 +485,16 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         name: "eZ Navigation Hub View Service remove navigation item test",
 
         setUp: function () {
+            this.app = new Y.Mock();
+
+            Y.Mock.expect(this.app, {
+                method: 'on',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function, Y.Mock.Value.Object],
+                returns: this.app
+            });
+
             this.service = new Y.eZ.NavigationHubViewService({
+                app: this.app,
                 rootLocation: {},
                 rootMediaLocation: {},
             });
@@ -595,6 +637,12 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
                     }
                 }
             };
+
+            Y.Mock.expect(this.app, {
+                method: 'on',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function, Y.Mock.Value.Object],
+                returns: this.app
+            });
 
             this.service = new Y.eZ.NavigationHubViewService({
                 capi: this.capiMock,
@@ -823,15 +871,24 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this.service._load(function () {});
 
             Y.Assert.isTrue(errorCalled, "The error event should have been fired");
-        },
-
+        }
     });
 
     rootNodeAttributeTest = new Y.Test.Case({
         name: "eZ Navigation Hub View Service root node attribute tests",
 
         setUp: function () {
-            this.service = new Y.eZ.NavigationHubViewService({});
+            this.app = new Y.Mock();
+
+            Y.Mock.expect(this.app, {
+                method: 'on',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function, Y.Mock.Value.Object],
+                returns: this.app
+            });
+
+            this.service = new Y.eZ.NavigationHubViewService({
+                app: this.app
+            });
         },
 
         tearDown: function () {
@@ -861,6 +918,13 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this.locationRootMock = new Mock();
             this.contentInfoMediaMock = new Mock();
             this.locationMediaMock = new Mock();
+            this.app = new Y.Mock();
+
+            Y.Mock.expect(this.app, {
+                method: 'on',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function, Y.Mock.Value.Object],
+                returns: this.app
+            });
 
             Mock.expect(this.contentInfoRootMock, {
                 method: 'get',
@@ -901,6 +965,7 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             });
 
             this.service = new Y.eZ.NavigationHubViewService({
+                app: this.app,
                 rootLocation: this.locationRootMock,
                 rootMediaLocation: this.locationMediaMock,
             });
@@ -955,6 +1020,12 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             Mock.expect(this.appMock, {
                 method: 'navigateTo',
                 args: [this.routeName, this.routeParams],
+            });
+
+            Y.Mock.expect(this.appMock, {
+                method: 'on',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function, Y.Mock.Value.Object],
+                returns: this.appMock
             });
 
             this.service = new Y.eZ.NavigationHubViewService({app: this.appMock});
