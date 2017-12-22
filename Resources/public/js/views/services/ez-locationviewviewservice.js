@@ -2,7 +2,6 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-/*jshint esversion: 6 */
 YUI.add('ez-locationviewviewservice', function (Y) {
     "use strict";
     /**
@@ -274,21 +273,28 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * @param {EventFacade} e
          */
         _moveContent: function (e) {
-            const parentLocationId = e.selection.location.get('id');
-            const locationId = this.get('location').get('id');
-            const identifier =  'move-notification-' + parentLocationId + '-' + locationId;
-            const initialActiveView = this.get('app').get('activeView');
-            const names = {
-                name: this.get('content').get('name'),
-                parentName: e.selection.contentInfo.get('name')
-            };
+            var that = this,
+                parentLocationId = e.selection.location.get('id'),
+                locationId = this.get('location').get('id'),
+                identifier =  'move-notification-' + parentLocationId + '-' + locationId,
+                initialActiveView = this.get('app').get('activeView'),
+                names = {
+                    name: this.get('content').get('name'),
+                    parentName: e.selection.contentInfo.get('name')
+                };
 
             this._notify(Y.eZ.trans('being.moved.under', names, 'locationview'), identifier, 'started', 5);
 
             this.get('location').move(
                 {api: this.get('capi')},
                 parentLocationId,
-                this._handleAfterContentMoved.bind(this, {identifier, names, initialActiveView})
+                function (error, response) {
+                    that._handleAfterContentMoved({
+                        identifier: identifier,
+                        names: names,
+                        initialActiveView: initialActiveView
+                    }, error, response);
+                }
             );
         },
 
@@ -301,9 +307,13 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * @param {Boolean} error
          * @param {Object} response
          */
-        _handleAfterContentMoved: function ({identifier, names, initialActiveView}, error, response) {
-            const app = this.get('app');
-            const location = this.get('location');
+        _handleAfterContentMoved: function (config, error, response) {
+            var that = this,
+                app = this.get('app'),
+                location = this.get('location'),
+                identifier = config.identifier,
+                names = config.names,
+                initialActiveView = config.initialActiveView;
 
             if (error) {
                 this._notify(Y.eZ.trans('failed.moving', {}, 'locationview'), identifier, 'error', 0);
@@ -321,24 +331,24 @@ YUI.add('ez-locationviewviewservice', function (Y) {
              * @param {String} oldParentLocationId
              */
             this.fire('movedContent', {
-                location,
+                location: location,
                 oldParentLocationId: location.get('id')
             });
 
             if (app.get('activeView') === initialActiveView) {
-                const params = {
+                var params = {
                     id: response.getHeader('location'),
                     languageCode: this.get('content').get('mainLanguageCode')
                 };
 
-                this._updatePrevHistory(params, () => {
+                this._updatePrevHistory(params, function () {
                     /**
                      * Resets content navigation item link, in the top navigation bar - 'Content Structure'.
                      * Listened by Y.eZ.NavigationHubViewService
                      *
                      * @event updateContentNavigationItem
                      */
-                    this.fire('resetContentNavigationItem');
+                    that.fire('resetContentNavigationItem');
 
                     app.navigateTo('viewLocation', params);
                 });
@@ -354,12 +364,24 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * @param {Object} params params hash containing: id {String} and languageCode {String}
          * @param {Function} callback
          */
-        _updatePrevHistory({id, languageCode}, callback) {
-            id = id.substr(0, id.lastIndexOf('/'));
-
-            window.location.replace(this.get('app').routeUri('viewLocation', {id, languageCode}));
+        _updatePrevHistory: function (config, callback) {
+            this._replaceWindowLocation(this.get('app').routeUri('viewLocation', {
+                id: config.id.substr(0, config.id.lastIndexOf('/')),
+                languageCode: config.languageCode
+            }));
 
             callback();
+        },
+
+        /**
+         * Replaces location in history
+         *
+         * @method _replaceWindowLocation
+         * @protected
+         * @param {String} newLocation
+         */
+        _replaceWindowLocation: function (newLocation) {
+            window.location.replace(newLocation);
         },
 
         /**
