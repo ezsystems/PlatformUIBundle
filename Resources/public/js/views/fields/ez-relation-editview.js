@@ -67,8 +67,7 @@ YUI.add('ez-relation-editview', function (Y) {
         _fireLoadFieldRelatedContent: function () {
             if ( !this._isFieldEmpty() ) {
                 this.fire('loadFieldRelatedContent', {
-                    fieldDefinitionIdentifier: this.get('fieldDefinition').identifier,
-                    content: this.get('content'),
+                    destinationContentId: this.get('field').fieldValue.destinationContentHref
                 });
             }
         },
