@@ -80,7 +80,8 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 "contentCreator": owner,
                 "translationsList": translationsList,
                 "languageCount": translationsList.length,
-                "loadingError": this.get('loadingError'),
+                "lastContributorLoadingError": this.get('creatorLoadingError'),
+                "contentCreatorLoadingError": this.get('ownerLoadingError'),
                 "sortFields": this._getSortFields(),
                 "isAscendingOrder": (this.get('sortOrder') === 'ASC')
             }));
@@ -169,16 +170,21 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
             this.fire('loadUser', {
                 userId: creatorId,
                 attributeName: 'creator',
+                loadingErrorAttributeName: 'creatorLoadingError'
             });
 
             if (creatorId === ownerId) {
                 this.onceAfter('creatorChange', function (e) {
                     this.set('owner', this.get('creator'));
                 });
+                this.onceAfter('creatorLoadingError', function (e) {
+                    this.set('ownerLoadingError', this.get('creatorLoadingError'));
+                });
             } else {
                 this.fire('loadUser', {
                     userId: ownerId,
                     attributeName: 'owner',
+                    loadingErrorAttributeName: 'ownerLoadingError'
                 });
             }
         },
