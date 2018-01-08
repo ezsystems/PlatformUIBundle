@@ -45,7 +45,7 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
 
             this._fireMethod = this._fireLoadUser;
 
-            this.after(['creatorChange', 'ownerChange'], function (e) {
+            this.after(['creatorChange', 'creatorLoadingErrorChange', 'ownerChange', 'ownerLoadingErrorChange'], function (e) {
                 this.render();
             });
             this._addDOMEventHandlers(events);
@@ -242,7 +242,6 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
              * @type {Object}
              */
             owner: {},
-
 
             /**
              * Indicates error while loading owner of the content
