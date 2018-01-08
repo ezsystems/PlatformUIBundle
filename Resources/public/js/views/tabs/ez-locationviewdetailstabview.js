@@ -45,7 +45,7 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
 
             this._fireMethod = this._fireLoadUser;
 
-            this.after(['creatorChange', 'ownerChange'], function (e) {
+            this.after(['creatorChange', 'creatorLoadingErrorChange', 'ownerChange', 'ownerLoadingErrorChange'], function (e) {
                 this.render();
             });
             this._addDOMEventHandlers(events);
@@ -80,7 +80,8 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 "contentCreator": owner,
                 "translationsList": translationsList,
                 "languageCount": translationsList.length,
-                "loadingError": this.get('loadingError'),
+                "lastContributorLoadingError": this.get('creatorLoadingError'),
+                "contentCreatorLoadingError": this.get('ownerLoadingError'),
                 "sortFields": this._getSortFields(),
                 "isAscendingOrder": (this.get('sortOrder') === 'ASC')
             }));
@@ -169,16 +170,21 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
             this.fire('loadUser', {
                 userId: creatorId,
                 attributeName: 'creator',
+                loadingErrorAttributeName: 'creatorLoadingError'
             });
 
             if (creatorId === ownerId) {
                 this.onceAfter('creatorChange', function (e) {
                     this.set('owner', this.get('creator'));
                 });
+                this.onceAfter('creatorLoadingErrorChange', function (e) {
+                    this.set('ownerLoadingError', this.get('creatorLoadingError'));
+                });
             } else {
                 this.fire('loadUser', {
                     userId: ownerId,
                     attributeName: 'owner',
+                    loadingErrorAttributeName: 'ownerLoadingError'
                 });
             }
         },
@@ -220,12 +226,32 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
             creator: {},
 
             /**
+             * Indicates error while loading creator of the content
+             *
+             * @attribute creatorLoadingError
+             * @type {Boolean}
+             */
+            creatorLoadingError: {
+                value: false
+            },
+
+            /**
              * The owner of the content
              *
              * @attribute owner
              * @type {Object}
              */
             owner: {},
+
+            /**
+             * Indicates error while loading owner of the content
+             *
+             * @attribute ownerLoadingError
+             * @type {Boolean}
+             */
+            ownerLoadingError: {
+                value: false
+            },
 
             /**
              * The content being displayed
