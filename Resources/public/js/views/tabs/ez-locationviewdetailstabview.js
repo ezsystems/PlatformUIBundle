@@ -177,7 +177,7 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 this.onceAfter('creatorChange', function (e) {
                     this.set('owner', this.get('creator'));
                 });
-                this.onceAfter('creatorLoadingError', function (e) {
+                this.onceAfter('creatorLoadingErrorChange', function (e) {
                     this.set('ownerLoadingError', this.get('creatorLoadingError'));
                 });
             } else {
@@ -226,12 +226,33 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
             creator: {},
 
             /**
+             * Indicates error while loading creator of the content
+             *
+             * @attribute creatorLoadingError
+             * @type {Boolean}
+             */
+            creatorLoadingError: {
+                value: false
+            },
+
+            /**
              * The owner of the content
              *
              * @attribute owner
              * @type {Object}
              */
             owner: {},
+
+
+            /**
+             * Indicates error while loading owner of the content
+             *
+             * @attribute ownerLoadingError
+             * @type {Boolean}
+             */
+            ownerLoadingError: {
+                value: false
+            },
 
             /**
              * The content being displayed
