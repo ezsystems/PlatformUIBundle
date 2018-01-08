@@ -41,12 +41,13 @@ YUI.add('ez-userloadplugin', function (Y) {
             var loadOptions = {api: this.get('host').get('capi')},
                 User = this.get('userModelConstructor'),
                 loadedUser = new User(),
-                attribute = e.attributeName;
+                attribute = e.attributeName,
+                loadingErrorAttributeName = e.loadingErrorAttributeName || 'loadingError';
 
             loadedUser.set('id', e.userId);
             loadedUser.load(loadOptions, function(error) {
                 if (error) {
-                    e.target.set('loadingError', true);
+                    e.target.set(loadingErrorAttributeName, true);
                 } else {
                     e.target.set(attribute, loadedUser);
                 }
