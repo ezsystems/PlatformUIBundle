@@ -22,6 +22,7 @@
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
 <script type="text/javascript" src="./assets/getfield-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-selection-editview-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -40,7 +41,7 @@
         filter: loaderFilter,
         modules: {
             "ez-selection-editview": {
-                requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen'],
+                requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-selection-editview.js"
             },
             "ez-fieldeditview": {
