@@ -30,7 +30,15 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 identifier: this.fieldDefinitionIdentifier,
                 isRequired: false
             };
-            this.field = {fieldValue: {destinationContentIds: [45, 42]}};
+            this.field = {
+                fieldValue: {
+                    destinationContentIds: [45, 42],
+                    destinationContentHrefs: [
+                        '/api/ezp/v2/content/objects/45',
+                        '/api/ezp/v2/content/objects/42',
+                    ]
+                }
+            };
 
             this.jsonContent = {};
             this.jsonContentType = {};
@@ -651,14 +659,9 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
 
             this.view.on('loadObjectRelations', Y.bind(function (e) {
                 Y.Assert.areSame(
-                    this.fieldDefinitionIdentifier,
-                    e.fieldDefinitionIdentifier,
-                    "fieldDefinitionIdentifier is the same than the one in the field"
-                );
-                Y.Assert.areSame(
-                    this.content,
-                    e.content,
-                    "The content should be provided in the event facade"
+                    this.field.fieldValue.destinationContentHrefs,
+                    e.destinationContentIds,
+                    "destinationContentIds is the same than the one in the field"
                 );
 
                 loadContentEvent = true;
