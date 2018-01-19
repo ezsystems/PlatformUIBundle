@@ -1268,7 +1268,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/contenttypeselector.hbt"
                 ez-editpreviewview:
-                    requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'editpreviewview-ez-template']
+                    requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'ez-strictcomparisonhelper', 'editpreviewview-ez-template']
                     path: "%ez_platformui.public_dir%/js/views/ez-editpreviewview.js"
                 editpreviewview-ez-template:
                     type: 'template'
@@ -1306,6 +1306,9 @@ system:
                 ez-texthelper:
                     requires: ['handlebars']
                     path: "%ez_platformui.public_dir%/js/helpers/ez-texthelper.js"
+                ez-strictcomparisonhelper:
+                    requires: ['handlebars']
+                    path: "%ez_platformui.public_dir%/js/helpers/ez-strictcomparisonhelper.js"
                 ez-getflagcodehelper:
                     requires: ['handlebars']
                     path: "%ez_platformui.public_dir%/js/helpers/ez-getflagcodehelper.js"

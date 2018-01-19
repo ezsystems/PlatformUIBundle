@@ -158,7 +158,9 @@ YUI.add('ez-previewactionview', function (Y) {
              */
             editPreview: {
                 valueFn: function () {
-                    return new Y.eZ.EditPreviewView();
+                    return new Y.eZ.EditPreviewView({
+                        config: this.get('config')
+                    });
                 }
             },
 
@@ -206,6 +208,16 @@ YUI.add('ez-previewactionview', function (Y) {
                     this.get('editPreview').set('languageCode', val);
                     return val;
                 }
+            },
+
+            /**
+             * The application configuration.
+             *
+             * @attribute config
+             * @type {Object|undefined}
+             */
+            config: {
+
             }
         }
     });

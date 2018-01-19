@@ -2,11 +2,27 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+'use strict';
+
 YUI.add('ez-editpreviewview-tests', function (Y) {
     var IS_HIDDEN_CLASS = 'is-editpreview-hidden',
         IS_LOADING_CLASS = 'is-loading',
-        viewTest, isHiddenTest,
-        Assert = Y.Assert, Mock = Y.Mock;
+        viewTest,
+        Assert = Y.Assert,
+        Mock = Y.Mock,
+        config = {
+            "siteaccessList": {
+                "currentSiteaccess": "site",
+                "repository": "default",
+                "siteaccessList": ["site","fr","de","no"],
+                "siteaccessGroups": {
+                    "site_group": ["site","fr","de","no"]
+                },
+                "siteaccessesByRepository": {
+                    "default": ["site","fr","de","no"]
+                }
+            }
+        };
 
     viewTest = new Y.Test.Case({
         name: "eZ Edit Preview View test",
@@ -59,7 +75,8 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
                 container: '.container',
                 content: this.contentMock,
                 version: this.versionMock,
-                languageCode: this.languageCode
+                languageCode: this.languageCode,
+                config: config
             });
         },
 
@@ -102,7 +119,7 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
 
         _checkTemplateVariables: function (variables, legend, source) {
             Assert.isObject(variables, "The template should receive some variables");
-            Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 3 variables");
+            Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
             Assert.isObject(variables.mode, "mode should be available in the template and should be an object");
             Assert.areSame(
                 legend,
@@ -117,13 +134,18 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         },
 
         "Should render the preview of the `version`": function () {
-            var origTpl = this.view.template;
+            var origTpl = this.view.template,
+                source = '/content/versionview/' +
+                    this.contentId + '/' +
+                    this.versionNo + '/' +
+                    this.languageCode +
+                    '/site_access/' + config.siteaccessList.currentSiteaccess;
 
             this.view.template = Y.bind(function (variables) {
                 this._checkTemplateVariables(
                     variables,
                     this.versionName,
-                    '/content/versionview/' + this.contentId + '/' + this.versionNo + '/' + this.languageCode
+                    source
                 );
                 return origTpl.apply(this.view, arguments);
             }, this);
@@ -131,14 +153,19 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         },
 
         "Should render the preview of the content `currentVersion`": function () {
-            var origTpl = this.view.template;
+            var origTpl = this.view.template,
+                source = '/content/versionview/' +
+                    this.contentId + '/' +
+                    this.currentVersionNo + '/' +
+                    this.languageCode +
+                    '/site_access/' + config.siteaccessList.currentSiteaccess;
 
             this.versionIsNew = true;
             this.view.template = Y.bind(function (variables) {
                 this._checkTemplateVariables(
                     variables,
                     this.currentVersionName,
-                    '/content/versionview/' + this.contentId + '/' + this.currentVersionNo + '/' + this.languageCode
+                    source
                 );
                 return origTpl.apply(this.view, arguments);
             }, this);
@@ -246,67 +273,6 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         }
     });
 
-    isHiddenTest = new Y.Test.Case({
-        name: "eZ Edit Preview View isHiddenTest test",
-
-        setUp: function () {
-            this.versionNames = {
-                'eng-GB': 'Test name',
-            };
-            this.contentMock = new Mock();
-            Mock.expect(this.contentMock, {
-                method: 'get',
-                args: [Mock.Value.Any],
-                returns: 42,
-            });
-            this.versionMock = new Mock();
-            Mock.expect(this.versionMock, {
-                method: 'isNew',
-                returns: false,
-            });
-            Mock.expect(this.versionMock, {
-                method: 'get',
-                args: [Mock.Value.String],
-                run: function (attr) {
-                    if ( attr === 'versionNo' ) {
-                        return 32;
-                    } else if ( attr === 'names' ) {
-                        return {'eng-GB': 'Test name'};
-                    }
-                    Y.fail('Unexpected version.get("' + attr + '")');
-                },
-            });
-
-            this.view = new Y.eZ.EditPreviewView({
-                container: '.container',
-                content: this.contentMock,
-                version: this.versionMock,
-                languageCode: 'eng-GB',
-            });
-            this.view.render();
-        },
-
-        "Should return true": function () {
-            Assert.isTrue(
-                this.view.isHidden(),
-                "The view is hidden by default"
-            );
-        },
-
-        "Should return false": function () {
-            this.view.show(0);
-            Assert.isFalse(
-                this.view.isHidden(),
-                "The view should not be hidden"
-            );
-        },
-
-        tearDown: function () {
-            this.view.destroy();
-        },
-    });
-
     Y.Test.Runner.setName("eZ Edit Preview View tests");
     Y.Test.Runner.add(viewTest);
-    Y.Test.Runner.add(isHiddenTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-editpreviewview']});
