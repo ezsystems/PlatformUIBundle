@@ -71,6 +71,8 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
             this.sortFieldIdentifier = 'SECTION';
             this.sortFieldName = "sort.section domain=locationview";
             this.loadingError = false;
+            this.creatorLoadingError = false;
+            this.ownerLoadingError = false;
 
             Mock.expect(this.contentMock, {
                 method: 'get',
@@ -188,6 +190,14 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
                     that.loadingError, args.loadingError,
                     "loadingError should be available in the template"
                 );
+                Assert.areSame(
+                    that.ownerLoadingError, args.contentCreatorLoadingError,
+                    "contentCreatorLoadingError should be available in the template"
+                );
+                Assert.areSame(
+                    that.ownerLoadingError, args.lastContributorLoadingError,
+                    "lastContributorLoadingError should be available in the template"
+                );
                 Assert.isTrue(
                     args.isAscendingOrder,
                     "isAscendingOrder should be available in the template"
@@ -251,6 +261,14 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
 
         "Test that owner change event calls render": function () {
             this._authorsEventTest('ownerChange');
+        },
+
+        "Test that creator loading error change event calls render": function () {
+            this._authorsEventTest('creatorLoadingErrorChange');
+        },
+
+        "Test that owner loading error change event calls render": function () {
+            this._authorsEventTest('ownerLoadingErrorChange');
         },
     });
 

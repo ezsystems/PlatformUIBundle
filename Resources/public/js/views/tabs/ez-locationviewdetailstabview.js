@@ -62,7 +62,9 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 currentVersion = content.get('currentVersion'),
                 translationsList = currentVersion.getTranslationsList(),
                 creator = null,
-                owner = null;
+                owner = null,
+                creatorLoadingError = this.get('creatorLoadingError'),
+                ownerLoadingError = this.get('ownerLoadingError');
 
             if (this.get('creator')) {
                 creator=this.get('creator').toJSON();
@@ -80,8 +82,9 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 "contentCreator": owner,
                 "translationsList": translationsList,
                 "languageCount": translationsList.length,
-                "lastContributorLoadingError": this.get('creatorLoadingError'),
-                "contentCreatorLoadingError": this.get('ownerLoadingError'),
+                "loadingError": this.get('loadingError') || creatorLoadingError || ownerLoadingError,
+                "lastContributorLoadingError": creatorLoadingError,
+                "contentCreatorLoadingError": ownerLoadingError,
                 "sortFields": this._getSortFields(),
                 "isAscendingOrder": (this.get('sortOrder') === 'ASC')
             }));
@@ -250,6 +253,17 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
              * @type {Boolean}
              */
             ownerLoadingError: {
+                value: false
+            },
+
+            /**
+             * Indicates error while loading creator or owner of the content
+             *
+             * @attribute loadingError
+             * @type {Boolean}
+             * @deprecated
+             */
+            loadingError: {
                 value: false
             },
 
