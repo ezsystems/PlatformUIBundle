@@ -39,7 +39,12 @@ YUI.add('ez-relation-editview-tests', function (Y) {
                 isRequired: false,
                 fieldSettings: {},
             };
-            this.field = {fieldValue: {destinationContentId: 45}};
+            this.field = {
+                fieldValue: {
+                    destinationContentId: 45,
+                    destinationContentHref: '/api/ezp/v2/content/objects/45',
+                }
+            };
 
             this.jsonContent = {};
             this.jsonContentType = {};
@@ -181,14 +186,9 @@ YUI.add('ez-relation-editview-tests', function (Y) {
 
             this.view.on('loadFieldRelatedContent', Y.bind(function (e) {
                 Y.Assert.areSame(
-                    this.fieldDefinitionIdentifier,
-                    e.fieldDefinitionIdentifier,
-                    "fieldDefinitionIdentifier is the same than the one in the field"
-                );
-                Y.Assert.areSame(
-                    this.content,
-                    e.content,
-                    "The content should be provided in the event facade"
+                    this.field.fieldValue.destinationContentHref,
+                    e.destinationContentId,
+                    "destinationContentId is the same than the one in the field"
                 );
 
                 loadContentEvent = true;
