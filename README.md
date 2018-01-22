@@ -3,8 +3,7 @@
 [![Build Status](https://img.shields.io/travis/ezsystems/PlatformUIBundle.svg?style=flat-square&branch=master)](https://travis-ci.org/ezsystems/PlatformUIBundle)
 [![Downloads](https://img.shields.io/packagist/dt/ezsystems/platform-ui-bundle.svg?style=flat-square)](https://packagist.org/packages/ezsystems/platform-ui-bundle)
 [![Latest release](https://img.shields.io/github/release/ezsystems/PlatformUIBundle.svg?style=flat-square)](https://github.com/ezsystems/PlatformUIBundle/releases)
-[![License](https://img.shields.io/packagist/l/ezsystems/platform-ui-bundle.svg?style=flat-square)](LICENSE)
-
+[![License](https://img.shields.io/github/license/ezsystems/PlatformUIBundle.svg?style=flat-square)](LICENSE)
 
 PlatformUIBundle is a bundle for eZ Platform providing a web application
 to manage your content and administrate your eZ Platform install.
