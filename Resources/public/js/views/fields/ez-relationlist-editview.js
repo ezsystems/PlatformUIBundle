@@ -101,9 +101,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
         _fireLoadObjectRelations: function () {
             if ( !this._isFieldEmpty() ) {
                 this.fire('loadObjectRelations', {
-                    relationType: 'ATTRIBUTE',
-                    fieldDefinitionIdentifier: this.get('fieldDefinition').identifier,
-                    content: this.get('content'),
+                    destinationContentIds: this.get('field').fieldValue.destinationContentHrefs
                 });
             }
         },

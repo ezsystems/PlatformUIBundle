@@ -47,6 +47,7 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
                 loadedRelation = {},
                 loadingError = false,
                 sourceContent = e.content,
+                destinationContentIds = e.destinationContentIds,
                 contentDestinations,
                 end = stack.add(function (error, struct) {
                     if (error) {
@@ -57,24 +58,29 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
                     }
                 });
 
-            if ( !sourceContent ) {
-                console.log('[DEPRECATED] loadObjectRelations event without a source content is deprecated');
-                console.log('[DEPRECATED] Please provide a source Content item in the event facade under the `content` identifier');
-                console.log('[DEPRECATED] This feature will be removed from PlatformUI 2.0');
-                sourceContent = this.get('host').get('content');
+            if ( !destinationContentIds ) {
+                if ( !sourceContent ) {
+                    console.log('[DEPRECATED] loadObjectRelations event without a source content is deprecated');
+                    console.log('[DEPRECATED] Please provide a source Content item in the event facade under the `content` identifier');
+                    console.log('[DEPRECATED] This feature will be removed from PlatformUI 2.0');
+                    sourceContent = this.get('host').get('content');
+                }
+                contentDestinations = sourceContent.relations(
+                    e.relationType, e.fieldDefinitionIdentifier
+                );
+                destinationContentIds = Y.Array.map(contentDestinations, function (value) {
+                    return value.destination;
+                });
             }
-            contentDestinations = sourceContent.relations(
-                e.relationType, e.fieldDefinitionIdentifier
-            );
 
-            Y.Array.each(contentDestinations, function (value) {
-                if (!loadedRelation[value.destination]) {
-                    loadedRelation[value.destination] = true;
+            Y.Array.each(destinationContentIds, function (value) {
+                if (!loadedRelation[value]) {
+                    loadedRelation[value] = true;
 
                     if (e.loadLocation || e.loadLocationPath) {
-                        this._loadContentStruct(value.destination, e.loadLocation, e.loadLocationPath, end);
+                        this._loadContentStruct(value, e.loadLocation, e.loadLocationPath, end);
                     } else {
-                        this._loadContent(value.destination, end);
+                        this._loadContent(value, end);
                     }
                 }
             }, this);
