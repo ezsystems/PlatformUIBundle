@@ -65,8 +65,12 @@ class RootInfo implements Provider
         if (!$url) {
             return $path;
         }
-        $version = $this->assetsPackages->getVersion($path);
 
-        return preg_replace('/\?' . $version . '/', '', $url);
+        $version = $this->assetsPackages->getVersion($path);
+        if (false === strpos($version, '?')) {
+            return $url;
+        }
+
+        return preg_replace('/\?' . preg_quote($version, '/') . '/', '', $url);
     }
 }
