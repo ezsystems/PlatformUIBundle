@@ -39,7 +39,7 @@
                             {{languageCodes}}
                         </td>
                         <td>
-                            {{resources.Creator}}
+                            {{creator.name}}
                         </td>
                         <td>
                             {{ formatTime creationDate day="numeric" month="short" year="numeric" hour="2-digit" minute="2-digit" }}
@@ -99,7 +99,7 @@
                             {{languageCodes}}
                         </td>
                         <td>
-                            {{resources.Creator}}
+                            {{creator.name}}
                         </td>
                         <td>
                             {{ formatTime creationDate day="numeric" month="short" year="numeric" hour="2-digit" minute="2-digit" }}
@@ -150,7 +150,7 @@
                             {{languageCodes}}
                         </td>
                         <td>
-                            {{resources.Creator}}
+                            {{creator.name}}
                         </td>
                         <td>
                             {{ formatTime creationDate day="numeric" month="short" year="numeric" hour="2-digit" minute="2-digit" }}

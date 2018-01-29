@@ -63,14 +63,18 @@ YUI.add('ez-usermodel', function (Y) {
          * @param {Object} the response document
          */
         _parseStruct: function (struct, responseDoc) {
-                var attrs, imageField,
-                    imageIdentifiers = responseDoc._contentType.getFieldDefinitionIdentifiers('ezimage');
+            var attrs, imageField, imageIdentifiers = [];
 
             attrs = this.constructor.superclass._parseStruct.call(this, struct);
-            imageField = struct.Version.Fields.field.filter(function (field) {
-                return field.fieldDefinitionIdentifier == imageIdentifiers[0];
-            });
-            attrs.avatar = imageField.length ? imageField[0].fieldValue : null;
+            if ( responseDoc._contentType ) {
+                imageIdentifiers = responseDoc._contentType.getFieldDefinitionIdentifiers('ezimage');
+            }
+            if ( imageIdentifiers.length ) {
+                imageField = struct.Version.Fields.field.filter(function (field) {
+                    return field.fieldDefinitionIdentifier == imageIdentifiers[0];
+                });
+                attrs.avatar = imageField.length ? imageField[0].fieldValue : null;
+            }
             return attrs;
         },
 
@@ -80,27 +84,37 @@ YUI.add('ez-usermodel', function (Y) {
          * @method loadDrafts
          * @param options {Object}
          * @param options.api {Object} (required) the JS REST client instance
+         * @param [options.preloadContentInfo] boolean
          * @param callback {Function} function to call after processing response
          */
         loadDrafts: function (options, callback) {
-            options.api.getContentService().loadUserDrafts(this.get('id'), function (error, response) {
-                var versions = [];
+            var cb = function (error, response) {
+                    var versions = [];
 
-                if (error) {
-                    callback(error, response);
+                    if (error) {
+                        callback(error, response);
 
-                    return;
-                }
+                        return;
+                    }
 
-                response.document.VersionList.VersionItem.forEach(function (versionItemHash) {
-                    var versionInfo = new Y.eZ.VersionInfo();
+                    response.document.VersionList.VersionItem.forEach(function (versionItemHash) {
+                        var versionInfo = new Y.eZ.VersionInfo();
 
-                    versionInfo.loadFromHash(versionItemHash);
-                    versions.push(versionInfo);
-                });
+                        versionInfo.loadFromHash(versionItemHash);
+                        versions.push(versionInfo);
+                    });
 
-                callback(error, versions);
-            });
+                    callback(error, versions);
+            };
+            if ( options.preloadContentInfo ) {
+                options.api.getContentService().loadUserDrafts(
+                    this.get('id'),
+                    {"x-ez-embed-value": "VersionList.VersionItem.VersionInfo.Content"},
+                    cb
+                );
+            } else {
+                options.api.getContentService().loadUserDrafts(this.get('id'), cb);
+            }
         },
     }, {
         REST_STRUCT_ROOT: "User",

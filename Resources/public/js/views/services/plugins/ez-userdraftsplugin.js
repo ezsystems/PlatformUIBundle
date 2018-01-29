@@ -39,7 +39,7 @@ YUI.add('ez-userdraftsplugin', function (Y) {
          */
         _loadUserDrafts: function (event) {
             var service = this.get('host'),
-                options = {api: service.get('capi')},
+                options = {api: service.get('capi'), preloadContentInfo: true},
                 target = event.target;
 
             service.get('app').get('user').loadDrafts(options, Y.bind(function (error, versions) {
@@ -87,9 +87,11 @@ YUI.add('ez-userdraftsplugin', function (Y) {
          * @return {Y.Promise}
          */
         _collectDraftsData: function (target, attributeName, versions) {
+            versions.forEach(function (struct) {
+                struct.contentInfo = struct.version.get('contentInfo');
+            });
             Y.Promise
                 .resolve(versions)
-                .then(Y.bind(this._loadDraftContentInfo, this))
                 .then(Y.bind(this._loadDraftContentType, this))
                 .then(function (versions) {
                     var res = {
@@ -102,41 +104,6 @@ YUI.add('ez-userdraftsplugin', function (Y) {
                 .catch(function () {
                     target.set('loadingError', true);
                 });
-        },
-
-        /**
-         * Prepares the loading of the ContentInfo corresponding to each
-         * Versions.
-         *
-         * @method _loadDraftContentInfo
-         * @protected
-         * @param versions {Array} list of version structures
-         * @return {Y.Promise}
-         */
-        _loadDraftContentInfo: function (versions) {
-            var promises,
-                capi = this.get('host').get('capi');
-
-            promises = versions.map(function (versionStruct) {
-                return new Y.Promise(function (resolve, reject) {
-                    var contentInfo = new Y.eZ.ContentInfo({
-                            id: versionStruct.version.get('resources').Content
-                        });
-
-                    contentInfo.load({api: capi}, function (error) {
-                        if (error) {
-                            reject(error);
-
-                            return;
-                        }
-
-                        versionStruct.contentInfo = contentInfo;
-                        resolve(versionStruct);
-                    });
-                });
-            });
-
-            return Y.Promise.all(promises);
         },
 
         /**

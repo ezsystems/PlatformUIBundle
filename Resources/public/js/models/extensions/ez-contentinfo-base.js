@@ -25,26 +25,36 @@ YUI.add('ez-contentinfo-base', function (Y) {
          * @method loadVersions
          * @param {Object} options
          * @param {Object} options.api (required) the JS REST client instance
+         * @param {Boolean} [options.preloadCreator]
          * @param {Function} callback
          */
         loadVersions: function (options, callback) {
             var versions = [],
-                contentService = options.api.getContentService();
+                contentService = options.api.getContentService(),
+                cb = function (error, response) {
+                    if (error) {
+                        callback(error, response);
+                        return;
+                    }
 
-            contentService.loadVersions(this.get('id'), function (error, response) {
-                if (error) {
-                    callback(error, response);
-                    return;
+                    Y.Array.each(response.document.VersionList.VersionItem, function (versionItemHash) {
+                        var versionInfo = new Y.eZ.VersionInfo();
+                        versionInfo.loadFromHash(versionItemHash);
+                        versions.push(versionInfo);
+                    });
+
+                    callback(error, versions);
+                };
+
+                if ( options.preloadCreator ) {
+                    contentService.loadVersions(
+                        this.get('id'),
+                        {'x-ez-embed-value': 'VersionList.VersionItem.VersionInfo.Creator'},
+                        cb
+                    );
+                } else {
+                    contentService.loadVersions(this.get('id'), cb);
                 }
-
-                Y.Array.each(response.document.VersionList.VersionItem, function (versionItemHash) {
-                    var versionInfo = new Y.eZ.VersionInfo();
-                    versionInfo.loadFromHash(versionItemHash);
-                    versions.push(versionInfo);
-                });
-
-                callback(error, versions);
-            });
         },
 
         /**
@@ -53,6 +63,7 @@ YUI.add('ez-contentinfo-base', function (Y) {
          * @method loadVersionsSortedByStatus
          * @param {Object} options
          * @param {Object} options.api (required) the JS REST client instance
+         * @param {Boolean} [options.preloadCreator]
          * @param {Function} callback
          */
         loadVersionsSortedByStatus: function (options, callback) {

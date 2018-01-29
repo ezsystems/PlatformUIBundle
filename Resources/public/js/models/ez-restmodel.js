@@ -134,6 +134,17 @@ YUI.add('ez-restmodel', function (Y) {
                 }
             });
             Y.Array.each(this.constructor.LINKS_MAP, function (item) {
+                var attrName, linkName;
+
+                if ( L.isObject(item) ) {
+                    linkName = Y.Object.keys(item)[0];
+                    attrName = item[linkName];
+                    item = linkName;
+                    // TODO: this should not only be trigger by the resources
+                    // being represented as an object but also if the resources
+                    // is embedded.
+                    attrs[attrName] = struct[linkName];
+                }
                 if ( struct[item] ) {
                     links[item] = struct[item]._href;
                 }
@@ -264,6 +275,7 @@ YUI.add('ez-restmodel', function (Y) {
         /**
          * Array of linked resources to parse and make available
          * in the resources attribute
+         * TODO document REST Embedding usage
          * Example:
          *
          *     ['Owner', 'MainLocation']

@@ -131,7 +131,10 @@ YUI.add('ez-versioninfomodel', function (Y) {
             "creationDate", "modificationDate",
             "languageCodes", "initialLanguageCode", "names",
         ],
-        LINKS_MAP: ['Content', 'Creator'],
+        LINKS_MAP: [
+            {'Content': 'contentInfo'},
+            {'Creator': 'creator'},
+        ],
 
         ATTRS: {
             /**
@@ -223,6 +226,32 @@ YUI.add('ez-versioninfomodel', function (Y) {
             names: {
                 setter: '_setterLocalizedValue',
                 value: {}
+            },
+
+            contentInfo: {
+                getter: function (value) {
+                    var contentInfo = new Y.eZ.ContentInfo(),
+                        parseVal = {};
+
+                    if ( value ) {
+                        parseVal[Y.eZ.ContentInfo.REST_STRUCT_ROOT] = value;
+                        contentInfo.setAttrs(contentInfo.parse({document: parseVal}));
+                    }
+                    return contentInfo;
+                }
+            },
+
+            creator: {
+                getter: function (value) {
+                    var user = new Y.eZ.User(),
+                        parseVal = {};
+
+                    if ( value ) {
+                        parseVal[Y.eZ.User.REST_STRUCT_ROOT] = value;
+                        user.setAttrs(user.parse({document: parseVal}));
+                    }
+                    return user;
+                }
             },
         }
     });

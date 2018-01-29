@@ -1170,7 +1170,7 @@ system:
                     requires: ['ez-versioninfomodel']
                     path: "%ez_platformui.public_dir%/js/models/ez-versionmodel.js"
                 ez-versioninfomodel:
-                    requires: ['ez-restmodel']
+                    requires: ['ez-restmodel', 'ez-contentinfomodel', 'ez-usermodel']
                     path: '%ez_platformui.public_dir%/js/models/ez-versioninfomodel.js'
                 ez-locationmodel:
                     requires: ['ez-restmodel', 'ez-contentinfomodel', array-extras]

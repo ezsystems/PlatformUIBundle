@@ -57,6 +57,7 @@ YUI.add('ez-versionsplugin', function (Y) {
             var service = this.get('host'),
                 capi = service.get('capi'),
                 options = {
+                    preloadCreator: true,
                     api: capi,
                 };
 
