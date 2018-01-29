@@ -66,6 +66,10 @@ class RootInfo implements Provider
             return $path;
         }
 
+        /**
+         * If `framework.assets.version: some_version` set, then $version = '?some_version'
+         * If `framework.assets: json_manifest_path` is used, then $version = '/'
+         */
         $version = $this->assetsPackages->getVersion($path);
         if (false === strpos($version, '?')) {
             return $url;
