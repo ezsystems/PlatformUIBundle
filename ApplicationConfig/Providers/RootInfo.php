@@ -75,6 +75,6 @@ class RootInfo implements Provider
             return $url;
         }
 
-        return preg_replace('/\?' . preg_quote($version, '/') . '/', '', $url);
+        return preg_replace('/\?' . $version . '/', '', $url);
     }
 }
