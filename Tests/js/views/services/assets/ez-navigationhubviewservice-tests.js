@@ -334,8 +334,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
             Assert.isArray(value, "The platformNavigationItems should contain an array");
             Assert.areEqual(
-                2, value.length,
-                "2 items should be configured by default for the platform zone"
+                3, value.length,
+                "3 items should be configured by default for the platform zone"
             );
 
             this._assertLocationNavigationItem(
@@ -343,6 +343,9 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             );
             this._assertLocationNavigationItem(
                 value[1], "navigationhub.media.library domain=navigationhub", "media-library", "/allez/om/media", "fre-FR-media"
+            );
+            this._assertNavigationItem(
+                value[2], "navigationhub.linkmanager.list domain=navigationhub", "link-manager", "adminGenericRoute"
             );
         },
 
@@ -520,19 +523,6 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             delete this.service;
         },
 
-        _testLocationAttribute: function (zone) {
-            var identifier = this[zone + "Identifier"];
-
-            this.service.removeNavigationItem(identifier, zone);
-
-            Y.Array.each(this.service.get(zone + "NavigationItems"), function (item) {
-                Assert.areNotEqual(
-                    identifier, item.get('identifier'),
-                    identifier + " should have been removed"
-                );
-            });
-        },
-
         _testAttribute: function (zone) {
             var identifier = this[zone + "Identifier"];
 
@@ -605,7 +595,7 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
             this.service._set('rootMediaLocation', this.rootMediaLocation);
 
-            this._testLocationAttribute('platform');
+            this._testAttribute('platform');
         },
 
         "Should remove the navigation item to the 'admin' zone": function () {
