@@ -1,7 +1,7 @@
 {
     "name": "ezsystems/platform-ui-bundle",
     "description": "eZ Platform UI Bundle",
-    "license": "GPL-2.0",
+    "license": "GPL-2.0-only",
     "type": "ezplatform-bundle",
     "autoload": {
         "psr-4": {
