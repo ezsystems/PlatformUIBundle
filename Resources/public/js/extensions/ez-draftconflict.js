@@ -28,16 +28,17 @@ YUI.add('ez-draftconflict', function (Y) {
          * @method _fireEditContentRequest
          * @param {Y.eZ.ContentInfo} contentItem
          * @param {Y.eZ.ContentType} contentType
+         * @param {String} languageCode
          * @protected
          */
-        _fireEditContentRequest: function(contentInfo, contentType) {
+        _fireEditContentRequest: function(contentInfo, contentType, languageCode) {
             /**
              * Fired when a content needs to be edited
              * @event editContentRequest
              */
             this.fire('editContentRequest',{
                 contentInfo: contentInfo,
-                languageCode: contentInfo.get('mainLanguageCode'),
+                languageCode: languageCode ? languageCode : contentInfo.get('mainLanguageCode'),
                 contentType: contentType
             });
         },
