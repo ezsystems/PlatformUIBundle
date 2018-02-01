@@ -101,8 +101,7 @@ YUI.add('ez-actionbarview', function (Y) {
                                 priority: 10
                             })
                         );
-                    }
-                    else {
+                    } else {
                         actionList.push(
                             new Y.eZ.ButtonActionView({
                                 actionId: 'deleteContent',
@@ -158,6 +157,14 @@ YUI.add('ez-actionbarview', function (Y) {
             contentType: {
                 writeOnce: "initOnly",
             },
+
+            /**
+             * Config object
+             *
+             * @attribute config
+             * @type {Object}
+             */
+            config: {}
         }
     });
 });

@@ -100,6 +100,7 @@ YUI.add('ez-editactionbarview', function (Y) {
                                 actionId: "preview",
                                 label: Y.eZ.trans('preview', {}, 'contentedit'),
                                 priority: 170,
+                                config: this.get('config'),
                                 buttons: [
                                     {option: "desktop"},
                                     {option: "tablet"},
@@ -146,8 +147,17 @@ YUI.add('ez-editactionbarview', function (Y) {
                 setter: function (val, name) {
                     this._setLanguageCode(val);
                 }
-            }
+            },
 
+            /**
+             * The application configuration.
+             *
+             * @attribute config
+             * @type {Object|undefined}
+             */
+            config: {
+
+            }
         }
     });
 });

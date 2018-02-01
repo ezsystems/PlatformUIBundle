@@ -1,9 +1,14 @@
 <header class="ez-preview-header">
     <button class="ez-preview-hide" data-icon-after="&#xe600;">{{ translate 'contentedit.close.preview' 'contentedit' }}</button>
-    <h2 class="ez-preview-title">
-        {{ translate 'contentedit.previewing' 'contentedit' }}
-        <strong>{{ legend }}</strong>
-    </h2>
+    <span class="ez-preview-headline-wrapper">
+        <span>{{ translate 'contentedit.previewing' 'contentedit' }}</span>
+        <select class="ez-preview-siteaccess-picker">
+        {{#each siteaccesses}}
+            <option value="{{ this }}" {{#strictCompare this currentSiteaccess }}selected{{/strictCompare}}>{{ this }}</option>
+        {{/each}}
+        </select>
+    </span>
+    <strong>{{ legend }}</strong>
 </header>
 <div class="ez-preview-device {{ mode.id }}">
     <div class="ez-preview-iframe-wrapper">
