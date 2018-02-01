@@ -661,6 +661,16 @@ YUI.add('ez-contenteditviewservice', function (Y) {
              */
             baseLanguageCode: {
                 value: null
+            },
+
+            /**
+             * The application configuration.
+             *
+             * @attribute config
+             * @type {Object|undefined}
+             */
+            config: {
+
             }
         }
     });

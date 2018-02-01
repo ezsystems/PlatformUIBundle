@@ -24,7 +24,8 @@ YUI.add('ez-editpreviewview', function (Y) {
      */
     Y.eZ.EditPreviewView = Y.Base.create('editPreviewView', Y.eZ.TemplateBasedView, [], {
         events: {
-            '.ez-preview-hide': {'tap': '_editPreviewHide'}
+            '.ez-preview-hide': {'tap': '_editPreviewHide'},
+            '.ez-preview-siteaccess-picker': {'change': '_updatePreviewSiteaccess'}
         },
 
         /**
@@ -43,6 +44,36 @@ YUI.add('ez-editpreviewview', function (Y) {
         },
 
         /**
+         * Updates the siteaccess information in the content preview
+         *
+         * @method _updatePreviewSiteaccess
+         * @protected
+         * @param {Event} event
+         */
+        _updatePreviewSiteaccess: function (event) {
+            var container = this.get('container');
+
+            container.addClass(IS_LOADING_CLASS);
+            container.one('.ez-preview-iframe').set('src', this._getSourceUrl(event.target.getDOMNode().value));
+        },
+
+        /**
+         * Gets source url based on a provided siteaccess
+         *
+         * @method _getSourceUrl
+         * @protected
+         * @param {String} siteaccess
+         * @return {String}
+         */
+        _getSourceUrl: function (siteaccess) {
+            return '/content/versionview/{contentId}/{versionNo}/{languageCode}/site_access/{siteaccess}'
+                    .replace('{contentId}', this.get('content').get('contentId'))
+                    .replace('{versionNo}', this._getPreviewedVersion().get('versionNo'))
+                    .replace('{languageCode}', this.get('languageCode'))
+                    .replace('{siteaccess}', siteaccess);
+        },
+
+        /**
          * Renders the edit preview
          *
          * @method render
@@ -50,14 +81,14 @@ YUI.add('ez-editpreviewview', function (Y) {
          */
         render: function () {
             var container = this.get('container'),
-                content = this.get('content'),
-                version = this._getPreviewedVersion(),
-                languageCode = this.get('languageCode');
+                siteaccessList = this.get('config.siteaccessList');
 
             container.setHTML(this.template({
                 mode: this.get('previewModes')[this.get('currentModeId')],
-                source: '/content/versionview/' + content.get('contentId') + '/' + version.get('versionNo') + '/' + languageCode,
-                legend: version.get('names')[languageCode]
+                currentSiteaccess: siteaccessList.currentSiteaccess,
+                siteaccesses: siteaccessList.siteaccessesByRepository[siteaccessList.repository],
+                source: this._getSourceUrl(siteaccessList.currentSiteaccess),
+                legend: this._getPreviewedVersion().get('names')[this.get('languageCode')]
             })).addClass(IS_LOADING_CLASS);
 
             this._attachedViewEvents.push(container.one('.ez-preview-iframe').on('load', function () {
@@ -188,8 +219,17 @@ YUI.add('ez-editpreviewview', function (Y) {
              */
             languageCode: {
                 value: ''
-            }
+            },
 
+            /**
+             * The application configuration.
+             *
+             * @attribute config
+             * @type {Object|undefined}
+             */
+            config: {
+
+            }
         }
     });
 });
