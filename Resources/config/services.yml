@@ -24,6 +24,7 @@ parameters:
     ezsystems.platformui.application_config.provider.root_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo
     ezsystems.platformui.application_config.provider.languages.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\Languages
     ezsystems.platformui.application_config.provider.interface_languages.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\InterfaceLanguages
+    ezsystems.platformui.application_config.provider.siteaccess_list.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\SiteaccessList
     ezsystems.platformui.form_processor.language.class: EzSystems\PlatformUIBundle\Form\Processor\LanguageFormProcessor
     ezsystems.platformui.form_processor.section.class: EzSystems\PlatformUIBundle\Form\Processor\SectionFormProcessor
     ezsystems.platformui.exception_listener.class: EzSystems\PlatformUIBundle\EventListener\ExceptionListener
@@ -150,6 +151,17 @@ services:
             - "@request_stack"
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'interfaceLanguages'}
+
+    ezsystems.platformui.application_config.provider.siteaccess_list:
+        class: "%ezsystems.platformui.application_config.provider.siteaccess_list.class%"
+        arguments:
+            - '@ezpublish.config.resolver'
+            - '@ezpublish.siteaccess'
+            - '%ezpublish.siteaccess.list%'
+            - '%ezpublish.siteaccess.groups%'
+            - '%ezpublish.repositories%'
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'siteaccessList'}
 
     ezsystems.platformui.application_config.provider.translation_domains:
         class: "%ezsystems.platformui.application_config.provider.value.class%"

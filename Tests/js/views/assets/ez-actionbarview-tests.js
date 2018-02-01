@@ -5,7 +5,10 @@
 YUI.add('ez-actionbarview-tests', function (Y) {
     var Assert = Y.Assert,
         Mock = Y.Mock,
-        viewTest, userViewTest, containerTest, rootLocationTest;
+        viewTest,
+        userViewTest,
+        containerTest,
+        rootLocationTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Action Bar View test",
@@ -53,7 +56,8 @@ YUI.add('ez-actionbarview-tests', function (Y) {
             this.view = new Y.eZ.ActionBarView({
                 location: this.locationMock,
                 content: this.content,
-                contentType: this.contentTypeMock
+                contentType: this.contentTypeMock,
+                config: { copySubtree: {} }
             });
         },
 
@@ -190,7 +194,8 @@ YUI.add('ez-actionbarview-tests', function (Y) {
             this.view = new Y.eZ.ActionBarView({
                 location: this.locationMock,
                 content: this.content,
-                contentType: this.contentTypeMock
+                contentType: this.contentTypeMock,
+                config: { copySubtree: {} }
             });
         },
 
@@ -330,7 +335,8 @@ YUI.add('ez-actionbarview-tests', function (Y) {
             this.view = new Y.eZ.ActionBarView({
                 location: this.locationMock,
                 content: this.content,
-                contentType: this.contentTypeMock
+                contentType: this.contentTypeMock,
+                config: { copySubtree: {} }
             });
 
             this._isActionCreated('copySubtree', {});
@@ -352,7 +358,8 @@ YUI.add('ez-actionbarview-tests', function (Y) {
             this.view = new Y.eZ.ActionBarView({
                 location: this.locationMock,
                 content: this.content,
-                contentType: this.contentTypeMock
+                contentType: this.contentTypeMock,
+                config: { copySubtree: {} }
             });
 
             this._isNotActionCreated('copySubtree', {});
@@ -379,7 +386,8 @@ YUI.add('ez-actionbarview-tests', function (Y) {
             this.view = new Y.eZ.ActionBarView({
                 location: this.locationMock,
                 content: this.content,
-                contentType: this.contentTypeMock
+                contentType: this.contentTypeMock,
+                config: { copySubtree: {} }
             });
 
             this._isNotActionCreated('copySubtree', {});
@@ -416,7 +424,8 @@ YUI.add('ez-actionbarview-tests', function (Y) {
             this.view = new Y.eZ.ActionBarView({
                 location: this.locationMock,
                 content: this.content,
-                contentType: this.contentTypeMock
+                contentType: this.contentTypeMock,
+                config: { copySubtree: {} }
             });
 
             this._isActionDisabled('sendToTrash', true);
@@ -431,7 +440,8 @@ YUI.add('ez-actionbarview-tests', function (Y) {
             this.view = new Y.eZ.ActionBarView({
                 location: this.locationMock,
                 content: this.content,
-                contentType: this.contentTypeMock
+                contentType: this.contentTypeMock,
+                config: { copySubtree: {} }
             });
 
             this._isActionDisabled('sendToTrash', false);

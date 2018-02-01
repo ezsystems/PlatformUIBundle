@@ -49,12 +49,6 @@
     overflow: auto;
 }
 
-.ez-view-editpreviewview .ez-preview-title {
-    font-size: 150%;
-    text-align: center;
-    margin: 0.5em 0;
-}
-
 .ez-view-editpreviewview .ez-preview-hide {
     display: block;
     cursor: pointer;
@@ -79,4 +73,9 @@
 .ez-view-editpreviewview .ez-preview-iframe {
     display: block;
     margin: 0 auto;
+}
+
+.ez-view-editpreviewview .ez-preview-headline-wrapper {
+    padding: .5em;
+    display: inline-block;
 }

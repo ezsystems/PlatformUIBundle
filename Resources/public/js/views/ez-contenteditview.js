@@ -376,6 +376,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 valueFn: function () {
                     return new Y.eZ.EditActionBarView({
                         content: this.get('content'),
+                        config: this.get('config'),
                         version: this.get('version'),
                         contentType: this.get('contentType'),
                         languageCode: this.get('languageCode'),
@@ -392,7 +393,19 @@ YUI.add('ez-contenteditview', function (Y) {
              * @type {String}
              * @required
              */
-            languageCode: '',
+            languageCode: {
+                value: ''
+            },
+
+            /**
+             * The application configuration.
+             *
+             * @attribute config
+             * @type {Object|undefined}
+             */
+            config: {
+
+            }
         }
     });
 });
