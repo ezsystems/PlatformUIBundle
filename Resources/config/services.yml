@@ -58,6 +58,7 @@ services:
         arguments:
             - "@ezsystems.platformui.application_config.aggregator"
             - "@ezsystems.platformui.loader.combo_loader"
+            - "@translator"
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.application_config.aggregator:
