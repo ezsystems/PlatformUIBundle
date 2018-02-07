@@ -221,7 +221,7 @@ class ComboLoader implements Loader
     private function sanitizeFilenames(array $files, $version)
     {
         $filesWithoutVersion = array_map(function ($file) use ($version) {
-            if (preg_match('/\?' . $version . '$/', $file)) {
+            if (preg_match('/\?' . preg_quote($version, '/') . '$/', $file)) {
                 return substr($file, 0, -(strlen($version) + 1));
             }
 
