@@ -14,7 +14,10 @@ YUI.add('ez-translateactionview', function (Y) {
     var events = {
             '.ez-newtranslation-button': {
                 'tap': '_newTranslationLanguageSelectionBox',
-            }
+            },
+            '.ez-contenttranslation-delete-link': {
+                'tap': '_deleteTranslation',
+            },
         };
 
     /**
@@ -60,6 +63,7 @@ YUI.add('ez-translateactionview', function (Y) {
                 location: this.get('location').toJSON(),
                 content: this.get('content').toJSON(),
                 translations: translationsList,
+                canDeleteTranslations: translationsList.length > 1,
                 firstLanguagesCode: firstLanguageCodes,
                 moreTranslationCount: moreTranslationCount
             }));
@@ -145,6 +149,31 @@ YUI.add('ez-translateactionview', function (Y) {
                 },
             });
             this._hideView();
+        },
+
+        /**
+         * Tap event handler on Delete Translation button.
+         *
+         * @method _deleteTranslation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _deleteTranslation: function (e) {
+            var data = {
+                translation: e.target.getAttribute('data-translation'),
+                contentId: this.get('content').get('contentId')
+            };
+
+            e.preventDefault();
+
+            /**
+             * Fired when the translation is deleted
+             *
+             * @event deleteTranslation
+             * @param {data.translation} Language code of translation
+             * @param {data.contentId} The content Id
+             */
+            this.fire('deleteTranslation', data);
         },
 
         /**

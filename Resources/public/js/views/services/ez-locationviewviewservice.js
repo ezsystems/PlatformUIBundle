@@ -30,6 +30,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             this.on('*:translateContent', this._translateContent);
             this.on('*:sortUpdate', this._updateSorting);
             this.on('*:updatePriority', this._updatePriority);
+            this.on('*:deleteTranslation', this._confirmDeleteTranslation);
             this.after('*:requestChange', this._setLanguageCode);
 
             this._setLanguageCode();
@@ -565,6 +566,74 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          */
         _setLanguageCode: function () {
             this.set('languageCode', this.get('request').params.languageCode);
+        },
+
+        /**
+         * Removes translation from content.
+         *
+         * @method _deleteTranslation
+         * @protected
+         * @param {String} languageCode
+         */
+        _deleteTranslation: function (languageCode) {
+            var content = this.get('content'),
+                options = {
+                    api: this.get('capi')
+                };
+
+            content.removeTranslation(options, languageCode, Y.bind(function(error) {
+                if (error) {
+                    this._notify(
+                        Y.eZ.trans('failed.delete.content.translation', { language: languageCode }, 'bar'),
+                        'content-delete-translation-' + content.get('id'), 'error', 0
+                    );
+                    return;
+                }
+
+                this._notify(
+                    Y.eZ.trans('success.delete.content.translation', { language: languageCode }, 'bar'),
+                    'content-delete-translation-' + content.get('id'), 'done', 5
+                );
+
+                this.get('app').navigateTo('viewLocation', {
+                     id: this.get('location').get('id'),
+                     languageCode: content.get('mainLanguageCode')
+                });
+            }, this));
+        },
+
+        /**
+         * `deleteTranslation` event handler,
+         * it asks confirmation to the user before delete the translation item.
+         *
+         * @method _confirmDeleteTranslation
+         * @protected
+         * @param {Object} e event facade of the deleteAction event
+         */
+        _confirmDeleteTranslation: function (e) {
+            var content = this.get('content'),
+                languageCode = e.translation;
+
+            e.preventDefault();
+            if (languageCode === content.get('mainLanguageCode')) {
+                this._notify(
+                    Y.eZ.trans('failed.delete.content.main.translation', {}, 'bar'),
+                    'content-delete-translation-' + content.get('id'), 'error', 0
+                );
+            } else {
+                /**
+                 * Opens confirmation modal of deleting translation
+                 *
+                 * @event confirmBoxOpen
+                 * @param {e.config} Modal configuration
+                 */
+                this.fire('confirmBoxOpen', {
+                    config: {
+                        title: Y.eZ.trans('confirm.delete.translation', { language: languageCode }, 'bar'),
+                        confirmHandler: Y.bind(this._deleteTranslation, this, languageCode),
+                    }
+                });
+            }
         },
 
         _getViewParameters: function () {
