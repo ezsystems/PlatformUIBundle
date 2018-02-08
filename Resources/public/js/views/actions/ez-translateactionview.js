@@ -14,7 +14,11 @@ YUI.add('ez-translateactionview', function (Y) {
     var events = {
             '.ez-newtranslation-button': {
                 'tap': '_newTranslationLanguageSelectionBox',
-            }
+            },
+
+            '.ez-contenttranslation-delete-link': {
+                    'tap': '_deleteTranslation',
+            },
         };
 
     /**
@@ -145,6 +149,22 @@ YUI.add('ez-translateactionview', function (Y) {
                 },
             });
             this._hideView();
+        },
+
+        /**
+         * Tap event handler on
+         *
+         * @method
+         * @private
+         * @param {EventFacade} e
+         */
+        _deleteTranslation: function (e) {
+            var data = {
+                translation: e.target.getAttribute('data-translation'),
+                contentId: this.get('content').get('contentId'),
+            }
+            e.preventDefault();
+            this.fire('deleteTranslation', data);
         },
 
         /**

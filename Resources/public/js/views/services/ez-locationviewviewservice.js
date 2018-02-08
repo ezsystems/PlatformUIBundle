@@ -30,6 +30,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             this.on('*:translateContent', this._translateContent);
             this.on('*:sortUpdate', this._updateSorting);
             this.on('*:updatePriority', this._updatePriority);
+            this.on('*:deleteTranslation', this._deleteTranslation);
             this.after('*:requestChange', this._setLanguageCode);
 
             this._setLanguageCode();
@@ -565,6 +566,21 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          */
         _setLanguageCode: function () {
             this.set('languageCode', this.get('request').params.languageCode);
+        },
+
+        /**
+         *
+         *
+         * @method _deleteTranslation
+         * @protected
+         */
+        _deleteTranslation: function (e) {
+            var loadOptions = {
+                    api: this.get('capi')
+                };
+
+            
+
         },
 
         _getViewParameters: function () {
