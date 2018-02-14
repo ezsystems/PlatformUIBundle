@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class PlatformUIController extends Controller
 {
@@ -25,19 +26,27 @@ class PlatformUIController extends Controller
     /** @var \EzSystems\PlatformUIBundle\Loader\Loader */
     private $loader;
 
-    public function __construct(Provider $configAggregator, Loader $loader)
+    /** @var \Symfony\Component\Translation\TranslatorInterface */
+    private $translator;
+
+    public function __construct(Provider $configAggregator, Loader $loader, TranslatorInterface $translator)
     {
         $this->configAggregator = $configAggregator;
         $this->loader = $loader;
+        $this->translator = $translator;
     }
 
     /**
      * Renders the "shell" page to run the JavaScript application.
      *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function shellAction()
+    public function shellAction(Request $request)
     {
+        $this->translator->setLocale($request->getPreferredLanguage() ?: $request->getDefaultLocale());
+
         return $this->render(
             'eZPlatformUIBundle:PlatformUI:shell.html.twig',
             ['parameters' => $this->configAggregator->getConfig()]
