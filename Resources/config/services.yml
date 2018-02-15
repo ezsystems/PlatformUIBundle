@@ -76,6 +76,7 @@ services:
         arguments:
             - "@ezsystems.platformui.application_config.aggregator"
             - "@ezsystems.platformui.loader.combo_loader"
+            - "@translator"
             - "@=container.getParameter('kernel.debug') ? 0 : parameter('ezsystems.platformui.application_config.combo_loader.cache_ttl')"
         parent: ezsystems.platformui.controller.base
 
