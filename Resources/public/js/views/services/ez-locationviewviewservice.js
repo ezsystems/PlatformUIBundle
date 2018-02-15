@@ -68,7 +68,8 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         _editContent: function (e) {
             this._fireEditContentRequest(
                 this.get('location').get('contentInfo'),
-                this.get('contentType')
+                this.get('contentType'),
+                this.get('languageCode')
             );
         },
 
