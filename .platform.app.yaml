@@ -20,6 +20,10 @@ build:
 relationships:
     database: "mysqldb:mysql"
 
+variables:
+    env:
+        SYMFONY_ENV: prod
+
 # The configuration of app when it is exposed to the web.
 web:
     locations:
@@ -44,23 +48,15 @@ mounts:
 hooks:
     build: |
         set -e
-        composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
-        rm web/app_dev.php
-        . ./.env
-        if [ -z "$SYMFONY_ENV" ]; then
-            export SYMFONY_ENV=prod
-        fi
-        app/console --env=$SYMFONY_ENV assetic:dump
+        /bin/bash -c './.platform_setup_pr.sh https://github.com/ezsystems/ezplatform-demo.git 1.7'
     deploy: |
         set -e
         . ./.env
-        if [ -z "$SYMFONY_ENV" ]; then
-            export SYMFONY_ENV=prod
-        fi
-        if [ ! -f web/var/.platform.installed ]; then
-            php -d memory_limit=-1 app/console ezplatform:install --env=$SYMFONY_ENV $INSTALL_EZ_INSTALL_TYPE
+        # We will re-run the installer on every deployment ( on every PR change )
+        #if [ ! -f web/var/.platform.installed ]; then
+            php -d memory_limit=-1 app/console ezplatform:install $INSTALL_EZ_INSTALL_TYPE
             touch web/var/.platform.installed
-        fi
+        #fi
 
         # As we are deploying code changes we need to clear any kind of code/system cache
         rm -Rf app/cache/*/*
