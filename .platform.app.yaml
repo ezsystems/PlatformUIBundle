@@ -61,7 +61,10 @@ hooks:
             php -d memory_limit=-1 app/console ezplatform:install --env=$SYMFONY_ENV $INSTALL_EZ_INSTALL_TYPE
             touch web/var/.platform.installed
         fi
-        app/console --env=$SYMFONY_ENV cache:clear
+
+        # As we are deploying code changes we need to clear any kind of code/system cache
+        rm -Rf app/cache/*/*
+        app/console cache:clear
 
 # The configuration of scheduled execution.
 # see http://symfony.com/doc/current/components/console/introduction.html
