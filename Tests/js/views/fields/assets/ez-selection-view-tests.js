@@ -65,7 +65,7 @@ YUI.add('ez-selection-view-tests', function (Y) {
 
             "Test empty field value": function () {
                 this._testValue(
-                    {}, undefined, "The value in the template should be undefined"
+                    [], undefined, "The value in the template should be undefined"
                 );
             },
 
