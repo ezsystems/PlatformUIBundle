@@ -811,7 +811,6 @@ system:
                         - 'ez-textline-editview'
                         - 'ez-textblock-editview'
                         - 'ez-xmltext-editview'
-                        - 'ez-richtext-editview'
                         - 'ez-image-editview'
                         - 'ez-binaryfile-editview'
                         - 'ez-media-editview'
