@@ -20,6 +20,9 @@ YUI.add('ez-richtext-editview', function (Y) {
         AlloyEditor = Y.eZ.AlloyEditor,
         ToolbarConfig = Y.eZ.AlloyEditorToolbarConfig;
 
+    console.warn('[DEPRECATED] ez-richtext-editview module is deprecated');
+    console.warn('[DEPRECATED] ez-richtext-editview will be removed in PlatformUI 2.2');
+
     /**
      * Rich Text edit view
      *
