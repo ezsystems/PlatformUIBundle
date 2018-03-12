@@ -66,7 +66,10 @@ YUI.add('ez-relationlist-view', function (Y) {
                 relatedContentsJSON = [];
 
             Y.Array.each(relatedContents, function (value) {
-                relatedContentsJSON.push(value.toJSON());
+                var relatedContentJSON = value.toJSON();
+                if (relatedContentJSON.resources.MainLocation) {
+                    relatedContentsJSON.push(relatedContentJSON);
+                }
             });
 
             return {

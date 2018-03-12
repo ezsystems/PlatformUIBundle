@@ -350,7 +350,12 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             contentIdsArray = Y.Array.dedupe(that.view.get('destinationContentsIds'));
             Y.Mock.expect(contentInfoMock1, {
                 method: 'toJSON',
-                returns: {name: 'me', publishedDate: 'yesterday', lastModificationDate: 'tomorrow'}
+                returns: {
+                    name: 'me',
+                    publishedDate: 'yesterday',
+                    lastModificationDate: 'tomorrow',
+                    resources: {}
+                }
             });
 
             Y.Mock.expect(contentInfoMock1, {
@@ -359,9 +364,24 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 returns: 42
             });
 
+            Y.Mock.expect(contentInfoMock1, {
+                property: 'name',
+                value: 'contentInfoModel'
+            });
+
             Y.Mock.expect(contentInfoMock2, {
                 method: 'toJSON',
-                returns: {name: 'me', publishedDate: 'yesterday', lastModificationDate: 'tomorrow'}
+                returns: {
+                    name: 'me',
+                    publishedDate: 'yesterday',
+                    lastModificationDate: 'tomorrow',
+                    resources: {}
+                }
+            });
+
+            Y.Mock.expect(contentInfoMock2, {
+                property: 'name',
+                value: 'contentInfoModel'
             });
 
             Y.Mock.expect(contentInfoMock2, {
@@ -463,7 +483,12 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
 
         setUp: function () {
             this.destinationContent1 = new Y.Mock();
-            this.destinationContent1ToJSON = {anythingJSONed: 'somethingJSONed'};
+            this.destinationContent1ToJSON = {
+                anythingJSONed: 'somethingJSONed',
+                resources: {
+                    MainLocation: true
+                }
+            };
 
             Y.Mock.expect(this.destinationContent1, {
                 method: 'toJSON',
@@ -483,7 +508,12 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 }
             });
             this.destinationContent2 = new Y.Mock();
-            this.destinationContent2ToJSON = {anythingJSONed2: 'somethingJSONed2'};
+            this.destinationContent2ToJSON = {
+                anythingJSONed2: 'somethingJSONed2',
+                resources: {
+                    MainLocation: true
+                }
+            };
 
             Y.Mock.expect(this.destinationContent2, {
                 method: 'toJSON',

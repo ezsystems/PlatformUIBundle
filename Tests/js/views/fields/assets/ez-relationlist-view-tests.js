@@ -22,8 +22,18 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
                 });
                 this.relatedContents = [this.destinationContent1, this.destinationContent2];
 
-                this.destinationContent1ToJSON = {anythingJSONed: 'somethingJSONed'};
-                this.destinationContent2ToJSON = {anythingJSONed: 'somethingJSONed'};
+                this.destinationContent1ToJSON = {
+                    anythingJSONed: 'somethingJSONed',
+                    resources: {
+                        MainLocation: true
+                    }
+                };
+                this.destinationContent2ToJSON = {
+                    anythingJSONed: 'somethingJSONed',
+                    resources: {
+                        MainLocation: true
+                    }
+                };
 
                 this.templateVariablesCount = 6;
                 this.fieldDefinitionIdentifier= "niceField";
