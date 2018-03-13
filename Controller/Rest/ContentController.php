@@ -10,10 +10,10 @@ use eZ\Publish\API\Repository\Values\User\UserUpdateStruct;
 use eZ\Publish\Core\Repository\Values\User\UserCreateStruct;
 use eZ\Publish\Core\REST\Server\Exceptions\BadRequestException;
 use eZ\Publish\Core\REST\Server\Values\RestContent;
+use eZ\Publish\Core\REST\Server\Values\RestContentCreateStruct;
 use eZ\Publish\Core\REST\Server\Values\Version;
 use eZ\Publish\Core\REST\Server\Values\CreatedVersion;
 use Symfony\Component\HttpFoundation\Request;
-use eZ\Publish\Core\REST\Common\Message;
 use eZ\Publish\Core\REST\Server\Controller\Content;
 use eZ\Publish\Core\REST\Server\Values\CreatedContent;
 use eZ\Publish\Core\REST\Server\Values\NoContent;
@@ -30,8 +30,10 @@ class ContentController extends Content
 {
     public function createContent(Request $request)
     {
-        if (!$this->isUserCreateRequest($request)) {
-            return parent::createContent($request);
+        $contentCreate = $this->parseRequestContent($request);
+
+        if (!$this->isUserCreateRequest($request, $contentCreate)) {
+            return parent::doCreateContent($request, $contentCreate);
         }
 
         $createdUser = $this->repository->getUserService()->createUser(
@@ -117,7 +119,7 @@ class ContentController extends Content
         return new NoContent();
     }
 
-    private function isUserCreateRequest(Request $request)
+    private function isUserCreateRequest(Request $request, RestContentCreateStruct $contentCreate)
     {
         if (($contentTypeHeaderValue = $request->headers->get('Content-Type')) == null) {
             return false;
@@ -127,16 +129,6 @@ class ContentController extends Content
         if (strtolower($mediaType) !== 'application/vnd.ez.api.contentcreate') {
             return false;
         }
-
-        $contentCreate = $this->inputDispatcher->parse(
-            new Message(
-                array(
-                    'Content-Type' => $contentTypeHeaderValue,
-                    'Url' => $request->getPathInfo(),
-                ),
-                $request->getContent()
-            )
-        );
 
         foreach ($contentCreate->contentCreateStruct->fields as $field) {
             if ($field->value instanceof UserFieldValue) {
@@ -243,21 +235,6 @@ class ContentController extends Content
                 $this->repository->getContentService()->loadRelations($user->versionInfo)
             ),
         ]);
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return mixed
-     */
-    private function parseRequestContent(Request $request)
-    {
-        return $restContentCreateStruct = $this->inputDispatcher->parse(
-            new Message(
-                array('Content-Type' => $request->headers->get('Content-Type'), 'Url' => $request->getPathInfo()),
-                $request->getContent()
-            )
-        );
     }
 
     /**
