@@ -59,7 +59,7 @@
     padding: 1em 1.5em;
 }
 
-.ez-view-translateactionview .ez-contenttranslation-edit-link {
+.ez-view-translateactionview .ez-contenttranslation-actions {
     display: none;
     position: absolute;
     z-index: 1;
@@ -67,8 +67,13 @@
     top: 0.9em;
 }
 
-.ez-view-translateactionview .ez-contenttranslation:hover .ez-contenttranslation-edit-link {
+.ez-view-translateactionview .ez-contenttranslation:hover .ez-contenttranslation-actions {
     display: block;
+}
+
+.ez-view-translateactionview .ez-contenttranslation-actions .ez-contenttranslation-edit-link,
+.ez-view-translateactionview .ez-contenttranslation-actions .ez-contenttranslation-delete-link {
+    display: inline-block;
     padding: 0.1em 0.5em;
 }
 

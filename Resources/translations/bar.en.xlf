@@ -227,6 +227,30 @@
         <note>key: translateaction.edit</note>
         <jms:reference-file>Resources/public/templates/translateaction.hbt</jms:reference-file>
       </trans-unit>
+      <trans-unit id="f066151955a2dd9163a84081f8f2ef175966bbd4" resname="confirm.delete.translation">
+        <source>Are you sure you want to delete "%language%" translation?</source>
+        <target>Are you sure you want to delete "%language%" translation?</target>
+        <note>key: confirm.delete.translation</note>
+        <jms:reference-file>Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="e5e147f6fd07facc4a3318e223553c790faa0641" resname="success.delete.content.translation">
+        <source>Translation "%language%" has been deleted.</source>
+        <target>Translation "%language%" has been deleted.</target>
+        <note>key: success.delete.content.translation</note>
+        <jms:reference-file>Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="011d57b24d3097d18e29e303e9b6c0c54ba82a8c" resname="failed.delete.content.translation">
+        <source>Cannot delete translation "%language%" from content.</source>
+        <target>Cannot delete translation "%language%" from content.</target>
+        <note>key: failed.delete.content.translation</note>
+        <jms:reference-file>Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
+      <trans-unit id="011d57b24d3097d18e29e303e9b6c0c54ba82a8c" resname="failed.delete.content.main.translation">
+        <source>Cannot delete main translation from content.</source>
+        <target>Cannot delete main translation from content.</target>
+        <note>key: failed.delete.content.main.translation</note>
+        <jms:reference-file>Resources/public/js/views/services/ez-locationviewviewservice.js</jms:reference-file>
+      </trans-unit>
       <trans-unit id="0da142a7f050a139b79a5865547744a56a5f4281" resname="translateaction.existing.translations">
         <source>Existing Translations</source>
         <target>Existing Translations</target>

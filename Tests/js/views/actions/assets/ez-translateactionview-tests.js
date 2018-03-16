@@ -14,7 +14,7 @@ YUI.add('ez-translateactionview-tests', function (Y) {
                 this.label = 'Translate test label';
                 this.translationsList = ['eng-GB', 'pol-PL'];
                 this.disabled = false;
-                this.templateVariablesCount = 8;
+                this.templateVariablesCount = 9;
                 this.contentMock = new Mock();
                 this.locationMock = new Mock();
                 this.versionMock = new Mock();
