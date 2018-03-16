@@ -30,7 +30,7 @@ class ContentController extends Content
 {
     public function createContent(Request $request)
     {
-        $contentCreate = $this->parseRequestContent($request);
+        $contentCreate = $this->parseCreateContentRequest($request);
 
         if (!$this->isUserCreateRequest($request, $contentCreate)) {
             return parent::doCreateContent($request, $contentCreate);
