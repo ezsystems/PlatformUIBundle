@@ -50,6 +50,17 @@
     font-weight: bold;
 }
 
+.ez-view-translateactionview .ez-contenttranslation-delete-link {
+    color: #fff;
+    background: #498FE1;
+    border-radius: 0.5em;
+    font-weight: bold;
+}
+
+.ez-view-translateactionview .ez-contenttranslation-delete-link:before {
+    content: "\E615"
+}
+
 .ez-view-translateactionview .ez-newtranslation-button {
     background: #B8E986;
     color: #333333;

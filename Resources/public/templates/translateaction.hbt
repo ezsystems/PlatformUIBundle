@@ -21,9 +21,15 @@
                     <a class="ez-contenttranslation-view-link" href="{{ path "viewLocation" id=../location.id languageCode=this }}">
                         {{ language_name this }}
                     </a>
-                    <a class="ez-contenttranslation-edit-link" href="{{ path "editContent" id=../content.id languageCode=this }}">
-                        {{translate 'translateaction.edit' 'bar'}}
-                    </a>
+
+                    <span class="ez-contenttranslation-actions">
+                        <a class="ez-contenttranslation-edit-link" href="{{ path "editContent" id=../content.id languageCode=this }}">
+                            {{translate 'translateaction.edit' 'bar'}}
+                        </a>
+                        {{#if ../canDeleteTranslations}}
+                        <a class="ez-contenttranslation-delete-link ez-font-icon" data-translation="{{.}}" href="{{ path "editContent" id=../content.id languageCode=this }}"></a>
+                        {{/if}}
+                    </span>
                 </li>
                 {{/each}}
             </ul>
