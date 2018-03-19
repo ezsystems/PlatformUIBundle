@@ -4,9 +4,9 @@
  */
 
 .ae-ui .ae-toolbar .ez-ae-labeled-button {
-    width: auto;
-    height: auto;
-    margin: 0.3em 0.8em;
+    width: 40px;
+    height: 40px;
+    margin: 0 .15em;
 }
 
 .ae-ui IE10-PLUS::-ms-reveal,

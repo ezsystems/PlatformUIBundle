@@ -6,7 +6,8 @@
 YUI.add('ez-alloyeditor-plugin-focusblock', function (Y) {
     "use strict";
 
-    var FOCUSED_CLASS = 'is-block-focused';
+    var FOCUSED_CLASS = 'is-block-focused',
+        AE_TOOLBAR_SELECTOR = '.ae-toolbars > *';
 
     if (CKEDITOR.plugins.get('ezfocusblock')) {
         return;
@@ -40,8 +41,9 @@ YUI.add('ez-alloyeditor-plugin-focusblock', function (Y) {
 
     function clearFocusedBlock(e) {
         var oldBlock = findFocusedBlock(e.editor);
+        var isToolbarOpen = document.querySelector(AE_TOOLBAR_SELECTOR);
 
-        if ( oldBlock ) {
+        if ( oldBlock && !isToolbarOpen ) {
             oldBlock.removeClass(FOCUSED_CLASS);
         }
     }
@@ -84,6 +86,7 @@ YUI.add('ez-alloyeditor-plugin-focusblock', function (Y) {
             editor.on('selectionChange', updateFocusedBlock);
             editor.on('blur', clearFocusedBlock);
             editor.on('getData', clearFocusedBlockFromData);
+            editor.on('editorUpdate', clearFocusedBlock);
         },
     });
 });
