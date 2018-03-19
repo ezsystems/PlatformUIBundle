@@ -11,7 +11,7 @@
     "require": {
         "ezsystems/platform-ui-assets-bundle": "^5.0.0",
         "ezsystems/repository-forms": "^2.0",
-        "ezsystems/ezpublish-kernel": "^7.0",
+        "ezsystems/ezpublish-kernel": "^7.0.3",
         "ezsystems/ez-support-tools": "^0.2",
         "zetacomponents/system-information": "^1.1"
     },

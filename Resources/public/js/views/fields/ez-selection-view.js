@@ -37,10 +37,18 @@ YUI.add('ez-selection-view', function (Y) {
             if ( fieldDefinitionSettings.isMultiple ) {
                 res = [];
                 Y.Array.each(fieldValue, function (key) {
-                    res.push(fieldDefinitionSettings.options[key]);
+                    if (key in fieldDefinitionSettings.options) {
+                        res.push(fieldDefinitionSettings.options[key]);
+                    } else {
+                        res.push(Y.eZ.trans('select.option.does.not.exist', {}, 'fieldview'));
+                    }
                 });
             } else {
-                res = fieldDefinitionSettings.options[fieldValue];
+                if (fieldValue in fieldDefinitionSettings.options) {
+                    res = fieldDefinitionSettings.options[fieldValue];
+                } else {
+                    res = (Y.eZ.trans('select.option.does.not.exist', {}, 'fieldview'));
+                }
             }
 
             return res;
