@@ -196,7 +196,11 @@ YUI.add('ez-selection-editview', function (Y) {
             }
 
             Y.Array.each(valueIndexes, function (index) {
-                res.push(options[index]);
+                if (index in options) {
+                    res.push(options[index]);
+                } else {
+                    res.push(Y.eZ.trans('select.option.does.not.exist', {}, 'fieldedit'));
+                }
             });
             return res;
         },

@@ -986,7 +986,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/view/binaryfile.hbt"
                 ez-selection-view:
-                    requires: ['ez-fieldview', 'selectionview-ez-template']
+                    requires: ['ez-fieldview', 'selectionview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-selection-view.js"
                 selectionview-ez-template:
                     type: 'template'
@@ -1097,7 +1097,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/view/richtext.hbt"
                 ez-selection-editview:
-                    requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen', 'selectioneditview-ez-template']
+                    requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen', 'selectioneditview-ez-template', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-selection-editview.js"
                 selectioneditview-ez-template:
                     type: 'template'
