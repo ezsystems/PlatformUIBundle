@@ -30,7 +30,7 @@ class ContentController extends Content
 {
     public function createContent(Request $request)
     {
-        $contentCreate = $this->parseCreateContentRequest($request);
+        $contentCreate = $this->parseContentRequest($request);
 
         if (!$this->isUserCreateRequest($request, $contentCreate)) {
             return parent::doCreateContent($request, $contentCreate);
@@ -163,7 +163,7 @@ class ContentController extends Content
     private function mapRequestToUserCreateStruct(Request $request)
     {
         /** @var ContentCreateStruct $contentCreateStruct */
-        $contentCreateStruct = $this->parseRequestContent($request)->contentCreateStruct;
+        $contentCreateStruct = $this->parseContentRequest($request)->contentCreateStruct;
 
         $userCreateStruct = new UserCreateStruct();
         foreach ($contentCreateStruct->fields as $field) {
@@ -212,7 +212,7 @@ class ContentController extends Content
     private function mapRequestToParentGroups(Request $request)
     {
         $groupId = $this->repository->getLocationService()->loadLocation(
-            $this->parseRequestContent($request)->locationCreateStruct->parentLocationId
+            $this->parseContentRequest($request)->locationCreateStruct->parentLocationId
         )->contentId;
         $group = $this->repository->getUserService()->loadUserGroup($groupId);
 
@@ -244,7 +244,7 @@ class ContentController extends Content
      */
     private function mapRequestToUserUpdateStruct($request)
     {
-        $contentUpdateStruct = $this->parseRequestContent($request);
+        $contentUpdateStruct = $this->parseContentRequest($request);
         $userUpdateStruct = new UserUpdateStruct();
         foreach ($contentUpdateStruct->fields as $field) {
             if ($field->value instanceof UserFieldValue) {
