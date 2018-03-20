@@ -248,6 +248,7 @@ YUI.add('ez-navigationhubview', function (Y) {
             this._renderNavigationItems();
             this._uiSetActiveNavigation();
             this._renderUserProfile();
+            this._handleSelectedItem();
             return this;
         },
 
