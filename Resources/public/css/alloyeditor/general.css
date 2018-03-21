@@ -3,12 +3,44 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
+.ez-view-richtexteditview .ez-richtext-editor {
+    padding: 0 .5em;
+}
+
+.ez-view-richtexteditview .ez-richtext-editor h1.is-block-focused,
+.ez-view-richtexteditview .ez-richtext-editor h2.is-block-focused,
+.ez-view-richtexteditview .ez-richtext-editor h3.is-block-focused,
+.ez-view-richtexteditview .ez-richtext-editor h4.is-block-focused,
+.ez-view-richtexteditview .ez-richtext-editor h5.is-block-focused,
+.ez-view-richtexteditview .ez-richtext-editor h6.is-block-focused,
+.ez-view-richtexteditview .ez-richtext-editor p.is-block-focused {
+    margin-top: 3rem;
+}
+
 .ae-toolbar-add,
 .ae-toolbar,
 .ae-toolbar-styles {
     z-index: 1200;
 }
 
-.ae-ui .ae-arrow-box.ae-arrow-box-bottom.ez-ae-arrow-box-left:after {
-    left: -75%;
+.ae-ui .ae-arrow-box:after {
+    display: none;
+}
+
+.ae-ui .ae-toolbar, .ae-ui [class^=ae-toolbar-] {
+    margin-top: .3em;
+    padding: 0;
+}
+
+.ae-ui .ae-toolbar-styles {
+     margin-top: .55em;
+}
+
+.ae-ui .ae-toolbar-add .ae-button {
+    height: 35px;
+    width: 35px;
+}
+
+.ae-ui .ae-toolbar .ez-ae-label {
+    display: none;
 }
