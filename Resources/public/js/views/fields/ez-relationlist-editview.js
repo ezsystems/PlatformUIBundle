@@ -131,17 +131,21 @@ YUI.add('ez-relationlist-editview', function (Y) {
             var relatedContents = this.get('relatedContents'),
                 relatedContentsJSON = [];
 
-            Y.Array.each(relatedContents, function (value) {
-                var relatedContentJSON = value.toJSON();
+            if (relatedContents !== null) {
+                relatedContentsJSON = relatedContents.reduce(function (total, value) {
+                    var relatedContentJSON = value.toJSON();
+                    if (this._isNewRelation(value) || relatedContentJSON.resources.MainLocation) {
+                        total.push(relatedContentJSON);
+                    }
 
-                if (this._isNewRelation(value) || relatedContentJSON.resources.MainLocation) {
-                    relatedContentsJSON.push(relatedContentJSON);
-                }
-            }, this);
+                    return total;
+                }.bind(this), []);
+            }
 
             return {
                 relatedContents: relatedContentsJSON,
                 loadingError: this.get('loadingError'),
+                isLoaded: relatedContents !== null,
                 isEmpty: this._isFieldEmpty(),
                 isRequired: this.get('fieldDefinition').isRequired,
             };
@@ -152,10 +156,10 @@ YUI.add('ez-relationlist-editview', function (Y) {
          *
          * @method _isNewRelation
          * @protected
-         * @param {Object} object
+         * @param {eZ.ContentInfo|ez.eZ.Content} object
          * @return {boolean}
          */
-        _isNewRelation: function(object) {
+        _isNewRelation: function (object) {
             return object.name === 'contentInfoModel';
         },
 

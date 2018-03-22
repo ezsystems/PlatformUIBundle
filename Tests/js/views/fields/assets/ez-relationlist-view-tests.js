@@ -35,7 +35,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
                     }
                 };
 
-                this.templateVariablesCount = 6;
+                this.templateVariablesCount = 7;
                 this.fieldDefinitionIdentifier= "niceField";
                 this.fieldDefinition = {
                     fieldType: "ezobjectrelationlist",
@@ -168,7 +168,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
             name: "eZ Relation list View tests (without related content)",
 
             setUp: function () {
-                this.templateVariablesCount = 6;
+                this.templateVariablesCount = 7;
                 this.fieldDefinition = {fieldType: "ezobjectrelationlist", identifier: 'some_identifier'};
                 this.field = {fieldValue: {destinationContentsId: null}};
                 this.isEmpty = true;
@@ -195,7 +195,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
             name: "eZ Relation list View tests (without related content)",
 
             setUp: function () {
-                this.templateVariablesCount = 6;
+                this.templateVariablesCount = 7;
                 this.fieldDefinition = {fieldType: "ezobjectrelationlist", identifier: 'some_identifier'};
                 this.field = {fieldValue: {destinationContentsId: []}};
                 this.isEmpty = true;
@@ -222,7 +222,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
             name: "eZ Relation list View tests (without related content)",
 
             setUp: function () {
-                this.templateVariablesCount = 6;
+                this.templateVariablesCount = 7;
                 this.fieldDefinition = {fieldType: "ezobjectrelationlist", identifier: 'some_identifier'};
                 this.field = {fieldValue: null};
                 this.isEmpty = true;

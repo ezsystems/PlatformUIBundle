@@ -44,6 +44,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             this.jsonContentType = {};
             this.jsonVersion = {};
             this.loadingError = false;
+            this.isLoaded = true;
             this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.contentType = new Y.Mock();
@@ -86,7 +87,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(10, Y.Object.keys(variables).length, "The template should receive 10 variables");
+                Y.Assert.areEqual(11, Y.Object.keys(variables).length, "The template should receive 11 variables");
                 Y.Assert.areSame(
                     that.jsonContent, variables.content,
                     "The content should be available in the field edit view template"
@@ -113,7 +114,11 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 );
                 Y.Assert.areSame(
                     that.view.get('loadingError'), variables.loadingError,
-                    "The field should be available in the field edit view template"
+                    "The loadingError be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                    that.isLoaded, variables.isLoaded,
+                    "The isLoaded should be available in the field edit view template"
                 );
                 Y.Array.each(that.view.get('relatedContents'), function (destContent) {
                     destContentToJSONArray.push(destContent.toJSON());
