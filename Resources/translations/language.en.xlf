@@ -12,12 +12,6 @@
         <note>key: language.cancel</note>
         <jms:reference-file line="58">Resources/views/Language/edit.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="afee1c14dce2b30b230a0de49867c19712c3685f" resname="language.code">
-        <source>Language code</source>
-        <target>Language code</target>
-        <note>key: language.code</note>
-        <jms:reference-file line="29">Resources/views/Language/list.html.twig</jms:reference-file>
-      </trans-unit>
       <trans-unit id="670884ed109bd22b18847ccb016a0faf72470640" resname="language.code.label">
         <source>Language code:</source>
         <target>Language code:</target>
@@ -72,12 +66,6 @@
         <note>key: language.enabled.label</note>
         <jms:reference-file line="39">Resources/views/Language/view.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="acf6ff41e3b9acb2cbbcd4a8e908cf52c08b86af" resname="language.id">
-        <source>Language ID</source>
-        <target>Language ID</target>
-        <note>key: language.id</note>
-        <jms:reference-file line="30">Resources/views/Language/list.html.twig</jms:reference-file>
-      </trans-unit>
       <trans-unit id="60c35c78d83e0e32173bc6eda1bd696d223b49bd" resname="language.id.label">
         <source>Language ID:</source>
         <target>Language ID:</target>
@@ -94,12 +82,6 @@
         <jms:reference-file line="18">Resources/views/Language/list.html.twig</jms:reference-file>
         <jms:reference-file line="80">Resources/views/Language/list.html.twig</jms:reference-file>
         <jms:reference-file line="8">Resources/views/Language/view.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="c0ccfb7e7bc6d434ca93e998637fe775ba4a2de0" resname="language.name">
-        <source>Language name</source>
-        <target>Language name</target>
-        <note>key: language.name</note>
-        <jms:reference-file line="28">Resources/views/Language/list.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="e033c3bb99a4c1b19b1aaa80c637751afe1f474d" resname="language.name.label">
         <source>Language name:</source>
