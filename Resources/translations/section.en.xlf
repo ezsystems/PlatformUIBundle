@@ -93,23 +93,11 @@
         <note>key: section.edit.title</note>
         <jms:reference-file line="5">Resources/views/Section/edit.html.twig</jms:reference-file>
       </trans-unit>
-      <trans-unit id="bcb0a8eedc29344eb4ad95a02dd684438aae1df6" resname="section.id">
-        <source>Section ID</source>
-        <target>Section ID</target>
-        <note>key: section.id</note>
-        <jms:reference-file line="57">Resources/views/Section/list.html.twig</jms:reference-file>
-      </trans-unit>
       <trans-unit id="63039a13119dd5a53e5eb66cd798b3c323b57a5b" resname="section.id.label">
         <source>Section ID:</source>
         <target>Section ID:</target>
         <note>key: section.id.label</note>
         <jms:reference-file line="36">Resources/views/Section/view.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="54e249fceb2f506942f7f0ae30107a734b9b3fe5" resname="section.identifier">
-        <source>Section identifier</source>
-        <target>Section identifier</target>
-        <note>key: section.identifier</note>
-        <jms:reference-file line="56">Resources/views/Section/list.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="4a040adfce6771857aef17cf0dbb596f2dee2e70" resname="section.identifier.label">
         <source>Section identifier:</source>
@@ -128,12 +116,6 @@
         <jms:reference-file line="39">Resources/views/Section/list.html.twig</jms:reference-file>
         <jms:reference-file line="45">Resources/views/Section/list.html.twig</jms:reference-file>
         <jms:reference-file line="8">Resources/views/Section/view.html.twig</jms:reference-file>
-      </trans-unit>
-      <trans-unit id="376986256605f27a204911de172c7bca4bd8e3b6" resname="section.name">
-        <source>Section name</source>
-        <target>Section name</target>
-        <note>key: section.name</note>
-        <jms:reference-file line="55">Resources/views/Section/list.html.twig</jms:reference-file>
       </trans-unit>
       <trans-unit id="801aa4a73e669a7f454798a3d5e44b40899e51f1" resname="section.name.label">
         <source>Section name:</source>
