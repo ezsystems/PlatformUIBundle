@@ -45,9 +45,7 @@ YUI.add('ez-translateactionview', function (Y) {
          */
         render: function () {
             var container = this.get('container'),
-                content = this.get('content'),
-                translationsList = content.get('currentVersion').getTranslationsList(),
-                mainLanguageCode = content.get('mainLanguageCode'),
+                translationsList = this.get('content').get('currentVersion').getTranslationsList(),
                 firstLanguageCodes = this._getFirstLanguageCodes(),
                 moreTranslationCount = 0;
 
@@ -66,7 +64,6 @@ YUI.add('ez-translateactionview', function (Y) {
                 content: this.get('content').toJSON(),
                 translations: translationsList,
                 canDeleteTranslations: translationsList.length > 1,
-                mainLanguageCode: mainLanguageCode,
                 firstLanguagesCode: firstLanguageCodes,
                 moreTranslationCount: moreTranslationCount
             }));
