@@ -18,17 +18,17 @@
             <ul class="ez-contenttranslations-list">
                 {{#each translations}}
                 <li class="ez-contenttranslation">
-                    <a class="ez-contenttranslation-view-link" href="{{ path "viewLocation" id=../location.id languageCode=language }}">
-                        {{ language_name language }}
+                    <a class="ez-contenttranslation-view-link" href="{{ path "viewLocation" id=../location.id languageCode=this }}">
+                        {{ language_name this }}
                     </a>
 
                     <span class="ez-contenttranslation-actions">
-                        <a class="ez-contenttranslation-edit-link" href="{{ path "editContent" id=../content.id languageCode=language }}">
+                        <a class="ez-contenttranslation-edit-link" href="{{ path "editContent" id=../content.id languageCode=this }}">
                             {{translate 'translateaction.edit' 'bar'}}
                         </a>
-                        {{#if canBeDeleted}}
-                        <a class="ez-contenttranslation-delete-link ez-font-icon" data-translation="{{ language }}" href="{{ path "editContent" id=../content.id languageCode=language }}"></a>
-                        {{/if}}
+                        {{#notEqual ../content.mainLanguageCode this }}
+                            <a class="ez-contenttranslation-delete-link ez-font-icon" data-translation="{{ this }}" href="{{ path "editContent" id=../content.id languageCode=this }}"></a>
+                        {{/notEqual}}
                     </span>
                 </li>
                 {{/each}}

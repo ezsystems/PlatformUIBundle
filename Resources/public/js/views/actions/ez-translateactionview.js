@@ -45,7 +45,9 @@ YUI.add('ez-translateactionview', function (Y) {
          */
         render: function () {
             var container = this.get('container'),
-                translationsList = this.get('content').get('currentVersion').getTranslationsList(),
+                content = this.get('content'),
+                translationsList = content.get('currentVersion').getTranslationsList(),
+                mainLanguageCode = content.get('mainLanguageCode'),
                 firstLanguageCodes = this._getFirstLanguageCodes(),
                 moreTranslationCount = 0;
 
@@ -62,33 +64,13 @@ YUI.add('ez-translateactionview', function (Y) {
 
                 location: this.get('location').toJSON(),
                 content: this.get('content').toJSON(),
-                translations: this._decorateTranslationsList(translationsList),
+                canDeleteTranslations: translationsList.length > 1,
+                mainLanguageCode: mainLanguageCode,
                 firstLanguagesCode: firstLanguageCodes,
                 moreTranslationCount: moreTranslationCount
             }));
 
             return this;
-        },
-
-        /**
-         * decorates the list of language codes by adding true/false flag which
-         * determines whether delete button should be visible
-         *
-         * @method _decorateTranslationsList
-         * @param {Array} translationsList list of translation that will be decorated
-         * @return {Object} object which contains language codes with visibility flags
-         * @protected
-         */
-        _decorateTranslationsList: function (translationsList) {
-            var haveMoreTranslations = translationsList.length > 1,
-                mainTranslation = this.get('content').get('mainLanguageCode');
-
-            return translationsList.map(function(translation) {
-                return {
-                    language: translation,
-                    canBeDeleted: haveMoreTranslations && translation !== mainTranslation
-                };
-            });
         },
 
         /**
