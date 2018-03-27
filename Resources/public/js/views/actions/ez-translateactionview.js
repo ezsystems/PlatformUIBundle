@@ -64,6 +64,7 @@ YUI.add('ez-translateactionview', function (Y) {
 
                 location: this.get('location').toJSON(),
                 content: this.get('content').toJSON(),
+                translations: translationsList,
                 canDeleteTranslations: translationsList.length > 1,
                 mainLanguageCode: mainLanguageCode,
                 firstLanguagesCode: firstLanguageCodes,
