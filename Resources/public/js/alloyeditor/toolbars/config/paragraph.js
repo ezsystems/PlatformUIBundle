@@ -11,7 +11,7 @@ YUI.add('ez-alloyeditor-toolbar-config-paragraph', function (Y) {
      */
     Y.namespace('eZ.AlloyEditorToolbarConfig');
 
-    var BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase,
+    var BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockFloatingBase,
         ParagraphConfig,
         name = 'paragraph',
         getStyles = function () {
@@ -95,7 +95,7 @@ YUI.add('ez-alloyeditor-toolbar-config-paragraph', function (Y) {
      * @namespace eZ.AlloyEditorToolbarConfig
      * @deprecated
      * @class Paragraph
-     * @extends BlockBase
+     * @extends BlockFloatingBase
      */
     Y.eZ.AlloyEditorToolbarConfig.Paragraph = {
         name: name,

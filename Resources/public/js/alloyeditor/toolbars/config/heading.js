@@ -11,7 +11,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
      */
     Y.namespace('eZ.AlloyEditorToolbarConfig');
 
-    var BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase,
+    var BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockFloatingBase,
         HeadingConfig,
         name = 'heading',
         getStyles = function () {
@@ -69,7 +69,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
         };
 
         this.getArrowBoxClasses = BlockBase.getArrowBoxClasses;
-
+        
         this.setPosition = BlockBase.setPosition;
     };
 
@@ -95,7 +95,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
      * @namespace eZ.AlloyEditorToolbarConfig
      * @class Heading
      * @deprecated
-     * @extends BlockBase
+     * @extends BlockFloatingBase
      */
     Y.eZ.AlloyEditorToolbarConfig.Heading = {
         name: name,
