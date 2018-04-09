@@ -16,6 +16,10 @@ platformui:
         fieldtype_integer:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/Stories/FieldTypes/IntegerFieldType.feature ]
             contexts: [ EzSystems\PlatformUIBundle\Features\Context\Fields ]
+        # fieldtype specific tests - definition, validation, publishing, etc
+        fieldtype_checkbox:
+            paths: [ vendor/ezsystems/platform-ui-bundle/Features/Stories/FieldTypes/CheckBoxFieldType.feature ]
+            contexts: [ EzSystems\PlatformUIBundle\Features\Context\Fields ]
         # user features
         user:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/Users/users.feature ]
