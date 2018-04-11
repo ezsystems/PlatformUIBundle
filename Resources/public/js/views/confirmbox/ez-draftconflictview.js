@@ -139,7 +139,11 @@ YUI.add('ez-draftconflictview', function (Y) {
              * Fired to redirect to the draft edition
              * @event confirm
              */
-            this.fire('confirm', {route: e.target.getAttribute('href')});
+            this.fire('confirm', {
+                route: e.target.getAttribute('href'),
+                versionId: e.target.getAttribute('data-version-id'),
+                versionStatus: e.target.getAttribute('data-version-status')
+            });
         },
 
     }, {

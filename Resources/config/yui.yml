@@ -1233,6 +1233,7 @@ system:
                         - 'translateactionview-ez-template'
                         - 'ez-translator'
                         - 'event-outside'
+                        - 'ez-notequalhelper'
                     path: "%ez_platformui.public_dir%/js/views/actions/ez-translateactionview.js"
                 translateactionview-ez-template:
                     type: 'template'
@@ -1301,6 +1302,9 @@ system:
                 ez-strictcomparisonhelper:
                     requires: ['handlebars']
                     path: "%ez_platformui.public_dir%/js/helpers/ez-strictcomparisonhelper.js"
+                ez-notequalhelper:
+                    requires: ['handlebars']
+                    path: "%ez_platformui.public_dir%/js/helpers/ez-notequalhelper.js"
                 ez-getflagcodehelper:
                     requires: ['handlebars']
                     path: "%ez_platformui.public_dir%/js/helpers/ez-getflagcodehelper.js"
