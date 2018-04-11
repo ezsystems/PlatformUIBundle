@@ -13,7 +13,12 @@ YUI.add('ez-relation-view-tests', function (Y) {
 
             setUp: function () {
                 this.destinationContent = new Y.Mock();
-                this.destinationContentToJSON = {anythingJSONed: 'somethingJSONed'};
+                this.destinationContentToJSON = {
+                    anythingJSONed: 'somethingJSONed',
+                    resources: {
+                        MainLocation: true
+                    }
+                };
                 Y.Mock.expect(this.destinationContent, {
                     method: 'toJSON',
                     returns: this.destinationContentToJSON
