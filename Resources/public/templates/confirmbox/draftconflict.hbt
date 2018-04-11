@@ -34,6 +34,8 @@
             </td>
             <td class="ez-draft-conflict-edit-cell">
                <a href="{{ path 'editContentVersion' id=../contentInfo.id languageCode=initialLanguageCode versionId=id }}"
+                  data-version-id="{{ id }}"
+                  data-version-status="{{ status }}"
                   class="ez-draft-conflict-link ez-draft-conflict-edit ez-font-icon ez-button-edit"></a>
             </td>
         </tr>
