@@ -18,7 +18,12 @@ YUI.add('ez-relation-editview-tests', function (Y) {
 
         setUp: function () {
             this.destinationContent = new Y.Mock();
-            this.destinationContentToJSON = {anythingJSONed: 'somethingJSONed'};
+            this.destinationContentToJSON = {
+                anythingJSONed: 'somethingJSONed',
+                resources: {
+                    MainLocation: true
+                }
+            };
             Y.Mock.expect(this.destinationContent, {
                 method: 'toJSON',
                 returns: this.destinationContentToJSON
@@ -305,8 +310,18 @@ YUI.add('ez-relation-editview-tests', function (Y) {
                 fakeEventFacade = {selection: {contentInfo: contentInfoMock}};
 
             Y.Mock.expect(contentInfoMock, {
+                property: 'name',
+                value: 'contentInfoModel'
+            });
+
+            Y.Mock.expect(contentInfoMock, {
                 method: 'toJSON',
-                returns: {name: 'me', publishedDate: 'yesterday', lastModificationDate: 'tomorrow'}
+                returns: {
+                    name: 'me',
+                    publishedDate: 'yesterday',
+                    lastModificationDate: 'tomorrow',
+                    resources: {}
+                }
             });
 
             Y.Mock.expect(contentInfoMock, {
