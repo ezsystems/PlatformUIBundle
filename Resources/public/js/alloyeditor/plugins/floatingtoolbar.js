@@ -35,13 +35,22 @@ YUI.add('ez-alloyeditor-plugin-floatingtoolbar', function (Y) {
 
     function scrollHandler () {
         var toolbar = document.querySelector(FLOATING_TOOLBAR_SELECTOR),
-            editor = findFocusedEditor();
+            editor = findFocusedEditor(),
+            editorRect;
 
         if (!toolbar || !editor) {
             return ;
         }
 
-        toolbar.classList.toggle(FLOATING_TOOLBAR_FIXED_CLASS, editor.element.getClientRect().top < 0);
+        editorRect = editor.element.getClientRect();
+        if (editorRect.top < 0) {
+            toolbar.style.top = "0px";
+            toolbar.classList.add(FLOATING_TOOLBAR_FIXED_CLASS);
+
+        } else {
+            toolbar.style.top = (editorRect.top + editor.element.getWindow().getScrollPosition().y - toolbar.getBoundingClientRect().height) + 'px';
+            toolbar.classList.remove(FLOATING_TOOLBAR_FIXED_CLASS);
+        }
     }
 
     /**

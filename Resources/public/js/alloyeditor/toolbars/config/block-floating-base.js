@@ -17,12 +17,16 @@ YUI.add('ez-alloyeditor-toolbar-config-block-floating-base', function (Y) {
         FLOATING_TOOLBAR_FIXED_CLASS = 'ae-toolbar-floating-fixed';
 
     function setPositionFor (toolbar, block, editor) {
-        var editorRect = editor.element.getClientRect(),
-            methodName = editorRect.top < 0 ? 'addClass' : 'removeClass';
+        var editorRect = editor.element.getClientRect();
 
         toolbar.setStyle('left', editorRect.left + 'px');
-        toolbar.setStyle('top', (editorRect.top + editor.element.getWindow().getScrollPosition().y - toolbar.getClientRect().height) + 'px');
-        toolbar[methodName](FLOATING_TOOLBAR_FIXED_CLASS);
+        if (editorRect.top < 0) {
+            toolbar.setStyle('top', '0px');
+            toolbar.addClass(FLOATING_TOOLBAR_FIXED_CLASS);
+        } else {
+            toolbar.setStyle('top', (editorRect.top + editor.element.getWindow().getScrollPosition().y - toolbar.getClientRect().height) + 'px');
+            toolbar.removeClass(FLOATING_TOOLBAR_FIXED_CLASS);
+        }
 
         return true;
     }
