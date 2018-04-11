@@ -66,14 +66,14 @@ YUI.add('ez-relationlist-view', function (Y) {
                 relatedContentsJSON = [];
 
             if (relatedContents !== null) {
-                relatedContentsJSON = relatedContents.reduce(function (total, value) {
+                relatedContentsJSON = relatedContents.reduce(Y.bind(function (total, value) {
                     var relatedContentJSON = value.toJSON();
                     if (relatedContentJSON.resources.MainLocation) {
                         total.push(relatedContentJSON);
                     }
 
                     return total;
-                }.bind(this), []);
+                }, this), []);
             }
 
             return {
