@@ -64,7 +64,7 @@ system:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-addcontent']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/embed.js"
                 ez-alloyeditor-plugin-focusblock:
-                    requires: ['ez-alloyedit    or']
+                    requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/focusblock.js"
                 ez-alloyeditor-plugin-floatingtoolbar:
                     requires: ['ez-alloyeditor']

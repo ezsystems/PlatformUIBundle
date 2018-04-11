@@ -4,7 +4,7 @@
  */
 /* global CKEDITOR */
 YUI.add('ez-alloyeditor-toolbar-config-block-floating-base', function (Y) {
-    "use strict";
+    'use strict';
      /**
      * Provides base methods to toolbar dedicated to block element (heading,
      * paragraph, ...).
@@ -13,22 +13,17 @@ YUI.add('ez-alloyeditor-toolbar-config-block-floating-base', function (Y) {
      */
     Y.namespace('eZ.AlloyEditorToolbarConfig');
 
-    var ReactDOM = window.ReactDOM;
-    var FLOATING_TOOLBAR_FIXED_CLASS = 'ae-toolbar-floating-fixed';
+    var ReactDOM = window.ReactDOM,
+        FLOATING_TOOLBAR_FIXED_CLASS = 'ae-toolbar-floating-fixed';
 
     function setPositionFor (block, editor) {
-        /* jshint validthis: true */
         var editorRect = editor.element.getClientRect(),
+            methodName = editorRect.top < 0 ? 'addClass' : 'removeClass',
             toolbar = new CKEDITOR.dom.element(ReactDOM.findDOMNode(this));
 
         toolbar.setStyle('left', editorRect.left + 'px');
         toolbar.setStyle('top', (editorRect.top + editor.element.getWindow().getScrollPosition().y - toolbar.getClientRect().height) + 'px');
-
-        if (editorRect.top < 0) {
-            toolbar.addClass(FLOATING_TOOLBAR_FIXED_CLASS);
-        } else {
-            toolbar.removeClass(FLOATING_TOOLBAR_FIXED_CLASS);
-        }
+        toolbar[methodName](FLOATING_TOOLBAR_FIXED_CLASS);
 
         return true;
     }
@@ -64,7 +59,7 @@ YUI.add('ez-alloyeditor-toolbar-config-block-floating-base', function (Y) {
             var editor = payload.editor.get('nativeEditor'),
                 block = editor.elementPath().block;
 
-            if ( !block ) {
+            if (!block) {
                 block = new CKEDITOR.dom.element(payload.editorEvent.data.nativeEvent.target);
             }
 

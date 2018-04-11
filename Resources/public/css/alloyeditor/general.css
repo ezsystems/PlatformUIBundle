@@ -17,7 +17,7 @@
     display: none;
 }
 
-.ae-ui .ae-toolbar, .ae-ui [class^=ae-toolbar-] {
+.ae-ui .ae-toolbar, .ae-ui [class^="ae-toolbar-"] {
     margin-top: .3em;
     padding: 0;
 }
