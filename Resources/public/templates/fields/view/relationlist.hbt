@@ -3,32 +3,35 @@
         <p class="ez-fieldview-name"><strong>{{ translate_property fieldDefinition.names }}</strong></p>
     </div>
     <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
-            {{#if isEmpty}}
+            {{#if isEmpty }}
                 {{translate 'fieldview.field.empty' 'fieldview'}}
             {{else}}
-                {{#if relatedContents }}
-                    <ul>
-                    {{#each relatedContents}}
-                        <li class="ez-relationlistview-item" title="{{ name }}">
-                            <a href="{{path "viewLocation" id=resources.MainLocation languageCode=mainLanguageCode}}">{{ name }}</a>
-                        </li>
-                    {{/each}}
-                    </ul>
-                    {{#if loadingError}}
-                        <div class="ez-asynchronousview-error ez-font-icon">
-                            {{translate 'relationlist.error.loading' 'fieldview'}}
-                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{translate 'fieldview.retry' 'fieldview'}}</button>
-                        </div>
-                    {{/if}}
-                {{else}}
-                    {{#if loadingError}}
-                        <div class="ez-asynchronousview-error ez-font-icon">
-                            {{translate 'relationlist.error.loading' 'fieldview'}}
-                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{translate 'fieldview.retry' 'fieldview'}}</button>
-                        </div>
+                {{#if isLoaded }}
+                    {{#if relatedContents }}
+                        <ul>
+                        {{#each relatedContents}}
+                            <li class="ez-relationlistview-item" title="{{ name }}">
+                                <a href="{{path "viewLocation" id=resources.MainLocation languageCode=mainLanguageCode}}">{{ name }}</a>
+                            </li>
+                        {{/each}}
+                        </ul>
+                        {{#if loadingError}}
+                            <div class="ez-asynchronousview-error ez-font-icon">
+                                {{translate 'relationlist.error.loading' 'fieldview'}}
+                                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{translate 'fieldview.retry' 'fieldview'}}</button>
+                            </div>
+                        {{/if}}
                     {{else}}
-                       <div class="ez-font-icon ez-asynchronousview-loading">{{translate 'relationlist.loading' 'fieldview'}}</div>
+                        {{translate 'fieldview.field.empty' 'fieldview'}}
+                        {{#if loadingError}}
+                            <div class="ez-asynchronousview-error ez-font-icon">
+                                {{translate 'relationlist.error.loading' 'fieldview'}}
+                                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{translate 'fieldview.retry' 'fieldview'}}</button>
+                            </div>
+                        {{/if}}
                     {{/if}}
+                {{ else }}
+                    <div class="ez-font-icon ez-asynchronousview-loading">{{translate 'relationlist.loading' 'fieldview'}}</div>
                 {{/if}}
             {{/if}}
     </div></div>
