@@ -4,7 +4,7 @@
  */
 
 [class*="ae-icon-"], [class*=" ae-icon-"] {
-    font-size: 1.067em;
+    font-size: 1.2em;
 }
 
 .ae-ui [class^=ae-toolbar] {
@@ -12,5 +12,5 @@
 }
 
 .ae-ui .ae-toolbar-add .ae-button-add .ae-icon-add {
-    font-size: 1.067em;
+    font-size: 1.2em;
 }
