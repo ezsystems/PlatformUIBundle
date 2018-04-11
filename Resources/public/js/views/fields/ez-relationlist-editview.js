@@ -131,16 +131,36 @@ YUI.add('ez-relationlist-editview', function (Y) {
             var relatedContents = this.get('relatedContents'),
                 relatedContentsJSON = [];
 
-            Y.Array.each(relatedContents, function (value) {
-                relatedContentsJSON.push(value.toJSON());
-            });
+            if (relatedContents !== null) {
+                relatedContentsJSON = relatedContents.reduce(Y.bind(function (total, value) {
+                    var relatedContentJSON = value.toJSON();
+                    if (this._isNewRelation(value) || relatedContentJSON.resources.MainLocation) {
+                        total.push(relatedContentJSON);
+                    }
+
+                    return total;
+                }, this), []);
+            }
 
             return {
-                relatedContents:  relatedContentsJSON,
+                relatedContents: relatedContentsJSON,
                 loadingError: this.get('loadingError'),
+                isLoaded: relatedContents !== null,
                 isEmpty: this._isFieldEmpty(),
                 isRequired: this.get('fieldDefinition').isRequired,
             };
+        },
+
+        /**
+         * Check if relation to the content is new (non-existed before edit)
+         *
+         * @method _isNewRelation
+         * @protected
+         * @param {eZ.ContentInfo|ez.eZ.Content} object
+         * @return {boolean}
+         */
+        _isNewRelation: function (object) {
+            return object.name === 'contentInfoModel';
         },
 
         /**
