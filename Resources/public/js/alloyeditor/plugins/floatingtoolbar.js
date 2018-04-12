@@ -39,22 +39,16 @@ YUI.add('ez-alloyeditor-plugin-floatingtoolbar', function (Y) {
             editorRect;
 
         if (!toolbar || !editor) {
-            return ;
+            return;
         }
 
         editorRect = editor.element.getClientRect();
-        if (editorRect.top < 0) {
-            toolbar.style.top = "0px";
-            toolbar.classList.add(FLOATING_TOOLBAR_FIXED_CLASS);
-
-        } else {
-            toolbar.style.top = (editorRect.top + editor.element.getWindow().getScrollPosition().y - toolbar.getBoundingClientRect().height) + 'px';
-            toolbar.classList.remove(FLOATING_TOOLBAR_FIXED_CLASS);
-        }
+        toolbar.style.top = editorRect.top < 0 ? '0px' : (editorRect.top + editor.element.getWindow().getScrollPosition().y - toolbar.getBoundingClientRect().height) + 'px';
+        toolbar.classList.toggle(FLOATING_TOOLBAR_FIXED_CLASS, editorRect.top < 0);
     }
 
     /**
-     * CKEditor plugin to help the ...
+     * CKEditor plugin to update
      *
      * @class ezfloatingtoolbar
      * @namespace CKEDITOR.plugins
