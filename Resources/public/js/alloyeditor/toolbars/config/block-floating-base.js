@@ -20,13 +20,8 @@ YUI.add('ez-alloyeditor-toolbar-config-block-floating-base', function (Y) {
         var editorRect = editor.element.getClientRect();
 
         toolbar.setStyle('left', editorRect.left + 'px');
-        if (editorRect.top < 0) {
-            toolbar.setStyle('top', '0px');
-            toolbar.addClass(FLOATING_TOOLBAR_FIXED_CLASS);
-        } else {
-            toolbar.setStyle('top', (editorRect.top + editor.element.getWindow().getScrollPosition().y - toolbar.getClientRect().height) + 'px');
-            toolbar.removeClass(FLOATING_TOOLBAR_FIXED_CLASS);
-        }
+        toolbar.setStyle('top', editorRect.top < 0 ? '0px' : (editorRect.top + editor.element.getWindow().getScrollPosition().y - toolbar.getClientRect().height) + 'px');
+        toolbar[editorRect.top < 0 ? 'addClass' : 'removeClass'](FLOATING_TOOLBAR_FIXED_CLASS);
 
         return true;
     }

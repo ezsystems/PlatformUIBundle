@@ -48,7 +48,7 @@ YUI.add('ez-alloyeditor-plugin-floatingtoolbar', function (Y) {
     }
 
     /**
-     * CKEditor plugin to update
+     * CKEditor plugin to handle pin/unpin the floating toolbars on scrolling in viewport.
      *
      * @class ezfloatingtoolbar
      * @namespace CKEDITOR.plugins
