@@ -11,7 +11,9 @@ YUI.add('ez-alloyeditor-plugin-floatingtoolbar', function (Y) {
     }
 
     var FLOATING_TOOLBAR_SELECTOR = '.ae-toolbar-floating',
-        FLOATING_TOOLBAR_FIXED_CLASS = 'ae-toolbar-floating-fixed';
+        FLOATING_TOOLBAR_FIXED_CLASS = 'ae-toolbar-floating-fixed',
+        SCROLL_HANDLER_DEBOUNCE_TIMEOUT = 100,
+        scrollHandler;
 
     function findScrollParent(editor) {
         var container = editor.closest('.ez-main-content');
@@ -33,7 +35,7 @@ YUI.add('ez-alloyeditor-plugin-floatingtoolbar', function (Y) {
         return null;
     }
 
-    function scrollHandler () {
+    function updateToolbarPosition() {
         var toolbar = document.querySelector(FLOATING_TOOLBAR_SELECTOR),
             editor = findFocusedEditor(),
             editorRect,
@@ -48,6 +50,8 @@ YUI.add('ez-alloyeditor-plugin-floatingtoolbar', function (Y) {
         toolbar.style.top = top + 'px';
         toolbar.classList.toggle(FLOATING_TOOLBAR_FIXED_CLASS, editorRect.top < 0);
     }
+
+    scrollHandler = CKEDITOR.tools.debounce(updateToolbarPosition, SCROLL_HANDLER_DEBOUNCE_TIMEOUT);
 
     /**
      * CKEditor plugin to handle pin/unpin the floating toolbars on scrolling in viewport.
