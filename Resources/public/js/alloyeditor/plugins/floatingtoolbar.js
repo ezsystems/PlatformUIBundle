@@ -36,7 +36,8 @@ YUI.add('ez-alloyeditor-plugin-floatingtoolbar', function (Y) {
     function scrollHandler () {
         var toolbar = document.querySelector(FLOATING_TOOLBAR_SELECTOR),
             editor = findFocusedEditor(),
-            editorRect, top;
+            editorRect,
+            top;
 
         if (!toolbar || !editor) {
             return;
