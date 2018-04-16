@@ -157,7 +157,7 @@ YUI.add('ez-richtext-editview', function (Y) {
             var editor, nativeEd, valid, setEditorFocused, unsetEditorFocused,
                 extraPlugins = [
                     'ezaddcontent', 'widget', 'ezembed', 'ezremoveblock',
-                    'ezfocusblock', 'yui3', 'ezpaste',
+                    'ezfocusblock', 'ezfloatingtoolbar', 'yui3', 'ezpaste',
                 ];
 
             if (this.get('isNotTranslatable')) {

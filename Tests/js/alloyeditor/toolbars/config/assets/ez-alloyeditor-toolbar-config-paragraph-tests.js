@@ -4,7 +4,7 @@
  */
 YUI.add('ez-alloyeditor-toolbar-config-paragraph-tests', function (Y) {
     var defineTest, testTest,
-        BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase,
+        BlockFloatingBase = Y.eZ.AlloyEditorToolbarConfig.BlockFloatingBase,
         Assert = Y.Assert, Mock = Y.Mock;
 
     defineTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ToolbarConfigDefineTest, {
@@ -12,8 +12,8 @@ YUI.add('ez-alloyeditor-toolbar-config-paragraph-tests', function (Y) {
         toolbarConfig: new Y.eZ.AlloyEditorToolbarConfig.ParagraphConfig(),
         toolbarConfigName: "paragraph",
         methods: {
-            getArrowBoxClasses: BlockBase.getArrowBoxClasses,
-            setPosition: BlockBase.setPosition,
+            getArrowBoxClasses: BlockFloatingBase.getArrowBoxClasses,
+            setPosition: BlockFloatingBase.setPosition,
         },
 
         _should: {

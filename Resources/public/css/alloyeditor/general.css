@@ -3,12 +3,30 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
+.ez-view-richtexteditview .ez-richtext-editor {
+    padding: 0 .5em;
+}
+
 .ae-toolbar-add,
 .ae-toolbar,
 .ae-toolbar-styles {
     z-index: 1200;
 }
 
-.ae-ui .ae-arrow-box.ae-arrow-box-bottom.ez-ae-arrow-box-left:after {
-    left: -75%;
+.ae-ui .ae-arrow-box:after {
+    display: none;
+}
+
+.ae-ui .ae-toolbar, .ae-ui [class^="ae-toolbar-"] {
+    margin-top: .3em;
+    padding: 0;
+}
+
+.ae-ui .ae-toolbar-styles {
+    margin-top: -.3em;
+}
+
+.ae-ui .ae-toolbar-floating-fixed {
+    position: fixed;
+    margin: .5em 0 0 .5em;
 }

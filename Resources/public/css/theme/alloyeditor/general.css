@@ -4,9 +4,13 @@
  */
 
 [class*="ae-icon-"], [class*=" ae-icon-"] {
-    font-size: 18px;
+    font-size: 1.2em;
 }
 
 .ae-ui [class^=ae-toolbar] {
     border: 1px solid #333;
+}
+
+.ae-ui .ae-toolbar-add .ae-button-add .ae-icon-add {
+    font-size: 1.2em;
 }
