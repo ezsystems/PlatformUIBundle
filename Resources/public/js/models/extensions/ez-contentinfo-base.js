@@ -31,7 +31,7 @@ YUI.add('ez-contentinfo-base', function (Y) {
             var versions = [],
                 contentService = options.api.getContentService();
 
-            contentService.loadVersions(this.get('id'), function (error, response) {
+            contentService.loadVersions(this.get('id'), options.acceptHeader, function (error, response) {
                 if (error) {
                     callback(error, response);
                     return;

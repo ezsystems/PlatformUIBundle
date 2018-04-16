@@ -128,7 +128,7 @@ YUI.add('ez-versioninfomodel', function (Y) {
         REST_STRUCT_ROOT: "VersionInfo",
         ATTRS_REST_MAP: [
             {"id": "versionId"}, "status", "versionNo",
-            "creationDate", "modificationDate",
+            "creationDate", "creatorName", "modificationDate",
             "languageCodes", "initialLanguageCode", "names",
         ],
         LINKS_MAP: ['Content', 'Creator'],
@@ -177,6 +177,17 @@ YUI.add('ez-versioninfomodel', function (Y) {
             creationDate: {
                 setter: '_setterDate',
                 value: new Date(0)
+            },
+
+            /**
+             * The creator name of the version.
+             *
+             * @attribute creatorName
+             * @type String
+             * @default ""
+             */
+            creatorName: {
+                value: ""
             },
 
             /**
