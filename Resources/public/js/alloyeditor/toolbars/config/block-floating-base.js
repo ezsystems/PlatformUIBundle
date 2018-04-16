@@ -13,7 +13,7 @@ YUI.add('ez-alloyeditor-toolbar-config-block-floating-base', function (Y) {
      */
     Y.namespace('eZ.AlloyEditorToolbarConfig');
 
-    var ReactDOM = Y.eZ.React,
+    var ReactDOM = Y.eZ.ReactDOM,
         FLOATING_TOOLBAR_FIXED_CLASS = 'ae-toolbar-floating-fixed';
 
     function setPositionFor (toolbar, block, editor) {
