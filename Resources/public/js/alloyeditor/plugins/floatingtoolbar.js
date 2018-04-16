@@ -36,14 +36,15 @@ YUI.add('ez-alloyeditor-plugin-floatingtoolbar', function (Y) {
     function scrollHandler () {
         var toolbar = document.querySelector(FLOATING_TOOLBAR_SELECTOR),
             editor = findFocusedEditor(),
-            editorRect;
+            editorRect, top;
 
         if (!toolbar || !editor) {
             return;
         }
 
         editorRect = editor.element.getClientRect();
-        toolbar.style.top = editorRect.top < 0 ? '0px' : (editorRect.top + editor.element.getWindow().getScrollPosition().y - toolbar.getBoundingClientRect().height) + 'px';
+        top = editorRect.top < 0 ? 0 : editorRect.top + editor.element.getWindow().getScrollPosition().y - toolbar.getBoundingClientRect().height;
+        toolbar.style.top = top + 'px';
         toolbar.classList.toggle(FLOATING_TOOLBAR_FIXED_CLASS, editorRect.top < 0);
     }
 
