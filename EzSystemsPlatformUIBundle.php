@@ -10,6 +10,7 @@ namespace EzSystems\PlatformUIBundle;
 
 use EzSystems\PlatformUIBundle\DependencyInjection\Compiler\ApplicationConfigProviderPass;
 use EzSystems\PlatformUIBundle\DependencyInjection\Compiler\TranslationDomainsExtensionsPass;
+use EzSystems\PlatformUIBundle\DependencyInjection\Compiler\ValueObjectVisitorPass;
 use EzSystems\PlatformUIBundle\DependencyInjection\EzPlatformUIExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -36,5 +37,6 @@ class EzSystemsPlatformUIBundle extends Bundle
         parent::build($container);
         $container->addCompilerPass(new ApplicationConfigProviderPass());
         $container->addCompilerPass(new TranslationDomainsExtensionsPass());
+        $container->addCompilerPass(new ValueObjectVisitorPass());
     }
 }
