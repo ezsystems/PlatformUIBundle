@@ -61,6 +61,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     CKEDITOR.plugins.add('ezremoveblock', {});
     CKEDITOR.plugins.add('ezembed', {});
     CKEDITOR.plugins.add('ezfocusblock', {});
+    CKEDITOR.plugins.add('ezfloatingtoolbar', {});
     CKEDITOR.plugins.add('yui3', {});
     CKEDITOR.plugins.add('ezpaste', {});
 
@@ -623,6 +624,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
         "Should add the ezpaste plugin": function () {
             this._testExtraPlugins('ezpaste');
+        },
+
+        "Should add the ezfloatingtoolbar plugin": function () {
+            this._testExtraPlugins('ezfloatingtoolbar');
         },
 
         "Should blacklist ae_embed plugin": function () {
