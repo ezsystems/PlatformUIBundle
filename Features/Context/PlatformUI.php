@@ -116,6 +116,7 @@ class PlatformUI extends Context
      */
     public function afterScenario()
     {
+        echo $this->getSession()->getCurrentUrl();
         $this->closeConfirmBox();
         $this->closeEditView();
 
