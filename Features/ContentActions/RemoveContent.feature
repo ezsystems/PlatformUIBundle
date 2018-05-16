@@ -9,7 +9,7 @@ Feature: Remove content
     ##
     # Validate dialogs
     ##
-    @javascript
+    @javascript @EZP-29193-exclude-varnish
     Scenario: Verify the existence of the removal confirmation request
         Given a "News Flash" article exists
         And I am on "News Flash" full view
@@ -21,7 +21,7 @@ Feature: Remove content
     ##
     # Delete objects
     ##
-    @javascript
+    @javascript @EZP-29193-exclude-varnish
     Scenario: Remove one object and confirm the removal
         Given a "News Flash" article exists
         When I remove "News Flash"
@@ -29,7 +29,7 @@ Feature: Remove content
         Then I am notified that '"News Flash" sent to Trash'
         And the content item "News Flash" was removed
 
-    @javascript
+    @javascript @EZP-29193-exclude-varnish
     Scenario: Remove one object and do not confirm the removal
         Given a "News Flash" article exists
         When I remove "News Flash"
@@ -37,14 +37,14 @@ Feature: Remove content
         Then I am not notified that '"News Flash" sent to Trash'
         And "News Flash" content item exists
 
-    @javascript
+    @javascript @EZP-29193-exclude-varnish
     Scenario: Delete one object that has children objects
         Given a "News/News child" article exists
         When I remove "News"
         And I confirm the removal
         Then the content item "News" was removed
 
-    @javascript
+    @javascript @EZP-29193-exclude-varnish
     Scenario: Removing one object should redirect to it's parent location view
         Given a "News/News child" article exists
         When I remove "News child"
