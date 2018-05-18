@@ -73,13 +73,14 @@ YUI.add('ez-contentinfo-base-tests', function (Y) {
         'Should pass error to callback function when CAPI loadVersions fails': function () {
             var options = {
                     api: this.capi,
+                    acceptHeader: 'application/vnd.ez.platformui.VersionList+json'
                 },
                 callbackCalled = false;
 
             Y.Mock.expect(this.contentService, {
                 method: 'loadVersions',
-                args: [this.id, Mock.Value.Function],
-                run: Y.bind(function (contentId, cb) {
+                args: [this.id, options.acceptHeader, Mock.Value.Function],
+                run: Y.bind(function (contentId, acceptHeader, cb) {
                     cb(true, this.loadVersionsResponse);
                 }, this)
             });
@@ -95,13 +96,14 @@ YUI.add('ez-contentinfo-base-tests', function (Y) {
         'Should load versions': function () {
             var options = {
                     api: this.capi,
+                    acceptHeader: 'application/vnd.ez.platformui.VersionList+json'
                 },
                 callbackCalled = false;
 
             Y.Mock.expect(this.contentService, {
                 method: 'loadVersions',
-                args: [this.id, Mock.Value.Function],
-                run: Y.bind(function (contentId, cb) {
+                args: [this.id, options.acceptHeader, Mock.Value.Function],
+                run: Y.bind(function (contentId, acceptHeader, cb) {
                     cb(false, this.loadVersionsResponse);
                 }, this)
             });
@@ -130,13 +132,14 @@ YUI.add('ez-contentinfo-base-tests', function (Y) {
         'Should load sorted versions by status': function () {
             var options = {
                     api: this.capi,
+                    acceptHeader: 'application/vnd.ez.platformui.VersionList+json'
                 },
                 callbackCalled = false;
 
             Y.Mock.expect(this.contentService, {
                 method: 'loadVersions',
-                args: [this.id, Mock.Value.Function],
-                run: Y.bind(function (contentId, cb) {
+                args: [this.id, options.acceptHeader, Mock.Value.Function],
+                run: Y.bind(function (contentId, acceptHeader, cb) {
                     cb(false, this.loadVersionsResponse);
                 }, this)
             });
@@ -171,13 +174,14 @@ YUI.add('ez-contentinfo-base-tests', function (Y) {
         'Should handle error when trying to load versions by status without versions': function () {
             var options = {
                     api: this.capi,
+                    acceptHeader: 'application/vnd.ez.platformui.VersionList+json'
                 },
                 callbackCalled = false;
 
             Y.Mock.expect(this.contentService, {
                 method: 'loadVersions',
-                args: [this.id, Mock.Value.Function],
-                run: Y.bind(function (contentId, cb) {
+                args: [this.id, options.acceptHeader, Mock.Value.Function],
+                run: Y.bind(function (contentId, acceptHeader, cb) {
                     cb(true, undefined);
                 }, this)
             });

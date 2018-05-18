@@ -9,7 +9,7 @@ Feature: Copy content
     ##
     #Copy objects to valid locations
     ##
-    @javascript
+    @javascript @EZP-29193-exclude-varnish
     Scenario: Copying a content using the "copy" button
         Given a "Destination" folder exists
         And a "News Flash" article exists

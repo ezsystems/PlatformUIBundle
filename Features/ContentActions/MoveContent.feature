@@ -9,7 +9,7 @@ Feature: Move content
     ##
     #Move objects to valid locations
     ##
-    @javascript
+    @javascript @EZP-29193-exclude-varnish
     Scenario: Move one object without children objects
         Given an "Older News" folder exists
         And a "Origin/News Flash" article exists
@@ -21,7 +21,7 @@ Feature: Move content
         And the content item was moved to "Older News/News Flash"
         And the content item "Origin/News flash" was removed
 
-    @javascript
+    @javascript @EZP-29193-exclude-varnish
     Scenario: Move one object that has children objects
         Given an "Older News" folder exists
         And a "Tomorrow news/News Flash" article exists

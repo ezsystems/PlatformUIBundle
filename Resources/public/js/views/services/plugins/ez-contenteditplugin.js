@@ -48,6 +48,7 @@ YUI.add('ez-contenteditplugin', function (Y) {
                 capi = service.get('capi'),
                 options = {
                     api: capi,
+                    acceptHeader: 'application/vnd.ez.platformui.VersionList+json'
                 };
 
             app.set('loading', true);

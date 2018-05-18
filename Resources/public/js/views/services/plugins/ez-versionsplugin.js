@@ -58,6 +58,7 @@ YUI.add('ez-versionsplugin', function (Y) {
                 capi = service.get('capi'),
                 options = {
                     api: capi,
+                    acceptHeader: 'application/vnd.ez.platformui.VersionList+json'
                 };
 
             e.content.loadVersionsSortedByStatus(options, function (error, versions) {
