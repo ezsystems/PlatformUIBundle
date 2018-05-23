@@ -229,42 +229,6 @@ services:
         tags:
             - { name: ezsystems.platformui.value_object_visitor, type: eZ\Publish\API\Repository\Values\Content\VersionInfo }
 
-    ## Section related services
-    ezsystems.platformui.controller.section:
-        class: "%ezsystems.platformui.controller.section.class%"
-        arguments:
-            - "@ezrepoforms.action_dispatcher.section"
-            - "@ezpublish.api.service.section"
-            - "@ezsystems.platformui.notification_pool"
-        parent: ezsystems.platformui.controller.base
-
-    ezsystems.platformui.form_processor.section:
-        class: "%ezsystems.platformui.form_processor.section.class%"
-        arguments: ["@ezsystems.platformui.notification_pool", "@router"]
-        tags:
-            - { name: kernel.event_subscriber }
-
-    ## Language related services
-    ezsystems.platformui.controller.language:
-        class: "%ezsystems.platformui.controller.language.class%"
-        arguments:
-            - "@ezrepoforms.action_dispatcher.language"
-            - "@ezpublish.api.service.language"
-            - "@ezsystems.platformui.notification_pool"
-        parent: ezsystems.platformui.controller.base
-
-    ezsystems.platformui.form_processor.language:
-        class: "%ezsystems.platformui.form_processor.language.class%"
-        arguments: ["@ezsystems.platformui.notification_pool", "@router"]
-        tags:
-            - { name: kernel.event_subscriber }
-
-    ezsystems.platformui.controller.link_management:
-        class: '%ezsystems.platformui.controller.link_management.class%'
-        arguments:
-            - '@ezpublish.api.service.url'
-        parent: 'ezsystems.platformui.controller.base'
-
     ezsystems.platformui.loader.combo_loader:
         class: "%ezsystems.platformui.loader.combo_loader.class%"
         arguments: ["@ezpublish.config.resolver", "@templating", "$yui.build_dir;ez_platformui$", "%webroot_dir%"]
