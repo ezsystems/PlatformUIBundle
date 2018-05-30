@@ -109,11 +109,18 @@ YUI.add('ez-contenttypeeditserversideview', function (Y) {
         _reindexSelectionOptions: function (settingsNode) {
             var tplNode = this._getSelectionOptionPrototype(settingsNode),
                 inputIdTpl = tplNode.getData('ezselection-option-input-id'),
-                inputNameTpl = tplNode.getData('ezselection-option-input-name');
+                inputNameTpl = tplNode.getData('ezselection-option-input-name'),
+                checkboxNameTpl = tplNode.getData('ezselection-option-is-default-checkbox-name'),
+                checkboxIdTpl = tplNode.getData('ezselection-option-is-default-checkbox-id');
 
             settingsNode.all('.ezselection-settings-option-value input[type=text]').each(function (input, i) {
                 input.set('name', inputNameTpl.replace(PROTOTYPE_PLACEHOLDER, i));
                 input.set('id', inputIdTpl.replace(PROTOTYPE_PLACEHOLDER, i));
+            });
+
+            settingsNode.all('.ezselection-settings-option-value .ezselection-option-is-default-checkbox').each(function (input, i) {
+                input.set('name', checkboxNameTpl.replace(PROTOTYPE_PLACEHOLDER, i));
+                input.set('id', checkboxIdTpl.replace(PROTOTYPE_PLACEHOLDER, i));
             });
         },
 
