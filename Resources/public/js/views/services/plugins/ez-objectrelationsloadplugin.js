@@ -86,6 +86,20 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
             }, this);
 
             stack.done(function () {
+                relatedContentListArray.sort(function (a, b) {
+                    var indexA, indexB;
+
+                    if (e.loadLocation || e.loadLocationPath) {
+                        a = a.content;
+                        b = b.content;
+                    }
+
+                    indexA = destinationContentIds.indexOf(a.get('id'));
+                    indexB = destinationContentIds.indexOf(b.get('id'));
+
+                    return indexA - indexB;
+                });
+
                 e.target.setAttrs({
                     relatedContents: relatedContentListArray,
                     loadingError: loadingError,
