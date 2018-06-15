@@ -48,6 +48,7 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
                 loadingError = false,
                 sourceContent = e.content,
                 destinationContentIds = e.destinationContentIds,
+                withLocation = e.loadLocation || e.loadLocationPath,
                 contentDestinations,
                 end = stack.add(function (error, struct) {
                     if (error) {
@@ -77,7 +78,7 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
                 if (!loadedRelation[value]) {
                     loadedRelation[value] = true;
 
-                    if (e.loadLocation || e.loadLocationPath) {
+                    if (withLocation) {
                         this._loadContentStruct(value, e.loadLocation, e.loadLocationPath, end);
                     } else {
                         this._loadContent(value, end);
@@ -90,7 +91,7 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
                     var indexA,
                         indexB;
 
-                    if (e.loadLocation || e.loadLocationPath) {
+                    if (withLocation) {
                         a = a.content;
                         b = b.content;
                     }
