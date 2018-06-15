@@ -87,7 +87,8 @@ YUI.add('ez-objectrelationsloadplugin', function (Y) {
 
             stack.done(function () {
                 relatedContentListArray.sort(function (a, b) {
-                    var indexA, indexB;
+                    var indexA,
+                        indexB;
 
                     if (e.loadLocation || e.loadLocationPath) {
                         a = a.content;
