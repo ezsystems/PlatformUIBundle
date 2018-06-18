@@ -15,50 +15,58 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        <div class="ez-editfield-input"><div class="ez-relation-input-ui">
-            {{#if isEmpty}}
-               <p class="ez-relation-empty">
-                   {{translate "relation.empty" "fieldedit"}}
-               </p>
-            {{else}}
-                {{#if destinationContent }}
-                <div class="ez-relation-content">
-                    <div class="ez-relation-content-icon" data-icon="&#xe601;"></div>
-                    <div class="ez-relation-value">
-                        <h2 class="ez-relation-content-name">{{ destinationContent.name }}</h2>
-                        <ul class="ez-relation-properties">
-                            <li class="ez-relation-property">
-                                <strong>{{translate "relation.published" "fieldedit"}}</strong> {{ destinationContent.publishedDate }}
-                            </li>
-                            <li class="ez-relation-property">
-                                <strong>{{translate "relation.modified" "fieldedit"}}</strong> {{ destinationContent.lastModificationDate }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+        <div class="ez-editfield-input">
+            <div class="ez-relation-input-ui">
+                {{#if isEmpty}}
+                   <p class="ez-relation-empty">
+                       {{translate "relation.empty" "fieldedit"}}
+                   </p>
                 {{else}}
-                    {{#if loadingError}}
-                        <p class="ez-asynchronousview-error ez-font-icon">
-                            {{translate "relation.error" "fieldedit"}}
-                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
-                                {{translate "relation.retry" "fieldedit"}}
-                            </button>
-                        </p>
+                    {{#if isLoaded}}
+                        {{#if destinationContent }}
+                        <div class="ez-relation-content">
+                            <div class="ez-relation-content-icon" data-icon="&#xe601;"></div>
+                            <div class="ez-relation-value">
+                                <h2 class="ez-relation-content-name">{{ destinationContent.name }}</h2>
+                                <ul class="ez-relation-properties">
+                                    <li class="ez-relation-property">
+                                        <strong>{{translate "relation.published" "fieldedit"}}</strong> {{ destinationContent.publishedDate }}
+                                    </li>
+                                    <li class="ez-relation-property">
+                                        <strong>{{translate "relation.modified" "fieldedit"}}</strong> {{ destinationContent.lastModificationDate }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        {{else}}
+                            {{#if loadingError}}
+                                <p class="ez-asynchronousview-error ez-font-icon">
+                                    {{translate "relation.error" "fieldedit"}}
+                                    <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
+                                        {{translate "relation.retry" "fieldedit"}}
+                                    </button>
+                                </p>
+                            {{else}}
+                               <p class="ez-relation-empty">
+                                   {{translate "relation.empty" "fieldedit"}}
+                               </p>
+                            {{/if}}
+                        {{/if}}
                     {{else}}
                         <p class="ez-font-icon ez-asynchronousview-loading">
                             {{translate "relation.loading" "fieldedit"}}
                         </p>
                     {{/if}}
                 {{/if}}
-            {{/if}}
-            <p class="ez-relation-tools">
-                <button class="ez-relation-discover ez-button ez-button-height ez-button-tree ez-font-icon pure-button" {{#if isNotTranslatable}}disabled="disabled"{{/if}}>
-                    {{translate "relation.select" "fieldedit"}}
-                </button>
-                <button class="ez-relation-remove ez-button ez-button-height ez-button-delete ez-font-icon pure-button" {{#if isNotTranslatable}}disabled="disabled"{{/if}}>
-                    {{translate "relation.remove" "fieldedit"}}
-                </button>
-            </p>
-        </div></div>
+                <p class="ez-relation-tools">
+                    <button class="ez-relation-discover ez-button ez-button-height ez-button-tree ez-font-icon pure-button" {{#if isNotTranslatable}}disabled="disabled"{{/if}}>
+                        {{translate "relation.select" "fieldedit"}}
+                    </button>
+                    <button class="ez-relation-remove ez-button ez-button-height ez-button-delete ez-font-icon pure-button" {{#if isNotTranslatable}}disabled="disabled"{{/if}}>
+                        {{translate "relation.remove" "fieldedit"}}
+                    </button>
+                </p>
+            </div>
+        </div>
     </div>
 </div>

@@ -2,22 +2,30 @@
     <div class="ez-fieldview-label pure-u">
         <p class="ez-fieldview-name"><strong>{{ translate_property fieldDefinition.names }}</strong></p>
     </div>
-    <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
-            {{#if isEmpty}}
+    <div class="ez-fieldview-value pure-u">
+        <div class="ez-fieldview-value-content">
+            {{#if isEmpty }}
                 {{translate 'fieldview.field.empty' 'fieldview'}}
             {{else}}
-                {{#if destinationContent }}
-                    <a class="ez-navigation-item" href="{{path "viewLocation" id=destinationContent.resources.MainLocation languageCode=destinationContent.mainLanguageCode }}">{{ destinationContent.name }}</a></li>
-                {{else}}
-                    {{#if loadingError}}
-                        <p class="ez-asynchronousview-error ez-font-icon">
-                            {{translate 'relation.error.loading' 'fieldview'}}
-                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{translate 'fieldview.retry' 'fieldview'}}</button>
-                        </p>
+                {{#if isLoaded }}
+                    {{#if destinationContent }}
+                        <a class="ez-navigation-item" href="{{path "viewLocation" id=destinationContent.resources.MainLocation languageCode=destinationContent.mainLanguageCode }}">
+                        {{ destinationContent.name }}
+                        </a>
                     {{else}}
-                        <p class="ez-font-icon ez-asynchronousview-loading">{{translate 'relation.loading' 'fieldview'}}</p>
+                        {{#if loadingError}}
+                            <p class="ez-asynchronousview-error ez-font-icon">
+                                {{translate 'relation.error.loading' 'fieldview'}}
+                                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{translate 'fieldview.retry' 'fieldview'}}</button>
+                            </p>
+                        {{else}}
+                            {{translate 'fieldview.field.empty' 'fieldview'}}
+                        {{/if}}
                     {{/if}}
+                {{else}}
+                    <p class="ez-font-icon ez-asynchronousview-loading">{{translate 'relation.loading' 'fieldview'}}</p>
                 {{/if}}
             {{/if}}
-        </div></div>
+        </div>
+    </div>
 </div>
