@@ -13,6 +13,7 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
             this.Content = function () {
                 this.set = tests._set;
                 this.load = tests._load;
+                this.get = tests._get;
             };
             this.destination1 = '/api/ezp/v2/content/objects/117';
             this.destination2 = '/api/ezp/v2/content/objects/118';
@@ -60,6 +61,10 @@ YUI.add('ez-objectrelationsloadplugin-tests', function (Y) {
             }
             Assert.isTrue(isCorrectValue, 'The id should be one of the destination content id');
             this.id = value;
+        },
+
+        _get: function (name) {
+
         },
 
         _load: function (options, callback) {
