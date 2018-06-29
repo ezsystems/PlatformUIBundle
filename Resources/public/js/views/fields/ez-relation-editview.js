@@ -93,14 +93,10 @@ YUI.add('ez-relation-editview', function (Y) {
         _variables: function () {
             var destinationContent = this.get('destinationContent'),
                 destinationContentJSON = null,
-                isLoaded = false;
+                isLoaded = destinationContent !== null;
 
-            if (destinationContent !== null) {
-                isLoaded = true;
-
-                if (this._isNewRelation(destinationContent) || !this._isTrashed(destinationContent)) {
-                    destinationContentJSON = destinationContent.toJSON();
-                }
+            if (isLoaded && (this._isNewRelation(destinationContent) || !this._isTrashed(destinationContent))) {
+                destinationContentJSON = destinationContent.toJSON();
             }
 
             return {

@@ -61,14 +61,10 @@ YUI.add('ez-relation-view', function (Y) {
         _variables: function () {
             var destinationContent = this.get('destinationContent'),
                 destinationContentJSON = null,
-                isLoaded = false;
+                isLoaded = destinationContent !== null;
 
-            if (destinationContent) {
-                isLoaded = true;
-
-                if (destinationContent.get('resources.MainLocation') !== undefined) {
-                    destinationContentJSON = destinationContent.toJSON();
-                }
+            if (isLoaded && destinationContent.get('resources.MainLocation') !== undefined) {
+                destinationContentJSON = destinationContent.toJSON();
             }
 
             return {
