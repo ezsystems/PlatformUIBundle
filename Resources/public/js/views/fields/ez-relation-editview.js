@@ -91,14 +91,45 @@ YUI.add('ez-relation-editview', function (Y) {
          * @return Object
          */
         _variables: function () {
-            var dest = this.get('destinationContent');
+            var destinationContent = this.get('destinationContent'),
+                destinationContentJSON = null,
+                isLoaded = destinationContent !== null;
+
+            if (isLoaded && (this._isNewRelation(destinationContent) || !this._isTrashed(destinationContent))) {
+                destinationContentJSON = destinationContent.toJSON();
+            }
 
             return {
-                destinationContent: dest ? dest.toJSON() : null,
+                destinationContent: destinationContentJSON,
                 loadingError: this.get('loadingError'),
                 isEmpty: this._isFieldEmpty(),
+                isLoaded: isLoaded,
                 isRequired: this.get('fieldDefinition').isRequired,
             };
+        },
+
+        /**
+         * Check if related content is trashed.
+         *
+         * @method _isTrashed
+         * @protected
+         * @param {eZ.ContentInfo|ez.eZ.Content} model
+         * @return {boolean}
+         */
+        _isTrashed: function(model) {
+            return !model.get('resources.MainLocation');
+        },
+
+        /**
+         * Check if relation to the content is new (non-existed before edit)
+         *
+         * @method _isNewRelation
+         * @protected
+         * @param {eZ.ContentInfo|ez.eZ.Content} model
+         * @return {boolean}
+         */
+        _isNewRelation: function (model) {
+            return model.name === 'contentInfoModel';
         },
 
         /**
