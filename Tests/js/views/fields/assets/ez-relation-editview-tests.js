@@ -32,11 +32,20 @@ YUI.add('ez-relation-editview-tests', function (Y) {
                 method: 'toJSON',
                 returns: this.destinationContentToJSON
             });
+
             Y.Mock.expect(this.destinationContent, {
                 method: 'get',
-                args: ['contentId'],
-                returns: 45
+                args: [Y.Mock.Value.String],
+                run: function (key) {
+                    var values = {
+                        'resources.MainLocation': true,
+                        'contentId': 45
+                    };
+
+                    return values[key];
+                }
             });
+
             this.fieldDefinitionIdentifier= "niceField";
             this.fieldDefinition = {
                 fieldType: "ezobjectrelation",
@@ -55,6 +64,7 @@ YUI.add('ez-relation-editview-tests', function (Y) {
             this.jsonContentType = {};
             this.jsonVersion = {};
             this.loadingError = false;
+            this.isLoaded = true;
             this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.contentType = new Y.Mock();
@@ -97,7 +107,7 @@ YUI.add('ez-relation-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(10, Y.Object.keys(variables).length, "The template should receive 10 variables");
+                Y.Assert.areEqual(11, Y.Object.keys(variables).length, "The template should receive 11 variables");
                 Y.Assert.areSame(
                     that.jsonContent, variables.content,
                     "The content should be available in the field edit view template"
@@ -133,6 +143,10 @@ YUI.add('ez-relation-editview-tests', function (Y) {
                 Y.Assert.isFalse(
                     variables.isNotTranslatable,
                     "The isNotTranslatable should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                    that.isLoaded, variables.isLoaded,
+                    "The isLoaded should be available in the field edit view template"
                 );
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);
@@ -324,15 +338,25 @@ YUI.add('ez-relation-editview-tests', function (Y) {
                     name: 'me',
                     publishedDate: 'yesterday',
                     lastModificationDate: 'tomorrow',
-                    resources: {}
+                    resources: {
+                        MainLocation: true
+                    }
                 }
             });
 
             Y.Mock.expect(contentInfoMock, {
                 method: 'get',
-                args: ['contentId'],
-                returns: 51
+                args: [Y.Mock.Value.String],
+                run: function (key) {
+                    var values = {
+                        'resources.MainLocation': true,
+                        'contentId': 51
+                    };
+
+                    return values[key];
+                }
             });
+
             this.view.on('contentDiscover', function (e) {
                 that.resume(function () {
 

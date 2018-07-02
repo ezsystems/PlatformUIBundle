@@ -19,12 +19,21 @@ YUI.add('ez-relation-view-tests', function (Y) {
                         MainLocation: true
                     }
                 };
+
+                Y.Mock.expect(this.destinationContent, {
+                    method: 'get',
+                    args: ['resources.MainLocation'],
+                    returns: {
+                        MainLocation: true
+                    }
+                });
+
                 Y.Mock.expect(this.destinationContent, {
                     method: 'toJSON',
                     returns: this.destinationContentToJSON
                 });
 
-                this.templateVariablesCount = 6;
+                this.templateVariablesCount = 7;
                 this.fieldDefinitionIdentifier= "niceField";
                 this.fieldDefinition = {
                     fieldType: "ezobjectrelation",
@@ -127,7 +136,7 @@ YUI.add('ez-relation-view-tests', function (Y) {
             name: "eZ Relation View tests (without related content)",
 
             setUp: function () {
-                this.templateVariablesCount = 6;
+                this.templateVariablesCount = 7;
                 this.fieldDefinition = {fieldType: "ezobjectrelation", identifier: 'some_identifier'};
                 this.field = {fieldValue: {destinationContentId: null}};
                 this.isEmpty = true;
