@@ -89,6 +89,13 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
          * @param {eventFacade} e.data the node data
          */
         selectContent: function (e) {
+            //fix for firefox 60.0+ selection start on click
+            if (navigator.userAgent.search("Firefox") > -1 ) {
+                if(window.getSelection) {
+                    window.getSelection().removeAllRanges();
+                }
+            }
+
             this._fireSelectContent(e.data);
             this.get('selectedView').set('contentStruct', e.data);
         },
