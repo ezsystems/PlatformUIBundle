@@ -94,6 +94,16 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                     this._getEzConfigElement();
                     this.setWidgetContent('');
                     this._cancelEditEvents();
+                    this.disableUndo();
+                },
+
+                /**
+                 * Disables the undo in CKEditor.
+                 *
+                 * @method disableUndo
+                 */
+                disableUndo: function() {
+                    editor.setKeystroke(CKEDITOR.CTRL + 90, false);
                 },
 
                 /**
