@@ -7,7 +7,8 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
     "use strict";
 
     var IMAGE_TYPE_CLASS = 'ez-embed-type-image',
-        DATA_ALIGNMENT_ATTR = 'ezalign';
+        DATA_ALIGNMENT_ATTR = 'ezalign',
+        reloadEmbedTimeout = null;
 
     if (CKEDITOR.plugins.get('ezembed')) {
         return;
@@ -55,6 +56,8 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                         temp = new CKEDITOR.dom.documentFragment(wrapper.getDocument()),
                         instance;
 
+                    editor.undoManager.lock();
+
                     temp.append(wrapper);
                     editor.widgets.initOn(element, this.name);
                     editor.eZ.appendElement(wrapper);
@@ -86,6 +89,27 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                     this._getEzConfigElement();
                     this.setWidgetContent('');
                     this._cancelEditEvents();
+                    this._attachUndoListener();
+                },
+
+                /**
+                 * Attaches event listener for the undo in CKEditor.
+                 *
+                 * @method _attachUndoListener
+                 * @private
+                 */
+                _attachUndoListener: function () {
+                    editor.on('afterCommandExec', function(e) {
+                        if (e.data.name === 'undo') {
+                            window.clearTimeout(reloadEmbedTimeout);
+
+                            editor.fire('showLoading');
+
+                            reloadEmbedTimeout = window.setTimeout(function() {
+                                editor.fire('snapshotRestored');
+                            }, 1000);
+                        }
+                    });
                 },
 
                 /**
