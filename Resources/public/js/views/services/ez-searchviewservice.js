@@ -22,8 +22,17 @@ YUI.add('ez-searchviewservice', function (Y) {
 
     Y.eZ.SearchViewService = Y.Base.create('searchViewService', Y.eZ.ViewService, [], {
         initializer: function () {
+            var app = this.get('app');
+
             this.on('*:searchRequest', function(e) {
+                // Setting scrollToTop to false, so requesting more results won't scroll back to top of the page.
+                app.set('scrollToTop', false);
                 this._navigateToDoSearch(e);
+            });
+
+            this.on('*:destroy', function() {
+                // Returning scrollToTop to previous value.
+                app.set('scrollToTop', app.get('scrollToTopDefault'));
             });
         },
 
