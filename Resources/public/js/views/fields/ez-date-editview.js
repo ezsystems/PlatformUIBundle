@@ -74,10 +74,13 @@ YUI.add('ez-date-editview', function (Y) {
          * @protected
          */
         _syncDateAttribute: function () {
-            var field = this.get('field');
+            var field = this.get('field'),
+                date;
 
             if ( this._containsValidTimestamp() ) {
-                this._set('date', Y.Date.format(new Date(field.fieldValue.timestamp * 1000)));
+                date = new Date(field.fieldValue.timestamp * 1000);
+                date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+                this._set('date', Y.Date.format(date));
             }
         },
 
@@ -260,6 +263,7 @@ YUI.add('ez-date-editview', function (Y) {
             }
             if ( this._containsValidTimestamp() ) {
                 date = new Date(field.fieldValue.timestamp * 1000);
+                date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
             }
             calendar = new Y.Calendar({
                 showPrevMonth: true,

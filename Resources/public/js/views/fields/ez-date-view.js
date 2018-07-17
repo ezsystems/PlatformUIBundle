@@ -48,6 +48,20 @@ YUI.add('ez-date-view', function (Y) {
             }
             return '';
         },
+
+        /**
+         * Formats the date part of the date object
+         *
+         * @method _formatDate
+         * @protected
+         * @param {Date} date
+         * @return String
+         */
+        _formatDate: function (date) {
+            return date.toLocaleDateString(
+                undefined, {timeZone: "UTC"}
+            );
+        },
     });
 
     Y.eZ.FieldView.registerFieldView('ezdate', Y.eZ.DateView);
