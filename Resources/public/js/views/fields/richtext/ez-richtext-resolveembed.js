@@ -52,6 +52,39 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
     };
 
     /**
+     * Shows the loading spinner.
+     *
+     * @method showLoading
+     * @param {eZ.FieldView|eZ.FieldEditView} view
+     */
+    ResolveEmbed.prototype.showLoading = function (view) {
+        var embeds = this._getEmbedList(view),
+            mapNodes = this._buildEmbedMapNodes(embeds);
+
+        if ( !Y.Object.isEmpty(mapNodes) ) {
+            this._renderLoadingEmbedElements(mapNodes);
+        }
+    };
+    /**
+     * Loads the embedded contents.
+     *
+     * @method loadEmbeds
+     * @param {eZ.FieldView|eZ.FieldEditView} view
+     */
+    ResolveEmbed.prototype.loadEmbeds = function (view) {
+        var embeds = this._getEmbedList(view, true),
+            mapNodes = this._buildEmbedMapNodes(embeds);
+
+        if (!Object.keys(mapNodes).length) {
+            view.fire('unlockUndoManager');
+
+            return;
+        }
+
+        this._loadEmbeds(mapNodes, view);
+    };
+
+    /**
      * Renders the embed from the embedStruct provided in the event parameters
      * that triggered the process.
      *
@@ -65,6 +98,8 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
         var embedNodes = mapNodes[embedStruct.contentInfo.get('contentId')];
 
         if ( !embedNodes ) {
+            view.fire('unlockUndoManager');
+
             return;
         }
 
@@ -73,6 +108,8 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
                 .setContent(embedStruct.contentInfo.get('name'));
         }, this);
         delete mapNodes[embedStruct.contentInfo.get('contentId')];
+
+        view.fire('unlockUndoManager');
     };
 
     /**
@@ -84,12 +121,12 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      * @param {eZ.FieldView|eZ.FieldEditView} view
      * @return {Y.NodeList}
      */
-    ResolveEmbed.prototype._getEmbedList = function (view) {
+    ResolveEmbed.prototype._getEmbedList = function (view, force) {
         var embeds = view.get('container').all('[data-ezelement="ezembed"]'),
             list = new Y.NodeList();
 
         embeds.each(function (embed) {
-            if ( !this._getEmbedContent(embed) ) {
+            if ( !this._getEmbedContent(embed) || force ) {
                 list.push(embed);
             }
         }, this);
@@ -153,7 +190,7 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
                 filter: {'ContentIdCriterion': Object.keys(mapNode).join(',')},
                 offset: 0,
             },
-            callback: Y.bind(this._renderEmbed, this, mapNode),
+            callback: Y.bind(this._renderEmbed, this, mapNode, view),
         });
     };
 
@@ -166,11 +203,13 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      * @param {Error|false} error
      * @param {Array} results
      */
-    ResolveEmbed.prototype._renderEmbed = function (mapNode, error, results) {
+    ResolveEmbed.prototype._renderEmbed = function (mapNode, view, error, results) {
         var localMapNode = Y.merge(mapNode);
 
         if ( error ) {
             this._renderNotLoadedEmbed(localMapNode);
+            view.fire('unlockUndoManager');
+
             return;
         }
 
@@ -181,6 +220,8 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
             delete localMapNode[content.get('contentId')];
         }, this);
         this._renderNotLoadedEmbed(localMapNode);
+
+        view.fire('unlockUndoManager');
     };
 
     /**
