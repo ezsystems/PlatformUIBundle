@@ -186,6 +186,28 @@ YUI.add('ez-richtext-editview', function (Y) {
                 nativeEd.on(evtName, Y.bind(this._forwardEditorEvent, this));
             }, this);
 
+            nativeEd.on('showLoading', Y.bind(function () {
+                if (!nativeEd.undoManager.locked) {
+                    nativeEd.undoManager.lock(false, true);
+                }
+
+                this.get('processors').forEach(function (info) {
+                    info.processor.showLoading(this);
+                }, this);
+            }, this));
+
+            nativeEd.on('snapshotRestored', Y.bind(function () {
+                this.get('processors').forEach(function (info) {
+                    info.processor.loadEmbeds(this);
+                }, this);
+            }, this));
+
+            this.after('unlockUndoManager', function () {
+                if (nativeEd.undoManager.locked) {
+                    nativeEd.undoManager.unlock();
+                }
+            });
+
             nativeEd.on('blur', valid);
             nativeEd.on('focus', valid);
             nativeEd.on('change', valid);

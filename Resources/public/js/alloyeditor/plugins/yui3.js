@@ -10,7 +10,11 @@ YUI.add('ez-alloyeditor-plugin-yui3', function (Y) {
         return;
     }
 
-    function cleanUpIds(editor) {
+    function cleanUpIds(editor, event) {
+        if (event.data.name === 'undo') {
+            return;
+        }
+
         editor.undoManager.lock();
         Array.prototype.forEach.call(
             editor.element.$.querySelectorAll('[id]'),
