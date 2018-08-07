@@ -24,6 +24,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
     Y.eZ.ContentCreateViewService = Y.Base.create('contentCreateViewService', Y.eZ.ContentEditViewService, [], {
         initializer: function () {
             this.on('*:changeLanguage', this._selectLanguage);
+            this.after('contentEditView:activeChange', this._refreshSession);
         },
 
         _load: function (next) {

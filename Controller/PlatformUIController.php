@@ -53,7 +53,10 @@ class PlatformUIController extends Controller
 
         return $this->render(
             'eZPlatformUIBundle:PlatformUI:shell.html.twig',
-            ['parameters' => $this->configAggregator->getConfig()]
+            [
+                'parameters' => $this->configAggregator->getConfig(),
+                'rest_session_time' => ini_get('session.gc_maxlifetime'),
+            ]
         );
     }
 

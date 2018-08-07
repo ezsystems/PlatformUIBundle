@@ -194,6 +194,12 @@
         <note>key: version.not.exist.in</note>
         <jms:reference-file>Resources/public/js/views/services/ez-contenteditviewservice.js</jms:reference-file>
       </trans-unit>
+      <trans-unit id="217746443dd8e7aff0175db05603443dec7df180" resname="cannot.refresh.session">
+        <source>Cannot refresh the user session</source>
+        <target>Cannot refresh the user session</target>
+        <note>key: cannot.refresh.session</note>
+        <jms:reference-file>Resources/public/js/views/services/ez-contenteditviewservice.js</jms:reference-file>
+      </trans-unit>
     </body>
   </file>
 </xliff>
