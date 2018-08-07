@@ -1216,6 +1216,7 @@ YUI.add('ez-platformuiapp', function (Y) {
              * @type {Boolean}
              */
             scrollToTopDefault: {
+                readOnly: true,
                 value: true,
             },
         }
