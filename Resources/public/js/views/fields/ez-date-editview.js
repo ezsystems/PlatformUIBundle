@@ -79,6 +79,7 @@ YUI.add('ez-date-editview', function (Y) {
 
             if ( this._containsValidTimestamp() ) {
                 date = new Date(field.fieldValue.timestamp * 1000);
+
                 date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
                 this._set('date', Y.Date.format(date));
             }
@@ -263,6 +264,7 @@ YUI.add('ez-date-editview', function (Y) {
             }
             if ( this._containsValidTimestamp() ) {
                 date = new Date(field.fieldValue.timestamp * 1000);
+                
                 date.setTime(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
             }
             calendar = new Y.Calendar({

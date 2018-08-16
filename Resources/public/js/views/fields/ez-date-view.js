@@ -55,12 +55,10 @@ YUI.add('ez-date-view', function (Y) {
          * @method _formatDate
          * @protected
          * @param {Date} date
-         * @return String
+         * @return {String}
          */
         _formatDate: function (date) {
-            return date.toLocaleDateString(
-                undefined, {timeZone: "UTC"}
-            );
+            return date.toLocaleDateString(undefined, {timeZone: 'UTC'});
         },
     });
 
