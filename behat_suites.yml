@@ -1,11 +1,4 @@
 platformui:
-    extensions:
-          Bex\Behat\ScreenshotExtension:
-            active_image_drivers: cloudinary
-            image_drivers:
-                cloudinary:
-                    cloud_name: ezplatformtravis
-                    preset: qxmonhjq
     suites:
         # basic platform suite: login, logout, etc
         standard:
