@@ -1,13 +1,10 @@
 platformui:
     extensions:
           Bex\Behat\ScreenshotExtension:
-            active_image_drivers: [local, cloudinary]
+            active_image_drivers: cloudinary
             image_drivers:
-                local:
-                    screenshot_directory: /tmp/behat-screenshot/
                 cloudinary:
                     cloud_name: ezplatformtravis
-                    screenshot_directory: /tmp/behat-screenshot2/
                     preset: qxmonhjq
     suites:
         # basic platform suite: login, logout, etc
