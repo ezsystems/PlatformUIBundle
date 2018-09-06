@@ -11,7 +11,8 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/konradoboza/ezpublish-kernel/"
+            "url": "https://github.com/konradoboza/ezpublish-kernel/",
+            "no-api": true
         }
     ],
     "require": {
