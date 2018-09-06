@@ -8,10 +8,16 @@
             "EzSystems\\PlatformUIBundle\\": ""
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/konradoboza/ezpublish-kernel/"
+        }
+    ],
     "require": {
         "ezsystems/platform-ui-assets-bundle": "^4.2.0",
         "ezsystems/repository-forms": "^1.11",
-        "ezsystems/ezpublish-kernel": "^6.13.3@dev",
+        "ezsystems/ezpublish-kernel": "dev-EZP-29234-custom_vendor_prefix as 6.13.3",
         "ezsystems/ez-support-tools": "^0.2",
         "zetacomponents/system-information": "^1.1",
         "willdurand/js-translation-bundle": "^2.5",
