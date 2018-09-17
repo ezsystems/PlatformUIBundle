@@ -1206,6 +1206,19 @@ YUI.add('ez-platformuiapp', function (Y) {
             routingEnabled: {
                 value: true,
             },
+
+            /**
+             * Boolean that determine if by default document should be scrolled to top on navigation
+             *
+             * @attribute scrollToTopDefault
+             * @default true
+             * @readOnly
+             * @type {Boolean}
+             */
+            scrollToTopDefault: {
+                readOnly: true,
+                value: true,
+            },
         }
     });
 });
