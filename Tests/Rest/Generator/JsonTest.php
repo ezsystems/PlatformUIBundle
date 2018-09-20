@@ -7,14 +7,15 @@
 namespace EzSystems\PlatformUIBundle\Tests\Rest\Generator;
 
 use eZ\Publish\Core\REST\Common\Output\Generator\Json\FieldTypeHashGenerator;
-use EzSystems\PlatformUIBundle\Rest\Generator\Json;
+use eZ\Publish\Core\REST\Common\Output\Generator\Json;
 use PHPUnit\Framework\TestCase;
 
 class JsonTest extends TestCase
 {
     public function testGetMediaType()
     {
-        $mediaType = (new Json($this->getMock(FieldTypeHashGenerator::class)))->getMediaType('Object');
+        $vendor = 'vnd.ez.platformui';
+        $mediaType = (new Json($this->getMock(FieldTypeHashGenerator::class), $vendor))->getMediaType('Object');
 
         $this->assertEquals('application/vnd.ez.platformui.Object+json', $mediaType);
     }
