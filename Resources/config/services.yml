@@ -40,6 +40,8 @@ parameters:
     # To disable set to 0.
     ezsystems.platformui.application_config.combo_loader.cache_ttl: 604800
 
+    ezsystems.platformui.rest.generator.json.vendor: 'vnd.ez.platformui'
+
     ezsystems.platformui.rest.output.visitor.json.regexps:
         - '(^application/vnd\.ez\.platformui\.[A-Za-z]+\+json$)'
 services:
@@ -202,9 +204,10 @@ services:
             - { name: ezpublish_rest.field_type_processor, alias: ezuser }
 
     ezsystems.platformui.rest.output.generator.json:
-        class: EzSystems\PlatformUIBundle\Rest\Generator\Json
+        class: eZ\Publish\Core\REST\Common\Output\Generator\Json
         arguments:
             - "@ezpublish_rest.output.generator.json.field_type_hash_generator"
+            - "%ezsystems.platformui.rest.generator.json.vendor%"
         calls:
             - [ setFormatOutput, [ "%kernel.debug%" ] ]
 
