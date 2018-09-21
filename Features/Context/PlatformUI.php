@@ -355,6 +355,9 @@ class PlatformUI extends Context
                 );
             }
         }
+
+        throw new \Exception('Test exception');
+
         // find an '.ez-tree-node' element which contains an '.ez-tree-navigate' with text '$text'
         $element = $this->getElementByText($text, '.ez-tree-node', '.ez-tree-navigate', $parentNode);
         if (!$element) {
