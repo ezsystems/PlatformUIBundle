@@ -140,6 +140,8 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
          * @param {EventFacade} e
          */
         _selectLanguage: function (e) {
+            var isTranslationAllowed = this.get('content').isNew();
+
             e.preventDefault();
             this.fire('languageSelect', {
                 config: {
@@ -147,7 +149,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
                     languageSelectedHandler: Y.bind(this._setLanguage, this, e.target, e.fields),
                     cancelLanguageSelectionHandler: null,
                     canBaseTranslation: false,
-                    translationMode: true,
+                    translationMode: isTranslationAllowed,
                     referenceLanguageList: [this.get('languageCode')]
                 },
             });

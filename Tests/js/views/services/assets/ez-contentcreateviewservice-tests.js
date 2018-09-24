@@ -333,6 +333,11 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             this.request = {params: {languageCode: this.languageCode}};
             this.capi = {};
 
+            Mock.expect(this.content, {
+                method: 'isNew',
+                returns: true
+            });
+
             Mock.expect(this.version, {
                 method: 'get',
                 args: ['versionId'],
