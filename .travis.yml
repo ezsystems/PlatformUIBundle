@@ -52,9 +52,12 @@ branches:
         - master
         - /^\d.\d+$/
 
+        
+
 before_install:
     - phpenv config-rm xdebug.ini
     - echo 'memory_limit = -1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    - export COMPOSER_MEMORY_LIMIT=4g
 
 before_script:
     - $BEFORE

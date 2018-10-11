@@ -18,3 +18,8 @@ cd ezplatform
 
 # Install everything needed for behat testing, using our local branch of this repo
 ./bin/.travis/trusty/setup_from_external_repo.sh $BRANCH_BUILD_DIR "ezsystems/platform-ui-bundle:dev-tmp_ci_branch"
+
+cd "$HOME/build/ezplatform"; 
+docker-compose exec --user root app sh -c "chown -R www-data:www-data ."
+docker-compose exec --user www-data app sh -c "composer config repositories.test vcs http://github.com/mnocon/BehatBundle"
+docker-compose exec --user www-data app sh -c 'composer require ezsystems/behatbundle:"dev-EZP-25780-rmdir-warning as 6.5.x-dev"'
