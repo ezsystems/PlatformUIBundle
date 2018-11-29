@@ -224,7 +224,7 @@ YUI.add('ez-viewservice', function (Y) {
         },
 
         destructor: function () {
-            this._killSessionRenewal();
+            this.killSessionRenewal();
         }
     }, {
         ATTRS: {
