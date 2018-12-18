@@ -36,6 +36,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
             this.after('*:closeView', this._redirectAfterClose);
             this.after('discardedDraft', this._redirectAfterDiscard);
             this.after('publishedDraft', this._redirectAfterPublish);
+            this.after('contentEditView:activeChange', this._refreshSession);
 
             this._setLanguageCode();
             this._setBaseLanguageCode();

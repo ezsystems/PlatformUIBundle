@@ -106,6 +106,10 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 args: [secondService]
             });
 
+            Y.Mock.expect(firstService, {
+                method: 'killSessionRenewal',
+            });
+
             this.app._set('activeViewService', firstService);
             this.app._set('activeViewService', secondService);
 
