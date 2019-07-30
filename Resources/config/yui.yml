@@ -1144,7 +1144,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/fields/edit/relation.hbt"
                 ez-relationlist-editview:
-                    requires: ['ez-fieldeditview', 'relationlisteditview-ez-template', 'ez-asynchronousview', 'array-extras', 'transition', 'ez-translator']
+                    requires: ['ez-fieldeditview', 'relationlisteditview-ez-template', 'ez-asynchronousview', 'array-extras', 'transition', 'ez-translator', 'sortable']
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-relationlist-editview.js"
                 relationlisteditview-ez-template:
                     type: 'template'

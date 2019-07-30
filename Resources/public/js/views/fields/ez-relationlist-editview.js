@@ -22,6 +22,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
      * @extends eZ.FieldEditView
      */
     Y.eZ.RelationListEditView = Y.Base.create('relationListEditView', Y.eZ.FieldEditView, [Y.eZ.AsynchronousView], {
+        makeListSortableTimeout: null,
         events: {
             '.ez-relation-discover': {
                 'tap': '_runUniversalDiscovery',
@@ -30,7 +31,6 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 'tap': '_removeRelation'
             }
         },
-
         initializer: function () {
             var fieldValue = this.get('field').fieldValue;
 
@@ -39,6 +39,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
             if( fieldValue.destinationContentIds ){
                 this._set('destinationContentsIds', fieldValue.destinationContentIds);
             }
+
             this.after('relatedContentsChange', function (e) {
                 this._syncDestinationContentsIds(e);
                 if (e.src === "remove") {
@@ -50,7 +51,44 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 } else {
                     this.render();
                 }
+
+                clearTimeout(this.makeListSortableTimeout);
+                this.makeListSortableTimeout = setTimeout(Y.bind(this._makeListSortable, this), 75);
             });
+        },
+        
+        /**
+         * Sets up the relation list to be sortable
+         */
+        _makeListSortable: function() {
+            var fieldDefinitionIdentifier = this.getField().fieldDefinitionIdentifier;
+    
+            var sortable = new Y.Sortable({
+                container: "." + fieldDefinitionIdentifier + ".ez-relation-container",
+                nodes: ".ez-relation-content",
+                opacity: ".1"
+            });
+    
+            sortable.delegate.after("drag:end",Y.bind(function(e) {
+                this._setSortedDestinationContentIds(e);
+            }, this));
+          },
+          
+          /**
+           * Sets up the new value for the destinationContentsIds attribute when content in the relation list is reordered 
+           * @param {EventFacade} e 
+           */
+          _setSortedDestinationContentIds: function(e) {
+            var rows = this.get("container").all(".ez-relation-content");
+    
+            var destinationContentsIds = rows._nodes.map(function(row) {
+              return row
+                .getAttribute("data-content-id")
+                .split("/")
+                .pop();
+            });
+    
+            this._set("destinationContentsIds", destinationContentsIds);
         },
 
         /**
