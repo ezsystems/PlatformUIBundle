@@ -31,6 +31,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 isRequired: false
             };
             this.field = {
+                fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
                 fieldValue: {
                     destinationContentIds: [45, 42],
                     destinationContentHrefs: [
@@ -48,6 +49,11 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.contentType = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ["mainLanguageCode"],
+                returns: this.mainLanguageCode
+            });
             Y.Mock.expect(this.content, {
                 method: 'toJSON',
                 returns: this.jsonContent
@@ -269,7 +275,12 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                     selectionContentTypes: ['allowed_content_type_identifier']
                 }
             };
-            this.field = {fieldValue: {destinationContentIds: [45, 42]}};
+            this.field = {
+                fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
+                fieldValue: {
+                    destinationContentIds: [45, 42]
+                }
+            };
 
             this.jsonContent = {};
             this.jsonContentType = {};
@@ -277,6 +288,11 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.contentType = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ["mainLanguageCode"],
+                returns: this.mainLanguageCode
+            });
             Y.Mock.expect(this.content, {
                 method: 'toJSON',
                 returns: this.jsonContent
@@ -547,7 +563,12 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 isRequired: false,
                 fieldSettings: {},
             };
-            this.field = {fieldValue: {destinationContentIds: [45, 42]}};
+            this.field = {
+                fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
+                fieldValue: {
+                    destinationContentIds: [45, 42]
+                }
+            };
 
             this.jsonContent = {};
             this.jsonContentType = {};
@@ -555,6 +576,11 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.contentType = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ["mainLanguageCode"],
+                returns: this.mainLanguageCode
+            });
             Y.Mock.expect(this.content, {
                 method: 'toJSON',
                 returns: this.jsonContent

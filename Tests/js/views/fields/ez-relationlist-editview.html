@@ -12,7 +12,7 @@
     <button class="ez-asynchronousview-retry">Retry</button>
     <button class="ez-relation-discover">Select a relation</button>
     <table class="ez-relationlist-contents">
-        <tbody>
+        <tbody class='ez-relation-container niceField'>
         <tr data-content-id="/api/ezp/v2/content/objects/42">
             <button class="ez-relation-remove-content" data-content-id="/api/ezp/v2/content/objects/42">remove</button>
         </tr>
@@ -45,7 +45,7 @@
         filter: loaderFilter,
         modules: {
             "ez-relationlist-editview": {
-                requires: ['ez-fieldeditview', 'ez-asynchronousview', 'transition', 'ez-translator'],
+                requires: ['ez-fieldeditview', 'ez-asynchronousview', 'transition', 'ez-translator', 'sortable'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-relationlist-editview.js"
             },
             "ez-asynchronousview": {
