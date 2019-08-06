@@ -75,19 +75,32 @@ YUI.add('ez-relationlist-editview', function (Y) {
           },
           
           /**
-           * Sets up the new value for the destinationContentsIds attribute when content in the relation list is reordered 
+           * Sets up the new value for the 'destinationContentsIds' and 'relatedContents' attributes when content in the relation list is reordered 
            * @param {EventFacade} e 
            */
-          _setSortedDestinationContentIds: function(e) {
+          _setSortedObjectRelations: function(e) {
             var rows = this.get("container").all(".ez-relation-content");
-    
             var destinationContentsIds = rows._nodes.map(function(row) {
-              return row
+            return row
                 .getAttribute("data-content-id")
                 .split("/")
                 .pop();
             });
-    
+
+            var relatedContents = this.get('relatedContents');
+            var sortedRelatedContent = [];
+
+            Y.Array.each(destinationContentsIds, function(sortedContentID){
+                Y.Array.some(relatedContents, function(content){
+                    if(content.get('contentId') == sortedContentID){
+                        sortedRelatedContent.push(content);
+                        return true
+                    }
+                    return false
+                })
+            })
+
+            this.set('relatedContents', sortedRelatedContent);
             this._set("destinationContentsIds", destinationContentsIds);
         },
 
