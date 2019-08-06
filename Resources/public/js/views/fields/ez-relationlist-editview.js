@@ -71,7 +71,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
             });
     
             sortable.delegate.after("drag:end",Y.bind(function(e) {
-                this.__setSortedObjectRelationss(e);
+                this._setSortedObjectRelations(e);
             }, this));
           },
           
