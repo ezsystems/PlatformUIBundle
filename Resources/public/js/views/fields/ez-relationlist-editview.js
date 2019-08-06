@@ -31,6 +31,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 'tap': '_removeRelation'
             }
         },
+
         initializer: function () {
             var fieldValue = this.get('field').fieldValue;
 
