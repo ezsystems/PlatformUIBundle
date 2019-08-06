@@ -88,12 +88,12 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 .pop();
             });
 
-            var relatedContents = this.get('relatedContents');
+            var relatedContents = this.get("relatedContents");
             var sortedRelatedContent = [];
 
             Y.Array.each(destinationContentsIds, function(sortedContentID){
                 Y.Array.some(relatedContents, function(content){
-                    if(content.get('contentId') == sortedContentID){
+                    if(content.get("contentId") == sortedContentID){
                         sortedRelatedContent.push(content);
                         return true
                     }
@@ -101,7 +101,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 })
             })
 
-            this.set('relatedContents', sortedRelatedContent);
+            this._set("relatedContents", sortedRelatedContent);
             this._set("destinationContentsIds", destinationContentsIds);
         },
 
