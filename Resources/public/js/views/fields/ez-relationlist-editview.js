@@ -101,7 +101,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 })
             })
 
-            this._set("relatedContents", sortedRelatedContent);
+            this.set("relatedContents", sortedRelatedContent);
             this._set("destinationContentsIds", destinationContentsIds);
         },
 
