@@ -95,11 +95,11 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 Y.Array.some(relatedContents, function(content){
                     if(content.get("contentId") == sortedContentID){
                         sortedRelatedContent.push(content);
-                        return true
+                        return true;
                     }
-                    return false
-                })
-            })
+                    return false;
+                });
+            });
 
             this.set("relatedContents", sortedRelatedContent);
             this._set("destinationContentsIds", destinationContentsIds);
