@@ -197,6 +197,10 @@ YUI.add('ez-platformuiapp', function (Y) {
                 if (oldService && newService) {
                     oldService.setNextViewServiceParameters(newService);
                 }
+
+                if (oldService) {
+                    oldService.killSessionRenewal();
+                }
             });
 
             this.after('*:navigateTo', function (e) {
@@ -1241,6 +1245,18 @@ YUI.add('ez-platformuiapp', function (Y) {
                 readOnly: true,
                 value: true,
             },
+
+            /**
+             * Information about REST session time
+             *
+             * @attribute restSessionTime
+             * @default 0
+             * @type {Number}
+             */
+            restSessionTime: {
+                writeOnce: 'initOnly',
+                value: 0
+            }
         }
     });
 });

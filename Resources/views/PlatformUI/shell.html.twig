@@ -84,6 +84,7 @@
                     viewContainer: '.ez-view-container',
                     config: {{ parameters|json_encode|raw }},
                     plugins: Y.eZ.PluginRegistry.getPlugins(Y.eZ.PlatformUIApp.NAME),
+                    restSessionTime: parseInt({{ rest_session_time }}, 10),
                 });
             app.on('ready', function () {
                 Y.one(Y.config.doc.documentElement).addClass('ez-platformui-app-ready');

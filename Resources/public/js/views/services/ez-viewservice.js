@@ -30,6 +30,10 @@ YUI.add('ez-viewservice', function (Y) {
      * @extends Base
      */
     Y.eZ.ViewService = Y.Base.create('viewService', Y.Base, [], {
+        initializer: function () {
+            this._restSessionRenewalInterval = null;
+        },
+
         /**
          * Triggers the error event when the message parameter in the event
          * facade
@@ -158,6 +162,69 @@ YUI.add('ez-viewservice', function (Y) {
          */
         _getViewParameters: function () {
             return {};
+        },
+
+        /**
+         * Refreshes a user session in interval
+         *
+         * @method _refreshSession
+         * @private
+         */
+        _refreshSession: function (event) {
+            if (!event.newVal) {
+                return;
+            }
+
+            // `restSessionTime` is set in seconds, but the interval takes milliseconds,
+            // thus I'm multiplying the value by 1000 then I'm dividing by 2.
+            // Refreshing after base session timeout is not recommended,
+            // because an user might be logged out before the refresh request is successful.
+            var refreshTimeout = this.get('app').get('restSessionTime') * 1000 / 2;
+
+            this.killSessionRenewal();
+
+            this._restSessionRenewalInterval = window.setInterval(Y.bind(function () {
+                this.get('capi').refreshSession(Y.bind(this._handleSessionRenewal, this));
+            }, this), refreshTimeout);
+        },
+
+        /**
+         * If error occurs then it displays an error notification
+         *
+         * @method _handleSessionRenewal
+         * @private
+         * @param {Boolean} error
+         */
+        _handleSessionRenewal: function (error) {
+            if (!error) {
+                return;
+            }
+
+            this.fire('notify', {
+                notification: {
+                    text: Y.eZ.trans(
+                        'cannot.refresh.session',
+                        {},
+                        'contentedit'
+                    ),
+                    identifier: 'error-session-renewal',
+                    state: 'error',
+                    timeout: 0,
+                }
+            });
+        },
+
+        /**
+         * Prevents from renewing session
+         *
+         * @method killSessionRenewal
+         */
+        killSessionRenewal: function () {
+            window.clearInterval(this._restSessionRenewalInterval);
+        },
+
+        destructor: function () {
+            this.killSessionRenewal();
         }
     }, {
         ATTRS: {

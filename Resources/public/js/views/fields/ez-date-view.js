@@ -50,8 +50,9 @@ YUI.add('ez-date-view', function (Y) {
         },
 
         /**
-         * Formats the date part of the date object according to the locale
-         * settings of the browser
+         * Formats the date part of the date object.
+         *
+         * Uses UTC as that is what the date is stored in on server side.
          *
          * @method _formatDate
          * @protected
@@ -60,7 +61,7 @@ YUI.add('ez-date-view', function (Y) {
          */
         _formatDate: function (date) {
             return date.toLocaleDateString(
-                undefined, {year: "numeric", month: "short", day: "numeric"}
+                undefined, {year: "numeric", month: "short", day: "numeric", timeZone: "UTC"}
             );
         },
     });
