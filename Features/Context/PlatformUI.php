@@ -108,7 +108,13 @@ class PlatformUI extends Context
      */
     public function beforeScenario()
     {
-        $this->getSession()->getDriver()->maximizeWindow();
+        $session = $this->getSession();
+
+        if (!$session->isStarted()) {
+            $session->start();
+        }
+
+        $session->getDriver()->maximizeWindow();
     }
 
     /**
