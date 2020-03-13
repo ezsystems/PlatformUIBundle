@@ -4,7 +4,7 @@
   "description": "eZ Platform UI Bundle",
   "version": "1.0.0",
   "devDependencies": {
-    "acorn": "^4.0.3",
+    "acorn": "^7.1.1",
     "estree-walker": "^0.3.0",
     "grunt": "~0.4.1",
     "grunt-contrib-clean": "~0.5.0",
