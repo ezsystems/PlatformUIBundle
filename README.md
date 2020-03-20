@@ -160,3 +160,12 @@ Then, you can run the unit tests with:
 ```
 $ php vendor/bin/phpunit
 ```
+
+* Translation
+
+To generate the .xlf translation file (in PlatformUIBundle/Ressources/translations) 
+run from ezplatform/vendor/ezsystems/platform-ui-bundle :
+
+ ```bash
+  $ ./bin/extract-translations.sh 
+  ```
