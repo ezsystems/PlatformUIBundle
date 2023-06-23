@@ -16,6 +16,9 @@ platformui:
         fieldtype_integer:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/Stories/FieldTypes/IntegerFieldType.feature ]
             contexts: [ EzSystems\PlatformUIBundle\Features\Context\Fields ]
+        fieldtype_keywords:
+            paths: [ vendor/ezsystems/platform-ui-bundle/Features/Stories/FieldTypes/KeywordsFieldType.feature ]
+            contexts: [ EzSystems\PlatformUIBundle\Features\Context\Fields ]
         # user features
         user:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/Users/users.feature ]
